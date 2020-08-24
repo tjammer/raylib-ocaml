@@ -1,14 +1,13 @@
 (library
  (name raylib_c)
-  (modules Raylib_c_generated_functions)
+ (modules Raylib_c_generated_functions)
  (foreign_archives raylib)
-  (foreign_stubs
+ (foreign_stubs
   (language c)
   (names c_generated_functions)
-  (include_dirs /home/tobi/Desktop/raylib/src)
-  )
+  (include_dirs %{project_root}/src/c/vendor/src))
  (libraries ctypes.stubs raylib_c_function_descriptions)
-(c_library_flags (-lX11 -lpthread)))
+ (c_library_flags (-lX11 -lpthread)))
 ; TODO use this sexp magic here for different systems
 
 (rule
@@ -18,3 +17,17 @@
 (rule
  (with-stdout-to raylib_c_generated_functions.ml
   (run stubgen/generate_ml_functions.exe raylib_stub)))
+
+(data_only_dirs vendor)
+
+(rule
+ (deps (source_tree vendor))
+ (targets libraylib.a)
+ (action
+ (no-infer
+  (progn
+   (chdir vendor/src (run rm -r build))
+   (chdir vendor/src (run mkdir build))
+   (chdir vendor/src/build (run cmake -DWITH_PIC=ON -DCMAKE_BUILD_TYPE=Release ..))
+   (chdir vendor/src (run cmake --build build -j8))
+   (copy vendor/src/build/libraylib.a libraylib.a)))))

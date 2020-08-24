@@ -16,7 +16,7 @@
   %{cc} %{c} \
   -I '%{lib:ctypes:.}' \
   -I %{ocaml_where} \
-  -I /home/tobi/Desktop/raylib/src \
+  -I %{project_root}/src/c/vendor/src \
   -o %{targets}")))
 
 (executable
