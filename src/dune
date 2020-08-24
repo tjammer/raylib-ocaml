@@ -1,0 +1,3 @@
+(library
+ (name raylib)
+ (libraries raylib_c))

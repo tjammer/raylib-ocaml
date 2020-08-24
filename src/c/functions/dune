@@ -1,0 +1,8 @@
+(library
+ (name raylib_c_function_descriptions)
+ (flags (:standard -w -9-27))
+ (libraries ctypes.stubs raylib_c_type_descriptions))
+
+(rule
+ (with-stdout-to raylib_c_generated_types.ml
+  (run ../stubgen/generate_types.exe)))

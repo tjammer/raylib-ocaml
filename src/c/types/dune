@@ -1,0 +1,4 @@
+(library
+ (name raylib_c_type_descriptions)
+ (modules Raylib_c_type_descriptions)
+ (libraries ctypes.stubs))

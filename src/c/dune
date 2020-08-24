@@ -1,0 +1,20 @@
+(library
+ (name raylib_c)
+  (modules Raylib_c_generated_functions)
+ (foreign_archives raylib)
+  (foreign_stubs
+  (language c)
+  (names c_generated_functions)
+  (include_dirs /home/tobi/Desktop/raylib/src)
+  )
+ (libraries ctypes.stubs raylib_c_function_descriptions)
+(c_library_flags (-lX11 -lpthread)))
+; TODO use this sexp magic here for different systems
+
+(rule
+ (with-stdout-to c_generated_functions.c
+  (run stubgen/generate_c_functions.exe raylib_stub)))
+
+(rule
+ (with-stdout-to raylib_c_generated_functions.ml
+  (run stubgen/generate_ml_functions.exe raylib_stub)))

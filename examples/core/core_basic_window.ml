@@ -1,6 +1,5 @@
-(* let () = Raylibml.M.raylib_stub_1_InitWindow(400, 500, "test") *)
-module Raylib =
-  Raylib_c_function_descriptions.M (Raylibml.Raylib_c_generated_functions.M)
+(* module Raylib =
+ *   Raylib_c_function_descriptions.M (Raylib_c.Raylib_c_generated_functions.M) *)
 
 let rec loop () =
   match Raylib.window_should_close () with

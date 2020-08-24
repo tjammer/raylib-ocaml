@@ -1,0 +1,3 @@
+(executable
+ (name core_basic_window)
+ (libraries raylib))

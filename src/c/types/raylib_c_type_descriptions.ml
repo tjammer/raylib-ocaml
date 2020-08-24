@@ -3,7 +3,6 @@ module Descriptions (F : Ctypes.TYPE) = struct
   open F
 
   module Color = struct
-
     let t : [ `Color ] structure typ = structure "Color"
 
     let r = field t "r" uint8_t
