@@ -1,0 +1,75 @@
+(library
+ (name raylibml)
+  (modules Raylib_c_generated_functions)
+ (foreign_archives raylib)
+  (foreign_stubs
+  (language c)
+  (names c_generated_functions)
+  (include_dirs /home/tobi/Desktop/raylib/src)
+  )
+ (libraries ctypes raylib_c_function_descriptions)
+(c_library_flags (-lX11 -lpthread)))
+; TODO use this sexp magic here for different systems
+
+(executable
+ (name test_raylib)
+  (modules test_raylib)
+(libraries raylibml))
+
+; type bindings
+(library
+ (name raylib_c_type_descriptions)
+ (modules Raylib_c_type_descriptions)
+ (libraries ctypes))
+
+(executable
+ (name generate_c_types)
+ (modules Generate_c_types)
+ (libraries ctypes.stubs raylib_c_type_descriptions))
+
+(rule
+ (with-stdout-to generate_types_step_2.c
+ (run ./generate_c_types.exe )))
+
+; Based partially on
+;   https://github.com/avsm/ocaml-yaml/blob/master/types/stubgen/jbuild#L20
+(rule
+ (targets generate_types_step_2.exe)
+ (deps (:c generate_types_step_2.c))
+ (action (bash "\
+  %{cc} %{c} \
+  -I '%{lib:ctypes:.}' \
+  -I %{ocaml_where} \
+  -I /home/tobi/Desktop/raylib/src \
+  -o %{targets}")))
+
+(rule
+ (with-stdout-to raylib_c_generated_types.ml
+  (run ./generate_types_step_2.exe)))
+
+; Function bindings.
+(library
+ (name raylib_c_function_descriptions)
+ ; (public_name raylibml.c_function_descriptions)
+ (flags (:standard -w -9-27))
+ (wrapped false)
+ (modules Raylib_c_function_descriptions Raylib_c_types Raylib_c_generated_types)
+ (libraries ctypes raylib_c_type_descriptions))
+
+(executable
+ (name generate_c_functions)
+ (modules Generate_c_functions)
+ (libraries ctypes.stubs raylib_c_function_descriptions))
+
+(executable
+ (name generate_ml_functions)
+ (modules Generate_ml_functions)
+ (libraries ctypes.stubs raylib_c_function_descriptions))
+
+(rule
+ (with-stdout-to c_generated_functions.c
+  (run ./generate_c_functions.exe raylib_stub)))
+
+(rule
+ (with-stdout-to raylib_c_generated_functions.ml
+  (run ./generate_ml_functions.exe raylib_stub)))
