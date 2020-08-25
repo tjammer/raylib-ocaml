@@ -1,6 +1,3 @@
-(* module Raylib =
- *   Raylib_c_function_descriptions.M (Raylib_c.Raylib_c_generated_functions.M) *)
-
 let rec loop () =
   match Raylib.window_should_close () with
   | true -> Raylib.close_window ()

@@ -1,7 +1,7 @@
 (library
- (name raylib_c_function_descriptions)
+ (name raylib_functions)
  (flags (:standard -w -9-27))
- (libraries ctypes.stubs raylib_c_type_descriptions))
+ (libraries ctypes.stubs raylib_types raylib_generated_constants))
 
 (rule
  (with-stdout-to raylib_c_generated_types.ml

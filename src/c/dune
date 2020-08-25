@@ -6,7 +6,7 @@
   (language c)
   (names c_generated_functions)
   (include_dirs %{project_root}/src/c/vendor/src))
- (libraries ctypes.stubs raylib_c_function_descriptions)
+ (libraries ctypes.stubs raylib_functions raylib_generated_constants)
  (c_library_flags (-lX11 -lpthread)))
 ; TODO use this sexp magic here for different systems
 

@@ -1,0 +1,22 @@
+; normal instructions for creating a library with c stub files
+; c_flags.sexp and c_library_flags.sexp are created above
+(library
+ (name raylib_generated_constants)
+  (modules Raylib_generated_constants)
+ ; (foreign_stubs
+ ;  (language c)
+ ;  (names raylib_constants_stubs)
+ ;  (include_dirs %{project_root}/src/c/vendor/src))
+ ; (c_flags (:include c_flags.sexp))
+ ; the following preprocess step is only for merlin support in your
+ ; editor. You can conditionally enable it during development. It will
+ ; do nothing during the "real" compilation step, except checking that
+ ; the file was already preprocessed earlier.
+ ; (preprocess (pps ppx_cstubs.merlin))
+ (libraries ctypes ppx_cstubs))
+
+(rule
+ (targets raylib_generated_constants.ml)
+ ; there seems to be some race condition, and the dependency to the static lib fixes it
+ (deps (:first-dep raylib_c_constants.ml ) %{project_root}/src/c/libraylib.a)
+ (action (chdir %{project_root} (run %{bin:ppx_cstubs} %{first-dep} -o %{targets} -I %{project_root}/src/c/vendor/src))))
