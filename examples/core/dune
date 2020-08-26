@@ -1,3 +1,9 @@
 (executable
  (name core_basic_window)
+ (modules Core_basic_window)
+ (libraries raylib))
+
+(executable
+ (name core_input_keys)
+ (modules Core_input_keys)
  (libraries raylib))

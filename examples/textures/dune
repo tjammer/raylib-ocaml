@@ -1,0 +1,9 @@
+(executable
+ (name textures_image_loading)
+ (modules Textures_image_loading)
+ (libraries raylib))
+
+(executable
+ (name textures_rectangle)
+ (modules Textures_rectangle)
+ (libraries raylib))

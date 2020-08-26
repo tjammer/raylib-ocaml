@@ -1,7 +1,19 @@
 let%c () = header "#include <raylib.h>"
 
+module TraceLogType = struct
+  type%c t =
+    | All [@cname "LOG_ALL"]
+    | Trace [@cname "LOG_TRACE"]
+    | Debug [@cname "LOG_DEBUG"]
+    | Info [@cname "LOG_INFO"]
+    | Warning [@cname "LOG_WARNING"]
+    | Error [@cname "LOG_ERROR"]
+    | Fatal [@cname "LOG_FATAL"]
+    | None [@cname "LOG_NONE"]
+  [@@cname "TraceLogType"] [@@typedef]
+end
+
 module Key = struct
-  (* TODO make CamelCase *)
   type%c t =
     | Apostrophe [@cname "KEY_APOSTROPHE"]
     | Comma [@cname "KEY_COMMA"]
@@ -238,32 +250,6 @@ module MaterialMap = struct
   [@@cname "MaterialMapType"] [@@typedef]
 end
 
-module PixelFormat = struct
-  type%c t =
-    | UncompressedGrayscale [@cname "UNCOMPRESSED_GRAYSCALE"]
-    | UncompressedGrayAlpha [@cname "UNCOMPRESSED_GRAY_ALPHA"]
-    | UncompressedR5G6B5 [@cname "UNCOMPRESSED_R5G6B5"]
-    | UncompressedR8G8B8 [@cname "UNCOMPRESSED_R8G8B8"]
-    | UncompressedR5G5B5A1 [@cname "UNCOMPRESSED_R5G5B5A1"]
-    | UncompressedR4G4B4A4 [@cname "UNCOMPRESSED_R4G4B4A4"]
-    | UncompressedR8G8B8A8 [@cname "UNCOMPRESSED_R8G8B8A8"]
-    | UncompressedR32 [@cname "UNCOMPRESSED_R32"]
-    | UncompressedR32G32B32 [@cname "UNCOMPRESSED_R32G32B32"]
-    | UncompressedR32G32B32A32 [@cname "UNCOMPRESSED_R32G32B32A32"]
-    | CompressedDxt1Rgb [@cname "COMPRESSED_DXT1_RGB"]
-    | CompressedDxt1Rgba [@cname "COMPRESSED_DXT1_RGBA"]
-    | CompressedDxt3Rgba [@cname "COMPRESSED_DXT3_RGBA"]
-    | CompressedDxt5Rgba [@cname "COMPRESSED_DXT5_RGBA"]
-    | CompressedEtc1Rgb [@cname "COMPRESSED_ETC1_RGB"]
-    | CompressedEtc2Rgb [@cname "COMPRESSED_ETC2_RGB"]
-    | CompressedEtc2EacRgba [@cname "COMPRESSED_ETC2_EAC_RGBA"]
-    | CompressedPvrtRgb [@cname "COMPRESSED_PVRT_RGB"]
-    | CompressedPvrtRgba [@cname "COMPRESSED_PVRT_RGBA"]
-    | CompressedAstc4X4Rgba [@cname "COMPRESSED_ASTC_4x4_RGBA"]
-    | CompressedAstc8X8Rgba [@cname "COMPRESSED_ASTC_8x8_RGBA"]
-  [@@cname "PixelFormat"] [@@typedef]
-end
-
 module TextureFilterMode = struct
   type%c t =
     | Point [@cname "FILTER_POINT"]
@@ -335,19 +321,4 @@ module CameraMode = struct
     | FirstPerson [@cname "CAMERA_FIRST_PERSON"]
     | ThirdPerson [@cname "CAMERA_THIRD_PERSON"]
   [@@cname "CameraMode"] [@@typedef]
-end
-
-module Camera = struct
-  type%c t =
-    | Perspective [@cname "CAMERA_PERSPECTIVE"]
-    | Orthographic [@cname "CAMERA_ORTHOGRAPHIC"]
-  [@@cname "CameraType"] [@@typedef]
-end
-
-module NPatch = struct
-  type%c t =
-    | NinePatch [@cname "NPT_9PATCH"]
-    | ThreePatchVertical [@cname "NPT_3PATCH_VERTICAL"]
-    | ThreePatchHorizontal [@cname "NPT_3PATCH_HORIZONTAL"]
-  [@@cname "NPatchType"] [@@typedef]
 end

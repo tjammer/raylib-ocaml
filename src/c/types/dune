@@ -1,4 +1,4 @@
 (library
  (name raylib_types)
  (modules Raylib_types)
- (libraries ctypes.stubs))
+ (libraries ctypes.stubs raylib_generated_constants))

@@ -66,7 +66,7 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   (*  Get native window handle *)
   let get_window_handle =
-    foreign "GetWindowHandle" (void @-> returning (ptr void))
+    foreign "GetWindowHandle" (void @-> returning (ptr_opt void))
 
   (*  Get current screen width *)
   let get_screen_width = foreign "GetScreenWidth" (void @-> returning int)
@@ -99,7 +99,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   let get_monitor_name = foreign "GetMonitorName" (int @-> returning string)
 
   (*  Get clipboard text content *)
-  let get_clipboard_text = foreign "GetClipboardText" (void @-> returning string)
+  let get_clipboard_text =
+    foreign "GetClipboardText" (void @-> returning string_opt)
 
   (*  Set clipboard text content *)
   let set_clipboard_text = foreign "SetClipboardText" (string @-> returning void)
@@ -132,14 +133,14 @@ module Description (F : Ctypes.FOREIGN) = struct
   let end_drawing = foreign "EndDrawing" (void @-> returning void)
 
   (*  Initialize 2D mode with custom camera (2D) *)
-  (* let  begin_mode2_d  = foreign "BeginMode2D" ( Camera2D @-> returning void) *)
+  (* let  begin_mode_2d  = foreign "BeginMode2D" ( Camera2D @-> returning void) *)
   (*  Ends 2D mode with custom camera *)
-  let end_mode2_d = foreign "EndMode2D" (void @-> returning void)
+  let end_mode_2d = foreign "EndMode2D" (void @-> returning void)
 
   (*  Initializes 3D mode with custom camera (3D) *)
-  (* let  begin_mode3_d  = foreign "BeginMode3D" ( Camera3D @-> returning void) *)
+  (* let  begin_mode_3d  = foreign "BeginMode3D" ( Camera3D @-> returning void) *)
   (*  Ends 3D mode and returns to default 2D orthographic mode *)
-  let end_mode3_d = foreign "EndMode3D" (void @-> returning void)
+  let end_mode_3d = foreign "EndMode3D" (void @-> returning void)
 
   (*  Initializes render texture for drawing *)
   let begin_texture_mode =
@@ -157,19 +158,39 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   (* Screen-space-related functions *)
   (*  Returns a ray trace from mouse position *)
-  (* let  get_mouse_ray  = foreign "GetMouseRay" ( Vector2 @-> Camera @-> returning Ray) *)
+  let get_mouse_ray =
+    foreign "GetMouseRay"
+      (Types.Vector2.t @-> Types.Camera3D.t @-> returning Types.Ray.t)
+
   (*  Returns camera transform matrix (view matrix) *)
-  (* let  get_camera_matrix  = foreign "GetCameraMatrix" ( Camera @-> returning Matrix) *)
+  let get_camera_matrix =
+    foreign "GetCameraMatrix" (Types.Camera3D.t @-> returning Types.Matrix.t)
+
   (*  Returns camera 2d transform matrix *)
-  (* let  get_camera_matrix2_d  = foreign "GetCameraMatrix2D" ( Camera2D @-> returning Matrix) *)
+  let get_camera_matrix_2d =
+    foreign "GetCameraMatrix2D" (Types.Camera2D.t @-> returning Types.Matrix.t)
+
   (*  Returns the screen space position for a 3d world space position *)
-  (* let  get_world_to_screen  = foreign "GetWorldToScreen" ( Vector3 @-> Camera @-> returning Vector2) *)
+  let get_world_to_screen =
+    foreign "GetWorldToScreen"
+      (Types.Vector3.t @-> Types.Camera3D.t @-> returning Types.Vector2.t)
+
   (*  Returns size position for a 3d world space position *)
-  (* let  get_world_to_screen_ex  = foreign "GetWorldToScreenEx" ( Vector3 @-> Camera @-> int @-> int @-> returning Vector2) *)
+  let get_world_to_screen_ex =
+    foreign "GetWorldToScreenEx"
+      ( Types.Vector3.t @-> Types.Camera3D.t @-> int @-> int
+      @-> returning Types.Vector2.t )
+
   (*  Returns the screen space position for a 2d camera world space position *)
-  (* let  get_world_to_screen2_d  = foreign "GetWorldToScreen2D" ( Vector2 @-> Camera2D @-> returning Vector2) *)
+  let get_world_to_screen_2d =
+    foreign "GetWorldToScreen2D"
+      (Types.Vector2.t @-> Types.Camera2D.t @-> returning Types.Vector2.t)
+
   (*  Returns the world space position for a 2d camera screen space position *)
-  (* let  get_screen_to_world2_d  = foreign "GetScreenToWorld2D" ( Vector2 @-> Camera2D @-> returning Vector2) *)
+  let get_screen_to_world_2d =
+    foreign "GetScreenToWorld2D"
+      (Types.Vector2.t @-> Types.Camera2D.t @-> returning Types.Vector2.t)
+
   (* Timing-related functions *)
   (*  Set target FPS (maximum) *)
   let set_target_fps = foreign "SetTargetFPS" (int @-> returning void)
@@ -211,15 +232,23 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   (* Misc. functions *)
   (*  Setup window configuration flags (view FLAGS) *)
-  (* let  set_config_flags  = foreign "SetConfigFlags" ( unsigned @-> returning void) *)
+  let set_config_flags =
+    foreign "SetConfigFlags" (Types.ConfigFlag.t @-> returning void)
+
   (*  Set the current threshold (minimum) log level *)
-  (* let  set_trace_log_level  = foreign "SetTraceLogLevel" ( int @-> returning void) *)
+  let set_trace_log_level =
+    foreign "SetTraceLogLevel" (Constants.TraceLogType.t @-> returning void)
+
   (*  Set the exit threshold (minimum) log level *)
-  (* let  set_trace_log_exit  = foreign "SetTraceLogExit" ( int @-> returning void) *)
+  let set_trace_log_exit =
+    foreign "SetTraceLogExit" (Constants.TraceLogType.t @-> returning void)
+
   (*  Set a trace log callback to enable custom logging *)
   (* let  set_trace_log_callback  = foreign "SetTraceLogCallback" ( TraceLogCallback @-> returning void) *)
   (*  Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR) *)
-  (* let  trace_log  = foreign "TraceLog" ( int @-> string @-> ... @-> LOG_INFO @-> LOG_WARNING @-> LOG_ERROR @-> returning void) *)
+  let trace_log =
+    foreign "TraceLog" (Constants.TraceLogType.t @-> string @-> returning void)
+
   (*  Takes a screenshot of current screen (saved a .png) *)
   let take_screenshot = foreign "TakeScreenshot" (string @-> returning void)
 
@@ -265,57 +294,71 @@ module Description (F : Ctypes.FOREIGN) = struct
   (* Input-related functions: gamepads *)
   (*  Detect if a gamepad is available *)
   let is_gamepad_available =
-    foreign "IsGamepadAvailable" (int @-> returning bool)
+    foreign "IsGamepadAvailable" (Constants.GamepadNumber.t @-> returning bool)
 
   (*  Check gamepad name (if available) *)
   let is_gamepad_name =
-    foreign "IsGamepadName" (int @-> string @-> returning bool)
+    foreign "IsGamepadName"
+      (Constants.GamepadNumber.t @-> string @-> returning bool)
 
   (*  Return gamepad internal name id *)
-  let get_gamepad_name = foreign "GetGamepadName" (int @-> returning string)
+  let get_gamepad_name =
+    foreign "GetGamepadName" (Constants.GamepadNumber.t @-> returning string)
 
   (*  Detect if a gamepad button has been pressed once *)
   let is_gamepad_button_pressed =
-    foreign "IsGamepadButtonPressed" (int @-> int @-> returning bool)
+    foreign "IsGamepadButtonPressed"
+      ( Constants.GamepadNumber.t @-> Constants.GamepadButton.t
+      @-> returning bool )
 
   (*  Detect if a gamepad button is being pressed *)
   let is_gamepad_button_down =
-    foreign "IsGamepadButtonDown" (int @-> int @-> returning bool)
+    foreign "IsGamepadButtonDown"
+      ( Constants.GamepadNumber.t @-> Constants.GamepadButton.t
+      @-> returning bool )
 
   (*  Detect if a gamepad button has been released once *)
   let is_gamepad_button_released =
-    foreign "IsGamepadButtonReleased" (int @-> int @-> returning bool)
+    foreign "IsGamepadButtonReleased"
+      ( Constants.GamepadNumber.t @-> Constants.GamepadButton.t
+      @-> returning bool )
 
   (*  Detect if a gamepad button is NOT being pressed *)
   let is_gamepad_button_up =
-    foreign "IsGamepadButtonUp" (int @-> int @-> returning bool)
+    foreign "IsGamepadButtonUp"
+      ( Constants.GamepadNumber.t @-> Constants.GamepadButton.t
+      @-> returning bool )
 
   (*  Get the last gamepad button pressed *)
   let get_gamepad_button_pressed =
-    foreign "GetGamepadButtonPressed" (void @-> returning int)
+    foreign "GetGamepadButtonPressed"
+      (void @-> returning Constants.GamepadButton.t)
 
   (*  Return gamepad axis count for a gamepad *)
   let get_gamepad_axis_count =
-    foreign "GetGamepadAxisCount" (int @-> returning int)
+    foreign "GetGamepadAxisCount" (Constants.GamepadNumber.t @-> returning int)
 
   (*  Return axis movement value for a gamepad axis *)
   let get_gamepad_axis_movement =
-    foreign "GetGamepadAxisMovement" (int @-> int @-> returning float)
+    foreign "GetGamepadAxisMovement"
+      (Constants.GamepadNumber.t @-> Constants.GamepadAxis.t @-> returning float)
 
   (* Input-related functions: mouse *)
   (*  Detect if a mouse button has been pressed once *)
   let is_mouse_button_pressed =
-    foreign "IsMouseButtonPressed" (int @-> returning bool)
+    foreign "IsMouseButtonPressed" (Constants.MouseButton.t @-> returning bool)
 
   (*  Detect if a mouse button is being pressed *)
-  let is_mouse_button_down = foreign "IsMouseButtonDown" (int @-> returning bool)
+  let is_mouse_button_down =
+    foreign "IsMouseButtonDown" (Constants.MouseButton.t @-> returning bool)
 
   (*  Detect if a mouse button has been released once *)
   let is_mouse_button_released =
-    foreign "IsMouseButtonReleased" (int @-> returning bool)
+    foreign "IsMouseButtonReleased" (Constants.MouseButton.t @-> returning bool)
 
   (*  Detect if a mouse button is NOT being pressed *)
-  let is_mouse_button_up = foreign "IsMouseButtonUp" (int @-> returning bool)
+  let is_mouse_button_up =
+    foreign "IsMouseButtonUp" (Constants.MouseButton.t @-> returning bool)
 
   (*  Returns mouse position X *)
   let get_mouse_x = foreign "GetMouseX" (void @-> returning int)
@@ -391,9 +434,14 @@ module Description (F : Ctypes.FOREIGN) = struct
   (* Camera System Functions (Module: camera) *)
 
   (*  Set camera mode (multiple camera modes available) *)
-  (* let  set_camera_mode  = foreign "SetCameraMode" ( Camera @-> int @-> returning void) *)
+  let set_camera_mode =
+    foreign "SetCameraMode"
+      (Types.Camera3D.t @-> Constants.CameraMode.t @-> returning void)
+
   (*  Update camera position for selected mode *)
-  (* let  update_camera  = foreign "UpdateCamera" ( Camera @-> returning void) *)
+  let update_camera =
+    foreign "UpdateCamera" (ptr Types.Camera3D.t @-> returning void)
+
   (*  Set camera pan key to combine with mouse movement (free camera) *)
   let set_camera_pan_control =
     foreign "SetCameraPanControl" (int @-> returning void)
@@ -974,11 +1022,13 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   (*  Set texture scaling filter mode *)
   let set_texture_filter =
-    foreign "SetTextureFilter" (Types.Texture2D.t @-> int @-> returning void)
+    foreign "SetTextureFilter"
+      (Types.Texture2D.t @-> Constants.TextureFilterMode.t @-> returning void)
 
   (*  Set texture wrapping mode *)
   let set_texture_wrap =
-    foreign "SetTextureWrap" (Types.Texture2D.t @-> int @-> returning void)
+    foreign "SetTextureWrap"
+      (Types.Texture2D.t @-> Constants.TextureWrapMode.t @-> returning void)
 
   (* Texture drawing functions *)
   (*  Draw a Texture2D *)
@@ -1177,16 +1227,16 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   (* Basic geometric 3D shapes drawing functions *)
   (*  Draw a line in 3D world space *)
-  let draw_line3_d =
+  let draw_line_3d =
     foreign "DrawLine3D"
       (Types.Vector3.t @-> Types.Vector3.t @-> Types.Color.t @-> returning void)
 
   (*  Draw a point in 3D space, actually a small line *)
-  let draw_point3_d =
+  let draw_point_3d =
     foreign "DrawPoint3D" (Types.Vector3.t @-> Types.Color.t @-> returning void)
 
   (*  Draw a circle in 3D world space *)
-  let draw_circle3_d =
+  let draw_circle_3d =
     foreign "DrawCircle3D"
       ( Types.Vector3.t @-> float @-> Types.Vector3.t @-> float
       @-> Types.Color.t @-> returning void )
@@ -1262,289 +1312,580 @@ module Description (F : Ctypes.FOREIGN) = struct
   let draw_gizmo = foreign "DrawGizmo" (Types.Vector3.t @-> returning void)
 
   (*DrawTorus(), DrawTeapot() could be useful? *)
-  (* (\*------------------------------------------------------------------------------------ *\)
-   * (\* Model 3d Loading and Drawing Functions (Module: models) *\)
-   * (\*------------------------------------------------------------------------------------ *\)
-   * (\* Model loading/unloading functions *\)
-   * (\*  Load model from files (meshes and materials) *\)
-   *  let  load_model  = foreign "LoadModel" ( string @-> returning Model)
-   * (\*  Load model from generated mesh (default material) *\)
-   *  let  load_model_from_mesh  = foreign "LoadModelFromMesh" ( Mesh @-> returning Model)
-   * (\*  Unload model from memory (RAM and/or VRAM) *\)
-   *  let  unload_model  = foreign "UnloadModel" ( Model @-> returning void)
-   * (\* Mesh loading/unloading functions *\)
-   * (\*  Load meshes from model file *\)
-   *  let  *_load_meshes  = foreign "*LoadMeshes" ( string @-> int @-> returning Mesh)
-   * (\*  Export mesh data to file *\)
-   *  let  export_mesh  = foreign "ExportMesh" ( Mesh @-> string @-> returning void)
-   * (\*  Unload mesh from memory (RAM and/or VRAM) *\)
-   *  let  unload_mesh  = foreign "UnloadMesh" ( Mesh @-> returning void)
-   * (\* Material loading/unloading functions *\)
-   * (\*  Load materials from model file *\)
-   *  let  *_load_materials  = foreign "*LoadMaterials" ( string @-> int @-> returning Material)
-   * (\*  Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps) *\)
-   *  let  load_material_default  = foreign "LoadMaterialDefault" ( void @-> SPECULAR @-> NORMAL @-> returning Material)
-   * (\*  Unload material from GPU memory (VRAM) *\)
-   *  let  unload_material  = foreign "UnloadMaterial" ( Material @-> returning void)
-   * (\*  Set texture for a material map type (MAP_DIFFUSE, MAP_SPECULAR...) *\)
-   *  let  set_material_texture  = foreign "SetMaterialTexture" ( Material @-> int @-> Texture2D @-> MAP_SPECULAR... @-> returning void)
-   * (\*  Set material for a mesh *\)
-   *  let  set_model_mesh_material  = foreign "SetModelMeshMaterial" ( Model @-> int @-> int @-> returning void)
-   * (\* Model animations loading/unloading functions *\)
-   * (\*  Load model animations from file *\)
-   *  let  *_load_model_animations  = foreign "*LoadModelAnimations" ( string @-> int @-> returning ModelAnimation)
-   * (\*  Update model animation pose *\)
-   *  let  update_model_animation  = foreign "UpdateModelAnimation" ( Model @-> ModelAnimation @-> int @-> returning void)
-   * (\*  Unload animation data *\)
-   *  let  unload_model_animation  = foreign "UnloadModelAnimation" ( ModelAnimation @-> returning void)
-   * (\*  Check model animation skeleton match *\)
-   *  let  is_model_animation_valid  = foreign "IsModelAnimationValid" ( Model @-> ModelAnimation @-> returning bool)
-   * (\* Mesh generation functions *\)
-   * (\*  Generate polygonal mesh *\)
-   *  let  gen_mesh_poly  = foreign "GenMeshPoly" ( int @-> float @-> returning Mesh)
-   * (\*  Generate plane mesh (with subdivisions) *\)
-   *  let  gen_mesh_plane  = foreign "GenMeshPlane" ( float @-> float @-> int @-> int @-> returning Mesh)
-   * (\*  Generate cuboid mesh *\)
-   *  let  gen_mesh_cube  = foreign "GenMeshCube" ( float @-> float @-> float @-> returning Mesh)
-   * (\*  Generate sphere mesh (standard sphere) *\)
-   *  let  gen_mesh_sphere  = foreign "GenMeshSphere" ( float @-> int @-> int @-> returning Mesh)
-   * (\*  Generate half-sphere mesh (no bottom cap) *\)
-   *  let  gen_mesh_hemi_sphere  = foreign "GenMeshHemiSphere" ( float @-> int @-> int @-> returning Mesh)
-   * (\*  Generate cylinder mesh *\)
-   *  let  gen_mesh_cylinder  = foreign "GenMeshCylinder" ( float @-> float @-> int @-> returning Mesh)
-   * (\*  Generate torus mesh *\)
-   *  let  gen_mesh_torus  = foreign "GenMeshTorus" ( float @-> float @-> int @-> int @-> returning Mesh)
-   * (\*  Generate trefoil knot mesh *\)
-   *  let  gen_mesh_knot  = foreign "GenMeshKnot" ( float @-> float @-> int @-> int @-> returning Mesh)
-   * (\*  Generate heightmap mesh from image data *\)
-   *  let  gen_mesh_heightmap  = foreign "GenMeshHeightmap" ( Types.Image.t @-> Vector3 @-> returning Mesh)
-   * (\*  Generate cubes-based map mesh from image data *\)
-   *  let  gen_mesh_cubicmap  = foreign "GenMeshCubicmap" ( Types.Image.t @-> Vector3 @-> returning Mesh)
-   * (\* Mesh manipulation functions *\)
-   * (\*  Compute mesh bounding box limits *\)
-   *  let  mesh_bounding_box  = foreign "MeshBoundingBox" ( Mesh @-> returning BoundingBox)
-   * (\*  Compute mesh tangents *\)
-   *  let  mesh_tangents  = foreign "MeshTangents" ( Mesh @-> returning void)
-   * (\*  Compute mesh binormals *\)
-   *  let  mesh_binormals  = foreign "MeshBinormals" ( Mesh @-> returning void)
-   * (\* Model drawing functions *\)
-   * (\*  Draw a model (with texture if set) *\)
-   *  let  draw_model  = foreign "DrawModel" ( Model @-> Vector3 @-> float @-> Types.Color.t @-> returning void)
-   * (\*  Draw a model with extended parameters *\)
-   *  let  draw_model_ex  = foreign "DrawModelEx" ( Model @-> Vector3 @-> Vector3 @-> float @-> Vector3 @-> Types.Color.t @-> returning void)
-   * (\*  Draw a model wires (with texture if set) *\)
-   *  let  draw_model_wires  = foreign "DrawModelWires" ( Model @-> Vector3 @-> float @-> Types.Color.t @-> returning void)
-   * (\*  Draw a model wires (with texture if set) with extended parameters *\)
-   *  let  draw_model_wires_ex  = foreign "DrawModelWiresEx" ( Model @-> Vector3 @-> Vector3 @-> float @-> Types.Vector3.t @-> Types.Color.t @-> returning void)
-   * (\*  Draw bounding box (wires) *\)
-   *  let  draw_bounding_box  = foreign "DrawBoundingBox" ( BoundingBox @-> Types.Color.t @-> returning void) *)
+  (*------------------------------------------------------------------------------------ *)
+  (* Model 3d Loading and Drawing Functions (Module: models) *)
+  (*------------------------------------------------------------------------------------ *)
+  (* Model loading/unloading functions *)
+  (*  Load model from files (meshes and materials) *)
+  let load_model = foreign "LoadModel" (string @-> returning Types.Model.t)
+
+  (*  Load model from generated mesh (default material) *)
+  let load_model_from_mesh =
+    foreign "LoadModelFromMesh" (Types.Mesh.t @-> returning Types.Model.t)
+
+  (*  Unload model from memory (RAM and/or VRAM) *)
+  let unload_model = foreign "UnloadModel" (Types.Model.t @-> returning void)
+
+  (* Mesh loading/unloading functions *)
+  (*  Load meshes from model file *)
+  let load_meshes =
+    foreign "LoadMeshes" (string @-> int @-> returning (ptr_opt Types.Mesh.t))
+
+  (*  Export mesh data to file *)
+  let export_mesh =
+    foreign "ExportMesh" (Types.Mesh.t @-> string @-> returning void)
+
+  (*  Unload mesh from memory (RAM and/or VRAM) *)
+  let unload_mesh = foreign "UnloadMesh" (Types.Mesh.t @-> returning void)
+
+  (* Material loading/unloading functions *)
+  (*  Load materials from model file *)
+  let load_materials =
+    foreign "LoadMaterials" (string @-> int @-> returning (ptr Types.Material.t))
+
+  (*  Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps) *)
+  let load_material_default =
+    foreign "LoadMaterialDefault" (void @-> returning Types.Material.t)
+
+  (*  Unload material from GPU memory (VRAM) *)
+  let unload_material =
+    foreign "UnloadMaterial" (Types.Material.t @-> returning void)
+
+  (*  Set texture for a material map type (MAP_DIFFUSE, MAP_SPECULAR...) *)
+  let set_material_texture =
+    foreign "SetMaterialTexture"
+      ( ptr Types.Material.t @-> Constants.MaterialMap.t @-> Types.Texture2D.t
+      @-> returning void )
+
+  (*  Set material for a mesh *)
+  let set_model_mesh_material =
+    foreign "SetModelMeshMaterial"
+      (ptr Types.Model.t @-> int @-> int @-> returning void)
+
+  (* Model animations loading/unloading functions *)
+  (*  Load model animations from file *)
+  let load_model_animations =
+    foreign "LoadModelAnimations"
+      (string @-> ptr int @-> returning (ptr Types.ModelAnimation.t))
+
+  (*  Update model animation pose *)
+  let update_model_animation =
+    foreign "UpdateModelAnimation"
+      (Types.Model.t @-> Types.ModelAnimation.t @-> int @-> returning void)
+
+  (*  Unload animation data *)
+  let unload_model_animation =
+    foreign "UnloadModelAnimation" (Types.ModelAnimation.t @-> returning void)
+
+  (*  Check model animation skeleton match *)
+  let is_model_animation_valid =
+    foreign "IsModelAnimationValid"
+      (Types.Model.t @-> Types.ModelAnimation.t @-> returning bool)
+
+  (* Mesh generation functions *)
+  (*  Generate polygonal mesh *)
+  let gen_mesh_poly =
+    foreign "GenMeshPoly" (int @-> float @-> returning Types.Mesh.t)
+
+  (*  Generate plane mesh (with subdivisions) *)
+  let gen_mesh_plane =
+    foreign "GenMeshPlane"
+      (float @-> float @-> int @-> int @-> returning Types.Mesh.t)
+
+  (*  Generate cuboid mesh *)
+  let gen_mesh_cube =
+    foreign "GenMeshCube" (float @-> float @-> float @-> returning Types.Mesh.t)
+
+  (*  Generate sphere mesh (standard sphere) *)
+  let gen_mesh_sphere =
+    foreign "GenMeshSphere" (float @-> int @-> int @-> returning Types.Mesh.t)
+
+  (*  Generate half-sphere mesh (no bottom cap) *)
+  let gen_mesh_hemi_sphere =
+    foreign "GenMeshHemiSphere"
+      (float @-> int @-> int @-> returning Types.Mesh.t)
+
+  (*  Generate cylinder mesh *)
+  let gen_mesh_cylinder =
+    foreign "GenMeshCylinder"
+      (float @-> float @-> int @-> returning Types.Mesh.t)
+
+  (*  Generate torus mesh *)
+  let gen_mesh_torus =
+    foreign "GenMeshTorus"
+      (float @-> float @-> int @-> int @-> returning Types.Mesh.t)
+
+  (*  Generate trefoil knot mesh *)
+  let gen_mesh_knot =
+    foreign "GenMeshKnot"
+      (float @-> float @-> int @-> int @-> returning Types.Mesh.t)
+
+  (*  Generate heightmap mesh from image data *)
+  let gen_mesh_heightmap =
+    foreign "GenMeshHeightmap"
+      (Types.Image.t @-> Types.Vector3.t @-> returning Types.Mesh.t)
+
+  (*  Generate cubes-based map mesh from image data *)
+  let gen_mesh_cubicmap =
+    foreign "GenMeshCubicmap"
+      (Types.Image.t @-> Types.Vector3.t @-> returning Types.Mesh.t)
+
+  (* Mesh manipulation functions *)
+  (*  Compute mesh bounding box limits *)
+  let mesh_bounding_box =
+    foreign "MeshBoundingBox" (Types.Mesh.t @-> returning Types.BoundingBox.t)
+
+  (*  Compute mesh tangents *)
+  let mesh_tangents =
+    foreign "MeshTangents" (ptr Types.Mesh.t @-> returning void)
+
+  (*  Compute mesh binormals *)
+  let mesh_binormals =
+    foreign "MeshBinormals" (ptr Types.Mesh.t @-> returning void)
+
+  (* Model drawing functions *)
+  (*  Draw a model (with texture if set) *)
+  let draw_model =
+    foreign "DrawModel"
+      ( Types.Model.t @-> Types.Vector3.t @-> float @-> Types.Color.t
+      @-> returning void )
+
+  (*  Draw a model with extended parameters *)
+  let draw_model_ex =
+    foreign "DrawModelEx"
+      ( Types.Model.t @-> Types.Vector3.t @-> Types.Vector3.t @-> float
+      @-> Types.Vector3.t @-> Types.Color.t @-> returning void )
+
+  (*  Draw a model wires (with texture if set) *)
+  let draw_model_wires =
+    foreign "DrawModelWires"
+      ( Types.Model.t @-> Types.Vector3.t @-> float @-> Types.Color.t
+      @-> returning void )
+
+  (*  Draw a model wires (with texture if set) with extended parameters *)
+  let draw_model_wires_ex =
+    foreign "DrawModelWiresEx"
+      ( Types.Model.t @-> Types.Vector3.t @-> Types.Vector3.t @-> float
+      @-> Types.Vector3.t @-> Types.Color.t @-> returning void )
+
+  (*  Draw bounding box (wires) *)
+  let draw_bounding_box =
+    foreign "DrawBoundingBox"
+      (Types.BoundingBox.t @-> Types.Color.t @-> returning void)
+
   (*  Draw a billboard texture *)
-  (*  let  draw_billboard  = foreign "DrawBillboard" ( Camera @-> Types.Texture2D.t @-> Types.Vector3.t @-> float @-> Types.Color.t @-> returning void)
-   * (\*  Draw a billboard texture defined by sourceRec *\)
-   *  let  draw_billboard_rec  = foreign "DrawBillboardRec" ( Camera @-> Types.Texture2D.t @-> Types.Rectangle.t @-> Types.Vector3.t @-> float @-> Types.Color.t @-> returning void)
-   * (\* Collision detection functions *\)
-   * (\*  Detect collision between two spheres *\)
-   *  let  check_collision_spheres  = foreign "CheckCollisionSpheres" ( Types.Vector3.t @-> float @-> Types.Vector3.t @-> float @-> returning bool)
-   * (\*  Detect collision between two bounding boxes *\)
-   *  let  check_collision_boxes  = foreign "CheckCollisionBoxes" ( BoundingBox @-> BoundingBox @-> returning bool)
-   * (\*  Detect collision between box and sphere *\)
-   *  let  check_collision_box_sphere  = foreign "CheckCollisionBoxSphere" ( BoundingBox @-> Types.Vector3.t @-> float @-> returning bool)
-   * (\*  Detect collision between ray and sphere *\)
-   *  let  check_collision_ray_sphere  = foreign "CheckCollisionRaySphere" ( Ray @-> Types.Vector3.t @-> float @-> returning bool)
-   * (\*  Detect collision between ray and sphere, returns collision point *\)
-   *  let  check_collision_ray_sphere_ex  = foreign "CheckCollisionRaySphereEx" ( Ray @-> Types.Vector3.t @-> float @-> Types.Vector3.t @-> returns @-> returning bool)
-   * (\*  Detect collision between ray and box *\)
-   *  let  check_collision_ray_box  = foreign "CheckCollisionRayBox" ( Ray @-> BoundingBox @-> returning bool)
-   * (\*  Get collision info between ray and model *\)
-   *  let  get_collision_ray_model  = foreign "GetCollisionRayModel" ( Ray @-> Model @-> returning RayHitInfo)
-   * (\*  Get collision info between ray and triangle *\)
-   *  let  get_collision_ray_triangle  = foreign "GetCollisionRayTriangle" ( Ray @-> Types.Vector3.t @-> Types.Vector3.t @-> Types.Vector3.t @-> returning RayHitInfo)
-   * (\*  Get collision info between ray and ground plane (Y-normal plane) *\)
-   *  let  get_collision_ray_ground  = foreign "GetCollisionRayGround" ( Ray @-> float @-> returning RayHitInfo) *)
+  let draw_billboard =
+    foreign "DrawBillboard"
+      ( Types.Camera3D.t @-> Types.Texture2D.t @-> Types.Vector3.t @-> float
+      @-> Types.Color.t @-> returning void )
+
+  (*  Draw a billboard texture defined by sourceRec *)
+  let draw_billboard_rec =
+    foreign "DrawBillboardRec"
+      ( Types.Camera3D.t @-> Types.Texture2D.t @-> Types.Rectangle.t
+      @-> Types.Vector3.t @-> float @-> Types.Color.t @-> returning void )
+
+  (* Collision detection functions *)
+  (*  Detect collision between two spheres *)
+  let check_collision_spheres =
+    foreign "CheckCollisionSpheres"
+      ( Types.Vector3.t @-> float @-> Types.Vector3.t @-> float
+      @-> returning bool )
+
+  (*  Detect collision between two bounding boxes *)
+  let check_collision_boxes =
+    foreign "CheckCollisionBoxes"
+      (Types.BoundingBox.t @-> Types.BoundingBox.t @-> returning bool)
+
+  (*  Detect collision between box and sphere *)
+  let check_collision_box_sphere =
+    foreign "CheckCollisionBoxSphere"
+      (Types.BoundingBox.t @-> Types.Vector3.t @-> float @-> returning bool)
+
+  (*  Detect collision between ray and sphere *)
+  let check_collision_ray_sphere =
+    foreign "CheckCollisionRaySphere"
+      (Types.Ray.t @-> Types.Vector3.t @-> float @-> returning bool)
+
+  (*  Detect collision between ray and sphere, returns collision point *)
+  let check_collision_ray_sphere_ex =
+    foreign "CheckCollisionRaySphereEx"
+      ( Types.Ray.t @-> Types.Vector3.t @-> float @-> ptr Types.Vector3.t
+      @-> returning bool )
+
+  (*  Detect collision between ray and box *)
+  let check_collision_ray_box =
+    foreign "CheckCollisionRayBox"
+      (Types.Ray.t @-> Types.BoundingBox.t @-> returning bool)
+
+  (*  Get collision info between ray and model *)
+  let get_collision_ray_model =
+    foreign "GetCollisionRayModel"
+      (Types.Ray.t @-> Types.Model.t @-> returning Types.RayHitInfo.t)
+
+  (*  Get collision info between ray and triangle *)
+  let get_collision_ray_triangle =
+    foreign "GetCollisionRayTriangle"
+      ( Types.Ray.t @-> Types.Vector3.t @-> Types.Vector3.t @-> Types.Vector3.t
+      @-> returning Types.RayHitInfo.t )
+
+  (*  Get collision info between ray and ground plane (Y-normal plane) *)
+  let get_collision_ray_ground =
+    foreign "GetCollisionRayGround"
+      (Types.Ray.t @-> float @-> returning Types.RayHitInfo.t)
+
   (*------------------------------------------------------------------------------------ *)
   (* Shaders System Functions (Module: rlgl) *)
   (* NOTE: This functions are useless when using OpenGL 1.1 *)
   (*------------------------------------------------------------------------------------ *)
   (* Shader loading/unloading functions *)
   (*  Load shader from files and bind default locations *)
-  (*  let  load_shader  = foreign "LoadShader" ( string @-> string @-> returning Shader)
-   * (\*  Load shader from code strings and bind default locations *\)
-   *  let  load_shader_code  = foreign "LoadShaderCode" ( string @-> string @-> returning Shader)
-   * (\*  Unload shader from GPU memory (VRAM) *\)
-   *  let  unload_shader  = foreign "UnloadShader" ( Shader @-> returning void)
-   * (\*  Get default shader *\)
-   *  let  get_shader_default  = foreign "GetShaderDefault" ( void @-> returning Shader)
-   * (\*  Get default texture *\)
-   *  let  get_texture_default  = foreign "GetTextureDefault" ( void @-> returning Types.Texture2D.t)
-   * (\*  Get texture to draw shapes *\)
-   *  let  get_shapes_texture  = foreign "GetShapesTexture" ( void @-> returning Types.Texture2D.t)
-   * (\*  Get texture rectangle to draw shapes *\)
-   *  let  get_shapes_texture_rec  = foreign "GetShapesTextureRec" ( void @-> returning Types.Rectangle.t)
-   * (\*  Define default texture used to draw shapes *\)
-   *  let  set_shapes_texture  = foreign "SetShapesTexture" ( Types.Texture2D.t @-> Types.Rectangle.t @-> returning void)
-   * (\* Shader configuration functions *\)
-   * (\*  Get shader uniform location *\)
-   *  let  get_shader_location  = foreign "GetShaderLocation" ( Shader @-> string @-> returning int)
-   * (\*  Set shader uniform value *\)
-   *  let  set_shader_value  = foreign "SetShaderValue" ( Shader @-> int @-> const @-> int @-> returning void)
-   * (\*  Set shader uniform value vector *\)
-   *  let  set_shader_value_v  = foreign "SetShaderValueV" ( Shader @-> int @-> const @-> int @-> int @-> returning void)
-   * (\*  Set shader uniform value (matrix 4x4) *\)
-   *  let  set_shader_value_matrix  = foreign "SetShaderValueMatrix" ( Shader @-> int @-> Matrix @-> returning void)
-   * (\*  Set shader uniform value for texture *\)
-   *  let  set_shader_value_texture  = foreign "SetShaderValueTexture" ( Shader @-> int @-> Types.Texture2D.t @-> returning void)
-   * (\*  Set a custom projection matrix (replaces internal projection matrix) *\)
-   *  let  set_matrix_projection  = foreign "SetMatrixProjection" ( Matrix @-> returning void)
-   * (\*  Set a custom modelview matrix (replaces internal modelview matrix) *\)
-   *  let  set_matrix_modelview  = foreign "SetMatrixModelview" ( Matrix @-> returning void)
-   * (\*  Get internal modelview matrix *\)
-   *  let  get_matrix_modelview  = foreign "GetMatrixModelview" ( void @-> returning Matrix)
-   * (\*  Get internal projection matrix *\)
-   *  let  get_matrix_projection  = foreign "GetMatrixProjection" ( void @-> returning Matrix)
-   * (\* Texture maps generation (PBR) *\)
-   * (\* NOTE: Required shaders should be provided *\)
-   * (\*  Generate cubemap texture from 2D texture *\)
-   *  let  gen_texture_cubemap  = foreign "GenTextureCubemap" ( Shader @-> Types.Texture2D.t @-> int @-> returning Types.Texture2D.t)
-   * (\*  Generate irradiance texture using cubemap data *\)
-   *  let  gen_texture_irradiance  = foreign "GenTextureIrradiance" ( Shader @-> Types.Texture2D.t @-> int @-> returning Types.Texture2D.t)
-   * (\*  Generate prefilter texture using cubemap data *\)
-   *  let  gen_texture_prefilter  = foreign "GenTexturePrefilter" ( Shader @-> Types.Texture2D.t @-> int @-> returning Types.Texture2D.t)
-   * (\*  Generate BRDF texture *\)
-   *  let  gen_texture_b_r_d_f  = foreign "GenTextureBRDF" ( Shader @-> int @-> returning Types.Texture2D.t)
-   * (\* Shading begin/end functions *\)
-   * (\*  Begin custom shader drawing *\)
-   *  let  begin_shader_mode  = foreign "BeginShaderMode" ( Shader @-> returning void)
-   * (\*  End custom shader drawing (use default shader) *\)
-   *  let  end_shader_mode  = foreign "EndShaderMode" ( void @-> returning void)
-   * (\*  Begin blending mode (alpha, additive, multiplied) *\)
-   *  let  begin_blend_mode  = foreign "BeginBlendMode" ( int @-> additive @-> multiplied @-> returning void)
-   * (\*  End blending mode (reset to default: alpha blending) *\)
-   *  let  end_blend_mode  = foreign "EndBlendMode" ( void @-> returning void)
-   * (\* VR control functions *\)
-   * (\*  Init VR simulator for selected device parameters *\)
-   *  let  init_vr_simulator  = foreign "InitVrSimulator" ( void @-> returning void)
-   * (\*  Close VR simulator for current device *\)
-   *  let  close_vr_simulator  = foreign "CloseVrSimulator" ( void @-> returning void)
-   * (\*  Update VR tracking (position and orientation) and camera *\)
-   *  let  update_vr_tracking  = foreign "UpdateVrTracking" ( Camera @-> returning void)
-   * (\*  Set stereo rendering configuration parameters *\)
-   *  let  set_vr_configuration  = foreign "SetVrConfiguration" ( VrDeviceInfo @-> Shader @-> returning void)
-   * (\*  Detect if VR simulator is ready *\)
-   *  let  is_vr_simulator_ready  = foreign "IsVrSimulatorReady" ( void @-> returning bool)
-   * (\*  Enable/Disable VR experience *\)
-   *  let  toggle_vr_mode  = foreign "ToggleVrMode" ( void @-> returning void)
-   * (\*  Begin VR simulator stereo rendering *\)
-   *  let  begin_vr_drawing  = foreign "BeginVrDrawing" ( void @-> returning void)
-   * (\*  End VR simulator stereo rendering *\)
-   *  let  end_vr_drawing  = foreign "EndVrDrawing" ( void @-> returning void) *)
+  let load_shader =
+    foreign "LoadShader" (string @-> string @-> returning Types.Shader.t)
+
+  (*  Load shader from code strings and bind default locations *)
+  let load_shader_code =
+    foreign "LoadShaderCode" (string @-> string @-> returning Types.Shader.t)
+
+  (*  Unload shader from GPU memory (VRAM) *)
+  let unload_shader = foreign "UnloadShader" (Types.Shader.t @-> returning void)
+
+  (*  Get default shader *)
+  let get_shader_default =
+    foreign "GetShaderDefault" (void @-> returning Types.Shader.t)
+
+  (*  Get default texture *)
+  let get_texture_default =
+    foreign "GetTextureDefault" (void @-> returning Types.Texture2D.t)
+
+  (*  Get texture to draw shapes *)
+  let get_shapes_texture =
+    foreign "GetShapesTexture" (void @-> returning Types.Texture2D.t)
+
+  (*  Get texture rectangle to draw shapes *)
+  let get_shapes_texture_rec =
+    foreign "GetShapesTextureRec" (void @-> returning Types.Rectangle.t)
+
+  (*  Define default texture used to draw shapes *)
+  let set_shapes_texture =
+    foreign "SetShapesTexture"
+      (Types.Texture2D.t @-> Types.Rectangle.t @-> returning void)
+
+  (* Shader configuration functions *)
+  (*  Get shader uniform location *)
+  let get_shader_location =
+    foreign "GetShaderLocation" (Types.Shader.t @-> string @-> returning int)
+
+  (*  Set shader uniform value *)
+  let set_shader_value =
+    foreign "SetShaderValue"
+      ( Types.Shader.t @-> Constants.ShaderLocation.t @-> ptr void
+      @-> Constants.ShaderUniformData.t @-> returning void )
+
+  (*  Set shader uniform value vector *)
+  let set_shader_value_v =
+    foreign "SetShaderValueV"
+      ( Types.Shader.t @-> Constants.ShaderLocation.t @-> ptr void
+      @-> Constants.ShaderUniformData.t @-> int @-> returning void )
+
+  (*  Set shader uniform value (matrix 4x4) *)
+  let set_shader_value_matrix =
+    foreign "SetShaderValueMatrix"
+      ( Types.Shader.t @-> Constants.ShaderLocation.t @-> Types.Matrix.t
+      @-> returning void )
+
+  (*  Set shader uniform value for texture *)
+  let set_shader_value_texture =
+    foreign "SetShaderValueTexture"
+      ( Types.Shader.t @-> Constants.ShaderLocation.t @-> Types.Texture2D.t
+      @-> returning void )
+
+  (*  Set a custom projection matrix (replaces internal projection matrix) *)
+  let set_matrix_projection =
+    foreign "SetMatrixProjection" (Types.Matrix.t @-> returning void)
+
+  (*  Set a custom modelview matrix (replaces internal modelview matrix) *)
+  let set_matrix_modelview =
+    foreign "SetMatrixModelview" (Types.Matrix.t @-> returning void)
+
+  (*  Get internal modelview matrix *)
+  let get_matrix_modelview =
+    foreign "GetMatrixModelview" (void @-> returning Types.Matrix.t)
+
+  (*  Get internal projection matrix *)
+  let get_matrix_projection =
+    foreign "GetMatrixProjection" (void @-> returning Types.Matrix.t)
+
+  (* Texture maps generation (PBR) *)
+  (* NOTE: Required shaders should be provided *)
+  (*  Generate cubemap texture from 2D texture *)
+  let gen_texture_cubemap =
+    foreign "GenTextureCubemap"
+      ( Types.Shader.t @-> Types.Texture2D.t @-> int
+      @-> returning Types.Texture2D.t )
+
+  (*  Generate irradiance texture using cubemap data *)
+  let gen_texture_irradiance =
+    foreign "GenTextureIrradiance"
+      ( Types.Shader.t @-> Types.Texture2D.t @-> int
+      @-> returning Types.Texture2D.t )
+
+  (*  Generate prefilter texture using cubemap data *)
+  let gen_texture_prefilter =
+    foreign "GenTexturePrefilter"
+      ( Types.Shader.t @-> Types.Texture2D.t @-> int
+      @-> returning Types.Texture2D.t )
+
+  (*  Generate BRDF texture *)
+  let gen_texture_b_r_d_f =
+    foreign "GenTextureBRDF"
+      (Types.Shader.t @-> int @-> returning Types.Texture2D.t)
+
+  (* Shading begin/end functions *)
+  (*  Begin custom shader drawing *)
+  let begin_shader_mode =
+    foreign "BeginShaderMode" (Types.Shader.t @-> returning void)
+
+  (*  End custom shader drawing (use default shader) *)
+  let end_shader_mode = foreign "EndShaderMode" (void @-> returning void)
+
+  (*  Begin blending mode (alpha, additive, multiplied) *)
+  let begin_blend_mode =
+    foreign "BeginBlendMode" (Constants.BlendMode.t @-> returning void)
+
+  (*  End blending mode (reset to default: alpha blending) *)
+  let end_blend_mode = foreign "EndBlendMode" (void @-> returning void)
+
+  (* VR control functions *)
+  (*  Init VR simulator for selected device parameters *)
+  let init_vr_simulator = foreign "InitVrSimulator" (void @-> returning void)
+
+  (*  Close VR simulator for current device *)
+  let close_vr_simulator = foreign "CloseVrSimulator" (void @-> returning void)
+
+  (*  Update VR tracking (position and orientation) and camera *)
+  let update_vr_tracking =
+    foreign "UpdateVrTracking" (ptr Types.Camera3D.t @-> returning void)
+
+  (*  Set stereo rendering configuration parameters *)
+  (* TODO *)
+  (* let set_vr_configuration =
+   *   foreign "SetVrConfiguration"
+   *     (VrDeviceInfo @-> Types.Shader.t @-> returning void) *)
+
+  (*  Detect if VR simulator is ready *)
+  let is_vr_simulator_ready =
+    foreign "IsVrSimulatorReady" (void @-> returning bool)
+
+  (*  Enable/Disable VR experience *)
+  let toggle_vr_mode = foreign "ToggleVrMode" (void @-> returning void)
+
+  (*  Begin VR simulator stereo rendering *)
+  let begin_vr_drawing = foreign "BeginVrDrawing" (void @-> returning void)
+
+  (*  End VR simulator stereo rendering *)
+  let end_vr_drawing = foreign "EndVrDrawing" (void @-> returning void)
+
   (*------------------------------------------------------------------------------------ *)
   (* Audio Loading and Playing Functions (Module: audio) *)
   (*------------------------------------------------------------------------------------ *)
   (* Audio device management functions *)
   (*  Initialize audio device and context *)
-  (*  let  init_audio_device  = foreign "InitAudioDevice" ( void @-> returning void)
-   * (\*  Close the audio device and context *\)
-   *  let  close_audio_device  = foreign "CloseAudioDevice" ( void @-> returning void)
-   * (\*  Check if audio device has been initialized successfully *\)
-   *  let  is_audio_device_ready  = foreign "IsAudioDeviceReady" ( void @-> returning bool)
-   * (\*  Set master volume (listener) *\)
-   *  let  set_master_volume  = foreign "SetMasterVolume" ( float @-> returning void)
-   * (\* Wave/Sound loading/unloading functions *\)
-   * (\*  Load wave data from file *\)
-   *  let  load_wave  = foreign "LoadWave" ( string @-> returning Wave)
-   * (\*  Load sound from file *\)
-   *  let  load_sound  = foreign "LoadSound" ( string @-> returning Sound)
-   * (\*  Load sound from wave data *\)
-   *  let  load_sound_from_wave  = foreign "LoadSoundFromWave" ( Wave @-> returning Sound)
-   * (\*  Update sound buffer with new data *\)
-   *  let  update_sound  = foreign "UpdateSound" ( Sound @-> const @-> int @-> returning void)
-   * (\*  Unload wave data *\)
-   *  let  unload_wave  = foreign "UnloadWave" ( Wave @-> returning void)
-   * (\*  Unload sound *\)
-   *  let  unload_sound  = foreign "UnloadSound" ( Sound @-> returning void)
-   * (\*  Export wave data to file *\)
-   *  let  export_wave  = foreign "ExportWave" ( Wave @-> string @-> returning void)
-   * (\*  Export wave sample data to code (.h) *\)
-   *  let  export_wave_as_code  = foreign "ExportWaveAsCode" ( Wave @-> string @-> returning void)
-   * (\* Wave/Sound management functions *\)
-   * (\*  Play a sound *\)
-   *  let  play_sound  = foreign "PlaySound" ( Sound @-> returning void)
-   * (\*  Stop playing a sound *\)
-   *  let  stop_sound  = foreign "StopSound" ( Sound @-> returning void)
-   * (\*  Pause a sound *\)
-   *  let  pause_sound  = foreign "PauseSound" ( Sound @-> returning void)
-   * (\*  Resume a paused sound *\)
-   *  let  resume_sound  = foreign "ResumeSound" ( Sound @-> returning void)
-   * (\*  Play a sound (using multichannel buffer pool) *\)
-   *  let  play_sound_multi  = foreign "PlaySoundMulti" ( Sound @-> returning void)
-   * (\*  Stop any sound playing (using multichannel buffer pool) *\)
-   *  let  stop_sound_multi  = foreign "StopSoundMulti" ( void @-> returning void)
-   * (\*  Get number of sounds playing in the multichannel *\)
-   *  let  get_sounds_playing  = foreign "GetSoundsPlaying" ( void @-> returning int)
-   * (\*  Check if a sound is currently playing *\)
-   *  let  is_sound_playing  = foreign "IsSoundPlaying" ( Sound @-> returning bool)
-   * (\*  Set volume for a sound (1.0 is max level) *\)
-   *  let  set_sound_volume  = foreign "SetSoundVolume" ( Sound @-> float @-> returning void)
-   * (\*  Set pitch for a sound (1.0 is base level) *\)
-   *  let  set_sound_pitch  = foreign "SetSoundPitch" ( Sound @-> float @-> returning void)
-   * (\*  Convert wave data to desired format *\)
-   *  let  wave_format  = foreign "WaveFormat" ( Wave @-> int @-> int @-> int @-> returning void)
-   * (\*  Copy a wave to a new wave *\)
-   *  let  wave_copy  = foreign "WaveCopy" ( Wave @-> returning Wave)
-   * (\*  Crop a wave to defined samples range *\)
-   *  let  wave_crop  = foreign "WaveCrop" ( Wave @-> int @-> int @-> returning void)
-   * (\*  Get samples data from wave as a floats array *\)
-   *  let  get_wave_data  = foreign "*GetWaveData" ( Wave @-> returning float)
-   * (\* Music management functions *\)
-   * (\*  Load music stream from file *\)
-   *  let  load_music_stream  = foreign "LoadMusicStream" ( string @-> returning Music)
-   * (\*  Unload music stream *\)
-   *  let  unload_music_stream  = foreign "UnloadMusicStream" ( Music @-> returning void)
-   * (\*  Start music playing *\)
-   *  let  play_music_stream  = foreign "PlayMusicStream" ( Music @-> returning void)
-   * (\*  Updates buffers for music streaming *\)
-   *  let  update_music_stream  = foreign "UpdateMusicStream" ( Music @-> returning void)
-   * (\*  Stop music playing *\)
-   *  let  stop_music_stream  = foreign "StopMusicStream" ( Music @-> returning void)
-   * (\*  Pause music playing *\)
-   *  let  pause_music_stream  = foreign "PauseMusicStream" ( Music @-> returning void)
-   * (\*  Resume playing paused music *\)
-   *  let  resume_music_stream  = foreign "ResumeMusicStream" ( Music @-> returning void)
-   * (\*  Check if music is playing *\)
-   *  let  is_music_playing  = foreign "IsMusicPlaying" ( Music @-> returning bool)
-   * (\*  Set volume for music (1.0 is max level) *\)
-   *  let  set_music_volume  = foreign "SetMusicVolume" ( Music @-> float @-> returning void)
-   * (\*  Set pitch for a music (1.0 is base level) *\)
-   *  let  set_music_pitch  = foreign "SetMusicPitch" ( Music @-> float @-> returning void)
-   * (\*  Set music loop count (loop repeats) *\)
-   *  let  set_music_loop_count  = foreign "SetMusicLoopCount" ( Music @-> int @-> returning void)
-   * (\*  Get music time length (in seconds) *\)
-   *  let  get_music_time_length  = foreign "GetMusicTimeLength" ( Music @-> returning float)
-   * (\*  Get current music time played (in seconds) *\)
-   *  let  get_music_time_played  = foreign "GetMusicTimePlayed" ( Music @-> returning float)
-   * (\* AudioStream management functions *\)
-   * (\*  Init audio stream (to stream raw audio pcm data) *\)
-   *  let  init_audio_stream  = foreign "InitAudioStream" ( unsigned @-> unsigned @-> unsigned @-> returning AudioStream)
-   * (\*  Update audio stream buffers with data *\)
-   *  let  update_audio_stream  = foreign "UpdateAudioStream" ( AudioStream @-> const @-> int @-> returning void)
-   * (\*  Close audio stream and free memory *\)
-   *  let  close_audio_stream  = foreign "CloseAudioStream" ( AudioStream @-> returning void)
-   * (\*  Check if any audio stream buffers requires refill *\)
-   *  let  is_audio_stream_processed  = foreign "IsAudioStreamProcessed" ( AudioStream @-> returning bool)
-   * (\*  Play audio stream *\)
-   *  let  play_audio_stream  = foreign "PlayAudioStream" ( AudioStream @-> returning void)
-   * (\*  Pause audio stream *\)
-   *  let  pause_audio_stream  = foreign "PauseAudioStream" ( AudioStream @-> returning void)
-   * (\*  Resume audio stream *\)
-   *  let  resume_audio_stream  = foreign "ResumeAudioStream" ( AudioStream @-> returning void)
-   * (\*  Check if audio stream is playing *\)
-   *  let  is_audio_stream_playing  = foreign "IsAudioStreamPlaying" ( AudioStream @-> returning bool)
-   * (\*  Stop audio stream *\)
-   *  let  stop_audio_stream  = foreign "StopAudioStream" ( AudioStream @-> returning void)
-   * (\*  Set volume for audio stream (1.0 is max level) *\)
-   *  let  set_audio_stream_volume  = foreign "SetAudioStreamVolume" ( AudioStream @-> float @-> returning void)
-   * (\*  Set pitch for audio stream (1.0 is base level) *\)
-   *  let  set_audio_stream_pitch  = foreign "SetAudioStreamPitch" ( AudioStream @-> float @-> returning void)
-   * (\*  Default size for new audio streams *\)
-   *  let  set_audio_stream_buffer_size_default  = foreign "SetAudioStreamBufferSizeDefault" ( int @-> returning void) *)
+  let init_audio_device = foreign "InitAudioDevice" (void @-> returning void)
+
+  (*  Close the audio device and context *)
+  let close_audio_device = foreign "CloseAudioDevice" (void @-> returning void)
+
+  (*  Check if audio device has been initialized successfully *)
+  let is_audio_device_ready =
+    foreign "IsAudioDeviceReady" (void @-> returning bool)
+
+  (*  Set master volume (listener) *)
+  let set_master_volume = foreign "SetMasterVolume" (float @-> returning void)
+
+  (* Wave/Sound loading/unloading functions *)
+  (*  Load wave data from file *)
+  let load_wave = foreign "LoadWave" (string @-> returning Types.Wave.t)
+
+  (*  Load sound from file *)
+  let load_sound = foreign "LoadSound" (string @-> returning Types.Sound.t)
+
+  (*  Load sound from wave data *)
+  let load_sound_from_wave =
+    foreign "LoadSoundFromWave" (Types.Wave.t @-> returning Types.Sound.t)
+
+  (*  Update sound buffer with new data *)
+  let update_sound =
+    foreign "UpdateSound" (Types.Sound.t @-> ptr void @-> int @-> returning void)
+
+  (*  Unload wave data *)
+  let unload_wave = foreign "UnloadWave" (Types.Wave.t @-> returning void)
+
+  (*  Unload sound *)
+  let unload_sound = foreign "UnloadSound" (Types.Sound.t @-> returning void)
+
+  (*  Export wave data to file *)
+  let export_wave =
+    foreign "ExportWave" (Types.Wave.t @-> string @-> returning void)
+
+  (*  Export wave sample data to code (.h) *)
+  let export_wave_as_code =
+    foreign "ExportWaveAsCode" (Types.Wave.t @-> string @-> returning void)
+
+  (* Wave/Sound management functions *)
+  (*  Play a sound *)
+  let play_sound = foreign "PlaySound" (Types.Sound.t @-> returning void)
+
+  (*  Stop playing a sound *)
+  let stop_sound = foreign "StopSound" (Types.Sound.t @-> returning void)
+
+  (*  Pause a sound *)
+  let pause_sound = foreign "PauseSound" (Types.Sound.t @-> returning void)
+
+  (*  Resume a paused sound *)
+  let resume_sound = foreign "ResumeSound" (Types.Sound.t @-> returning void)
+
+  (*  Play a sound (using multichannel buffer pool) *)
+  let play_sound_multi =
+    foreign "PlaySoundMulti" (Types.Sound.t @-> returning void)
+
+  (*  Stop any sound playing (using multichannel buffer pool) *)
+  let stop_sound_multi = foreign "StopSoundMulti" (void @-> returning void)
+
+  (*  Get number of sounds playing in the multichannel *)
+  let get_sounds_playing = foreign "GetSoundsPlaying" (void @-> returning int)
+
+  (*  Check if a sound is currently playing *)
+  let is_sound_playing =
+    foreign "IsSoundPlaying" (Types.Sound.t @-> returning bool)
+
+  (*  Set volume for a sound (1.0 is max level) *)
+  let set_sound_volume =
+    foreign "SetSoundVolume" (Types.Sound.t @-> float @-> returning void)
+
+  (*  Set pitch for a sound (1.0 is base level) *)
+  let set_sound_pitch =
+    foreign "SetSoundPitch" (Types.Sound.t @-> float @-> returning void)
+
+  (*  Convert wave data to desired format *)
+  let wave_format =
+    foreign "WaveFormat"
+      (ptr Types.Wave.t @-> int @-> int @-> int @-> returning void)
+
+  (*  Copy a wave to a new wave *)
+  let wave_copy = foreign "WaveCopy" (Types.Wave.t @-> returning Types.Wave.t)
+
+  (*  Crop a wave to defined samples range *)
+  let wave_crop =
+    foreign "WaveCrop" (ptr Types.Wave.t @-> int @-> int @-> returning void)
+
+  (*  Get samples data from wave as a floats array *)
+  let get_wave_data =
+    foreign "GetWaveData" (Types.Wave.t @-> returning (ptr float))
+
+  (* Music management functions *)
+  (*  Load music stream from file *)
+  let load_music_stream =
+    foreign "LoadMusicStream" (string @-> returning Types.Music.t)
+
+  (*  Unload music stream *)
+  let unload_music_stream =
+    foreign "UnloadMusicStream" (Types.Music.t @-> returning void)
+
+  (*  Start music playing *)
+  let play_music_stream =
+    foreign "PlayMusicStream" (Types.Music.t @-> returning void)
+
+  (*  Updates buffers for music streaming *)
+  let update_music_stream =
+    foreign "UpdateMusicStream" (Types.Music.t @-> returning void)
+
+  (*  Stop music playing *)
+  let stop_music_stream =
+    foreign "StopMusicStream" (Types.Music.t @-> returning void)
+
+  (*  Pause music playing *)
+  let pause_music_stream =
+    foreign "PauseMusicStream" (Types.Music.t @-> returning void)
+
+  (*  Resume playing paused music *)
+  let resume_music_stream =
+    foreign "ResumeMusicStream" (Types.Music.t @-> returning void)
+
+  (*  Check if music is playing *)
+  let is_music_playing =
+    foreign "IsMusicPlaying" (Types.Music.t @-> returning bool)
+
+  (*  Set volume for music (1.0 is max level) *)
+  let set_music_volume =
+    foreign "SetMusicVolume" (Types.Music.t @-> float @-> returning void)
+
+  (*  Set pitch for a music (1.0 is base level) *)
+  let set_music_pitch =
+    foreign "SetMusicPitch" (Types.Music.t @-> float @-> returning void)
+
+  (*  Set music loop count (loop repeats) *)
+  let set_music_loop_count =
+    foreign "SetMusicLoopCount" (Types.Music.t @-> int @-> returning void)
+
+  (*  Get music time length (in seconds) *)
+  let get_music_time_length =
+    foreign "GetMusicTimeLength" (Types.Music.t @-> returning float)
+
+  (*  Get current music time played (in seconds) *)
+  let get_music_time_played =
+    foreign "GetMusicTimePlayed" (Types.Music.t @-> returning float)
+
+  (* AudioStream management functions *)
+  (*  Init audio stream (to stream raw audio pcm data) *)
+  let init_audio_stream =
+    foreign "InitAudioStream"
+      (int @-> int @-> int @-> returning Types.AudioStream.t)
+
+  (*  Update audio stream buffers with data *)
+  let update_audio_stream =
+    foreign "UpdateAudioStream"
+      (Types.AudioStream.t @-> ptr void @-> int @-> returning void)
+
+  (*  Close audio stream and free memory *)
+  let close_audio_stream =
+    foreign "CloseAudioStream" (Types.AudioStream.t @-> returning void)
+
+  (*  Check if any audio stream buffers requires refill *)
+  let is_audio_stream_processed =
+    foreign "IsAudioStreamProcessed" (Types.AudioStream.t @-> returning bool)
+
+  (*  Play audio stream *)
+  let play_audio_stream =
+    foreign "PlayAudioStream" (Types.AudioStream.t @-> returning void)
+
+  (*  Pause audio stream *)
+  let pause_audio_stream =
+    foreign "PauseAudioStream" (Types.AudioStream.t @-> returning void)
+
+  (*  Resume audio stream *)
+  let resume_audio_stream =
+    foreign "ResumeAudioStream" (Types.AudioStream.t @-> returning void)
+
+  (*  Check if audio stream is playing *)
+  let is_audio_stream_playing =
+    foreign "IsAudioStreamPlaying" (Types.AudioStream.t @-> returning bool)
+
+  (*  Stop audio stream *)
+  let stop_audio_stream =
+    foreign "StopAudioStream" (Types.AudioStream.t @-> returning void)
+
+  (*  Set volume for audio stream (1.0 is max level) *)
+  let set_audio_stream_volume =
+    foreign "SetAudioStreamVolume"
+      (Types.AudioStream.t @-> float @-> returning void)
+
+  (*  Set pitch for audio stream (1.0 is base level) *)
+  let set_audio_stream_pitch =
+    foreign "SetAudioStreamPitch"
+      (Types.AudioStream.t @-> float @-> returning void)
+
+  (*  Default size for new audio streams *)
+  let set_audio_stream_buffer_size_default =
+    foreign "SetAudioStreamBufferSizeDefault" (int @-> returning void)
 end
