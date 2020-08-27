@@ -133,12 +133,14 @@ module Description (F : Ctypes.FOREIGN) = struct
   let end_drawing = foreign "EndDrawing" (void @-> returning void)
 
   (*  Initialize 2D mode with custom camera (2D) *)
-  (* let  begin_mode_2d  = foreign "BeginMode2D" ( Camera2D @-> returning void) *)
+  let begin_mode_2d = foreign "BeginMode2D" (Types.Camera2D.t @-> returning void)
+
   (*  Ends 2D mode with custom camera *)
   let end_mode_2d = foreign "EndMode2D" (void @-> returning void)
 
   (*  Initializes 3D mode with custom camera (3D) *)
-  (* let  begin_mode_3d  = foreign "BeginMode3D" ( Camera3D @-> returning void) *)
+  let begin_mode_3d = foreign "BeginMode3D" (Types.Camera3D.t @-> returning void)
+
   (*  Ends 3D mode and returns to default 2D orthographic mode *)
   let end_mode_3d = foreign "EndMode3D" (void @-> returning void)
 
@@ -217,11 +219,11 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "ColorFromNormalized" (Types.Vector4.t @-> returning Types.Color.t)
 
   (*  Returns HSV values for a Color *)
-  let color_to_h_s_v =
+  let color_to_hsv =
     foreign "ColorToHSV" (Types.Color.t @-> returning Types.Vector3.t)
 
   (*  Returns a Color from HSV values *)
-  let color_from_h_s_v =
+  let color_from_hsv =
     foreign "ColorFromHSV" (Types.Vector3.t @-> returning Types.Color.t)
 
   (*  Returns a Color struct from hexadecimal value *)
@@ -1178,14 +1180,14 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "TextInsert" (string @-> string @-> int @-> returning string)
 
   (*  Join text strings with delimiter *)
-  let text_join =
-    foreign "TextJoin" (string @-> int @-> string @-> returning string)
+  (* let text_join =
+   *   foreign "TextJoin" (ptr string @-> int @-> string @-> returning string) *)
 
   (*  Split text into multiple strings *)
   (* let  text_split  = foreign "*TextSplit" ( string @-> char @-> int @-> returning string) *)
   (*  Append text at specific position and move cursor! *)
   let text_append =
-    foreign "TextAppend" (char @-> string @-> int @-> returning void)
+    foreign "TextAppend" (string @-> string @-> ptr int @-> returning void)
 
   (*  Find first text occurrence within a string *)
   let text_find_index =
@@ -1209,7 +1211,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   (* UTF8 text strings management functions *)
   (*  Get all codepoints in a string, codepoints count returned by parameters *)
   let get_codepoints =
-    foreign "GetCodepoints" (string @-> ptr int @-> returning int)
+    foreign "GetCodepoints" (string @-> ptr int @-> returning (ptr int))
 
   (*  Get total number of characters (codepoints) in a UTF8 encoded string *)
   let get_codepoints_count =
@@ -1217,11 +1219,11 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   (*  Returns next codepoint in a UTF8 encoded string; 0x3f('?') is returned on failure *)
   let get_next_codepoint =
-    foreign "GetNextCodepoint" (string @-> int @-> returning int)
+    foreign "GetNextCodepoint" (string @-> ptr int @-> returning int)
 
   (*  Encode codepoint into utf8 text (char array length returned as parameter) *)
   let codepoint_to_utf8 =
-    foreign "CodepointToUtf8" (int @-> int @-> returning string)
+    foreign "CodepointToUtf8" (int @-> ptr int @-> returning string)
 
   (* Basic 3d Shapes Drawing Functions (Module: models) *)
 
@@ -1306,7 +1308,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw a ray line *)
   (* let  draw_ray  = foreign "DrawRay" ( Ray @-> Types.Color.t @-> returning void) *)
   (*  Draw a grid (centered at (0, 0, 0)) *)
-  let draw_grid = foreign "DrawGrid" (int @-> int @-> returning void)
+  let draw_grid = foreign "DrawGrid" (int @-> float @-> returning void)
 
   (*  Draw simple gizmo *)
   let draw_gizmo = foreign "DrawGizmo" (Types.Vector3.t @-> returning void)
@@ -1329,7 +1331,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (* Mesh loading/unloading functions *)
   (*  Load meshes from model file *)
   let load_meshes =
-    foreign "LoadMeshes" (string @-> int @-> returning (ptr_opt Types.Mesh.t))
+    foreign "LoadMeshes"
+      (string @-> ptr int @-> returning (ptr_opt Types.Mesh.t))
 
   (*  Export mesh data to file *)
   let export_mesh =
@@ -1341,7 +1344,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (* Material loading/unloading functions *)
   (*  Load materials from model file *)
   let load_materials =
-    foreign "LoadMaterials" (string @-> int @-> returning (ptr Types.Material.t))
+    foreign "LoadMaterials"
+      (string @-> ptr int @-> returning (ptr Types.Material.t))
 
   (*  Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps) *)
   let load_material_default =

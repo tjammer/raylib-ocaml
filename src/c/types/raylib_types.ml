@@ -3,7 +3,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   open F
 
   module Vector2 = struct
-    let t : [ `Vector2 ] structure typ = structure "Vector2"
+    type t = [ `Vector2 ]
+
+    let t : t structure typ = structure "Vector2"
 
     let x = field t "x" float
 
@@ -13,7 +15,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module Vector3 = struct
-    let t : [ `Vector3 ] structure typ = structure "Vector3"
+    type t = [ `Vector3 ]
+
+    let t : t structure typ = structure "Vector3"
 
     let x = field t "x" float
 
@@ -25,7 +29,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module Vector4 = struct
-    let t : [ `Vector4 ] structure typ = structure "Vector4"
+    type t = [ `Vector4 ]
+
+    let t : t structure typ = structure "Vector4"
 
     let x = field t "x" float
 
@@ -39,7 +45,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module Matrix = struct
-    let t : [ `Matrix ] structure typ = structure "Matrix"
+    type t = [ `Matrix ]
+
+    let t : t structure typ = structure "Matrix"
 
     let m0 = field t "m0" float
 
@@ -77,7 +85,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module Color = struct
-    let t : [ `Color ] structure typ = structure "Color"
+    type t = [ `Color ]
+
+    let t : t structure typ = structure "Color"
 
     let r = field t "r" uint8_t
 
@@ -91,7 +101,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module Rectangle = struct
-    let t : [ `Rectangle ] structure typ = structure "Rectangle"
+    type t = [ `Rectangle ]
+
+    let t : t structure typ = structure "Rectangle"
 
     let x = field t "x" float
 
@@ -157,7 +169,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module Image = struct
-    let t : [ `Image ] structure typ = structure "Image"
+    type t = [ `Image ]
+
+    let t : t structure typ = structure "Image"
 
     let data = field t "data" (ptr void)
 
@@ -173,7 +187,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module Texture2D = struct
-    let t : [ `Texture2D ] structure typ = structure "Texture2D"
+    type t = [ `Texture2D ]
+
+    let t : t structure typ = structure "Texture2D"
 
     let id = field t "id" int
 
@@ -189,7 +205,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module RenderTexture2D = struct
-    let t : [ `RenderTexture2D ] structure typ = structure "RenderTexture2D"
+    type t = [ `RenderTexture2D ]
+
+    let t : t structure typ = structure "RenderTexture2D"
 
     let texture = field t "texture" Texture2D.t
 
@@ -213,7 +231,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module NPatchInfo = struct
-    let t : [ `NPatchInfo ] structure typ = structure "NPatchInfo"
+    type t = [ `NPatchInfo ]
+
+    let t : t structure typ = structure "NPatchInfo"
 
     let source_rec = field t "sourceRec" Rectangle.t
 
@@ -231,7 +251,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module CharInfo = struct
-    let t : [ `CharInfo ] structure typ = structure "CharInfo"
+    type t = [ `CharInfo ]
+
+    let t : t structure typ = structure "CharInfo"
 
     let value = field t "value" int
 
@@ -247,7 +269,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module Font = struct
-    let t : [ `Font ] structure typ = structure "Font"
+    type t = [ `Font ]
+
+    let t : t structure typ = structure "Font"
 
     let base_size = field t "baseSize" int
 
@@ -274,7 +298,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module Camera3D = struct
-    let t : [ `Camera3D ] structure typ = structure "Camera3D"
+    type t = [ `Camera3D ]
+
+    let t : t structure typ = structure "Camera3D"
 
     let position = field t "position" Vector3.t
 
@@ -290,7 +316,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module Camera2D = struct
-    let t : [ `Camera2D ] structure typ = structure "Camera2D"
+    type t = [ `Camera2D ]
+
+    let t : t structure typ = structure "Camera2D"
 
     let offset = field t "offset" Vector2.t
 
@@ -305,55 +333,73 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
 
   (* we are getting lazy. will update fields once/if we need them *)
   module Mesh = struct
-    let t : [ `Mesh ] structure typ = structure "Mesh"
+    type t = [ `Mesh ]
+
+    let t : t structure typ = structure "Mesh"
 
     let () = seal t
   end
 
   module Shader = struct
-    let t : [ `Shader ] structure typ = structure "Shader"
+    type t = [ `Shader ]
+
+    let t : t structure typ = structure "Shader"
 
     let () = seal t
   end
 
   module MaterialMap = struct
-    let t : [ `MaterialMap ] structure typ = structure "MaterialMap"
+    type t = [ `MaterialMap ]
+
+    let t : t structure typ = structure "MaterialMap"
 
     let () = seal t
   end
 
   module Material = struct
-    let t : [ `Material ] structure typ = structure "Material"
+    type t = [ `Material ]
+
+    let t : t structure typ = structure "Material"
 
     let () = seal t
   end
 
   module Transform = struct
-    let t : [ `Transform ] structure typ = structure "Transform"
+    type t = [ `Transform ]
+
+    let t : t structure typ = structure "Transform"
 
     let () = seal t
   end
 
   module BoneInfo = struct
-    let t : [ `BoneInfo ] structure typ = structure "BoneInfo"
+    type t = [ `BoneInfo ]
+
+    let t : t structure typ = structure "BoneInfo"
 
     let () = seal t
   end
 
   module Model = struct
-    let t : [ `Model ] structure typ = structure "Model"
+    type t = [ `Model ]
+
+    let t : t structure typ = structure "Model"
 
     let () = seal t
   end
 
   module ModelAnimation = struct
-    let t : [ `ModelAnimation ] structure typ = structure "ModelAnimation"
+    type t = [ `ModelAnimation ]
+
+    let t : t structure typ = structure "ModelAnimation"
 
     let () = seal t
   end
 
   module Ray = struct
-    let t : [ `Ray ] structure typ = structure "Ray"
+    type t = [ `Ray ]
+
+    let t : t structure typ = structure "Ray"
 
     let position = field t "position" Vector3.t
 
@@ -363,7 +409,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module RayHitInfo = struct
-    let t : [ `RayHitInfo ] structure typ = structure "RayHitInfo"
+    type t = [ `RayHitInfo ]
+
+    let t : t structure typ = structure "RayHitInfo"
 
     let hit = field t "hit" bool
 
@@ -377,7 +425,9 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module BoundingBox = struct
-    let t : [ `BoundingBox ] structure typ = structure "BoundingBox"
+    type t = [ `BoundingBox ]
+
+    let t : t structure typ = structure "BoundingBox"
 
     let min = field t "min" Vector3.t
 
@@ -387,25 +437,33 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   end
 
   module Wave = struct
-    let t : [ `Wave ] structure typ = structure "Wave"
+    type t = [ `Wave ]
+
+    let t : t structure typ = structure "Wave"
 
     let () = seal t
   end
 
   module AudioStream = struct
-    let t : [ `AudioStream ] structure typ = structure "AudioStream"
+    type t = [ `AudioStream ]
+
+    let t : t structure typ = structure "AudioStream"
 
     let () = seal t
   end
 
   module Sound = struct
-    let t : [ `Sound ] structure typ = structure "Sound"
+    type t = [ `Sound ]
+
+    let t : t structure typ = structure "Sound"
 
     let () = seal t
   end
 
   module Music = struct
-    let t : [ `Music ] structure typ = structure "Music"
+    type t = [ `Music ]
+
+    let t : t structure typ = structure "Music"
 
     let () = seal t
   end

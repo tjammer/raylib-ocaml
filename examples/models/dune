@@ -1,0 +1,4 @@
+(executable
+ (name models_waving_cubes)
+ (modules Models_waving_cubes)
+ (libraries raylib))

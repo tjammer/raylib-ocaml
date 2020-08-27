@@ -4,6 +4,8 @@ module Types = Raylib_functions.Types
 module Constants = Raylib_generated_constants
 
 module Vector2 = struct
+  type t = Types.Vector2.t Ctypes.structure
+
   let t = Types.Vector2.t
 
   let create x y =
@@ -16,9 +18,15 @@ module Vector2 = struct
   let x vec = Ctypes.getf vec Types.Vector2.x
 
   let y vec = Ctypes.getf vec Types.Vector2.y
+
+  let set_x vec x = Ctypes.setf vec Types.Vector2.x x
+
+  let set_y vec y = Ctypes.setf vec Types.Vector2.y y
 end
 
 module Vector3 = struct
+  type t = Types.Vector3.t Ctypes.structure
+
   let t = Types.Vector3.t
 
   let create x y z =
@@ -34,9 +42,17 @@ module Vector3 = struct
   let y vec = Ctypes.getf vec Types.Vector3.y
 
   let z vec = Ctypes.getf vec Types.Vector3.z
+
+  let set_x vec x = Ctypes.setf vec Types.Vector3.x x
+
+  let set_y vec y = Ctypes.setf vec Types.Vector3.y y
+
+  let set_z vec z = Ctypes.setf vec Types.Vector3.z z
 end
 
 module Vector4 = struct
+  type t = Types.Vector4.t Ctypes.structure
+
   let t = Types.Vector4.t
 
   let create x y z w =
@@ -55,9 +71,19 @@ module Vector4 = struct
   let z vec = Ctypes.getf vec Types.Vector4.z
 
   let w vec = Ctypes.getf vec Types.Vector4.w
+
+  let set_x vec x = Ctypes.setf vec Types.Vector4.x x
+
+  let set_y vec y = Ctypes.setf vec Types.Vector4.y y
+
+  let set_z vec z = Ctypes.setf vec Types.Vector4.z z
+
+  let set_w vec w = Ctypes.setf vec Types.Vector4.w w
 end
 
 module Matrix = struct
+  type t = Types.Matrix.t Ctypes.structure
+
   let t = Types.Matrix.t
 
   let create m0 m4 m8 m12 m1 m5 m9 m13 m2 m6 m10 m14 m3 m7 m11 m15 =
@@ -83,6 +109,8 @@ module Matrix = struct
 end
 
 module Color = struct
+  type t = Types.Color.t Ctypes.structure
+
   let t = Types.Color.t
 
   let create r g b a =
@@ -149,6 +177,8 @@ module Color = struct
 end
 
 module Rectangle = struct
+  type t = Types.Rectangle.t Ctypes.structure
+
   let t = Types.Rectangle.t
 
   let create x y width height =
@@ -167,10 +197,18 @@ module Rectangle = struct
   let width rc = Ctypes.getf rc Types.Rectangle.width
 
   let height rc = Ctypes.getf rc Types.Rectangle.height
+
+  let set_x rc x = Ctypes.setf rc Types.Rectangle.x x
+
+  let set_y rc y = Ctypes.setf rc Types.Rectangle.y y
+
+  let set_width rc width = Ctypes.setf rc Types.Rectangle.width width
+
+  let set_height rc height = Ctypes.setf rc Types.Rectangle.height height
 end
 
 module Image = struct
-  let t = Types.Image.t
+  type t = Types.Image.t Ctypes.structure
 
   let width tex = Ctypes.getf tex Types.Texture2D.width
 
@@ -182,7 +220,7 @@ module Image = struct
 end
 
 module Texture2D = struct
-  let t = Types.Texture2D.t
+  type t = Types.Texture2D.t Ctypes.structure
 
   let id tex = Ctypes.getf tex Types.Texture2D.id
 
@@ -196,7 +234,7 @@ module Texture2D = struct
 end
 
 module RenderTexture2D = struct
-  let t = Types.RenderTexture2D.t
+  type t = Types.RenderTexture2D.t Ctypes.structure
 
   let texture tex = Ctypes.getf tex Types.RenderTexture2D.texture
 
@@ -206,6 +244,8 @@ module RenderTexture2D = struct
 end
 
 module NPatchInfo = struct
+  type t = Types.NPatchInfo.t Ctypes.structure
+
   let t = Types.NPatchInfo.t
 
   let create rc left top right bottom typ =
@@ -233,7 +273,7 @@ module NPatchInfo = struct
 end
 
 module CharInfo = struct
-  let t = Types.CharInfo.t
+  type t = Types.CharInfo.t Ctypes.structure
 
   let value char_info = Ctypes.getf char_info Types.CharInfo.value
 
@@ -247,7 +287,7 @@ module CharInfo = struct
 end
 
 module Font = struct
-  let t = Types.Font.t
+  type t = Types.Font.t Ctypes.structure
 
   let base_size font = Ctypes.getf font Types.Font.base_size
 
@@ -260,7 +300,11 @@ module Font = struct
   let chars font = Ctypes.getf font Types.Font.base_size
 end
 
+module CameraType = Types.CameraType
+
 module Camera3D = struct
+  type t = Types.Camera3D.t Ctypes.structure
+
   let t = Types.Camera3D.t
 
   let create position target up fovy typ =
@@ -285,6 +329,8 @@ module Camera3D = struct
 end
 
 module Camera2D = struct
+  type t = Types.Camera2D.t Ctypes.structure
+
   let t = Types.Camera2D.t
 
   let create offset target rotation zoom =
@@ -315,6 +361,8 @@ module Model = Types.Model
 module ModelAnimation = Types.ModelAnimation
 
 module Ray = struct
+  type t = Types.Ray.t Ctypes.structure
+
   let t = Types.Ray.t
 
   let create position direction =
@@ -330,7 +378,7 @@ module Ray = struct
 end
 
 module RayHitInfo = struct
-  let t = Types.RayHitInfo.t
+  type t = Types.RayHitInfo.t Ctypes.structure
 
   let hit ray = Ctypes.getf ray Types.RayHitInfo.hit
 
