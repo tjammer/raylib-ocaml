@@ -7,3 +7,8 @@
  (name textures_rectangle)
  (modules Textures_rectangle)
  (libraries raylib))
+
+(executable
+ (name textures_bunnymark)
+ (modules Textures_bunnymark)
+ (libraries raylib))
