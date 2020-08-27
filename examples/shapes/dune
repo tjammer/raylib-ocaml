@@ -1,0 +1,4 @@
+(executable
+ (name shapes_logo)
+ (modules Shapes_logo)
+ (libraries raylib))
