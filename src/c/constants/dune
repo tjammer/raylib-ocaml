@@ -2,6 +2,7 @@
 ; c_flags.sexp and c_library_flags.sexp are created above
 (library
  (name raylib_generated_constants)
+  (public_name raylib.constants)
   (modules Raylib_generated_constants)
  ; (foreign_stubs
  ;  (language c)

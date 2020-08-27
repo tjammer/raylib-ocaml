@@ -1,1 +1,19 @@
 (lang dune 2.6)
+(name raylib)
+(version 0.1.0)
+
+(generate_opam_files true)
+
+(source (github tjammer/raylib-ocaml))
+(license MIT)
+(authors "Tobias Mock")
+(maintainers "tobiasjammer@gmail.com")
+
+(package
+ (name raylib)
+ (synopsis "OCaml bindings for raylib")
+ (depends
+  dune
+  ctypes
+  ppx_cstubs
+  conf-cmake))

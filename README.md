@@ -4,9 +4,10 @@
 
 OCaml bindings for <a href="https://www.raylib.com/" target="_blank">raylib</a> (v3.0.0), a simple and easy-to-use library to enjoy videogames programming.
 
-The bindings are pretty faithful to the original C code, the biggest difference is the conversion of all function name from CamelCase to snake_case. Wherever possible, integer arguments are changed to their own variant types, eg. `int key` to `Key.t`.
+The bindings are pretty faithful to the original C code, the biggest difference is the conversion of all function names from CamelCase to snake_case.
+Wherever possible, integer arguments are changed to their own variant types, eg. `int key` to `Key.t`.
 
-Bindings exists for (nearly) all functions and types, but only a subset are tested thus far (see examples folder). Rough edges are to be expected.
+Bindings exist for (nearly) all functions and types, but only a subset are tested thus far (see examples folder). Rough edges are to be expected.
 
 ## Example
 

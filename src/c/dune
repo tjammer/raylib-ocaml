@@ -1,5 +1,6 @@
 (library
  (name raylib_c)
+ (public_name raylib.c)
  (modules Raylib_c_generated_functions)
  (foreign_archives raylib)
  (foreign_stubs
@@ -22,12 +23,29 @@
 
 (rule
  (deps (source_tree vendor))
- (targets libraylib.a)
+ (targets libraylib.a dllraylib.so)
  (action
  (no-infer
   (progn
-   (chdir vendor/src (run rm -r build))
-   (chdir vendor/src (run mkdir build))
-   (chdir vendor/src/build (run cmake -DWITH_PIC=ON -DCMAKE_BUILD_TYPE=Release ..))
-   (chdir vendor/src (run cmake --build build -j8))
-   (copy vendor/src/build/libraylib.a libraylib.a)))))
+   (chdir vendor (run rm -r build))
+   (chdir vendor (run mkdir build))
+   (chdir vendor/build (run cmake
+                                -DBUILD_SHARED_LIBS=OFF
+                                -DBUILD_EXAMPLES=OFF
+                                -DBUILD_GAMES=OFF
+                                -DWITH_PIC=ON
+                                -DCMAKE_BUILD_TYPE=Release
+                                -Wno-dev
+                                ..))
+   (chdir vendor (run cmake --build build -j8))
+   (chdir vendor/build (run cmake
+                                -DBUILD_SHARED_LIBS=ON
+                                -DBUILD_EXAMPLES=OFF
+                                -DBUILD_GAMES=OFF
+                                -DWITH_PIC=ON
+                                -DCMAKE_BUILD_TYPE=Release
+                                -Wno-dev
+                                ..))
+   (chdir vendor (run cmake --build build -j8))
+   (copy vendor/build/src/libraylib.a libraylib.a)
+   (copy vendor/build/src/libraylib.so.3.0.0 dllraylib.so)))))

@@ -1,5 +1,6 @@
 (library
  (name raylib_functions)
+ (public_name raylib.functions)
  (flags (:standard -w -9-27))
  (libraries ctypes.stubs raylib_types raylib_generated_constants))
 

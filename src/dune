@@ -1,3 +1,4 @@
 (library
  (name raylib)
+ (public_name raylib)
  (libraries raylib_c))
