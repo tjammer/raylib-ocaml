@@ -8,44 +8,49 @@
   (names c_generated_functions)
   (include_dirs %{project_root}/src/c/vendor/src))
  (libraries ctypes.stubs raylib_functions raylib_generated_constants)
- (c_library_flags (-lX11 -lpthread)))
+ (c_library_flags
+  (-lX11 -lpthread)))
+
 ; TODO use this sexp magic here for different systems
 
 (rule
- (with-stdout-to c_generated_functions.c
+ (with-stdout-to
+  c_generated_functions.c
   (run stubgen/generate_c_functions.exe raylib_stub)))
 
 (rule
- (with-stdout-to raylib_c_generated_functions.ml
+ (with-stdout-to
+  raylib_c_generated_functions.ml
   (run stubgen/generate_ml_functions.exe raylib_stub)))
 
 (data_only_dirs vendor)
 
 (rule
- (deps (source_tree vendor))
+ (deps
+  (source_tree vendor))
  (targets libraylib.a dllraylib.so)
  (action
- (no-infer
-  (progn
-   (chdir vendor (run rm -r build))
-   (chdir vendor (run mkdir build))
-   (chdir vendor/build (run cmake
-                                -DBUILD_SHARED_LIBS=OFF
-                                -DBUILD_EXAMPLES=OFF
-                                -DBUILD_GAMES=OFF
-                                -DWITH_PIC=ON
-                                -DCMAKE_BUILD_TYPE=Release
-                                -Wno-dev
-                                ..))
-   (chdir vendor (run cmake --build build -j8))
-   (chdir vendor/build (run cmake
-                                -DBUILD_SHARED_LIBS=ON
-                                -DBUILD_EXAMPLES=OFF
-                                -DBUILD_GAMES=OFF
-                                -DWITH_PIC=ON
-                                -DCMAKE_BUILD_TYPE=Release
-                                -Wno-dev
-                                ..))
-   (chdir vendor (run cmake --build build -j8))
-   (copy vendor/build/src/libraylib.a libraylib.a)
-   (copy vendor/build/src/libraylib.so.3.0.0 dllraylib.so)))))
+  (no-infer
+   (progn
+    (chdir
+     vendor
+     (run rm -r build))
+    (chdir
+     vendor
+     (run mkdir build))
+    (chdir
+     vendor/build
+     (run cmake -DBUILD_SHARED_LIBS=OFF -DBUILD_EXAMPLES=OFF
+       -DBUILD_GAMES=OFF -DWITH_PIC=ON -DCMAKE_BUILD_TYPE=Release -Wno-dev ..))
+    (chdir
+     vendor
+     (run cmake --build build -j8))
+    (chdir
+     vendor/build
+     (run cmake -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=OFF -DBUILD_GAMES=OFF
+       -DWITH_PIC=ON -DCMAKE_BUILD_TYPE=Release -Wno-dev ..))
+    (chdir
+     vendor
+     (run cmake --build build -j8))
+    (copy vendor/build/src/libraylib.a libraylib.a)
+    (copy vendor/build/src/libraylib.so.3.0.0 dllraylib.so)))))

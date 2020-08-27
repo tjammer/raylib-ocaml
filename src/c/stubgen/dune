@@ -4,20 +4,20 @@
  (libraries ctypes.stubs raylib_types))
 
 (rule
- (with-stdout-to generate_types.c
- (run ./generate_c_types.exe )))
+ (with-stdout-to
+  generate_types.c
+  (run ./generate_c_types.exe)))
 
 ; Based partially on
 ;   https://github.com/avsm/ocaml-yaml/blob/master/types/stubgen/jbuild#L20
+
 (rule
  (targets generate_types.exe)
- (deps (:c generate_types.c))
- (action (bash "\
-  %{cc} %{c} \
-  -I '%{lib:ctypes:.}' \
-  -I %{ocaml_where} \
-  -I %{project_root}/src/c/vendor/src \
-  -o %{targets}")))
+ (deps
+  (:c generate_types.c))
+ (action
+  (bash
+    "%{cc} %{c} -I '%{lib:ctypes:.}' -I %{ocaml_where} -I %{project_root}/src/c/vendor/src -o %{targets}")))
 
 (executable
  (name generate_c_functions)

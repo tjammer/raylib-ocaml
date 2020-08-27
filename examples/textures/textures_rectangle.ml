@@ -47,8 +47,8 @@ let rec loop scarfy frame_rec counter frame frames_speed =
       begin_drawing ();
       clear_background Color.raywhite;
       draw_texture scarfy 15 40 Color.white;
-      draw_rectangle_lines 15 40 (Texture2D.width scarfy) (Texture2D.height scarfy)
-        Color.lime;
+      draw_rectangle_lines 15 40 (Texture2D.width scarfy)
+        (Texture2D.height scarfy) Color.lime;
       draw_rectangle_lines
         (15 + Int.of_float (R.x frame_rec))
         (40 + Int.of_float (R.y frame_rec))

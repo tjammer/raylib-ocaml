@@ -1,9 +1,10 @@
 ; normal instructions for creating a library with c stub files
 ; c_flags.sexp and c_library_flags.sexp are created above
+
 (library
  (name raylib_generated_constants)
-  (public_name raylib.constants)
-  (modules Raylib_generated_constants)
+ (public_name raylib.constants)
+ (modules Raylib_generated_constants)
  ; (foreign_stubs
  ;  (language c)
  ;  (names raylib_constants_stubs)
@@ -19,5 +20,11 @@
 (rule
  (targets raylib_generated_constants.ml)
  ; there seems to be some race condition, and the dependency to the static lib fixes it
- (deps (:first-dep raylib_constants.ml ) %{project_root}/src/c/libraylib.a)
- (action (chdir %{project_root} (run %{bin:ppx_cstubs} %{first-dep} -o %{targets} -I %{project_root}/src/c/vendor/src))))
+ (deps
+  (:first-dep raylib_constants.ml)
+  %{project_root}/src/c/libraylib.a)
+ (action
+  (chdir
+   %{project_root}
+   (run %{bin:ppx_cstubs} %{first-dep} -o %{targets} -I
+     %{project_root}/src/c/vendor/src))))
