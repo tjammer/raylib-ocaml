@@ -1,4 +1,4 @@
-let%c () = header "#include <raylib.h>"
+let%c () = header "#include <raylib.h>\n#include <rlgl.h>"
 
 module TraceLogType = struct
   type%c t =
@@ -234,22 +234,6 @@ module ShaderUniformData = struct
   [@@cname "ShaderUniformDataType"] [@@typedef]
 end
 
-module MaterialMap = struct
-  type%c t =
-    | Albedo [@cname "MAP_ALBEDO"]
-    | Metalness [@cname "MAP_METALNESS"]
-    | Normal [@cname "MAP_NORMAL"]
-    | Roughness [@cname "MAP_ROUGHNESS"]
-    | Occlusion [@cname "MAP_OCCLUSION"]
-    | Emission [@cname "MAP_EMISSION"]
-    | Height [@cname "MAP_HEIGHT"]
-    | Cube [@cname "MAP_CUBEMAP"]
-    | Irradiance [@cname "MAP_IRRADIANCE"]
-    | Prefilter [@cname "MAP_PREFILTER"]
-    | Brdf [@cname "MAP_BRDF"]
-  [@@cname "MaterialMapType"] [@@typedef]
-end
-
 module TextureFilterMode = struct
   type%c t =
     | Point [@cname "FILTER_POINT"]
@@ -322,3 +306,7 @@ module CameraMode = struct
     | ThirdPerson [@cname "CAMERA_THIRD_PERSON"]
   [@@cname "CameraMode"] [@@typedef]
 end
+
+let max_material_maps = [%c constant "MAX_MATERIAL_MAPS" camlint]
+
+let max_shader_locations = [%c constant "MAX_SHADER_LOCATIONS" camlint]

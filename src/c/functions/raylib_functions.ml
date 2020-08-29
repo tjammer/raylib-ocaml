@@ -1358,7 +1358,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Set texture for a material map type (MAP_DIFFUSE, MAP_SPECULAR...) *)
   let set_material_texture =
     foreign "SetMaterialTexture"
-      ( ptr Types.Material.t @-> Constants.MaterialMap.t @-> Types.Texture2D.t
+      ( ptr Types.Material.t @-> Types.MaterialMapType.t @-> Types.Texture2D.t
       @-> returning void )
 
   (*  Set material for a mesh *)
@@ -1368,7 +1368,7 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   (* Model animations loading/unloading functions *)
   (*  Load model animations from file *)
-  let load_model_animations =
+  let _load_model_animations =
     foreign "LoadModelAnimations"
       (string @-> ptr int @-> returning (ptr Types.ModelAnimation.t))
 
@@ -1578,7 +1578,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (* Shader configuration functions *)
   (*  Get shader uniform location *)
   let get_shader_location =
-    foreign "GetShaderLocation" (Types.Shader.t @-> string @-> returning int)
+    foreign "GetShaderLocation"
+      (Types.Shader.t @-> string @-> returning Constants.ShaderLocation.t)
 
   (*  Set shader uniform value *)
   let set_shader_value =

@@ -2,3 +2,13 @@
  (name models_waving_cubes)
  (modules Models_waving_cubes)
  (libraries raylib))
+
+(executable
+ (name models_skybox)
+ (modules Models_skybox)
+ (libraries raylib))
+
+(executable
+ (name models_animation)
+ (modules Models_animation)
+ (libraries raylib))

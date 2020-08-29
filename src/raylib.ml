@@ -1,7 +1,10 @@
 include Raylib_functions.Description (Raylib_c.Raylib_c_generated_functions)
 include Raylib_generated_constants
 module Types = Raylib_functions.Types
-module Constants = Raylib_generated_constants
+include Ctypes_reexports
+
+(* TODO
+ * open Ctypes *)
 
 module Vector2 = struct
   type t = Types.Vector2.t Ctypes.structure
@@ -80,6 +83,8 @@ module Vector4 = struct
 
   let set_w vec w = Ctypes.setf vec Types.Vector4.w w
 end
+
+module Quaternion = Vector4
 
 module Matrix = struct
   type t = Types.Matrix.t Ctypes.structure
@@ -328,6 +333,8 @@ module Camera3D = struct
   let typ cam = Ctypes.getf cam Types.Camera3D.typ
 end
 
+module Camera = Camera3D
+
 module Camera2D = struct
   type t = Types.Camera2D.t Ctypes.structure
 
@@ -352,13 +359,168 @@ module Camera2D = struct
 end
 
 module Mesh = Types.Mesh
-module Shader = Types.Shader
-module MaterialMap = Types.MaterialMap
-module Material = Types.Material
-module Transform = Types.Transform
+
+module Shader = struct
+  type t = Types.Shader.t Ctypes.structure
+
+  let t = Types.Shader.t
+end
+
+module MaterialMapType = Types.MaterialMapType
+
+module MaterialMap = struct
+  type t = Types.MaterialMap.t Ctypes.structure
+
+  let t = Types.MaterialMap.t
+
+  let create texture color value =
+    let open Ctypes in
+    let map = make t in
+    setf map Types.MaterialMap.texture texture;
+    setf map Types.MaterialMap.color color;
+    setf map Types.MaterialMap.value value;
+    map
+
+  let texture map = Ctypes.getf map Types.MaterialMap.texture
+
+  let color map = Ctypes.getf map Types.MaterialMap.color
+
+  let value map = Ctypes.getf map Types.MaterialMap.value
+
+  let set_texture map texture =
+    Ctypes.setf map Types.MaterialMap.texture texture
+
+  let set_color map color = Ctypes.setf map Types.MaterialMap.color color
+
+  let set_value map value = Ctypes.setf map Types.MaterialMap.value value
+end
+
+module Material = struct
+  type t = Types.Material.t Ctypes.structure
+
+  let t = Types.Material.t
+
+  let create shader maps params =
+    let open Ctypes in
+    let material = make t in
+    setf material Types.Material.shader shader;
+    setf material Types.Material.maps maps;
+    setf material Types.Material.params params;
+    material
+
+  let shader material = Ctypes.getf material Types.Material.shader
+
+  let maps material =
+    Ctypes.CArray.from_ptr
+      (Ctypes.getf material Types.Material.maps)
+      max_material_maps
+
+  let params material =
+    Ctypes.CArray.from_ptr
+      (Ctypes.getf material Types.Material.params)
+      max_shader_locations
+
+  let set_shader material shader =
+    Ctypes.setf material Types.Material.shader shader
+
+  let set_maps material maps =
+    Ctypes.setf material Types.Material.maps (Ctypes.CArray.start maps)
+end
+
+module Transform = struct
+  type t = Types.Transform.t Ctypes.structure
+
+  let t = Types.Transform.t
+
+  let create translation rotation scale =
+    let open Ctypes in
+    let transform = make t in
+    setf transform Types.Transform.translation translation;
+    setf transform Types.Transform.rotation rotation;
+    setf transform Types.Transform.scale scale;
+    transform
+
+  let translation transform = Ctypes.getf transform Types.Transform.translation
+
+  let rotation transform = Ctypes.getf transform Types.Transform.rotation
+
+  let scale transform = Ctypes.getf transform Types.Transform.scale
+
+  let set_translation transform translation =
+    Ctypes.setf transform Types.Transform.translation translation
+
+  let set_rotation transform rotation =
+    Ctypes.setf transform Types.Transform.rotation rotation
+
+  let set_scale transform scale =
+    Ctypes.setf transform Types.Transform.scale scale
+end
+
 module BoneInfo = Types.BoneInfo
-module Model = Types.Model
-module ModelAnimation = Types.ModelAnimation
+
+module Model = struct
+  type t = Types.Model.t Ctypes.structure
+
+  let t = Types.Model.t
+
+  let transform model = Ctypes.getf model Types.Model.transform
+
+  let meshes model =
+    let open Ctypes in
+    let count = getf model Types.Model.mesh_count in
+    CArray.from_ptr (getf model Types.Model.meshes) count
+
+  let materials model =
+    let open Ctypes in
+    let count = getf model Types.Model.material_count in
+    CArray.from_ptr (getf model Types.Model.materials) count
+
+  let bones model =
+    let open Ctypes in
+    let count = getf model Types.Model.bone_count in
+    CArray.from_ptr (getf model Types.Model.bones) count
+
+  let bind_pose model = Ctypes.getf model Types.Model.bind_pose
+
+  let set_transform model transform =
+    Ctypes.setf model Types.Model.transform transform
+
+  let set_meshes model meshes =
+    Ctypes.setf model Types.Model.meshes (Ctypes.CArray.start meshes)
+
+  let set_materials model materials =
+    Ctypes.setf model Types.Model.materials (Ctypes.CArray.start materials)
+
+  let set_bones model bones =
+    Ctypes.setf model Types.Model.bones (Ctypes.CArray.start bones)
+
+  let set_bind_pose model bind_pose =
+    Ctypes.setf model Types.Model.bind_pose bind_pose
+end
+
+module ModelAnimation = struct
+  type t = Types.ModelAnimation.t Ctypes.structure
+
+  let t = Types.Ray.t
+
+  let bones anim =
+    let open Ctypes in
+    let count = getf anim Types.ModelAnimation.bone_count in
+    CArray.from_ptr (getf anim Types.ModelAnimation.bones) count
+
+  let bone_count anim = Ctypes.getf anim Types.ModelAnimation.bone_count
+
+  let frame_count anim = Ctypes.getf anim Types.ModelAnimation.frame_count
+
+  let frame_pose_at anim index =
+    let open Ctypes in
+    let poses =
+      CArray.from_ptr
+        (getf anim Types.ModelAnimation.frame_poses)
+        (frame_count anim)
+    in
+    CArray.from_ptr (CArray.get poses index) (bone_count anim)
+end
 
 module Ray = struct
   type t = Types.Ray.t Ctypes.structure
@@ -389,8 +551,15 @@ module RayHitInfo = struct
   let normal ray = Ctypes.getf ray Types.RayHitInfo.normal
 end
 
+(* TODO *)
+module BoundingBox = Types.BoundingBox
 module Wave = Types.Wave
 module AudioStream = Types.AudioStream
 module Sound = Types.Sound
 module Music = Types.Music
 module ConfigFlag = Types.ConfigFlag
+
+let load_model_animations path =
+  let count = ptr_of_int 0 in
+  let anims = _load_model_animations path count in
+  CArray.from_ptr anims (Ctypes.( !@ ) count)

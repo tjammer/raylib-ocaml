@@ -44,6 +44,8 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
     let () = seal t
   end
 
+  module Quaternion = Vector4
+
   module Matrix = struct
     type t = [ `Matrix ]
 
@@ -348,10 +350,71 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
     let () = seal t
   end
 
+  module MaterialMapType = struct
+    type t =
+      | Albedo
+      | Metalness
+      | Normal
+      | Roughness
+      | Occlusion
+      | Emission
+      | Height
+      | Cubemap
+      | Irradiance
+      | Prefilter
+      | Brdf
+
+    let t =
+      enum ~typedef:true "MaterialMapType"
+        [
+          (Albedo, constant "MAP_ALBEDO" int64_t);
+          (Metalness, constant "MAP_METALNESS" int64_t);
+          (Normal, constant "MAP_NORMAL" int64_t);
+          (Roughness, constant "MAP_ROUGHNESS" int64_t);
+          (Occlusion, constant "MAP_OCCLUSION" int64_t);
+          (Emission, constant "MAP_EMISSION" int64_t);
+          (Height, constant "MAP_HEIGHT" int64_t);
+          (Cubemap, constant "MAP_CUBEMAP" int64_t);
+          (Irradiance, constant "MAP_IRRADIANCE" int64_t);
+          (Prefilter, constant "MAP_PREFILTER" int64_t);
+          (Brdf, constant "MAP_BRDF" int64_t);
+        ]
+
+    module AsInt = struct
+      let albedo = constant "MAP_ALBEDO" int
+
+      let metalness = constant "MAP_METALNESS" int
+
+      let normal = constant "MAP_NORMAL" int
+
+      let roughness = constant "MAP_ROUGHNESS" int
+
+      let occlusion = constant "MAP_OCCLUSION" int
+
+      let emission = constant "MAP_EMISSION" int
+
+      let height = constant "MAP_HEIGHT" int
+
+      let cubemap = constant "MAP_CUBEMAP" int
+
+      let irradiance = constant "MAP_IRRADIANCE" int
+
+      let prefilter = constant "MAP_PREFILTER" int
+
+      let brdf = constant "MAP_BRDF" int
+    end
+  end
+
   module MaterialMap = struct
     type t = [ `MaterialMap ]
 
     let t : t structure typ = structure "MaterialMap"
+
+    let texture = field t "texture" Texture2D.t
+
+    let color = field t "color" Color.t
+
+    let value = field t "value" float
 
     let () = seal t
   end
@@ -361,6 +424,12 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
 
     let t : t structure typ = structure "Material"
 
+    let shader = field t "shader" Shader.t
+
+    let maps = field t "maps" (ptr MaterialMap.t)
+
+    let params = field t "params" (ptr float)
+
     let () = seal t
   end
 
@@ -368,6 +437,12 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
     type t = [ `Transform ]
 
     let t : t structure typ = structure "Transform"
+
+    let translation = field t "translation" Vector3.t
+
+    let rotation = field t "rotation" Quaternion.t
+
+    let scale = field t "scale" Vector3.t
 
     let () = seal t
   end
@@ -385,6 +460,22 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
 
     let t : t structure typ = structure "Model"
 
+    let transform = field t "transform" Matrix.t
+
+    let mesh_count = field t "meshCount" int
+
+    let meshes = field t "meshes" (ptr Mesh.t)
+
+    let material_count = field t "materialCount" int
+
+    let materials = field t "materials" (ptr Material.t)
+
+    let bone_count = field t "boneCount" int
+
+    let bones = field t "bones" (ptr BoneInfo.t)
+
+    let bind_pose = field t "bindPose" (ptr Transform.t)
+
     let () = seal t
   end
 
@@ -392,6 +483,14 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
     type t = [ `ModelAnimation ]
 
     let t : t structure typ = structure "ModelAnimation"
+
+    let bone_count = field t "boneCount" int
+
+    let bones = field t "bones" (ptr BoneInfo.t)
+
+    let frame_count = field t "frameCount" int
+
+    let frame_poses = field t "framePoses" (ptr (ptr Transform.t))
 
     let () = seal t
   end
@@ -471,23 +570,23 @@ module Descriptions (F : Cstubs.Types.TYPE) = struct
   module ConfigFlag = struct
     let t = uint32_t
 
-    let reserved = constant "FLAG_RESERVED" uint32_t
+    let reserved = constant "FLAG_RESERVED" t
 
-    let fullscreen = constant "FLAG_FULLSCREEN_MODE" uint32_t
+    let fullscreen = constant "FLAG_FULLSCREEN_MODE" t
 
-    let resizable = constant "FLAG_WINDOW_RESIZABLE" uint32_t
+    let resizable = constant "FLAG_WINDOW_RESIZABLE" t
 
-    let undecorated = constant "FLAG_WINDOW_UNDECORATED" uint32_t
+    let undecorated = constant "FLAG_WINDOW_UNDECORATED" t
 
-    let transparent = constant "FLAG_WINDOW_TRANSPARENT" uint32_t
+    let transparent = constant "FLAG_WINDOW_TRANSPARENT" t
 
-    let hidden = constant "FLAG_WINDOW_HIDDEN" uint32_t
+    let hidden = constant "FLAG_WINDOW_HIDDEN" t
 
-    let always_run = constant "FLAG_WINDOW_ALWAYS_RUN" uint32_t
+    let always_run = constant "FLAG_WINDOW_ALWAYS_RUN" t
 
-    let msaa_4x_hint = constant "FLAG_MSAA_4X_HINT" uint32_t
+    let msaa_4x_hint = constant "FLAG_MSAA_4X_HINT" t
 
-    let vsync_hint = constant "FLAG_VSYNC_HINT" uint32_t
+    let vsync_hint = constant "FLAG_VSYNC_HINT" t
 
     let ( + ) = Unsigned.UInt32.logor
   end
