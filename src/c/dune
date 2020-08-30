@@ -14,7 +14,7 @@
 (rule
  (targets library_flags.sexp)
  (deps
-  (:discover config/generate.exe))
+  (:discover config/configure.exe))
  (action
   (run %{discover})))
 

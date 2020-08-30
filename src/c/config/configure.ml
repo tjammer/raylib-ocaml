@@ -13,8 +13,7 @@ let () =
         | Some "macosx" ->
             link ~flag:"-framework"
               [ "OpenGL"; "Cocoa"; "IOKit"; "CoreAudio"; "CoreVideo" ]
-        | Some ("mingw" | "mingw64" | "win32" | "win64" | "cygwin") ->
-            link [ "opengl32"; "gdi32"; "winmm"; "pthread" ]
+        | Some "mingw64" -> link [ "opengl32"; "gdi32"; "winmm"; "pthread" ]
         | Some ("netbsd" | "freebsd" | "openbsd" | "bsd" | "bsd_elf") ->
             link
               [
