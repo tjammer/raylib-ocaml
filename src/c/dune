@@ -42,6 +42,10 @@
  (action
   (no-infer
    (progn
+    (run chmod +w vendor/src/config.h)
+    (with-stdin-from
+     linux.patch
+     (run patch --binary -p1))
     (run make -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/src/libraylib.a libraylib.a)
     (run make -C vendor/src clean)
