@@ -65,7 +65,9 @@
   (alias build-raylib))
  (targets libraylib.a dllraylib.so)
  (enabled_if
-  (= %{system} linux))
+  (or
+   (= %{system} linux)
+   (= %{system} linux_elf)))
  (action
   (no-infer
    (progn
@@ -75,11 +77,45 @@
 (rule
  (deps
   (alias build-raylib))
+ (targets libraylib.a dllraylib.so)
+ (enabled_if
+  (= %{system} macosx))
+ (action
+  (no-infer
+   (progn
+    (copy vendor/build/src/libraylib.a libraylib.a)
+    (copy vendor/build/src/libraylib.dylib dllraylib.so)))))
+
+(rule
+ (deps
+  (alias build-raylib))
  (targets libraylib.a dllraylib.dll)
  (enabled_if
-  (= %{system} mingw64))
+  (or
+   (= %{system} mingw)
+   (= %{system} mingw64)
+   (= %{system} win32)
+   (= %{system} win64)
+   (= %{system} cygwin)))
  (action
   (no-infer
    (progn
     (copy vendor/build/src/libraylib_static.a libraylib.a)
     (copy vendor/build/src/libraylib.dll dllraylib.dll)))))
+
+(rule
+ (deps
+  (alias build-raylib))
+ (targets libraylib.a dllraylib.so)
+ (enabled_if
+  (or
+   (= %{system} netbsd)
+   (= %{system} freebsd)
+   (= %{system} openbsd)
+   (= %{system} bsd)
+   (= %{system} bsd_elf)))
+ (action
+  (no-infer
+   (progn
+    (copy vendor/build/src/libraylib.a libraylib.a)
+    (copy vendor/build/src/libraylib.so.3.0.0 dllraylib.so)))))
