@@ -45,15 +45,17 @@
      (run mkdir build))
     (chdir
      vendor/build
-     (run cmake -DBUILD_SHARED_LIBS=OFF -DBUILD_EXAMPLES=OFF
-       -DBUILD_GAMES=OFF -DWITH_PIC=ON -DCMAKE_BUILD_TYPE=Release -Wno-dev ..))
+     (run cmake -DBUILD_SHARED_LIBS=OFF -G "Unix Makefiles"
+       -DBUILD_EXAMPLES=OFF -DBUILD_GAMES=OFF -DWITH_PIC=ON
+       -DCMAKE_BUILD_TYPE=Release -Wno-dev ..))
     (chdir
      vendor
      (run cmake --build build -- -j 8))
     (chdir
      vendor/build
-     (run cmake -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=OFF -DBUILD_GAMES=OFF
-       -DWITH_PIC=ON -DCMAKE_BUILD_TYPE=Release -Wno-dev ..))
+     (run cmake -DBUILD_SHARED_LIBS=ON -G "Unix Makefiles"
+       -DBUILD_EXAMPLES=OFF -DBUILD_GAMES=OFF -DWITH_PIC=ON
+       -DCMAKE_BUILD_TYPE=Release -Wno-dev ..))
     (chdir
      vendor
      (run cmake --build build -- -j 8))))))
@@ -73,11 +75,11 @@
 (rule
  (deps
   (alias build-raylib))
- (targets libraylib.a dllraylib.so)
+ (targets libraylib.a dllraylib.dll)
  (enabled_if
-  (= %{system} macosx))
+  (= %{system} mingw64))
  (action
   (no-infer
    (progn
-    (copy vendor/build/src/libraylib.a libraylib.a)
-    (copy vendor/build/src/libraylib.dylib dllraylib.so)))))
+    (copy vendor/build/src/libraylib_static.a libraylib.a)
+    (copy vendor/build/src/libraylib.dll dllraylib.dll)))))

@@ -13,6 +13,8 @@ let () =
         | Some "macosx" ->
             link ~flag:"-framework"
               [ "OpenGL"; "Cocoa"; "IOKit"; "CoreAudio"; "CoreVideo" ]
+        | Some ("mingw" | "mingw64" | "win32" | "win64" | "cygwin") ->
+            link [ "opengl32"; "gdi32"; "winmm"; "pthread" ]
         | Some system -> C.die "unsupported system: %s" system
         | None -> C.die "unsupported system"
       in
