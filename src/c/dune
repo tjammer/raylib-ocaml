@@ -31,82 +31,60 @@
 (data_only_dirs vendor)
 
 (rule
- (alias build-raylib)
- (deps
-  (source_tree vendor))
- (action
-  (no-infer
-   (progn
-    (chdir
-     vendor
-     (run rm -r build))
-    (chdir
-     vendor
-     (run mkdir build))
-    (chdir
-     vendor/build
-     (run cmake -DBUILD_SHARED_LIBS=OFF -G "Unix Makefiles"
-       -DBUILD_EXAMPLES=OFF -DBUILD_GAMES=OFF -DWITH_PIC=ON
-       -DCMAKE_BUILD_TYPE=Release -Wno-dev ..))
-    (chdir
-     vendor
-     (run cmake --build build -- -j 8))
-    (chdir
-     vendor/build
-     (run cmake -DBUILD_SHARED_LIBS=ON -G "Unix Makefiles"
-       -DBUILD_EXAMPLES=OFF -DBUILD_GAMES=OFF -DWITH_PIC=ON
-       -DCMAKE_BUILD_TYPE=Release -Wno-dev ..))
-    (chdir
-     vendor
-     (run cmake --build build -- -j 8))))))
-
-(rule
- (deps
-  (alias build-raylib))
  (targets libraylib.a dllraylib.so)
  (enabled_if
   (or
    (= %{system} linux)
    (= %{system} linux_elf)))
+ (deps
+  (source_tree vendor)
+  linux.patch)
  (action
   (no-infer
    (progn
-    (copy vendor/build/src/libraylib.a libraylib.a)
-    (copy vendor/build/src/libraylib.so.3.0.0 dllraylib.so)))))
+    (run make -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
+    (copy vendor/src/libraylib.a libraylib.a)
+    (run make -C vendor/src clean)
+    (run make -C vendor/src RAYLIB_LIBTYPE=SHARED -j 8)
+    (copy vendor/src/libraylib.so.3.0.0 dllraylib.so)))))
 
 (rule
- (deps
-  (alias build-raylib))
  (targets libraylib.a dllraylib.so)
  (enabled_if
   (= %{system} macosx))
+ (deps
+  (source_tree vendor))
  (action
   (no-infer
    (progn
-    (copy vendor/build/src/libraylib.a libraylib.a)
-    (copy vendor/build/src/libraylib.dylib dllraylib.so)))))
+    (run make -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
+    (copy vendor/src/libraylib.a libraylib.a)
+    (run make -C vendor/src clean)
+    (run make -C vendor/src RAYLIB_LIBTYPE=SHARED -j 8)
+    (copy vendor/src/libraylib.3.0.0.dylib dllraylib.so)))))
 
 (rule
- (deps
-  (alias build-raylib))
  (targets libraylib.a dllraylib.dll)
  (enabled_if
-  (or
-   (= %{system} mingw)
-   (= %{system} mingw64)
-   (= %{system} win32)
-   (= %{system} win64)
-   (= %{system} cygwin)))
+  (= %{system} mingw64))
+ (deps
+  (source_tree vendor)
+  mingw64.patch)
  (action
   (no-infer
    (progn
-    (copy vendor/build/src/libraylib_static.a libraylib.a)
-    (copy vendor/build/src/libraylib.dll dllraylib.dll)))))
+    (run chmod +w vendor/src/Makefile)
+    (with-stdin-from
+     mingw64.patch
+     (run patch --binary -p1))
+    (run make -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
+    (copy vendor/src/libraylib.a libraylib.a)
+    (run make -C vendor/src clean)
+    (run make -C vendor/src RAYLIB_LIBTYPE=SHARED -j 8)
+    (copy vendor/src/raylib.dll dllraylib.dll)))))
 
 (rule
- (deps
-  (alias build-raylib))
- (targets libraylib.a dllraylib.so)
+ (targets libraylib.a dllraylib.dll)
  (enabled_if
   (or
    (= %{system} netbsd)
@@ -114,8 +92,13 @@
    (= %{system} openbsd)
    (= %{system} bsd)
    (= %{system} bsd_elf)))
+ (deps
+  (source_tree vendor))
  (action
   (no-infer
    (progn
-    (copy vendor/build/src/libraylib.a libraylib.a)
-    (copy vendor/build/src/libraylib.so.3.0.0 dllraylib.so)))))
+    (run gmake -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
+    (copy vendor/src/libraylib.a libraylib.a)
+    (run gmake -C vendor/src clean)
+    (run gmake -C vendor/src RAYLIB_LIBTYPE=SHARED -j 8)
+    (copy vendor/src/libraylib.3.0.0.so dllraylib.so)))))
