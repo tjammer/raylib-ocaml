@@ -9,6 +9,7 @@ homepage: "https://github.com/tjammer/raylib-ocaml"
 bug-reports: "https://github.com/tjammer/raylib-ocaml/issues"
 depends: [
   "dune" {>= "2.6"}
+  "dune-configurator"
   "ctypes"
   "ppx_cstubs"
   "conf-cmake"

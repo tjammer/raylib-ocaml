@@ -14,6 +14,7 @@
  (synopsis "OCaml bindings for raylib")
  (depends
   dune
+  dune-configurator
   ctypes
   ppx_cstubs
   conf-cmake))
