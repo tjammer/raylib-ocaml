@@ -16,5 +16,4 @@
   dune
   dune-configurator
   ctypes
-  ppx_cstubs
-  conf-cmake))
+  ppx_cstubs))

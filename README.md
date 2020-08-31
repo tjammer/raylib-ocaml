@@ -34,8 +34,8 @@ More examples can be found in the examples folder.
 
 ## Installation
 
-Currently, the automated build works only on GNU Linux. A Windows build (mingw64 pins) is possible, but requires a bit of manual fiddling. The raylib C library is built with cmake from source, therefore cmake and dependencies of raylib must be present, for details see <a href="https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux" target="_blank">here</a>.
-For debian-based distros and Fedora, depexts exist (feel free to contribute depexts for other distros) to automatically install these dependencies:
+During the build of raylib-ocaml, the raylib C library is built from source, therefore its dependencies must be installed (<a href="https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux" target="_blank">details here</a>).
+For some distros, depexts exist (feel free to contribute depexts for missing distros) to automatically install these dependencies:
 
 ``` sh
 opam depext raylib
@@ -58,4 +58,3 @@ inside this repo. The binaries can then be found in `_build/default/examples`.
 * Port more examples to cover the whole surface of raylib
 * Split the library into components (core, sound, 3D, VR etc) for a smaller memory footprint
 * Provide some ergonomics (somehow?)
-* Support Windows build and depexts for more distros

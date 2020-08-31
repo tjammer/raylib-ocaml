@@ -12,7 +12,6 @@ depends: [
   "dune-configurator"
   "ctypes"
   "ppx_cstubs"
-  "conf-cmake"
 ]
 build: [
   ["dune" "subst"] {pinned}
@@ -32,4 +31,7 @@ dev-repo: "git+https://github.com/tjammer/raylib-ocaml.git"
 depexts: [
   ["libasound2-dev" "mesa-common-dev" "libx11-dev" "libxrandr-dev" "libxi-dev" "xorg-dev" "libgl1-mesa-dev" "libglu1-mesa-dev"] {os-family = "debian"}
   ["alsa-lib-devel" "mesa-libGL-devel" "libX11-devel" "libXrandr-devel" "libXi-devel" "libXcursor-devel" "libXinerama-devel"] {os-distribution = "fedora"}
+  ["alsa-devel" "mesa-libGL-devel" "libX11-devel" "libXrandr-devel" "libXi-devel" "libXcursor-devel" "libXinerama-devel"] {os-family = "opensuse"}
+  ["libX11-devel" "libXrandr-devel" "libXi-devel" "libXcursor-devel" "libXinerama-devel"] {os = "win32" & os-distribution = "cygwinports"}
+  ["alsa-lib" "mesa-libs" "libX11" "libXrandr" "libXi" "libXcursor" "libXinerama"] {os-distribution = "freebsd"}
 ]
