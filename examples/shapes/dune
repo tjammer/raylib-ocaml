@@ -2,3 +2,8 @@
  (name shapes_logo)
  (modules Shapes_logo)
  (libraries raylib))
+
+(executable
+ (name shapes_collision_area)
+ (modules Shapes_collision_area)
+ (libraries raylib))
