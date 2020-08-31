@@ -21,7 +21,11 @@ let setup () =
 
 let rec loop font font_size font_position filter =
   match Raylib.window_should_close () with
-  | true -> Raylib.close_window ()
+  | true ->
+      let open Raylib in
+      clear_dropped_files ();
+      unload_font font;
+      close_window ()
   | false ->
       let open Raylib in
       let font_size = font_size + (get_mouse_wheel_move () * 4) in
@@ -44,7 +48,23 @@ let rec loop font font_size font_position filter =
       else if is_key_down Key.Right then
         Vector2.(set_x font_position (x font_position +. 10.0)) );
 
-      (* TODO drop file *)
+      let font =
+        if is_file_dropped () then
+          let files = get_dropped_files () in
+          (* NOTE: We only support first ttf file dropped *)
+          if is_file_extension (CArray.get files 0) ".ttf" then (
+            unload_font font;
+            let font =
+              load_font_ex (CArray.get files 0) font_size
+                Ctypes.(from_voidp int null)
+                0
+            in
+            clear_dropped_files ();
+            font )
+          else font
+        else font
+      in
+
       begin_drawing ();
       clear_background Color.raywhite;
 

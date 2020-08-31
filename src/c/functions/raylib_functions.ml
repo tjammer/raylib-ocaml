@@ -254,8 +254,23 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Takes a screenshot of current screen (saved a .png) *)
   let take_screenshot = foreign "TakeScreenshot" (string @-> returning void)
 
+  (* Files management functions *)
+  (* Check if a directory path exists *)
+  let is_file_extension =
+    foreign "IsFileExtension" (string @-> string @-> returning bool)
+
   (*  Returns a random value between min and max (both included) *)
   let get_random_value = foreign "GetRandomValue" (int @-> int @-> returning int)
+
+  (* Check if a file has been dropped into window *)
+  let is_file_dropped = foreign "IsFileDropped" (void @-> returning bool)
+
+  (* Get dropped files names (memory should be freed) *)
+  let _get_dropped_files =
+    foreign "GetDroppedFiles" (ptr int @-> returning (ptr string))
+
+  (* Clear dropped files paths buffer (free memory) *)
+  let clear_dropped_files = foreign "ClearDroppedFiles" (void @-> returning void)
 
   (* Persistent storage management *)
   (*  Save integer value to storage file (to defined position) *)

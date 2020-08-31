@@ -534,3 +534,8 @@ let load_model_animations path =
   let count = ptr_of_int 0 in
   let anims = _load_model_animations path count in
   CArray.from_ptr anims !@count
+
+let get_dropped_files () =
+  let count = ptr_of_int 0 in
+  let files = _get_dropped_files count in
+  CArray.from_ptr files !@count
