@@ -346,6 +346,14 @@ module Camera2D = struct
   let rotation cam = getf cam Types.Camera2D.rotation
 
   let zoom cam = getf cam Types.Camera2D.zoom
+
+  let set_offset cam ofs = setf cam Types.Camera2D.offset ofs
+
+  let set_target cam tgt = setf cam Types.Camera2D.target tgt
+
+  let set_rotation cam rot = setf cam Types.Camera2D.rotation rot
+
+  let set_zoom cam rot = setf cam Types.Camera2D.zoom rot
 end
 
 module Mesh = Types.Mesh

@@ -7,3 +7,8 @@
  (name core_input_keys)
  (modules Core_input_keys)
  (libraries raylib))
+
+(executable
+ (name core_2d_camera)
+ (modules Core_2d_camera)
+ (libraries raylib))
