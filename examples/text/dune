@@ -1,0 +1,4 @@
+(executable
+ (name text_font_filters)
+ (modules Text_font_filters)
+ (libraries raylib))
