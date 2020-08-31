@@ -8,10 +8,15 @@
   (names c_generated_functions)
   (include_dirs %{project_root}/src/c/vendor/src))
  (libraries ctypes.stubs raylib_functions raylib_generated_constants)
- (c_library_flags
-  (-lX11 -lpthread)))
+ (library_flags
+  (:include library_flags.sexp)))
 
-; TODO use this sexp magic here for different systems
+(rule
+ (targets library_flags.sexp)
+ (deps
+  (:discover config/configure.exe))
+ (action
+  (run %{discover})))
 
 (rule
  (with-stdout-to
@@ -26,31 +31,78 @@
 (data_only_dirs vendor)
 
 (rule
- (deps
-  (source_tree vendor))
  (targets libraylib.a dllraylib.so)
+ (enabled_if
+  (or
+   (= %{system} linux)
+   (= %{system} linux_elf)))
+ (deps
+  (source_tree vendor)
+  linux.patch)
  (action
   (no-infer
    (progn
-    (chdir
-     vendor
-     (run rm -r build))
-    (chdir
-     vendor
-     (run mkdir build))
-    (chdir
-     vendor/build
-     (run cmake -DBUILD_SHARED_LIBS=OFF -DBUILD_EXAMPLES=OFF
-       -DBUILD_GAMES=OFF -DWITH_PIC=ON -DCMAKE_BUILD_TYPE=Release -Wno-dev ..))
-    (chdir
-     vendor
-     (run cmake --build build -- -j 8))
-    (chdir
-     vendor/build
-     (run cmake -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=OFF -DBUILD_GAMES=OFF
-       -DWITH_PIC=ON -DCMAKE_BUILD_TYPE=Release -Wno-dev ..))
-    (chdir
-     vendor
-     (run cmake --build build -- -j 8))
-    (copy vendor/build/src/libraylib.a libraylib.a)
-    (copy vendor/build/src/libraylib.so.3.0.0 dllraylib.so)))))
+    (run chmod +w vendor/src/config.h)
+    (with-stdin-from
+     linux.patch
+     (run patch --binary -p1))
+    (run make -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
+    (copy vendor/src/libraylib.a libraylib.a)
+    (run make -C vendor/src clean)
+    (run make -C vendor/src RAYLIB_LIBTYPE=SHARED -j 8)
+    (copy vendor/src/libraylib.so.3.0.0 dllraylib.so)))))
+
+(rule
+ (targets libraylib.a dllraylib.so)
+ (enabled_if
+  (= %{system} macosx))
+ (deps
+  (source_tree vendor))
+ (action
+  (no-infer
+   (progn
+    (run make -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
+    (copy vendor/src/libraylib.a libraylib.a)
+    (run make -C vendor/src clean)
+    (run make -C vendor/src RAYLIB_LIBTYPE=SHARED -j 8)
+    (copy vendor/src/libraylib.3.0.0.dylib dllraylib.so)))))
+
+(rule
+ (targets libraylib.a dllraylib.dll)
+ (enabled_if
+  (= %{system} mingw64))
+ (deps
+  (source_tree vendor)
+  mingw64.patch)
+ (action
+  (no-infer
+   (progn
+    (run chmod +w vendor/src/Makefile)
+    (with-stdin-from
+     mingw64.patch
+     (run patch --binary -p1))
+    (run make -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
+    (copy vendor/src/libraylib.a libraylib.a)
+    (run make -C vendor/src clean)
+    (run make -C vendor/src RAYLIB_LIBTYPE=SHARED -j 8)
+    (copy vendor/src/raylib.dll dllraylib.dll)))))
+
+(rule
+ (targets libraylib.a dllraylib.so)
+ (enabled_if
+  (or
+   (= %{system} netbsd)
+   (= %{system} freebsd)
+   (= %{system} openbsd)
+   (= %{system} bsd)
+   (= %{system} bsd_elf)))
+ (deps
+  (source_tree vendor))
+ (action
+  (no-infer
+   (progn
+    (run gmake -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
+    (copy vendor/src/libraylib.a libraylib.a)
+    (run gmake -C vendor/src clean)
+    (run gmake -C vendor/src RAYLIB_LIBTYPE=SHARED -j 8)
+    (copy vendor/src/libraylib.3.0.0.so dllraylib.so)))))
