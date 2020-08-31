@@ -88,7 +88,7 @@
     (copy vendor/src/raylib.dll dllraylib.dll)))))
 
 (rule
- (targets libraylib.a dllraylib.dll)
+ (targets libraylib.a dllraylib.so)
  (enabled_if
   (or
    (= %{system} netbsd)
