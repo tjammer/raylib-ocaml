@@ -254,23 +254,90 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Takes a screenshot of current screen (saved a .png) *)
   let take_screenshot = foreign "TakeScreenshot" (string @-> returning void)
 
-  (* Files management functions *)
-  (* Check if a directory path exists *)
-  let is_file_extension =
-    foreign "IsFileExtension" (string @-> string @-> returning bool)
-
   (*  Returns a random value between min and max (both included) *)
   let get_random_value = foreign "GetRandomValue" (int @-> int @-> returning int)
 
-  (* Check if a file has been dropped into window *)
+  (* Files management functions *)
+  (*  Load file data as byte array (read) *)
+  let _load_file_data =
+    foreign "LoadFileData" (string @-> ptr int @-> returning (ptr uchar))
+
+  (*  Save data to file from byte array (write) *)
+  let _save_file_data =
+    foreign "SaveFileData" (string @-> ptr void @-> int @-> returning void)
+
+  (*  Load text data from file (read), returns a '' terminated string *)
+  let load_file_text = foreign "LoadFileText" (string @-> returning string)
+
+  (*  Save text data to file (write), string must be '' terminated *)
+  let save_file_text =
+    foreign "SaveFileText" (string @-> string @-> returning void)
+
+  (*  Check if file exists *)
+  let file_exists = foreign "FileExists" (string @-> returning bool)
+
+  (*  Check file extension *)
+  let is_file_extension =
+    foreign "IsFileExtension" (string @-> string @-> returning bool)
+
+  (*  Check if a directory path exists *)
+  let directory_exists = foreign "DirectoryExists" (string @-> returning bool)
+
+  (*  Get pointer to extension for a filename string *)
+  let get_extension = foreign "GetExtension" (string @-> returning string)
+
+  (*  Get pointer to filename for a path string *)
+  let get_file_name = foreign "GetFileName" (string @-> returning string)
+
+  (*  Get filename string without extension (uses static string) *)
+  let get_file_name_without_ext =
+    foreign "GetFileNameWithoutExt" (string @-> returning string)
+
+  (*  Get full path for a given fileName with path (uses static string) *)
+  let get_directory_path =
+    foreign "GetDirectoryPath" (string @-> returning string)
+
+  (*  Get previous directory path for a given path (uses static string) *)
+  let get_prev_directory_path =
+    foreign "GetPrevDirectoryPath" (string @-> returning string)
+
+  (*  Get current working directory (uses static string) *)
+  let get_working_directory =
+    foreign "GetWorkingDirectory" (void @-> returning string)
+
+  (*  Get filenames in a directory path (memory should be freed) *)
+  let _get_directory_files =
+    foreign "GetDirectoryFiles" (string @-> ptr int @-> returning (ptr string))
+
+  (*  Clear directory files paths buffers (free memory) *)
+  let clear_directory_files =
+    foreign "ClearDirectoryFiles" (void @-> returning void)
+
+  (*  Change working directory, returns true if success *)
+  let change_directory = foreign "ChangeDirectory" (string @-> returning bool)
+
+  (*  Check if a file has been dropped into window *)
   let is_file_dropped = foreign "IsFileDropped" (void @-> returning bool)
 
-  (* Get dropped files names (memory should be freed) *)
+  (*  Get dropped files names (memory should be freed) *)
   let _get_dropped_files =
     foreign "GetDroppedFiles" (ptr int @-> returning (ptr string))
 
-  (* Clear dropped files paths buffer (free memory) *)
+  (*  Clear dropped files paths buffer (free memory) *)
   let clear_dropped_files = foreign "ClearDroppedFiles" (void @-> returning void)
+
+  (*  Get file modification time (last write time) *)
+  let get_file_mod_time = foreign "GetFileModTime" (string @-> returning long)
+
+  (*  Compress data (DEFLATE algorythm) *)
+  let _compress_data =
+    foreign "CompressData"
+      (ptr uchar @-> int @-> ptr int @-> returning (ptr uchar))
+
+  (*  Decompress data (DEFLATE algorythm) *)
+  let _decompress_data =
+    foreign "DecompressData"
+      (ptr uchar @-> int @-> ptr int @-> returning (ptr uchar))
 
   (* Persistent storage management *)
   (*  Save integer value to storage file (to defined position) *)
