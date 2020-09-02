@@ -25,7 +25,7 @@ let rec loop bunnies bunnies_count tex_bunny =
   | false ->
       let open Raylib in
       let bunnies, bunnies_count =
-        if is_mouse_button_down MouseButton.Left then
+        if is_mouse_button_down MouseButton.Left_button then
           let rec inner bunnies bunnies_count = function
             | 0 -> (bunnies, bunnies_count)
             | i ->

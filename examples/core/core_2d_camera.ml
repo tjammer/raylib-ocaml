@@ -6,7 +6,7 @@ let max_buildings = 100
 
 let setup () =
   let open Raylib in
-  set_config_flags ConfigFlag.resizable;
+  set_config_flags [ ConfigFlag.Window_resizable ];
   init_window width height "raylib [core] example - 2d camera";
   let player = Rectangle.create 400.0 280.0 40.0 40.0 in
   let spacing = ref 0 in
@@ -42,8 +42,9 @@ let rec loop (player, buildings, colors, camera) =
   | true -> Raylib.close_window ()
   | false ->
       let open Raylib in
-      ( if is_key_down Key.Right then Rectangle.(set_x player (x player +. 2.0))
-      else if is_key_down Key.Left then
+      ( if is_key_down KeyboardKey.Right then
+        Rectangle.(set_x player (x player +. 2.0))
+      else if is_key_down KeyboardKey.Left then
         Rectangle.(set_x player (x player -. 2.0)) );
 
       Camera2D.set_target camera
@@ -51,10 +52,10 @@ let rec loop (player, buildings, colors, camera) =
            (Rectangle.x player +. 20.0)
            (Rectangle.y player +. 20.0));
 
-      ( if is_key_down Key.A then
+      ( if is_key_down KeyboardKey.A then
         Camera2D.(
           set_rotation camera (Float.max (-40.0) (rotation camera -. 1.0)))
-      else if is_key_down Key.S then
+      else if is_key_down KeyboardKey.S then
         Camera2D.(set_rotation camera (Float.min 40.0 (rotation camera +. 1.0)))
       );
 
@@ -65,7 +66,7 @@ let rec loop (player, buildings, colors, camera) =
       ( if Camera2D.zoom camera > 3.0 then Camera2D.(set_zoom camera 3.0)
       else if Camera2D.zoom camera < 0.1 then Camera2D.(set_zoom camera 0.1) );
 
-      if is_key_pressed Key.R then (
+      if is_key_pressed KeyboardKey.R then (
         Camera2D.(
           set_zoom camera 1.0;
           set_rotation camera 0.0) );

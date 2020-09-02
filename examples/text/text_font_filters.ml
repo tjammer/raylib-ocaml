@@ -30,22 +30,22 @@ let rec loop font font_size font_position filter =
       let open Raylib in
       let font_size = font_size + (get_mouse_wheel_move () * 4) in
       let filter =
-        if is_key_pressed Key.One then (
+        if is_key_pressed KeyboardKey.One then (
           set_texture_filter (Font.texture font) TextureFilterMode.Point;
           `Point )
-        else if is_key_pressed Key.Two then (
+        else if is_key_pressed KeyboardKey.Two then (
           set_texture_filter (Font.texture font) TextureFilterMode.Bilinear;
           `Bilinear )
-        else if is_key_pressed Key.Three then (
+        else if is_key_pressed KeyboardKey.Three then (
           set_texture_filter (Font.texture font) TextureFilterMode.Trilinear;
           `Trilinear )
         else filter
       in
       let text_size = measure_text_ex font msg (Float.of_int font_size) 0.0 in
 
-      ( if is_key_down Key.Left then
+      ( if is_key_down KeyboardKey.Left then
         Vector2.(set_x font_position (x font_position -. 10.0))
-      else if is_key_down Key.Right then
+      else if is_key_down KeyboardKey.Right then
         Vector2.(set_x font_position (x font_position +. 10.0)) );
 
       let font =

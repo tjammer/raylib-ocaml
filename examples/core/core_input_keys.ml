@@ -12,19 +12,23 @@ let rec loop ball =
   | false ->
       let open Raylib in
       let ball =
-        if is_key_down Key.Right then Vector2.(create (x ball +. 2.0) (y ball))
+        if is_key_down KeyboardKey.Right then
+          Vector2.(create (x ball +. 2.0) (y ball))
         else ball
       in
       let ball =
-        if is_key_down Key.Left then Vector2.(create (x ball -. 2.0) (y ball))
+        if is_key_down KeyboardKey.Left then
+          Vector2.(create (x ball -. 2.0) (y ball))
         else ball
       in
       let ball =
-        if is_key_down Key.Up then Vector2.(create (x ball) (y ball -. 2.0))
+        if is_key_down KeyboardKey.Up then
+          Vector2.(create (x ball) (y ball -. 2.0))
         else ball
       in
       let ball =
-        if is_key_down Key.Down then Vector2.(create (x ball) (y ball +. 2.0))
+        if is_key_down KeyboardKey.Down then
+          Vector2.(create (x ball) (y ball +. 2.0))
         else ball
       in
       begin_drawing ();

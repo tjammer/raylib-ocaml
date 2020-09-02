@@ -40,8 +40,9 @@ let rec loop scarfy frame_rec counter frame frames_speed =
         else (counter, frame, frame_rec)
       in
       let frames_speed =
-        if is_key_pressed Key.Right then min max_frame_speed (succ frames_speed)
-        else if is_key_pressed Key.Left then max 1 (pred frames_speed)
+        if is_key_pressed KeyboardKey.Right then
+          min max_frame_speed (succ frames_speed)
+        else if is_key_pressed KeyboardKey.Left then max 1 (pred frames_speed)
         else frames_speed
       in
       begin_drawing ();
