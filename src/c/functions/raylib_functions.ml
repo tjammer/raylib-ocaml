@@ -356,26 +356,24 @@ module Description (F : Ctypes.FOREIGN) = struct
   (* Input-related functions: keyboard *)
   (*  Detect if a key has been pressed once *)
   let is_key_pressed =
-    foreign "IsKeyPressed" (Constants.KeyboardKey.t @-> returning bool)
+    foreign "IsKeyPressed" (Constants.Key.t @-> returning bool)
 
   (*  Detect if a key is being pressed *)
-  let is_key_down =
-    foreign "IsKeyDown" (Constants.KeyboardKey.t @-> returning bool)
+  let is_key_down = foreign "IsKeyDown" (Constants.Key.t @-> returning bool)
 
   (*  Detect if a key has been released once *)
   let is_key_released =
-    foreign "IsKeyReleased" (Constants.KeyboardKey.t @-> returning bool)
+    foreign "IsKeyReleased" (Constants.Key.t @-> returning bool)
 
   (*  Detect if a key is NOT being pressed *)
-  let is_key_up = foreign "IsKeyUp" (Constants.KeyboardKey.t @-> returning bool)
+  let is_key_up = foreign "IsKeyUp" (Constants.Key.t @-> returning bool)
 
   (*  Set a custom key to exit program (default is ESC) *)
-  let set_exit_key =
-    foreign "SetExitKey" (Constants.KeyboardKey.t @-> returning void)
+  let set_exit_key = foreign "SetExitKey" (Constants.Key.t @-> returning void)
 
   (*  Get key pressed, call it multiple times for chars queued *)
   let get_key_pressed =
-    foreign "GetKeyPressed" (void @-> returning Constants.KeyboardKey.t)
+    foreign "GetKeyPressed" (void @-> returning Constants.Key.t)
 
   (* Input-related functions: gamepads *)
   (*  Detect if a gamepad is available *)

@@ -37,7 +37,7 @@ let rec loop camera model anims frame_counter =
       let open Raylib in
       update_camera (addr camera);
       let frame_counter =
-        if is_key_down KeyboardKey.Space then (
+        if is_key_down Key.Space then (
           let frame_counter = succ frame_counter in
           let anims0 = CArray.get anims 0 in
           update_model_animation model anims0 frame_counter;

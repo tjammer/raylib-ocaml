@@ -70,9 +70,7 @@ let rec loop (pause, box_a, box_a_speed_x, box_b, box_collision) =
       in
 
       (* Pause Box A movement *)
-      let pause =
-        if is_key_pressed KeyboardKey.Space then not pause else pause
-      in
+      let pause = if is_key_pressed Key.Space then not pause else pause in
 
       begin_drawing ();
       clear_background Color.raywhite;

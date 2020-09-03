@@ -35,7 +35,7 @@ module TraceLogType = struct
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
-module KeyboardKey = struct
+module Key = struct
   type%c t =
     | Apostrophe [@cname "KEY_APOSTROPHE"]
     | Comma [@cname "KEY_COMMA"]
@@ -166,9 +166,9 @@ end
 
 module MouseButton = struct
   type%c t =
-    | Left_button [@cname "MOUSE_LEFT_BUTTON"]
-    | Right_button [@cname "MOUSE_RIGHT_BUTTON"]
-    | Middle_button [@cname "MOUSE_MIDDLE_BUTTON"]
+    | Left [@cname "MOUSE_LEFT_BUTTON"]
+    | Right [@cname "MOUSE_RIGHT_BUTTON"]
+    | Middle [@cname "MOUSE_MIDDLE_BUTTON"]
   [@@cname "MouseButton"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
@@ -323,8 +323,8 @@ end
 
 module PixelFormat = struct
   type%c t =
-    | Uncompressed_Grayscale [@cname "UNCOMPRESSED_GRAYSCALE"]
-    | Uncompressed_Gray_alpha [@cname "UNCOMPRESSED_GRAY_ALPHA"]
+    | Uncompressed_grayscale [@cname "UNCOMPRESSED_GRAYSCALE"]
+    | Uncompressed_gray_alpha [@cname "UNCOMPRESSED_GRAY_ALPHA"]
     | Uncompressed_R5G6B5 [@cname "UNCOMPRESSED_R5G6B5"]
     | Uncompressed_R8G8B8 [@cname "UNCOMPRESSED_R8G8B8"]
     | Uncompressed_R5G5B5A1 [@cname "UNCOMPRESSED_R5G5B5A1"]
