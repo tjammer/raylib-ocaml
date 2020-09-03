@@ -1,4 +1,4 @@
-module Types = Raylib_types.Descriptions (Raylib_c_generated_types)
+module Types = Raylib_generated_types
 module Constants = Raylib_generated_constants
 
 module Description (F : Ctypes.FOREIGN) = struct
@@ -235,7 +235,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   (* Misc. functions *)
   (*  Setup window configuration flags (view FLAGS) *)
   let set_config_flags =
-    foreign "SetConfigFlags" (Types.ConfigFlag.t @-> returning void)
+    foreign "SetConfigFlags" (Constants.ConfigFlag.t_bitmask @-> returning void)
 
   (*  Set the current threshold (minimum) log level *)
   let set_trace_log_level =
@@ -260,7 +260,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   (* Files management functions *)
   (*  Load file data as byte array (read) *)
   let _load_file_data =
-    foreign "LoadFileData" (string @-> ptr int @-> returning (ptr uchar))
+    foreign "LoadFileData" (string @-> ptr uint @-> returning (ptr uchar))
 
   (*  Save data to file from byte array (write) *)
   let _save_file_data =
@@ -1440,8 +1440,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Set texture for a material map type (MAP_DIFFUSE, MAP_SPECULAR...) *)
   let set_material_texture =
     foreign "SetMaterialTexture"
-      ( ptr Types.Material.t @-> Types.MaterialMapType.t @-> Types.Texture2D.t
-      @-> returning void )
+      ( ptr Types.Material.t @-> Constants.MaterialMapType.t
+      @-> Types.Texture2D.t @-> returning void )
 
   (*  Set material for a mesh *)
   let set_model_mesh_material =
@@ -1661,30 +1661,30 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Get shader uniform location *)
   let get_shader_location =
     foreign "GetShaderLocation"
-      (Types.Shader.t @-> string @-> returning Constants.ShaderLocation.t)
+      (Types.Shader.t @-> string @-> returning Constants.ShaderLocationIndex.t)
 
   (*  Set shader uniform value *)
   let set_shader_value =
     foreign "SetShaderValue"
-      ( Types.Shader.t @-> Constants.ShaderLocation.t @-> ptr void
-      @-> Constants.ShaderUniformData.t @-> returning void )
+      ( Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> ptr void
+      @-> Constants.ShaderUniformDataType.t @-> returning void )
 
   (*  Set shader uniform value vector *)
   let set_shader_value_v =
     foreign "SetShaderValueV"
-      ( Types.Shader.t @-> Constants.ShaderLocation.t @-> ptr void
-      @-> Constants.ShaderUniformData.t @-> int @-> returning void )
+      ( Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> ptr void
+      @-> Constants.ShaderUniformDataType.t @-> int @-> returning void )
 
   (*  Set shader uniform value (matrix 4x4) *)
   let set_shader_value_matrix =
     foreign "SetShaderValueMatrix"
-      ( Types.Shader.t @-> Constants.ShaderLocation.t @-> Types.Matrix.t
+      ( Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> Types.Matrix.t
       @-> returning void )
 
   (*  Set shader uniform value for texture *)
   let set_shader_value_texture =
     foreign "SetShaderValueTexture"
-      ( Types.Shader.t @-> Constants.ShaderLocation.t @-> Types.Texture2D.t
+      ( Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> Types.Texture2D.t
       @-> returning void )
 
   (*  Set a custom projection matrix (replaces internal projection matrix) *)

@@ -19,8 +19,8 @@ let setup () =
   let shader = Material.shader material0 in
   set_shader_value shader
     (get_shader_location shader "environmentMap")
-    (void_ptr_of_int MaterialMapType.AsInt.cubemap)
-    ShaderUniformData.Int;
+    (void_ptr_of_int MaterialMapType.(to_int Cubemap))
+    ShaderUniformDataType.Int;
 
   let shdr_cubemap =
     load_shader "resources/shaders/glsl330/cubemap.vs"
@@ -29,13 +29,13 @@ let setup () =
   let tex_hdr = load_texture "resources/dresden_square.hdr" in
 
   MaterialMap.set_texture
-    (CArray.get (Material.maps material0) MaterialMapType.AsInt.cubemap)
+    (CArray.get (Material.maps material0) MaterialMapType.(to_int Cubemap))
     (gen_texture_cubemap shdr_cubemap tex_hdr 512);
 
   unload_texture tex_hdr;
   unload_shader shdr_cubemap;
 
-  set_camera_mode camera CameraMode.FirstPerson;
+  set_camera_mode camera CameraMode.First_person;
   set_target_fps 60;
   (camera, skybox)
 

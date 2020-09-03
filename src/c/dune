@@ -7,7 +7,8 @@
   (language c)
   (names c_generated_functions)
   (include_dirs %{project_root}/src/c/vendor/src))
- (libraries ctypes.stubs raylib_functions raylib_generated_constants)
+ (libraries ctypes.stubs raylib_functions raylib_generated_constants
+   raylib_generated_types)
  (library_flags
   (:include library_flags.sexp)))
 
@@ -31,6 +32,7 @@
 (data_only_dirs vendor)
 
 (rule
+ (alias build-raylib)
  (targets libraylib.a dllraylib.so)
  (enabled_if
   (or
@@ -53,6 +55,7 @@
     (copy vendor/src/libraylib.so.3.0.0 dllraylib.so)))))
 
 (rule
+ (alias build-raylib)
  (targets libraylib.a dllraylib.so)
  (enabled_if
   (= %{system} macosx))
@@ -68,6 +71,7 @@
     (copy vendor/src/libraylib.3.0.0.dylib dllraylib.so)))))
 
 (rule
+ (alias build-raylib)
  (targets libraylib.a dllraylib.dll)
  (enabled_if
   (= %{system} mingw64))
@@ -88,6 +92,7 @@
     (copy vendor/src/raylib.dll dllraylib.dll)))))
 
 (rule
+ (alias build-raylib)
  (targets libraylib.a dllraylib.so)
  (enabled_if
   (or

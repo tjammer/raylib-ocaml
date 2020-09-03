@@ -2,6 +2,7 @@ include Raylib_functions.Description (Raylib_c.Raylib_c_generated_functions)
 include Raylib_generated_constants
 include Ctypes_reexports
 module Types = Raylib_functions.Types
+module Constants = Raylib_generated_constants
 open Ctypes
 
 module Vector2 = struct
@@ -114,10 +115,10 @@ module Color = struct
 
   let create r g b a =
     let color = make t in
-    setf color Types.Color.r (Unsigned.UInt8.of_int r);
-    setf color Types.Color.g (Unsigned.UInt8.of_int g);
-    setf color Types.Color.b (Unsigned.UInt8.of_int b);
-    setf color Types.Color.a (Unsigned.UInt8.of_int a);
+    setf color Types.Color.r (Unsigned.UChar.of_int r);
+    setf color Types.Color.g (Unsigned.UChar.of_int g);
+    setf color Types.Color.b (Unsigned.UChar.of_int b);
+    setf color Types.Color.a (Unsigned.UChar.of_int a);
     color
 
   (* Some Basic Colors *)
@@ -213,7 +214,8 @@ module Image = struct
 
   let mipmaps tex = getf tex Types.Texture2D.mipmaps
 
-  let format tex = getf tex Types.Texture2D.format
+  let format tex =
+    Constants.PixelFormat.of_int (getf tex Types.Texture2D.format)
 end
 
 module Texture2D = struct
@@ -227,7 +229,8 @@ module Texture2D = struct
 
   let mipmaps tex = getf tex Types.Texture2D.mipmaps
 
-  let format tex = getf tex Types.Texture2D.format
+  let format tex =
+    Constants.PixelFormat.of_int (getf tex Types.Texture2D.format)
 end
 
 module RenderTexture2D = struct
@@ -252,7 +255,7 @@ module NPatchInfo = struct
     setf np Types.NPatchInfo.top top;
     setf np Types.NPatchInfo.right right;
     setf np Types.NPatchInfo.bottom bottom;
-    setf np Types.NPatchInfo.typ typ;
+    setf np Types.NPatchInfo.typ (Constants.NPatchType.to_int typ);
     np
 
   let source_rec np = getf np Types.NPatchInfo.source_rec
@@ -265,7 +268,7 @@ module NPatchInfo = struct
 
   let bottom np = getf np Types.NPatchInfo.bottom
 
-  let typ np = getf np Types.NPatchInfo.typ
+  let typ np = Constants.NPatchType.of_int (getf np Types.NPatchInfo.typ)
 end
 
 module CharInfo = struct
@@ -297,7 +300,7 @@ module Font = struct
     CArray.from_ptr (getf font Types.Font.chars) (chars_count font)
 end
 
-module CameraType = Types.CameraType
+module CameraType = Constants.CameraType
 
 module Camera3D = struct
   type t = Types.Camera3D.t structure
@@ -310,7 +313,7 @@ module Camera3D = struct
     setf cam Types.Camera3D.target target;
     setf cam Types.Camera3D.up up;
     setf cam Types.Camera3D.fovy fovy;
-    setf cam Types.Camera3D.typ typ;
+    setf cam Types.Camera3D.typ (Constants.CameraType.to_int typ);
     cam
 
   let position cam = getf cam Types.Camera3D.position
@@ -321,7 +324,7 @@ module Camera3D = struct
 
   let fovy cam = getf cam Types.Camera3D.fovy
 
-  let typ cam = getf cam Types.Camera3D.typ
+  let typ cam = Constants.CameraType.of_int (getf cam Types.Camera3D.typ)
 end
 
 module Camera = Camera3D
@@ -364,7 +367,7 @@ module Shader = struct
   let t = Types.Shader.t
 end
 
-module MaterialMapType = Types.MaterialMapType
+module MaterialMapType = Constants.MaterialMapType
 
 module MaterialMap = struct
   type t = Types.MaterialMap.t structure
@@ -536,13 +539,13 @@ module Wave = Types.Wave
 module AudioStream = Types.AudioStream
 module Sound = Types.Sound
 module Music = Types.Music
-module ConfigFlag = Types.ConfigFlag
+module ConfigFlag = Constants.ConfigFlag
 
 (* CArray wrapped functions *)
 let load_file_data path =
-  let count = ptr_of_int 0 in
+  let count = ptr_of_uint (Unsigned.UInt.of_int 0) in
   let data = _load_file_data path count in
-  CArray.from_ptr data !@count
+  CArray.from_ptr data (Unsigned.UInt.to_int !@count)
 
 let save_file_data path data =
   let count = CArray.length data in

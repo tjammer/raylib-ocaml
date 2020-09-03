@@ -3,9 +3,4 @@
  (public_name raylib.functions)
  (flags
   (:standard -w -9-27))
- (libraries ctypes.stubs raylib_types raylib_generated_constants))
-
-(rule
- (with-stdout-to
-  raylib_c_generated_types.ml
-  (run ../stubgen/generate_types.exe)))
+ (libraries ctypes.stubs raylib_generated_constants raylib_generated_types))
