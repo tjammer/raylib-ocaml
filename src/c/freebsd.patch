@@ -1,0 +1,13 @@
+diff -u a/vendor/src/Makefile b/vendor/src/Makefile
+--- a/vendor/src/Makefile
++++ b/vendor/src/Makefile
+@@ -225,7 +225,8 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
+     endif
+     ifeq ($(PLATFORM_OS),BSD)
+         # FreeBSD, OpenBSD, NetBSD, DragonFly default compiler
+-        CC = clang
++        CC = gcc
++        CFLAGS += -fPIC
+     endif
+ endif
+ ifeq ($(PLATFORM),PLATFORM_RPI)

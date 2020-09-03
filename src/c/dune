@@ -102,10 +102,15 @@
    (= %{system} bsd)
    (= %{system} bsd_elf)))
  (deps
-  (source_tree vendor))
+  (source_tree vendor)
+  freebsd.patch)
  (action
   (no-infer
    (progn
+    (run chmod +w vendor/src/Makefile)
+    (with-stdin-from
+     freebsd.patch
+     (run patch -sp1))
     (run gmake -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/src/libraylib.a libraylib.a)
     (run gmake -C vendor/src clean)

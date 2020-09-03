@@ -15,18 +15,19 @@ let () =
               [ "OpenGL"; "Cocoa"; "IOKit"; "CoreAudio"; "CoreVideo" ]
         | Some "mingw64" -> link [ "opengl32"; "gdi32"; "winmm"; "pthread" ]
         | Some ("netbsd" | "freebsd" | "openbsd" | "bsd" | "bsd_elf") ->
-            link
-              [
-                "GL";
-                "pthread";
-                "m";
-                "X11";
-                "Xrandr";
-                "Xinerama";
-                "Xi";
-                "Xxf86vm";
-                "Xcursor";
-              ]
+            "-cclib" :: "-L /usr/local/lib"
+            :: link
+                 [
+                   "GL";
+                   "pthread";
+                   "m";
+                   "X11";
+                   "Xrandr";
+                   "Xinerama";
+                   "Xi";
+                   "Xxf86vm";
+                   "Xcursor";
+                 ]
         | Some system -> C.die "unsupported system: %s" system
         | None -> C.die "unsupported system"
       in
