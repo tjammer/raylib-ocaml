@@ -32,6 +32,8 @@ let () = setup () |> loop
 ```
 More examples can be found in the examples folder.
 
+Although the original raylib is written in C, most functions take their arguments by value, which maps nicely to a functional language like OCaml. In the few cases where pointers are needed for arrays (mainly the 3D part of raylib), raylib-ocaml tries to use the `CArray` type of ctypes, which it also re-exports in the main `Raylib` module.
+
 ## Installation
 
 During the build of raylib-ocaml, the raylib C library is built from source, therefore its dependencies must be installed (<a href="https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux" target="_blank">details here</a>).
