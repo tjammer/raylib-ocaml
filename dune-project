@@ -1,6 +1,6 @@
 (lang dune 2.6)
 (name raylib)
-(version 0.1.0)
+(version 0.2.0)
 
 (generate_opam_files true)
 
