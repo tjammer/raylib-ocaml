@@ -300,8 +300,6 @@ module Font = struct
     CArray.from_ptr (getf font Types.Font.chars) (chars_count font)
 end
 
-module CameraType = Constants.CameraType
-
 module Camera3D = struct
   type t = Types.Camera3D.t structure
 
