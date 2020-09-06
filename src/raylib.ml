@@ -365,8 +365,6 @@ module Shader = struct
   let t = Types.Shader.t
 end
 
-module MaterialMapType = Constants.MaterialMapType
-
 module MaterialMap = struct
   type t = Types.MaterialMap.t structure
 
@@ -537,7 +535,6 @@ module Wave = Types.Wave
 module AudioStream = Types.AudioStream
 module Sound = Types.Sound
 module Music = Types.Music
-module ConfigFlag = Constants.ConfigFlag
 
 (* CArray wrapped functions *)
 let load_file_data path =
