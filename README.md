@@ -50,7 +50,7 @@ opam install raylib
 ```
 
 ## Examples
-To build the examples, simply
+To build the examples, make sure the raylib C submodule is available with `git submodule update --init --recursive`. Then simply
 ``` sh
 dune build
 ```
