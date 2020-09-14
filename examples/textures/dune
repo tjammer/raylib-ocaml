@@ -12,3 +12,8 @@
  (name textures_bunnymark)
  (modules Textures_bunnymark)
  (libraries raylib))
+
+(executable
+ (name textures_srcrec_dstrec)
+ (modules Textures_srcrec_dstrec)
+ (libraries raylib))
