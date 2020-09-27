@@ -17,3 +17,7 @@
  (name core_vr_simulator)
  (modules Core_vr_simulator)
  (libraries raylib))
+(executable
+ (name core_input_mouse)
+ (modules Core_input_mouse)
+ (libraries raylib))
