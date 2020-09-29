@@ -1,0 +1,51 @@
+name: build
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build-and-test:
+    name: build
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+        ocaml-version:
+          - 4.10.0
+        include:
+          - ocaml-version: 4.11.0
+            os: ubuntu-latest
+          - ocaml-version: 4.10.0
+            os: windows-latest
+          - ocaml-version: 4.09.1
+            os: ubuntu-latest
+          - ocaml-version: 4.06.1
+            os: ubuntu-latest
+
+    runs-on: ${{ matrix.os }}
+
+    env:
+      SKIP_TEST: ${{ matrix.skip_test }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Use OCaml ${{ matrix.ocaml-version }}
+        uses: avsm/setup-ocaml@v1
+        with:
+          ocaml-version: ${{ matrix.ocaml-version }}
+
+      - run: opam pin -n .
+
+      - run: opam install . --deps-only
+
+      - run: opam depext raylib
+
+      - run: opam exec -- dune build
