@@ -536,6 +536,75 @@ module AudioStream = Types.AudioStream
 module Sound = Types.Sound
 module Music = Types.Music
 
+module VrDeviceInfo = struct
+  type t = Types.VrDeviceInfo.t structure
+
+  let t = Types.VrDeviceInfo.t
+
+  let create () = make t
+
+  let h_resolution hmd = getf hmd Types.VrDeviceInfo.h_resolution
+
+  let v_resolution hmd = getf hmd Types.VrDeviceInfo.v_resolution
+
+  let h_screen_size hmd = getf hmd Types.VrDeviceInfo.h_screen_size
+
+  let v_screen_size hmd = getf hmd Types.VrDeviceInfo.v_screen_size
+
+  let v_screen_center hmd = getf hmd Types.VrDeviceInfo.v_screen_center
+
+  let eye_to_screen_distance hmd =
+    getf hmd Types.VrDeviceInfo.eye_to_screen_distance
+
+  let lens_separation_distance hmd =
+    getf hmd Types.VrDeviceInfo.lens_separation_distance
+
+  let interpupillary_distance hmd =
+    getf hmd Types.VrDeviceInfo.interpupillary_distance
+
+  let lens_distortion_values hmd =
+    getf hmd Types.VrDeviceInfo.lens_distortion_values
+
+  let chroma_ab_correction hmd =
+    getf hmd Types.VrDeviceInfo.chroma_ab_correction
+
+  let set_h_resolution hmd res = setf hmd Types.VrDeviceInfo.h_resolution res
+
+  let set_v_resolution hmd res = setf hmd Types.VrDeviceInfo.v_resolution res
+
+  let set_h_screen_size hmd size =
+    setf hmd Types.VrDeviceInfo.h_screen_size size
+
+  let set_v_screen_size hmd size =
+    setf hmd Types.VrDeviceInfo.v_screen_size size
+
+  let set_v_screen_center hmd center =
+    setf hmd Types.VrDeviceInfo.v_screen_center center
+
+  let set_eye_to_screen_distance hmd dist =
+    setf hmd Types.VrDeviceInfo.eye_to_screen_distance dist
+
+  let set_lens_separation_distance hmd dist =
+    setf hmd Types.VrDeviceInfo.lens_separation_distance dist
+
+  let set_interpupillary_distance hmd dist =
+    setf hmd Types.VrDeviceInfo.interpupillary_distance dist
+
+  let set_lens_distortion_values hmd v0 v1 v2 v3 =
+    let arr = lens_distortion_values hmd in
+    CArray.set arr 0 v0;
+    CArray.set arr 1 v1;
+    CArray.set arr 2 v2;
+    CArray.set arr 3 v3
+
+  let set_chroma_ab_correction hmd v0 v1 v2 v3 =
+    let arr = chroma_ab_correction hmd in
+    CArray.set arr 0 v0;
+    CArray.set arr 1 v1;
+    CArray.set arr 2 v2;
+    CArray.set arr 3 v3
+end
+
 (* CArray wrapped functions *)
 let load_file_data path =
   let count = ptr_of_uint (Unsigned.UInt.of_int 0) in

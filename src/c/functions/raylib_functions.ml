@@ -1151,7 +1151,11 @@ module Description (F : Ctypes.FOREIGN) = struct
       @-> Types.Vector2.t @-> float @-> Types.Color.t @-> returning void )
 
   (*  Draws a texture (or part of it) that stretches or shrinks nicely *)
-  (* let  draw_texture_n_patch  = foreign "DrawTextureNPatch" ( Types.Texture2D.t @-> NPatch @-> Types.Rectangle.t @-> Types.Vector2.t @-> float @-> Types.Color.t @-> returning void) *)
+  let draw_texture_n_patch =
+    foreign "DrawTextureNPatch"
+      ( Types.Texture2D.t @-> Types.NPatchInfo.t @-> Types.Rectangle.t
+      @-> Types.Vector2.t @-> float @-> Types.Color.t @-> returning void )
+
   (* Image/Texture misc functions *)
   (*  Get pixel data size in bytes (image or texture) *)
   let get_pixel_data_size =
@@ -1388,7 +1392,9 @@ module Description (F : Ctypes.FOREIGN) = struct
       (Types.Vector3.t @-> Types.Vector2.t @-> Types.Color.t @-> returning void)
 
   (*  Draw a ray line *)
-  (* let  draw_ray  = foreign "DrawRay" ( Ray @-> Types.Color.t @-> returning void) *)
+  let draw_ray =
+    foreign "DrawRay" (Types.Ray.t @-> Types.Color.t @-> returning void)
+
   (*  Draw a grid (centered at (0, 0, 0)) *)
   let draw_grid = foreign "DrawGrid" (int @-> float @-> returning void)
 
@@ -1756,9 +1762,9 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   (*  Set stereo rendering configuration parameters *)
   (* TODO *)
-  (* let set_vr_configuration =
-   *   foreign "SetVrConfiguration"
-   *     (VrDeviceInfo @-> Types.Shader.t @-> returning void) *)
+  let set_vr_configuration =
+    foreign "SetVrConfiguration"
+      (Types.VrDeviceInfo.t @-> Types.Shader.t @-> returning void)
 
   (*  Detect if VR simulator is ready *)
   let is_vr_simulator_ready =
