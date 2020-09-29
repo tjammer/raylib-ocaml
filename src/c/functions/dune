@@ -1,6 +1,15 @@
 (library
  (name raylib_functions)
  (public_name raylib.functions)
+ (modules Raylib_functions)
  (flags
   (:standard -w -9-27))
  (libraries ctypes.stubs raylib_generated_constants raylib_generated_types))
+
+(library
+ (name raylib_math)
+ (public_name raylib.math)
+ (modules Raylib_math)
+ (flags
+  (:standard -w -9-27))
+ (libraries ctypes.stubs raylib_generated_types))

@@ -10,3 +10,13 @@
  (name generate_ml_functions)
  (modules Generate_ml_functions)
  (libraries ctypes.stubs raylib_functions))
+
+(executable
+ (name generate_c_math)
+ (modules Generate_c_math)
+ (libraries ctypes.stubs raylib_math))
+
+(executable
+ (name generate_ml_math)
+ (modules Generate_ml_math)
+ (libraries ctypes.stubs raylib_math))

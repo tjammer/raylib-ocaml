@@ -3,6 +3,7 @@ include Raylib_generated_constants
 include Ctypes_reexports
 module Types = Raylib_functions.Types
 module Constants = Raylib_generated_constants
+module Math = Raylib_math.Description (Raylib_c.Raylib_c_generated_math)
 open Ctypes
 
 module Vector2 = struct
@@ -23,6 +24,8 @@ module Vector2 = struct
   let set_x vec x = setf vec Types.Vector2.x x
 
   let set_y vec y = setf vec Types.Vector2.y y
+
+  include Math.Vector2
 end
 
 module Vector3 = struct
@@ -48,6 +51,8 @@ module Vector3 = struct
   let set_y vec y = setf vec Types.Vector3.y y
 
   let set_z vec z = setf vec Types.Vector3.z z
+
+  include Math.Vector3
 end
 
 module Vector4 = struct
@@ -78,6 +83,8 @@ module Vector4 = struct
   let set_z vec z = setf vec Types.Vector4.z z
 
   let set_w vec w = setf vec Types.Vector4.w w
+
+  include Math.Quaternion
 end
 
 module Quaternion = Vector4
@@ -106,6 +113,8 @@ module Matrix = struct
     setf vec Types.Matrix.m14 m14;
     setf vec Types.Matrix.m15 m15;
     vec
+
+  include Math.Matrix
 end
 
 module Color = struct

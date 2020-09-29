@@ -1,14 +1,14 @@
 (library
  (name raylib_c)
  (public_name raylib.c)
- (modules Raylib_c_generated_functions)
+ (modules Raylib_c_generated_functions Raylib_c_generated_math)
  (foreign_archives raylib)
  (foreign_stubs
   (language c)
-  (names c_generated_functions)
+  (names c_generated_functions c_generated_math)
   (include_dirs %{project_root}/src/c/vendor/src))
- (libraries ctypes.stubs raylib_functions raylib_generated_constants
-   raylib_generated_types)
+ (libraries ctypes.stubs raylib_functions raylib_math
+   raylib_generated_constants raylib_generated_types)
  (library_flags
   (:include library_flags.sexp)))
 
@@ -28,6 +28,16 @@
  (with-stdout-to
   raylib_c_generated_functions.ml
   (run stubgen/generate_ml_functions.exe raylib_stub)))
+
+(rule
+ (with-stdout-to
+  c_generated_math.c
+  (run stubgen/generate_c_math.exe raylib_stub)))
+
+(rule
+ (with-stdout-to
+  raylib_c_generated_math.ml
+  (run stubgen/generate_ml_math.exe raylib_stub)))
 
 (data_only_dirs vendor)
 
