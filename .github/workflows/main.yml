@@ -44,8 +44,8 @@ jobs:
 
       - run: opam pin -n .
 
-      - run: opam install . --deps-only
-
       - run: opam depext raylib
+
+      - run: opam install . --deps-only
 
       - run: opam exec -- dune build
