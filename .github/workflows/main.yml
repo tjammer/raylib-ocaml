@@ -23,8 +23,6 @@ jobs:
             os: windows-latest
           - ocaml-version: 4.09.1
             os: ubuntu-latest
-          - ocaml-version: 4.06.1
-            os: ubuntu-latest
 
     runs-on: ${{ matrix.os }}
 
