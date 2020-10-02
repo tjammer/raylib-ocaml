@@ -26,3 +26,8 @@
  (name core_input_mouse_wheel)
  (modules Core_input_mouse_wheel)
  (libraries raylib))
+
+(executable
+ (name core_2d_camera_platformer)
+ (modules Core_2d_camera_platformer)
+ (libraries raylib))
