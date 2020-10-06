@@ -140,6 +140,9 @@ let update_camera delta (player, env_items, camera, mode) =
     match mode with
     | Center -> (half_screen, player.position, mode)
     | CenterInsideMap ->
+      let camera = (* I am not too happy about this trick *)
+        Camera2D.create half_screen player.position (Camera2D.rotation camera) (Camera2D.zoom camera)
+      in
       let shift =
         let (minX, minY, maxX, maxY) =
           List.fold_right
@@ -166,9 +169,7 @@ let update_camera delta (player, env_items, camera, mode) =
           (shift_cam Vector2.y (Float.of_int height))
       in
       let offset = Vector2.add half_screen shift in
-      (* This is just very buggy unfortunalty *)
       (offset, player.position, mode)
-    (* (half_screen, player.position, mode) *)
     | SmoothFollow ->
       let target =
         let diff = Vector2.subtract player.position (Camera2D.target camera) in
