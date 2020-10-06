@@ -36,3 +36,8 @@
  (name core_3d_camera_first_person)
  (modules Core_3d_camera_first_person)
  (libraries raylib))
+
+(executable
+ (name core_3d_camera_free)
+ (modules Core_3d_camera_free)
+ (libraries raylib))
