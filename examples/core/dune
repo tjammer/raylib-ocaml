@@ -31,3 +31,8 @@
  (name core_2d_camera_platformer)
  (modules Core_2d_camera_platformer)
  (libraries raylib))
+
+(executable
+ (name core_3d_camera_first_person)
+ (modules Core_3d_camera_first_person)
+ (libraries raylib))
