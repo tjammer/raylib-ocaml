@@ -9,7 +9,7 @@ let cube_pos = Raylib.Vector3.create 0.0 0.0 0.0
 
 let setup () =
   let open Raylib in
-  init_window width height "raylib [core] example - 3d camera first person";
+  init_window width height "raylib [core] example - 3d camera free";
   let camera =
     Camera.create
       (Vector3.create 10.0 10.0 10.0) (* position *)

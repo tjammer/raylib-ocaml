@@ -41,3 +41,8 @@
  (name core_3d_camera_free)
  (modules Core_3d_camera_free)
  (libraries raylib))
+
+(executable
+ (name core_3d_camera_mode)
+ (modules Core_3d_camera_mode)
+ (libraries raylib))
