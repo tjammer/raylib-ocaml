@@ -46,3 +46,8 @@
  (name core_3d_camera_mode)
  (modules Core_3d_camera_mode)
  (libraries raylib))
+
+(executable
+ (name core_drop_files)
+ (modules Core_drop_files)
+ (libraries raylib))
