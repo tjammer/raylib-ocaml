@@ -528,20 +528,22 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   (*  Set camera pan key to combine with mouse movement (free camera) *)
   let set_camera_pan_control =
-    foreign "SetCameraPanControl" (int @-> returning void)
+    foreign "SetCameraPanControl" (Constants.Key.t @-> returning void)
 
   (*  Set camera alt key to combine with mouse movement (free camera) *)
   let set_camera_alt_control =
-    foreign "SetCameraAltControl" (int @-> returning void)
+    foreign "SetCameraAltControl" (Constants.Key.t @-> returning void)
 
   (*  Set camera smooth zoom key to combine with mouse (free camera) *)
   let set_camera_smooth_zoom_control =
-    foreign "SetCameraSmoothZoomControl" (int @-> returning void)
+    foreign "SetCameraSmoothZoomControl" (Constants.Key.t @-> returning void)
 
   (*  Set camera move controls (1st person and 3rd person cameras) *)
   let set_camera_move_controls =
     foreign "SetCameraMoveControls"
-      (int @-> int @-> int @-> int @-> int @-> int @-> returning void)
+      (Constants.Key.t @-> Constants.Key.t @-> Constants.Key.t
+      @-> Constants.Key.t @-> Constants.Key.t @-> Constants.Key.t
+      @-> returning void)
 
   (* Basic Shapes Drawing Functions (Module: shapes) *)
 
