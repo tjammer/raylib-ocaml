@@ -12,3 +12,8 @@
  (name core_2d_camera)
  (modules Core_2d_camera)
  (libraries raylib))
+
+(executable
+ (name core_vr_simulator)
+ (modules Core_vr_simulator)
+ (libraries raylib))

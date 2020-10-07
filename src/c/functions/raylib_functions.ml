@@ -541,9 +541,9 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Set camera move controls (1st person and 3rd person cameras) *)
   let set_camera_move_controls =
     foreign "SetCameraMoveControls"
-      (Constants.Key.t @-> Constants.Key.t @-> Constants.Key.t
+      ( Constants.Key.t @-> Constants.Key.t @-> Constants.Key.t
       @-> Constants.Key.t @-> Constants.Key.t @-> Constants.Key.t
-      @-> returning void)
+      @-> returning void )
 
   (* Basic Shapes Drawing Functions (Module: shapes) *)
 
