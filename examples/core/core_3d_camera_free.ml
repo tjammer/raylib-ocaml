@@ -46,20 +46,20 @@ let rec loop camera =
   if window_should_close ()
   then close_window ()
   else
-  let camera =
-    if is_key_down Key.Z
-    then 
-      Camera.create
-        (Camera.position camera)
-        (Vector3.create 0.0 0.0 0.0) (* target *)
-        (Camera.up camera)
-        45.0 (* FOV *)
-        CameraType.Perspective
-    else camera
-  in
-  update_camera (addr camera);
-  draw_all camera;
-  loop camera
+    let camera =
+      if is_key_down Key.Z
+      then 
+        Camera.(create
+                  (position camera)
+                  (Vector3.create 0.0 0.0 0.0) (* target *)
+                  (up camera)
+                  45.0 (* FOV *)
+                  CameraType.Perspective)
+      else camera
+    in
+    update_camera (addr camera);
+    draw_all camera;
+    loop camera
 
 let () =
   setup () |> loop

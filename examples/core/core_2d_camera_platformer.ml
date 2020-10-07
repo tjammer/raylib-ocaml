@@ -45,7 +45,7 @@ let compare tol a b =
 let player_rec player =
   let open Raylib in
   let x, y, w, h =
-    (Vector2.x player.position -. 20., Vector2.y player.position -. 40., 40., 40.)
+    Vector2.(x player.position -. 20., y player.position -. 40., 40., 40.)
   in
   Rectangle.create x y w h
 
@@ -91,7 +91,7 @@ let setup () =
 
 let update_player delta ({position; speed; can_jump}, env_items, c, m) =
   let open Raylib in
-  let x, y = (Vector2.x position, Vector2.y position) in
+  let x, y = Vector2.(x position, y position) in
   let x =
     match is_key_down Key.Left, is_key_down Key.Right with
     | true, false -> x -. (player_hor_speed *. delta)
@@ -141,7 +141,7 @@ let update_camera delta (player, env_items, camera, mode) =
     | Center -> (half_screen, player.position, mode)
     | CenterInsideMap ->
       let camera = (* I am not too happy about this trick *)
-        Camera2D.create half_screen player.position (Camera2D.rotation camera) (Camera2D.zoom camera)
+        Camera2D.(create half_screen player.position (rotation camera) (zoom camera))
       in
       let shift =
         let (minX, minY, maxX, maxY) =
@@ -164,9 +164,9 @@ let update_camera delta (player, env_items, camera, mode) =
           else if high < maxi then maxi -. high
           else 0.0
         in
-        Vector2.create
-          (shift_cam Vector2.x (Float.of_int width))
-          (shift_cam Vector2.y (Float.of_int height))
+        Vector2.(create
+                   (shift_cam x (Float.of_int width))
+                   (shift_cam y (Float.of_int height)))
       in
       let offset = Vector2.add half_screen shift in
       (offset, player.position, mode)
@@ -228,7 +228,8 @@ let update_camera delta (player, env_items, camera, mode) =
       let bbox_world_min, bbox_world_max = 
         get_screen_to_world_2d vmin camera,
         get_screen_to_world_2d
-          (Vector2.create ((1.0 +. bbox_x) *. 0.5 *. Float.of_int width)
+          (Vector2.create 
+             ((1.0 +. bbox_x) *. 0.5 *. Float.of_int width)
              ((1.0 +.  bbox_y) *. 0.5 *. Float.of_int height))
           camera
       in
