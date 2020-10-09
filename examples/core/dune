@@ -64,6 +64,11 @@
   (libraries raylib))
 
 (executable
+  (name core_loading_thread)
+  (modules Core_loading_thread)
+  (libraries raylib threads))
+
+(executable
   (name core_random_values)
   (modules Core_random_values)
   (libraries raylib))
