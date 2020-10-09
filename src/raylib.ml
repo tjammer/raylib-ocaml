@@ -538,8 +538,26 @@ module RayHitInfo = struct
   let normal ray = getf ray Types.RayHitInfo.normal
 end
 
+module BoundingBox = struct
+  type t = Types.BoundingBox.t structure
+  let t = Types.BoundingBox.t
+
+  let create min max =
+    let bb = make t in
+    setf bb Types.BoundingBox.min min;
+    setf bb Types.BoundingBox.max max;
+    bb
+  
+  let min bb = getf bb Types.BoundingBox.min
+  let max bb = getf bb Types.BoundingBox.max
+  
+  let set_min bb v = setf bb Types.BoundingBox.min v
+  let set_max bb v = setf bb Types.BoundingBox.max v
+
+end
+
 (* TODO *)
-module BoundingBox = Types.BoundingBox
+
 module Wave = Types.Wave
 module AudioStream = Types.AudioStream
 module Sound = Types.Sound
