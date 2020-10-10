@@ -24,6 +24,11 @@
   (libraries raylib))
 
 (executable
+  (name core_3d_picking)
+  (modules Core_3d_picking)
+  (libraries raylib))
+
+(executable
   (name core_basic_window)
   (modules Core_basic_window)
   (libraries raylib))
