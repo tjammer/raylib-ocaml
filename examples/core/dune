@@ -67,3 +67,8 @@
   (name core_vr_simulator)
   (modules Core_vr_simulator)
   (libraries raylib))
+
+(executable
+  (name core_window_letterbox)
+  (modules Core_window_letterbox)
+  (libraries raylib))
