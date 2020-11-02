@@ -1,0 +1,4 @@
+(executable
+ (name audio_module_playing)
+ (modules Audio_module_playing)
+ (libraries raylib))
