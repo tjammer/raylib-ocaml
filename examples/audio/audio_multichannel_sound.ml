@@ -8,7 +8,7 @@ let setup () =
   init_audio_device ();
 
   let fx_wav = load_sound "resources/sound.wav" in
-  let fx_ogg = load_sound "resources/tanatana.ogg" in
+  let fx_ogg = load_sound "resources/target.ogg" in
 
   set_sound_volume fx_wav 0.2;
 
