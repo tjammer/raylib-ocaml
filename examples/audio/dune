@@ -1,0 +1,14 @@
+(executable
+ (name audio_module_playing)
+ (modules Audio_module_playing)
+ (libraries raylib))
+
+(executable
+ (name audio_multichannel_sound)
+ (modules Audio_multichannel_sound)
+ (libraries raylib))
+
+(executable
+ (name audio_music_stream)
+ (modules Audio_music_stream)
+ (libraries raylib))
