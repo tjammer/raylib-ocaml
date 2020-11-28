@@ -2,7 +2,6 @@ include Raylib_functions.Description (Raylib_c.Raylib_c_generated_functions)
 include Raylib_generated_constants
 include Ctypes_reexports
 module Types = Raylib_functions.Types
-module Constants = Raylib_generated_constants
 module Math = Raylib_math.Description (Raylib_c.Raylib_c_generated_math)
 open Ctypes
 
@@ -224,7 +223,7 @@ module Image = struct
   let mipmaps tex = getf tex Types.Texture2D.mipmaps
 
   let format tex =
-    Constants.PixelFormat.of_int (getf tex Types.Texture2D.format)
+    PixelFormat.of_int (getf tex Types.Texture2D.format)
 end
 
 module Texture2D = struct
@@ -239,7 +238,7 @@ module Texture2D = struct
   let mipmaps tex = getf tex Types.Texture2D.mipmaps
 
   let format tex =
-    Constants.PixelFormat.of_int (getf tex Types.Texture2D.format)
+    PixelFormat.of_int (getf tex Types.Texture2D.format)
 end
 
 module RenderTexture2D = struct
@@ -264,7 +263,7 @@ module NPatchInfo = struct
     setf np Types.NPatchInfo.top top;
     setf np Types.NPatchInfo.right right;
     setf np Types.NPatchInfo.bottom bottom;
-    setf np Types.NPatchInfo.typ (Constants.NPatchType.to_int typ);
+    setf np Types.NPatchInfo.typ (NPatchType.to_int typ);
     np
 
   let source_rec np = getf np Types.NPatchInfo.source_rec
@@ -277,7 +276,7 @@ module NPatchInfo = struct
 
   let bottom np = getf np Types.NPatchInfo.bottom
 
-  let typ np = Constants.NPatchType.of_int (getf np Types.NPatchInfo.typ)
+  let typ np = NPatchType.of_int (getf np Types.NPatchInfo.typ)
 end
 
 module CharInfo = struct
@@ -320,7 +319,7 @@ module Camera3D = struct
     setf cam Types.Camera3D.target target;
     setf cam Types.Camera3D.up up;
     setf cam Types.Camera3D.fovy fovy;
-    setf cam Types.Camera3D.typ (Constants.CameraType.to_int typ);
+    setf cam Types.Camera3D.typ (CameraType.to_int typ);
     cam
 
   let position cam = getf cam Types.Camera3D.position
@@ -331,7 +330,7 @@ module Camera3D = struct
 
   let fovy cam = getf cam Types.Camera3D.fovy
 
-  let typ cam = Constants.CameraType.of_int (getf cam Types.Camera3D.typ)
+  let typ cam = CameraType.of_int (getf cam Types.Camera3D.typ)
 end
 
 module Camera = Camera3D
