@@ -85,8 +85,6 @@ module Vector4 = struct
   include Math.Quaternion
 end
 
-module Quaternion = Vector4
-
 module Matrix = struct
   type t = Types.Matrix.t structure
 
@@ -212,8 +210,10 @@ module Rectangle = struct
   let set_height rc height = setf rc Types.Rectangle.height height
 end
 
-module Image = struct
-  type t = Types.Image.t structure
+module Texture2D = struct
+  type t = Types.Texture2D.t structure
+
+  let id tex = getf tex Types.Texture2D.id
 
   let width tex = getf tex Types.Texture2D.width
 
@@ -224,10 +224,8 @@ module Image = struct
   let format tex = PixelFormat.of_int (getf tex Types.Texture2D.format)
 end
 
-module Texture2D = struct
-  type t = Types.Texture2D.t structure
-
-  let id tex = getf tex Types.Texture2D.id
+module Image = struct
+  type t = Types.Image.t structure
 
   let width tex = getf tex Types.Texture2D.width
 
@@ -362,12 +360,12 @@ module Camera2D = struct
   let set_zoom cam rot = setf cam Types.Camera2D.zoom rot
 end
 
-module Mesh = Types.Mesh
+module Mesh = struct
+  type t = Types.Mesh.t structure
+end
 
 module Shader = struct
   type t = Types.Shader.t structure
-
-  let t = Types.Shader.t
 end
 
 module MaterialMap = struct
@@ -448,12 +446,12 @@ module Transform = struct
   let set_scale transform scale = setf transform Types.Transform.scale scale
 end
 
-module BoneInfo = Types.BoneInfo
+module BoneInfo = struct
+  type t = Types.BoneInfo.t structure
+end
 
 module Model = struct
   type t = Types.Model.t structure
-
-  let t = Types.Model.t
 
   let transform model = getf model Types.Model.transform
 
@@ -462,8 +460,9 @@ module Model = struct
     CArray.from_ptr (getf model Types.Model.meshes) count
 
   let materials model =
-    let count = getf model Types.Model.material_count in
-    CArray.from_ptr (getf model Types.Model.materials) count
+    CArray.from_ptr
+      (getf model Types.Model.materials)
+      (getf model Types.Model.material_count)
 
   let bones model =
     let count = getf model Types.Model.bone_count in
@@ -486,8 +485,6 @@ end
 
 module ModelAnimation = struct
   type t = Types.ModelAnimation.t structure
-
-  let t = Types.Ray.t
 
   let bones anim =
     let count = getf anim Types.ModelAnimation.bone_count in
@@ -554,12 +551,21 @@ module BoundingBox = struct
   let set_max bb v = setf bb Types.BoundingBox.max v
 end
 
-(* TODO *)
+module Wave = struct
+  type t = Types.Wave.t structure
+end
 
-module Wave = Types.Wave
-module AudioStream = Types.AudioStream
-module Sound = Types.Sound
-module Music = Types.Music
+module AudioStream = struct
+  type t = Types.AudioStream.t structure
+end
+
+module Sound = struct
+  type t = Types.Sound.t structure
+end
+
+module Music = struct
+  type t = Types.Music.t structure
+end
 
 module VrDeviceInfo = struct
   type t = Types.VrDeviceInfo.t structure

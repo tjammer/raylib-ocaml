@@ -3,7 +3,9 @@
 
 module CArray = Ctypes.CArray
 
-let addr = Ctypes.addr
+let addr x = Ctypes.addr x
+
+let to_voidp = Ctypes.to_voidp
 
 let ptr_of_int i = Ctypes.(allocate int i)
 

@@ -25,6 +25,7 @@ val max_shader_locations : int
 module CArray = Ctypes.CArray
 val addr :
   ('a, 'b) Ctypes.structured -> ('a, 'b) Ctypes.structured Ctypes.ptr
+val to_voidp : 'a Ctypes.ptr -> unit Ctypes.ptr
 val ptr_of_int : int -> int Ctypes.ptr
 val ptr_of_uint : Unsigned.uint -> Unsigned.uint Ctypes.ptr
 val void_ptr_of_int : int -> unit Ctypes.ptr
@@ -846,7 +847,6 @@ module Vector4 :
        Raylib_c.Raylib_c_generated_math.return)
       Raylib_c.Raylib_c_generated_math.result
   end
-module Quaternion = Vector4
 module Matrix :
   sig
     type t = Types.Matrix.t Ctypes.structure
@@ -1044,20 +1044,20 @@ module Rectangle :
     val set_height :
       (Types.Rectangle.t, [ `Struct ]) Ctypes.structured -> float -> unit
   end
-module Image :
+module Texture2D :
   sig
-    type t = Types.Image.t Ctypes.structure
+    type t = Types.Texture2D.t Ctypes.structure
+    val id :
+      (Types.Texture2D.t, [ `Struct ]) Ctypes.structured -> Unsigned.uint
     val width : (Types.Texture2D.t, [ `Struct ]) Ctypes.structured -> int
     val height : (Types.Texture2D.t, [ `Struct ]) Ctypes.structured -> int
     val mipmaps : (Types.Texture2D.t, [ `Struct ]) Ctypes.structured -> int
     val format :
       (Types.Texture2D.t, [ `Struct ]) Ctypes.structured -> PixelFormat.t
   end
-module Texture2D :
+module Image :
   sig
-    type t = Types.Texture2D.t Ctypes.structure
-    val id :
-      (Types.Texture2D.t, [ `Struct ]) Ctypes.structured -> Unsigned.uint
+    type t = Types.Image.t Ctypes.structure
     val width : (Types.Texture2D.t, [ `Struct ]) Ctypes.structured -> int
     val height : (Types.Texture2D.t, [ `Struct ]) Ctypes.structured -> int
     val mipmaps : (Types.Texture2D.t, [ `Struct ]) Ctypes.structured -> int
@@ -1174,12 +1174,8 @@ module Camera2D :
     val set_zoom :
       (Types.Camera2D.t, [ `Struct ]) Ctypes.structured -> float -> unit
   end
-module Mesh = Types.Mesh
-module Shader :
-  sig
-    type t = Types.Shader.t Ctypes.structure
-    val t : Types.Shader.t Ctypes.structure Ctypes.typ
-  end
+module Mesh : sig type t = Types.Mesh.t Ctypes.structure end
+module Shader : sig type t = Types.Shader.t Ctypes.structure end
 module MaterialMap :
   sig
     type t = Types.MaterialMap.t Ctypes.structure
@@ -1258,11 +1254,10 @@ module Transform :
       (Types.Transform.t, [ `Struct ]) Ctypes.structured ->
       Raylib_generated_types.Vector3.t Ctypes.structure -> unit
   end
-module BoneInfo = Types.BoneInfo
+module BoneInfo : sig type t = Types.BoneInfo.t Ctypes.structure end
 module Model :
   sig
     type t = Types.Model.t Ctypes.structure
-    val t : Types.Model.t Ctypes.structure Ctypes.typ
     val transform :
       (Types.Model.t, [ `Struct ]) Ctypes.structured ->
       Raylib_generated_types.Matrix.t Ctypes.structure
@@ -1300,7 +1295,6 @@ module Model :
 module ModelAnimation :
   sig
     type t = Types.ModelAnimation.t Ctypes.structure
-    val t : Types.Ray.t Ctypes.structure Ctypes.typ
     val bones :
       (Types.ModelAnimation.t, [ `Struct ]) Ctypes.structured ->
       Raylib_generated_types.BoneInfo.t Ctypes.structure Ctypes.CArray.t
@@ -1362,10 +1356,10 @@ module BoundingBox :
       (Types.BoundingBox.t, [ `Struct ]) Ctypes.structured ->
       Raylib_generated_types.Vector3.t Ctypes.structure -> unit
   end
-module Wave = Types.Wave
-module AudioStream = Types.AudioStream
-module Sound = Types.Sound
-module Music = Types.Music
+module Wave : sig type t = Types.Wave.t Ctypes.structure end
+module AudioStream : sig type t = Types.AudioStream.t Ctypes.structure end
+module Sound : sig type t = Types.Sound.t Ctypes.structure end
+module Music : sig type t = Types.Music.t Ctypes.structure end
 module VrDeviceInfo :
   sig
     type t = Types.VrDeviceInfo.t Ctypes.structure
