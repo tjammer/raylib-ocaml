@@ -1,4 +1,3 @@
-include Raylib_functions.Description (Raylib_c.Raylib_c_generated_functions)
 include Raylib_generated_constants
 include Ctypes_reexports
 module Types = Raylib_functions.Types
@@ -222,8 +221,7 @@ module Image = struct
 
   let mipmaps tex = getf tex Types.Texture2D.mipmaps
 
-  let format tex =
-    PixelFormat.of_int (getf tex Types.Texture2D.format)
+  let format tex = PixelFormat.of_int (getf tex Types.Texture2D.format)
 end
 
 module Texture2D = struct
@@ -237,8 +235,7 @@ module Texture2D = struct
 
   let mipmaps tex = getf tex Types.Texture2D.mipmaps
 
-  let format tex =
-    PixelFormat.of_int (getf tex Types.Texture2D.format)
+  let format tex = PixelFormat.of_int (getf tex Types.Texture2D.format)
 end
 
 module RenderTexture2D = struct
@@ -632,6 +629,8 @@ module VrDeviceInfo = struct
     CArray.set arr 2 v2;
     CArray.set arr 3 v3
 end
+
+include Raylib_functions.Description (Raylib_c.Raylib_c_generated_functions)
 
 (* CArray wrapped functions *)
 let load_file_data path =
