@@ -13,16 +13,12 @@ jobs:
       matrix:
         os:
           - macos-latest
-          - ubuntu-latest
+          - ubuntu-18.04
+          - windows-latest
         ocaml-version:
+          - 4.09.1
           - 4.10.0
-        include:
-          - ocaml-version: 4.11.0
-            os: ubuntu-latest
-          - ocaml-version: 4.10.0
-            os: windows-latest
-          - ocaml-version: 4.09.1
-            os: ubuntu-latest
+          - 4.11.1
 
     runs-on: ${{ matrix.os }}
 
