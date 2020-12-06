@@ -1,0 +1,4 @@
+(executable
+ (name sanitize_mli)
+ (modules Sanitize_mli)
+ (libraries str))

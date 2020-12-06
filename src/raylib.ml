@@ -5,7 +5,9 @@ module Math = Raylib_math.Description (Raylib_c.Raylib_c_generated_math)
 open Ctypes
 
 module Vector2 = struct
-  type t = Types.Vector2.t structure
+  type t' = Types.Vector2.t
+
+  type t = t' ctyp
 
   let t = Types.Vector2.t
 
@@ -27,7 +29,9 @@ module Vector2 = struct
 end
 
 module Vector3 = struct
-  type t = Types.Vector3.t structure
+  type t' = Types.Vector3.t
+
+  type t = t' ctyp
 
   let t = Types.Vector3.t
 
@@ -54,7 +58,9 @@ module Vector3 = struct
 end
 
 module Vector4 = struct
-  type t = Types.Vector4.t structure
+  type t' = Types.Vector4.t
+
+  type t = t' ctyp
 
   let t = Types.Vector4.t
 
@@ -86,7 +92,9 @@ module Vector4 = struct
 end
 
 module Matrix = struct
-  type t = Types.Matrix.t structure
+  type t' = Types.Matrix.t
+
+  type t = t' ctyp
 
   let t = Types.Matrix.t
 
@@ -114,7 +122,9 @@ module Matrix = struct
 end
 
 module Color = struct
-  type t = Types.Color.t structure
+  type t' = Types.Color.t
+
+  type t = t' ctyp
 
   let t = Types.Color.t
 
@@ -181,7 +191,9 @@ module Color = struct
 end
 
 module Rectangle = struct
-  type t = Types.Rectangle.t structure
+  type t' = Types.Rectangle.t
+
+  type t = t' ctyp
 
   let t = Types.Rectangle.t
 
@@ -211,7 +223,9 @@ module Rectangle = struct
 end
 
 module Texture2D = struct
-  type t = Types.Texture2D.t structure
+  type t' = Types.Texture2D.t
+
+  type t = t' ctyp
 
   let id tex = getf tex Types.Texture2D.id
 
@@ -225,7 +239,9 @@ module Texture2D = struct
 end
 
 module Image = struct
-  type t = Types.Image.t structure
+  type t' = Types.Image.t
+
+  type t = t' ctyp
 
   let width tex = getf tex Types.Texture2D.width
 
@@ -237,7 +253,9 @@ module Image = struct
 end
 
 module RenderTexture2D = struct
-  type t = Types.RenderTexture2D.t structure
+  type t' = Types.RenderTexture2D.t
+
+  type t = t' ctyp
 
   let texture tex = getf tex Types.RenderTexture2D.texture
 
@@ -247,7 +265,9 @@ module RenderTexture2D = struct
 end
 
 module NPatchInfo = struct
-  type t = Types.NPatchInfo.t structure
+  type t' = Types.NPatchInfo.t
+
+  type t = t' ctyp
 
   let t = Types.NPatchInfo.t
 
@@ -275,7 +295,9 @@ module NPatchInfo = struct
 end
 
 module CharInfo = struct
-  type t = Types.CharInfo.t structure
+  type t' = Types.CharInfo.t
+
+  type t = t' ctyp
 
   let value char_info = getf char_info Types.CharInfo.value
 
@@ -289,7 +311,9 @@ module CharInfo = struct
 end
 
 module Font = struct
-  type t = Types.Font.t structure
+  type t' = Types.Font.t
+
+  type t = t' ctyp
 
   let base_size font = getf font Types.Font.base_size
 
@@ -304,7 +328,9 @@ module Font = struct
 end
 
 module Camera3D = struct
-  type t = Types.Camera3D.t structure
+  type t' = Types.Camera3D.t
+
+  type t = t' ctyp
 
   let t = Types.Camera3D.t
 
@@ -331,7 +357,9 @@ end
 module Camera = Camera3D
 
 module Camera2D = struct
-  type t = Types.Camera2D.t structure
+  type t' = Types.Camera2D.t
+
+  type t = t' ctyp
 
   let t = Types.Camera2D.t
 
@@ -361,15 +389,21 @@ module Camera2D = struct
 end
 
 module Mesh = struct
-  type t = Types.Mesh.t structure
+  type t' = Types.Mesh.t
+
+  type t = t' ctyp
 end
 
 module Shader = struct
-  type t = Types.Shader.t structure
+  type t' = Types.Shader.t
+
+  type t = t' ctyp
 end
 
 module MaterialMap = struct
-  type t = Types.MaterialMap.t structure
+  type t' = Types.MaterialMap.t
+
+  type t = t' ctyp
 
   let t = Types.MaterialMap.t
 
@@ -394,7 +428,9 @@ module MaterialMap = struct
 end
 
 module Material = struct
-  type t = Types.Material.t structure
+  type t' = Types.Material.t
+
+  type t = t' ctyp
 
   let t = Types.Material.t
 
@@ -420,7 +456,9 @@ module Material = struct
 end
 
 module Transform = struct
-  type t = Types.Transform.t structure
+  type t' = Types.Transform.t
+
+  type t = t' ctyp
 
   let t = Types.Transform.t
 
@@ -447,11 +485,15 @@ module Transform = struct
 end
 
 module BoneInfo = struct
-  type t = Types.BoneInfo.t structure
+  type t' = Types.BoneInfo.t
+
+  type t = t' ctyp
 end
 
 module Model = struct
-  type t = Types.Model.t structure
+  type t' = Types.Model.t
+
+  type t = t' ctyp
 
   let transform model = getf model Types.Model.transform
 
@@ -484,7 +526,9 @@ module Model = struct
 end
 
 module ModelAnimation = struct
-  type t = Types.ModelAnimation.t structure
+  type t' = Types.ModelAnimation.t
+
+  type t = t' ctyp
 
   let bones anim =
     let count = getf anim Types.ModelAnimation.bone_count in
@@ -504,7 +548,9 @@ module ModelAnimation = struct
 end
 
 module Ray = struct
-  type t = Types.Ray.t structure
+  type t' = Types.Ray.t
+
+  type t = t' ctyp
 
   let t = Types.Ray.t
 
@@ -520,7 +566,9 @@ module Ray = struct
 end
 
 module RayHitInfo = struct
-  type t = Types.RayHitInfo.t structure
+  type t' = Types.RayHitInfo.t
+
+  type t = t' ctyp
 
   let hit ray = getf ray Types.RayHitInfo.hit
 
@@ -532,7 +580,9 @@ module RayHitInfo = struct
 end
 
 module BoundingBox = struct
-  type t = Types.BoundingBox.t structure
+  type t' = Types.BoundingBox.t
+
+  type t = t' ctyp
 
   let t = Types.BoundingBox.t
 
@@ -552,23 +602,33 @@ module BoundingBox = struct
 end
 
 module Wave = struct
-  type t = Types.Wave.t structure
+  type t' = Types.Wave.t
+
+  type t = t' ctyp
 end
 
 module AudioStream = struct
-  type t = Types.AudioStream.t structure
+  type t' = Types.AudioStream.t
+
+  type t = t' ctyp
 end
 
 module Sound = struct
-  type t = Types.Sound.t structure
+  type t' = Types.Sound.t
+
+  type t = t' ctyp
 end
 
 module Music = struct
-  type t = Types.Music.t structure
+  type t' = Types.Music.t
+
+  type t = t' ctyp
 end
 
 module VrDeviceInfo = struct
-  type t = Types.VrDeviceInfo.t structure
+  type t' = Types.VrDeviceInfo.t
+
+  type t = t' ctyp
 
   let t = Types.VrDeviceInfo.t
 

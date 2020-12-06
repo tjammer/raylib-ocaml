@@ -3,7 +3,9 @@
 
 module CArray = Ctypes.CArray
 
-let addr x = Ctypes.addr x
+type 'a ctyp = 'a Ctypes.structure
+
+let addr (x : 'a ctyp) = Ctypes.addr x
 
 let to_voidp = Ctypes.to_voidp
 

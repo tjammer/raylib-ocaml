@@ -77,7 +77,7 @@ let rec loop width height shader locations camera runtime =
         ShaderUniformDataType.Vec3;
 
       set_shader_value shader locations.runtime
-        Ctypes.(to_voidp (addr runtime_v))
+        (Ctypes.to_voidp (addr runtime_v))
         ShaderUniformDataType.Float;
 
       begin_drawing ();
