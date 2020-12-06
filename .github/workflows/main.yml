@@ -22,9 +22,6 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
-    env:
-      SKIP_TEST: ${{ matrix.skip_test }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
