@@ -35,6 +35,10 @@ jobs:
 
       - run: opam pin -n .
 
+      - name: Re-synchronize the package index files on Ubuntu
+        if: runner.os == 'Linux'
+        run: sudo apt-get update
+
       - run: opam depext raylib
 
       - run: opam install . --deps-only
