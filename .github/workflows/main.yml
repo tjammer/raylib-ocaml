@@ -13,7 +13,7 @@ jobs:
       matrix:
         os:
           - macos-latest
-          - ubuntu-18.04
+          - ubuntu-latest
           - windows-latest
         ocaml-version:
           - 4.09.1
@@ -36,7 +36,7 @@ jobs:
       - run: opam pin -n .
 
       - name: Re-synchronize the package index files on Ubuntu
-        if: runner.os == 'Linux'
+        if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get update
 
       - run: opam depext raylib
