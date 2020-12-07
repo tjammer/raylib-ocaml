@@ -1,3 +1,7 @@
+(** {1 Ctypes reexports}
+
+  Basic types and utility functions shared by the following modules *)
+
 type 'a ctyp
 
 type 'a ptr
@@ -11,6 +15,10 @@ val ptr_of_int : int -> int ptr
 val ptr_of_uint : Unsigned.uint -> Unsigned.uint ptr
 
 val void_ptr_of_int : int -> unit ptr
+
+module CArray = Ctypes.CArray
+
+(** {1 Constants} *)
 
 module ConfigFlag : sig
   type t =
@@ -416,7 +424,7 @@ val max_material_maps : int
 
 val max_shader_locations : int
 
-module CArray = Ctypes.CArray
+(** {1 Types} *)
 
 module Vector2 : sig
   type t'
@@ -1105,6 +1113,11 @@ module VrDeviceInfo : sig
   val set_chroma_ab_correction : t -> float -> float -> float -> float -> unit
 end
 
+(** {1 Functions}
+  {2 Window and Graphics Device Functions (Module: core) }
+  {3 Window-related functions }
+   *)
+
 val init_window : int -> int -> string -> unit
 
 val window_should_close : unit -> bool
@@ -1163,6 +1176,8 @@ val get_clipboard_text : unit -> string option
 
 val set_clipboard_text : string -> unit
 
+(** {3 Cursor-related functions} *)
+
 val show_cursor : unit -> unit
 
 val hide_cursor : unit -> unit
@@ -1172,6 +1187,8 @@ val is_cursor_hidden : unit -> bool
 val enable_cursor : unit -> unit
 
 val disable_cursor : unit -> unit
+
+(** {3 Drawing-related functions} *)
 
 val clear_background : Color.t -> unit
 
@@ -1195,6 +1212,8 @@ val begin_scissor_mode : int -> int -> int -> int -> unit
 
 val end_scissor_mode : unit -> unit
 
+(** {3 Screen-space-related functions} *)
+
 val get_mouse_ray : Vector2.t -> Camera3D.t -> Ray.t
 
 val get_camera_matrix : Camera3D.t -> Matrix.t
@@ -1209,9 +1228,11 @@ val get_world_to_screen_2d : Vector2.t -> Camera2D.t -> Vector2.t
 
 val get_screen_to_world_2d : Vector2.t -> Camera2D.t -> Vector2.t
 
+(** {3 Timing-related functions} *)
+
 val set_target_fps : int -> unit
 
-val get_f_p_s : unit -> int
+val get_fps : unit -> int
 
 val get_frame_time : unit -> float
 
@@ -1231,6 +1252,8 @@ val get_color : int -> Color.t
 
 val fade : Color.t -> float -> Color.t
 
+(** {3 Misc. functions} *)
+
 val set_config_flags : ConfigFlag.t list -> unit
 
 val set_trace_log_level : TraceLogType.t -> unit
@@ -1243,9 +1266,11 @@ val take_screenshot : string -> unit
 
 val get_random_value : int -> int -> int
 
-val _load_file_data : string -> Unsigned.uint ptr -> Unsigned.uchar ptr
+(** {3 Files management functions} *)
 
-val _save_file_data : string -> unit ptr -> int -> unit
+val load_file_data : string -> Unsigned.uchar CArray.t
+
+val save_file_data : string -> 'a CArray.t -> unit
 
 val load_file_text : string -> string
 
@@ -1269,7 +1294,7 @@ val get_prev_directory_path : string -> string
 
 val get_working_directory : unit -> string
 
-val _get_directory_files : string -> int ptr -> string ptr
+val get_directory_files : string -> string CArray.t
 
 val clear_directory_files : unit -> unit
 
@@ -1277,22 +1302,27 @@ val change_directory : string -> bool
 
 val is_file_dropped : unit -> bool
 
-val _get_dropped_files : int ptr -> string ptr
+val get_dropped_files : unit -> string CArray.t
 
 val clear_dropped_files : unit -> unit
 
 val get_file_mod_time : string -> Signed.long
 
-val _compress_data : Unsigned.uchar ptr -> int -> int ptr -> Unsigned.uchar ptr
+val compress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
 
-val _decompress_data :
-  Unsigned.uchar ptr -> int -> int ptr -> Unsigned.uchar ptr
+val decompress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
+
+(** {3 Persistent storage management} *)
 
 val save_storage_value : int -> int -> unit
 
 val load_storage_value : int -> int
 
-val open_u_r_l : string -> unit
+val open_url : string -> unit
+
+(** {2 Input Handling Functions (Module: core)} *)
+
+(** {3 Input-related functions: keyboard} *)
 
 val is_key_pressed : Key.t -> bool
 
@@ -1305,6 +1335,8 @@ val is_key_up : Key.t -> bool
 val set_exit_key : Key.t -> unit
 
 val get_key_pressed : unit -> Key.t
+
+(** {3 Input-related functions: gamepads} *)
 
 val is_gamepad_available : GamepadNumber.t -> bool
 
@@ -1325,6 +1357,8 @@ val get_gamepad_button_pressed : unit -> GamepadButton.t
 val get_gamepad_axis_count : GamepadNumber.t -> int
 
 val get_gamepad_axis_movement : GamepadNumber.t -> GamepadAxis.t -> float
+
+(** {3 Input-related functions: mouse} *)
 
 val is_mouse_button_pressed : MouseButton.t -> bool
 
@@ -1348,11 +1382,15 @@ val set_mouse_scale : float -> float -> unit
 
 val get_mouse_wheel_move : unit -> int
 
+(** {3 Input-related functions: touch} *)
+
 val get_touch_x : unit -> int
 
 val get_touch_y : unit -> int
 
 val get_touch_position : int -> Vector2.t
+
+(** {3 Gestures and Touch Handling Functions (Module: gestures)} *)
 
 val is_gesture_detected : int -> bool
 
@@ -1370,6 +1408,8 @@ val get_gesture_pinch_vector : unit -> Vector2.t
 
 val get_gesture_pinch_angle : unit -> float
 
+(** {3 Camera System Functions (Module: camera)} *)
+
 val set_camera_mode : Camera3D.t -> CameraMode.t -> unit
 
 val update_camera : Camera3D.t ptr -> unit
@@ -1382,6 +1422,10 @@ val set_camera_smooth_zoom_control : Key.t -> unit
 
 val set_camera_move_controls :
   Key.t -> Key.t -> Key.t -> Key.t -> Key.t -> Key.t -> unit
+
+(** {2 Basic Shapes Drawing Functions (Module: shapes)} *)
+
+(** {3 Basic shapes drawing functions} *)
 
 val draw_pixel : int -> int -> Color.t -> unit
 
@@ -1459,6 +1503,8 @@ val draw_poly : Vector2.t -> int -> float -> float -> Color.t -> unit
 
 val draw_poly_lines : Vector2.t -> int -> float -> float -> Color.t -> unit
 
+(** {3 Basic shapes collision detection functions} *)
+
 val check_collision_recs : Rectangle.t -> Rectangle.t -> bool
 
 val check_collision_circles : Vector2.t -> float -> Vector2.t -> float -> bool
@@ -1473,6 +1519,10 @@ val check_collision_point_circle : Vector2.t -> Vector2.t -> float -> bool
 
 val check_collision_point_triangle :
   Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> bool
+
+(** {2 Texture Loading and Drawing Functions (Module: textures)} *)
+
+(** {3 Image loading functions} *)
 
 val load_image : string -> Image.t
 
@@ -1505,6 +1555,8 @@ val gen_image_white_noise : int -> int -> float -> Image.t
 val gen_image_perlin_noise : int -> int -> int -> int -> float -> Image.t
 
 val gen_image_cellular : int -> int -> int -> Image.t
+
+(** {3 Image manipulation functions} *)
 
 val image_copy : Image.t -> Image.t
 
@@ -1561,6 +1613,8 @@ val image_color_replace : Image.t ptr -> Color.t -> Color.t -> unit
 
 val get_image_alpha_border : Image.t -> float -> Rectangle.t
 
+(** {3 Image drawing functions} *)
+
 val image_clear_background : Image.t ptr -> Color.t -> unit
 
 val image_draw_pixel : Image.t ptr -> int -> int -> Color.t -> unit
@@ -1602,6 +1656,8 @@ val image_draw_text_ex :
   Color.t ->
   unit
 
+(** {3 Texture loading functions} *)
+
 val load_texture : string -> Texture2D.t
 
 val load_texture_from_image : Image.t -> Texture2D.t
@@ -1620,11 +1676,15 @@ val get_texture_data : Texture2D.t -> Image.t
 
 val get_screen_data : unit -> Image.t
 
+(** {3 Texture configuration functions} *)
+
 val gen_texture_mipmaps : Texture2D.t ptr -> unit
 
 val set_texture_filter : Texture2D.t -> TextureFilterMode.t -> unit
 
 val set_texture_wrap : Texture2D.t -> TextureWrapMode.t -> unit
+
+(** {3 Texture drawing functions} *)
 
 val draw_texture : Texture2D.t -> int -> int -> Color.t -> unit
 
@@ -1657,7 +1717,13 @@ val draw_texture_n_patch :
   Color.t ->
   unit
 
+(** {3 Image/Texture misc functions} *)
+
 val get_pixel_data_size : int -> int -> int -> int
+
+(** {2 Font Loading and Text Drawing Functions (Module: text)} *)
+
+(** {3 Font loading/unloading functions} *)
 
 val get_font_default : unit -> Font.t
 
@@ -1670,6 +1736,8 @@ val load_font_from_image : Image.t -> Color.t -> int -> Font.t
 val load_font_data : string -> int -> int ptr -> int -> int -> CharInfo.t ptr
 
 val unload_font : Font.t -> unit
+
+(** {3 Text drawing functions} *)
 
 val draw_fps : int -> int -> unit
 
@@ -1697,17 +1765,23 @@ val draw_text_rec_ex :
 
 val draw_text_codepoint : Font.t -> int -> Vector2.t -> float -> Color.t -> unit
 
+(** {3 Text misc. functions} *)
+
 val measure_text : string -> int -> int
 
 val measure_text_ex : Font.t -> string -> float -> float -> Vector2.t
 
 val get_glyph_index : Font.t -> int -> int
 
+(** {3 Text strings management functions (no utf8 strings, only byte chars)} *)
+
 val text_copy : string -> string -> int
 
 val text_is_equal : string -> string -> bool
 
 val text_length : string -> int
+
+(**  {3 Text formatting with variables (sprintf style)} *)
 
 val text_subtext : string -> int -> int -> string
 
@@ -1729,6 +1803,8 @@ val text_to_integer : string -> int
 
 val text_to_utf8 : int ptr -> int -> string
 
+(** {3 UTF8 text strings management functions} *)
+
 val get_codepoints : string -> int ptr -> int ptr
 
 val get_codepoints_count : string -> int
@@ -1736,6 +1812,10 @@ val get_codepoints_count : string -> int
 val get_next_codepoint : string -> int ptr -> int
 
 val codepoint_to_utf8 : int -> int ptr -> string
+
+(** {2 Basic 3d Shapes Drawing Functions (Module: models)} *)
+
+(** {3 Basic geometric 3D shapes drawing functions} *)
 
 val draw_line_3d : Vector3.t -> Vector3.t -> Color.t -> unit
 
@@ -1774,6 +1854,8 @@ val draw_grid : int -> float -> unit
 
 val draw_gizmo : Vector3.t -> unit
 
+(** {3 Model loading/unloading functions} *)
+
 val load_model : string -> Model.t
 
 val load_model_from_mesh : Mesh.t -> Model.t
@@ -1786,6 +1868,8 @@ val export_mesh : Mesh.t -> string -> unit
 
 val unload_mesh : Mesh.t -> unit
 
+(** {3 Material loading/unloading functions} *)
+
 val load_materials : string -> int ptr -> Material.t ptr
 
 val load_material_default : unit -> Material.t
@@ -1797,13 +1881,17 @@ val set_material_texture :
 
 val set_model_mesh_material : Model.t ptr -> int -> int -> unit
 
-val _load_model_animations : string -> int ptr -> ModelAnimation.t ptr
+(** {3 Model animations loading/unloading functions} *)
+
+val load_model_animations : string -> ModelAnimation.t CArray.t
 
 val update_model_animation : Model.t -> ModelAnimation.t -> int -> unit
 
 val unload_model_animation : ModelAnimation.t -> unit
 
 val is_model_animation_valid : Model.t -> ModelAnimation.t -> bool
+
+(** {3 Mesh generation functions} *)
 
 val gen_mesh_poly : int -> float -> Mesh.t
 
@@ -1825,11 +1913,15 @@ val gen_mesh_heightmap : Image.t -> Vector3.t -> Mesh.t
 
 val gen_mesh_cubicmap : Image.t -> Vector3.t -> Mesh.t
 
+(** {3 Mesh manipulation functions} *)
+
 val mesh_bounding_box : Mesh.t -> BoundingBox.t
 
 val mesh_tangents : Mesh.t ptr -> unit
 
 val mesh_binormals : Mesh.t ptr -> unit
+
+(** {3 Model drawing functions} *)
 
 val draw_model : Model.t -> Vector3.t -> float -> Color.t -> unit
 
@@ -1855,6 +1947,8 @@ val draw_billboard_rec :
   Color.t ->
   unit
 
+(** {3 Collision detection functions} *)
+
 val check_collision_spheres : Vector3.t -> float -> Vector3.t -> float -> bool
 
 val check_collision_boxes : BoundingBox.t -> BoundingBox.t -> bool
@@ -1875,6 +1969,10 @@ val get_collision_ray_triangle :
 
 val get_collision_ray_ground : Ray.t -> float -> RayHitInfo.t
 
+(** {2 Shaders System Functions (Module: rlgl)} *)
+
+(** {3 Shader loading/unloading functions} *)
+
 val load_shader : string -> string -> Shader.t
 
 val load_shader_code : string -> string -> Shader.t
@@ -1890,6 +1988,8 @@ val get_shapes_texture : unit -> Texture2D.t
 val get_shapes_texture_rec : unit -> Rectangle.t
 
 val set_shapes_texture : Texture2D.t -> Rectangle.t -> unit
+
+(** {3 Shader configuration functions} *)
 
 val get_shader_location : Shader.t -> string -> ShaderLocationIndex.t
 
@@ -1922,6 +2022,8 @@ val get_matrix_modelview : unit -> Matrix.t
 
 val get_matrix_projection : unit -> Matrix.t
 
+(** {3 Texture maps generation (PBR)} *)
+
 val gen_texture_cubemap : Shader.t -> Texture2D.t -> int -> Texture2D.t
 
 val gen_texture_irradiance : Shader.t -> Texture2D.t -> int -> Texture2D.t
@@ -1930,6 +2032,8 @@ val gen_texture_prefilter : Shader.t -> Texture2D.t -> int -> Texture2D.t
 
 val gen_texture_b_r_d_f : Shader.t -> int -> Texture2D.t
 
+(** {3 Shading begin/end functions} *)
+
 val begin_shader_mode : Shader.t -> unit
 
 val end_shader_mode : unit -> unit
@@ -1937,6 +2041,8 @@ val end_shader_mode : unit -> unit
 val begin_blend_mode : BlendMode.t -> unit
 
 val end_blend_mode : unit -> unit
+
+(** {3 VR control functions} *)
 
 val init_vr_simulator : unit -> unit
 
@@ -1954,6 +2060,10 @@ val begin_vr_drawing : unit -> unit
 
 val end_vr_drawing : unit -> unit
 
+(** {2 Audio Loading and Playing Functions (Module: audio)} *)
+
+(** {3 Audio device management functions} *)
+
 val init_audio_device : unit -> unit
 
 val close_audio_device : unit -> unit
@@ -1961,6 +2071,8 @@ val close_audio_device : unit -> unit
 val is_audio_device_ready : unit -> bool
 
 val set_master_volume : float -> unit
+
+(** {3 Wave/Sound loading/unloading functions} *)
 
 val load_wave : string -> Wave.t
 
@@ -1977,6 +2089,8 @@ val unload_sound : Sound.t -> unit
 val export_wave : Wave.t -> string -> unit
 
 val export_wave_as_code : Wave.t -> string -> unit
+
+(** {3 Wave/Sound management functions} *)
 
 val play_sound : Sound.t -> unit
 
@@ -2006,6 +2120,8 @@ val wave_crop : Wave.t ptr -> int -> int -> unit
 
 val get_wave_data : Wave.t -> float ptr
 
+(** {3 Music management functions} *)
+
 val load_music_stream : string -> Music.t
 
 val unload_music_stream : Music.t -> unit
@@ -2032,6 +2148,8 @@ val get_music_time_length : Music.t -> float
 
 val get_music_time_played : Music.t -> float
 
+(** {3 AudioStream management functions} *)
+
 val init_audio_stream : int -> int -> int -> AudioStream.t
 
 val update_audio_stream : AudioStream.t -> unit ptr -> int -> unit
@@ -2055,17 +2173,3 @@ val set_audio_stream_volume : AudioStream.t -> float -> unit
 val set_audio_stream_pitch : AudioStream.t -> float -> unit
 
 val set_audio_stream_buffer_size_default : int -> unit
-
-val load_file_data : string -> Unsigned.uchar CArray.t
-
-val save_file_data : string -> 'a CArray.t -> unit
-
-val get_directory_files : string -> string CArray.t
-
-val get_dropped_files : unit -> string CArray.t
-
-val compress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
-
-val decompress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
-
-val load_model_animations : string -> ModelAnimation.t CArray.t

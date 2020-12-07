@@ -198,7 +198,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   let set_target_fps = foreign "SetTargetFPS" (int @-> returning void)
 
   (*  Returns current FPS *)
-  let get_f_p_s = foreign "GetFPS" (void @-> returning int)
+  let get_fps = foreign "GetFPS" (void @-> returning int)
 
   (*  Returns time in seconds for last frame drawn *)
   let get_frame_time = foreign "GetFrameTime" (void @-> returning float)
@@ -348,7 +348,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   let load_storage_value = foreign "LoadStorageValue" (int @-> returning int)
 
   (*  Open URL with default system browser (if available) *)
-  let open_u_r_l = foreign "OpenURL" (string @-> returning void)
+  let open_url = foreign "OpenURL" (string @-> returning void)
 
   (*------------------------------------------------------------------------------------ *)
   (* Input Handling Functions (Module: core) *)
@@ -1763,7 +1763,6 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "UpdateVrTracking" (ptr Types.Camera3D.t @-> returning void)
 
   (*  Set stereo rendering configuration parameters *)
-  (* TODO *)
   let set_vr_configuration =
     foreign "SetVrConfiguration"
       (Types.VrDeviceInfo.t @-> Types.Shader.t @-> returning void)
