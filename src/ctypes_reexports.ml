@@ -5,6 +5,8 @@ module CArray = Ctypes.CArray
 
 type 'a ctyp = 'a Ctypes.structure
 
+type 'a ptr = 'a Ctypes.ptr
+
 let addr (x : 'a ctyp) = Ctypes.addr x
 
 let to_voidp = Ctypes.to_voidp

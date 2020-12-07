@@ -1,42 +1,422 @@
-module ConfigFlag = Raylib_generated_constants.ConfigFlag
-module TraceLogType = Raylib_generated_constants.TraceLogType
-module Key = Raylib_generated_constants.Key
-module AndroidButton = Raylib_generated_constants.AndroidButton
-module MouseButton = Raylib_generated_constants.MouseButton
-module GamepadNumber = Raylib_generated_constants.GamepadNumber
-module GamepadButton = Raylib_generated_constants.GamepadButton
-module GamepadAxis = Raylib_generated_constants.GamepadAxis
-module ShaderLocationIndex = Raylib_generated_constants.ShaderLocationIndex
-module ShaderUniformDataType = Raylib_generated_constants.ShaderUniformDataType
-module MaterialMapType = Raylib_generated_constants.MaterialMapType
-module PixelFormat = Raylib_generated_constants.PixelFormat
-module TextureFilterMode = Raylib_generated_constants.TextureFilterMode
-module CubemapLayoutType = Raylib_generated_constants.CubemapLayoutType
-module TextureWrapMode = Raylib_generated_constants.TextureWrapMode
-module FontType = Raylib_generated_constants.FontType
-module BlendMode = Raylib_generated_constants.BlendMode
-module GestureType = Raylib_generated_constants.GestureType
-module CameraMode = Raylib_generated_constants.CameraMode
-module CameraType = Raylib_generated_constants.CameraType
-module NPatchType = Raylib_generated_constants.NPatchType
+type 'a ctyp
+
+type 'a ptr
+
+val addr : 'a ctyp -> 'a ctyp ptr
+
+val to_voidp : 'a ptr -> unit ptr
+
+val ptr_of_int : int -> int ptr
+
+val ptr_of_uint : Unsigned.uint -> Unsigned.uint ptr
+
+val void_ptr_of_int : int -> unit ptr
+
+module ConfigFlag : sig
+  type t =
+    | Reserved
+    | Fullscreen_mode
+    | Window_resizable
+    | Window_undecorated
+    | Window_transparent
+    | Window_hidden
+    | Window_always_run
+    | MSAA_4X_hint
+    | VSync_hint
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module TraceLogType : sig
+  type t = All | Trace | Debug | Info | Warning | Error | Fatal | None
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module Key : sig
+  type t =
+    | Apostrophe
+    | Comma
+    | Minus
+    | Period
+    | Slash
+    | Zero
+    | One
+    | Two
+    | Three
+    | Four
+    | Five
+    | Six
+    | Seven
+    | Eight
+    | Nine
+    | Semicolon
+    | Equal
+    | A
+    | B
+    | C
+    | D
+    | E
+    | F
+    | G
+    | H
+    | I
+    | J
+    | K
+    | L
+    | M
+    | N
+    | O
+    | P
+    | Q
+    | R
+    | S
+    | T
+    | U
+    | V
+    | W
+    | X
+    | Y
+    | Z
+    | Space
+    | Escape
+    | Enter
+    | Tab
+    | Backspace
+    | Insert
+    | Delete
+    | Right
+    | Left
+    | Down
+    | Up
+    | Page_up
+    | Page_down
+    | Home
+    | End
+    | Caps_lock
+    | Scroll_lock
+    | Num_lock
+    | Print_screen
+    | Pause
+    | F1
+    | F2
+    | F3
+    | F4
+    | F5
+    | F6
+    | F7
+    | F8
+    | F9
+    | F10
+    | F11
+    | F12
+    | Left_shift
+    | Left_control
+    | Left_alt
+    | Left_super
+    | Right_shift
+    | Right_control
+    | Right_alt
+    | Right_super
+    | Keyboard_menu
+    | Left_bracket
+    | Backslash
+    | Right_bracket
+    | Grave
+    | Keypad_0
+    | Keypad_1
+    | Keypad_2
+    | Keypad_3
+    | Keypad_4
+    | Keypad_5
+    | Keypad_6
+    | Keypad_7
+    | Keypad_8
+    | Keypad_9
+    | Keypad_decimal
+    | Keypad_divide
+    | Keypad_multiply
+    | Keypad_subtract
+    | Keypad_add
+    | Keypad_enter
+    | Keypad_equal
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module AndroidButton : sig
+  type t = Back | Menu | Volume_up | Volume_down
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module MouseButton : sig
+  type t = Left | Right | Middle
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module GamepadNumber : sig
+  type t = Player1 | Player2 | Player3 | Player4
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module GamepadButton : sig
+  type t =
+    | Unknown
+    | Left_face_up
+    | Left_face_right
+    | Left_face_down
+    | Left_face_left
+    | Right_face_up
+    | Right_face_right
+    | Right_face_down
+    | Right_face_left
+    | Left_trigger_1
+    | Left_trigger_2
+    | Right_trigger_1
+    | Right_trigger_2
+    | Middle_left
+    | Middle
+    | Middle_right
+    | Left_thumb
+    | Right_thumb
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module GamepadAxis : sig
+  type t =
+    | Unknown
+    | Left_x
+    | Left_y
+    | Right_x
+    | Right_y
+    | Left_trigger
+    | Right_trigger
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module ShaderLocationIndex : sig
+  type t =
+    | Vertex_position
+    | Vertex_texcoord01
+    | Vertex_texcoord02
+    | Vertex_normal
+    | Vertex_tangent
+    | Vertex_color
+    | Matrix_mvp
+    | Matrix_model
+    | Matrix_view
+    | Matrix_projection
+    | Vector_view
+    | Color_diffuse
+    | Color_specular
+    | Color_ambient
+    | Map_albedo
+    | Map_metalness
+    | Map_normal
+    | Map_roughness
+    | Map_occlusion
+    | Map_emission
+    | Map_height
+    | Map_cubemap
+    | Map_irradiance
+    | Map_prefilter
+    | Map_BRDF
+    | Map_diffuse
+    | Map_specular
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module ShaderUniformDataType : sig
+  type t =
+    | Float
+    | Vec2
+    | Vec3
+    | Vec4
+    | Int
+    | IVec2
+    | IVec3
+    | IVec4
+    | Sampler2D
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module MaterialMapType : sig
+  type t =
+    | Albedo
+    | Metalness
+    | Normal
+    | Roughness
+    | Occlusion
+    | Emission
+    | Height
+    | Cubemap
+    | Irradiance
+    | Prefilter
+    | BRDF
+    | Diffuse
+    | Specular
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module PixelFormat : sig
+  type t =
+    | Uncompressed_grayscale
+    | Uncompressed_gray_alpha
+    | Uncompressed_R5G6B5
+    | Uncompressed_R8G8B8
+    | Uncompressed_R5G5B5A1
+    | Uncompressed_R4G4B4A4
+    | Uncompressed_R8G8B8A8
+    | Uncompressed_R32
+    | Uncompressed_R32G32B32
+    | Uncompressed_R32G32B32A32
+    | Compressed_DXT1_RGB
+    | Compressed_DXT1_RGBA
+    | Compressed_DXT3_RGBA
+    | Compressed_DXT5_RGBA
+    | Compressed_ETC1_RGB
+    | Compressed_ETC2_RGB
+    | Compressed_ETC2_EAC_RGBA
+    | Compressed_PVRT_RGB
+    | Compressed_PVRT_RGBA
+    | Compressed_ASTC_4x4_RGBA
+    | Compressed_ASTC_8x8_RGBA
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module TextureFilterMode : sig
+  type t =
+    | Point
+    | Bilinear
+    | Trilinear
+    | Anisotropic_4X
+    | Anisotropic_8X
+    | Anisotropic_16X
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module CubemapLayoutType : sig
+  type t =
+    | Auto_detect
+    | Line_vertical
+    | Line_horizontal
+    | Cross_three_by_four
+    | Cross_four_by_three
+    | Panorama
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module TextureWrapMode : sig
+  type t = Repeat | Clamp | Mirror_repeat | Mirror_clamp
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module FontType : sig
+  type t = Default | Bitmap | SDF
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module BlendMode : sig
+  type t = Alpha | Additive | Multiplied
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module GestureType : sig
+  type t =
+    | None
+    | Tap
+    | Doubletap
+    | Hold
+    | Drag
+    | Swipe_right
+    | Swipe_left
+    | Swipe_up
+    | Swipe_down
+    | Pinch_in
+    | Pinch_out
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module CameraMode : sig
+  type t = Custom | Free | Orbital | First_person | Third_person
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module CameraType : sig
+  type t = Perspective | Orthographic
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module NPatchType : sig
+  type t = Nine_patch | Three_patch_vertical | Three_patch_horizontal
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
 
 val max_material_maps : int
 
 val max_shader_locations : int
 
 module CArray = Ctypes.CArray
-
-type 'a ctyp
-
-val addr : 'a ctyp -> 'a ctyp Ctypes.ptr
-
-val to_voidp : 'a Ctypes.ptr -> unit Ctypes.ptr
-
-val ptr_of_int : int -> int Ctypes.ptr
-
-val ptr_of_uint : Unsigned.uint -> Unsigned.uint Ctypes.ptr
-
-val void_ptr_of_int : int -> unit Ctypes.ptr
 
 module Vector2 : sig
   type t'
@@ -135,7 +515,7 @@ module rec Vector3 : sig
 
   val normalize : t -> t
 
-  val ortho_normalize : t Ctypes_static.ptr -> t Ctypes_static.ptr -> unit
+  val ortho_normalize : t ptr -> t ptr -> unit
 
   val transform : t -> Matrix.t -> t
 
@@ -199,8 +579,7 @@ and Vector4 : sig
 
   val from_axis_angle : Vector3.t -> float -> t
 
-  val to_axis_angle :
-    t -> Vector3.t Ctypes_static.ptr -> float Ctypes_static.ptr -> unit
+  val to_axis_angle : t -> Vector3.t ptr -> float ptr -> unit
 
   val from_euler : float -> float -> float -> t
 
@@ -447,9 +826,9 @@ module Font : sig
 
   val texture : t -> Texture2D.t
 
-  val recs : t -> Rectangle.t Ctypes_static.ptr
+  val recs : t -> Rectangle.t ptr
 
-  val chars : t -> CharInfo.t Ctypes.CArray.t
+  val chars : t -> CharInfo.t CArray.t
 end
 
 module Camera3D : sig
@@ -533,18 +912,17 @@ module Material : sig
 
   type t = t' ctyp
 
-  val create :
-    Shader.t -> MaterialMap.t Ctypes_static.ptr -> float Ctypes_static.ptr -> t
+  val create : Shader.t -> MaterialMap.t ptr -> float ptr -> t
 
   val shader : t -> Shader.t
 
-  val maps : t -> MaterialMap.t Ctypes.CArray.t
+  val maps : t -> MaterialMap.t CArray.t
 
-  val params : t -> float Ctypes.CArray.t
+  val params : t -> float CArray.t
 
   val set_shader : t -> Shader.t -> unit
 
-  val set_maps : t -> MaterialMap.t Ctypes.CArray.t -> unit
+  val set_maps : t -> MaterialMap.t CArray.t -> unit
 end
 
 module Transform : sig
@@ -580,23 +958,23 @@ module Model : sig
 
   val transform : t -> Matrix.t
 
-  val meshes : t -> Mesh.t Ctypes.CArray.t
+  val meshes : t -> Mesh.t CArray.t
 
-  val materials : t -> Material.t Ctypes.CArray.t
+  val materials : t -> Material.t CArray.t
 
-  val bones : t -> BoneInfo.t Ctypes.CArray.t
+  val bones : t -> BoneInfo.t CArray.t
 
-  val bind_pose : t -> Transform.t Ctypes_static.ptr
+  val bind_pose : t -> Transform.t ptr
 
   val set_transform : t -> Matrix.t -> unit
 
-  val set_meshes : t -> Mesh.t Ctypes.CArray.t -> unit
+  val set_meshes : t -> Mesh.t CArray.t -> unit
 
-  val set_materials : t -> Material.t Ctypes.CArray.t -> unit
+  val set_materials : t -> Material.t CArray.t -> unit
 
-  val set_bones : t -> BoneInfo.t Ctypes.CArray.t -> unit
+  val set_bones : t -> BoneInfo.t CArray.t -> unit
 
-  val set_bind_pose : t -> Transform.t Ctypes_static.ptr -> unit
+  val set_bind_pose : t -> Transform.t ptr -> unit
 end
 
 module ModelAnimation : sig
@@ -604,13 +982,13 @@ module ModelAnimation : sig
 
   type t = t' ctyp
 
-  val bones : t -> BoneInfo.t Ctypes.CArray.t
+  val bones : t -> BoneInfo.t CArray.t
 
   val bone_count : t -> int
 
   val frame_count : t -> int
 
-  val frame_pose_at : t -> int -> Transform.t Ctypes.CArray.t
+  val frame_pose_at : t -> int -> Transform.t CArray.t
 end
 
 module Ray : sig
@@ -761,7 +1139,7 @@ val set_window_min_size : int -> int -> unit
 
 val set_window_size : int -> int -> unit
 
-val get_window_handle : unit -> unit Ctypes_static.ptr option
+val get_window_handle : unit -> unit ptr option
 
 val get_screen_width : unit -> int
 
@@ -865,10 +1243,9 @@ val take_screenshot : string -> unit
 
 val get_random_value : int -> int -> int
 
-val _load_file_data :
-  string -> Unsigned.uint Ctypes_static.ptr -> Unsigned.uchar Ctypes_static.ptr
+val _load_file_data : string -> Unsigned.uint ptr -> Unsigned.uchar ptr
 
-val _save_file_data : string -> unit Ctypes_static.ptr -> int -> unit
+val _save_file_data : string -> unit ptr -> int -> unit
 
 val load_file_text : string -> string
 
@@ -892,8 +1269,7 @@ val get_prev_directory_path : string -> string
 
 val get_working_directory : unit -> string
 
-val _get_directory_files :
-  string -> int Ctypes_static.ptr -> string Ctypes_static.ptr
+val _get_directory_files : string -> int ptr -> string ptr
 
 val clear_directory_files : unit -> unit
 
@@ -901,23 +1277,16 @@ val change_directory : string -> bool
 
 val is_file_dropped : unit -> bool
 
-val _get_dropped_files : int Ctypes_static.ptr -> string Ctypes_static.ptr
+val _get_dropped_files : int ptr -> string ptr
 
 val clear_dropped_files : unit -> unit
 
 val get_file_mod_time : string -> Signed.long
 
-val _compress_data :
-  Unsigned.uchar Ctypes_static.ptr ->
-  int ->
-  int Ctypes_static.ptr ->
-  Unsigned.uchar Ctypes_static.ptr
+val _compress_data : Unsigned.uchar ptr -> int -> int ptr -> Unsigned.uchar ptr
 
 val _decompress_data :
-  Unsigned.uchar Ctypes_static.ptr ->
-  int ->
-  int Ctypes_static.ptr ->
-  Unsigned.uchar Ctypes_static.ptr
+  Unsigned.uchar ptr -> int -> int ptr -> Unsigned.uchar ptr
 
 val save_storage_value : int -> int -> unit
 
@@ -1003,7 +1372,7 @@ val get_gesture_pinch_angle : unit -> float
 
 val set_camera_mode : Camera3D.t -> CameraMode.t -> unit
 
-val update_camera : Camera3D.t Ctypes_static.ptr -> unit
+val update_camera : Camera3D.t ptr -> unit
 
 val set_camera_pan_control : Key.t -> unit
 
@@ -1026,7 +1395,7 @@ val draw_line_ex : Vector2.t -> Vector2.t -> float -> Color.t -> unit
 
 val draw_line_bezier : Vector2.t -> Vector2.t -> float -> Color.t -> unit
 
-val draw_line_strip : Vector2.t Ctypes_static.ptr -> int -> Color.t -> unit
+val draw_line_strip : Vector2.t ptr -> int -> Color.t -> unit
 
 val draw_circle : int -> int -> float -> Color.t -> unit
 
@@ -1082,9 +1451,9 @@ val draw_triangle : Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
 
 val draw_triangle_lines : Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
 
-val draw_triangle_fan : Vector2.t Ctypes_static.ptr -> int -> Color.t -> unit
+val draw_triangle_fan : Vector2.t ptr -> int -> Color.t -> unit
 
-val draw_triangle_strip : Vector2.t Ctypes_static.ptr -> int -> Color.t -> unit
+val draw_triangle_strip : Vector2.t ptr -> int -> Color.t -> unit
 
 val draw_poly : Vector2.t -> int -> float -> float -> Color.t -> unit
 
@@ -1107,9 +1476,9 @@ val check_collision_point_triangle :
 
 val load_image : string -> Image.t
 
-val load_image_ex : Color.t Ctypes_static.ptr -> int -> int -> Image.t
+val load_image_ex : Color.t ptr -> int -> int -> Image.t
 
-val load_image_pro : unit Ctypes_static.ptr -> int -> int -> int -> Image.t
+val load_image_pro : unit ptr -> int -> int -> int -> Image.t
 
 val load_image_raw : string -> int -> int -> int -> int -> Image.t
 
@@ -1145,99 +1514,86 @@ val image_text : string -> int -> Color.t -> Image.t
 
 val image_text_ex : Font.t -> string -> float -> float -> Color.t -> Image.t
 
-val image_to_p_o_t : Image.t Ctypes_static.ptr -> Color.t -> unit
+val image_to_p_o_t : Image.t ptr -> Color.t -> unit
 
-val image_format : Image.t Ctypes_static.ptr -> int -> unit
+val image_format : Image.t ptr -> int -> unit
 
-val image_alpha_mask : Image.t Ctypes_static.ptr -> Image.t -> unit
+val image_alpha_mask : Image.t ptr -> Image.t -> unit
 
-val image_alpha_clear : Image.t Ctypes_static.ptr -> Color.t -> float -> unit
+val image_alpha_clear : Image.t ptr -> Color.t -> float -> unit
 
-val image_alpha_crop : Image.t Ctypes_static.ptr -> float -> unit
+val image_alpha_crop : Image.t ptr -> float -> unit
 
-val image_alpha_premultiply : Image.t Ctypes_static.ptr -> unit
+val image_alpha_premultiply : Image.t ptr -> unit
 
-val image_crop : Image.t Ctypes_static.ptr -> Rectangle.t -> unit
+val image_crop : Image.t ptr -> Rectangle.t -> unit
 
-val image_resize : Image.t Ctypes_static.ptr -> int -> int -> unit
+val image_resize : Image.t ptr -> int -> int -> unit
 
-val image_resize_n_n : Image.t Ctypes_static.ptr -> int -> int -> unit
+val image_resize_n_n : Image.t ptr -> int -> int -> unit
 
 val image_resize_canvas :
-  Image.t Ctypes_static.ptr -> int -> int -> int -> int -> Color.t -> unit
+  Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
 
-val image_mipmaps : Image.t Ctypes_static.ptr -> unit
+val image_mipmaps : Image.t ptr -> unit
 
-val image_dither : Image.t Ctypes_static.ptr -> int -> int -> int -> int -> unit
+val image_dither : Image.t ptr -> int -> int -> int -> int -> unit
 
-val image_flip_vertical : Image.t Ctypes_static.ptr -> unit
+val image_flip_vertical : Image.t ptr -> unit
 
-val image_flip_horizontal : Image.t Ctypes_static.ptr -> unit
+val image_flip_horizontal : Image.t ptr -> unit
 
-val image_rotate_c_w : Image.t Ctypes_static.ptr -> unit
+val image_rotate_c_w : Image.t ptr -> unit
 
-val image_rotate_c_c_w : Image.t Ctypes_static.ptr -> unit
+val image_rotate_c_c_w : Image.t ptr -> unit
 
-val image_color_tint : Image.t Ctypes_static.ptr -> Color.t -> unit
+val image_color_tint : Image.t ptr -> Color.t -> unit
 
-val image_color_invert : Image.t Ctypes_static.ptr -> unit
+val image_color_invert : Image.t ptr -> unit
 
-val image_color_grayscale : Image.t Ctypes_static.ptr -> unit
+val image_color_grayscale : Image.t ptr -> unit
 
-val image_color_contrast : Image.t Ctypes_static.ptr -> float -> unit
+val image_color_contrast : Image.t ptr -> float -> unit
 
-val image_color_brightness : Image.t Ctypes_static.ptr -> int -> unit
+val image_color_brightness : Image.t ptr -> int -> unit
 
-val image_color_replace :
-  Image.t Ctypes_static.ptr -> Color.t -> Color.t -> unit
+val image_color_replace : Image.t ptr -> Color.t -> Color.t -> unit
 
 val get_image_alpha_border : Image.t -> float -> Rectangle.t
 
-val image_clear_background : Image.t Ctypes_static.ptr -> Color.t -> unit
+val image_clear_background : Image.t ptr -> Color.t -> unit
 
-val image_draw_pixel :
-  Image.t Ctypes_static.ptr -> int -> int -> Color.t -> unit
+val image_draw_pixel : Image.t ptr -> int -> int -> Color.t -> unit
 
-val image_draw_pixel_v :
-  Image.t Ctypes_static.ptr -> Vector2.t -> Color.t -> unit
+val image_draw_pixel_v : Image.t ptr -> Vector2.t -> Color.t -> unit
 
-val image_draw_line :
-  Image.t Ctypes_static.ptr -> int -> int -> int -> int -> Color.t -> unit
+val image_draw_line : Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
 
-val image_draw_line_v :
-  Image.t Ctypes_static.ptr -> Vector2.t -> Vector2.t -> Color.t -> unit
+val image_draw_line_v : Image.t ptr -> Vector2.t -> Vector2.t -> Color.t -> unit
 
-val image_draw_circle :
-  Image.t Ctypes_static.ptr -> int -> int -> int -> Color.t -> unit
+val image_draw_circle : Image.t ptr -> int -> int -> int -> Color.t -> unit
 
-val image_draw_circle_v :
-  Image.t Ctypes_static.ptr -> Vector2.t -> int -> Color.t -> unit
+val image_draw_circle_v : Image.t ptr -> Vector2.t -> int -> Color.t -> unit
 
 val image_draw_rectangle :
-  Image.t Ctypes_static.ptr -> int -> int -> int -> int -> Color.t -> unit
+  Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
 
 val image_draw_rectangle_v :
-  Image.t Ctypes_static.ptr -> Vector2.t -> Vector2.t -> Color.t -> unit
+  Image.t ptr -> Vector2.t -> Vector2.t -> Color.t -> unit
 
-val image_draw_rectangle_rec :
-  Image.t Ctypes_static.ptr -> Rectangle.t -> Color.t -> unit
+val image_draw_rectangle_rec : Image.t ptr -> Rectangle.t -> Color.t -> unit
 
 val image_draw_rectangle_lines :
-  Image.t Ctypes_static.ptr -> Rectangle.t -> int -> Color.t -> unit
+  Image.t ptr -> Rectangle.t -> int -> Color.t -> unit
 
 val image_draw :
-  Image.t Ctypes_static.ptr ->
-  Image.t ->
-  Rectangle.t ->
-  Rectangle.t ->
-  Color.t ->
-  unit
+  Image.t ptr -> Image.t -> Rectangle.t -> Rectangle.t -> Color.t -> unit
 
 val image_draw_text :
-  Image.t Ctypes_static.ptr -> Vector2.t -> string -> int -> Color.t -> unit
+  Image.t ptr -> Vector2.t -> string -> int -> Color.t -> unit
 
 val image_draw_text_ex :
-  Image.t Ctypes_static.ptr ->
+  Image.t ptr ->
   Vector2.t ->
   Font.t ->
   string ->
@@ -1258,13 +1614,13 @@ val unload_texture : Texture2D.t -> unit
 
 val unload_render_texture : RenderTexture2D.t -> unit
 
-val update_texture : Texture2D.t -> unit Ctypes_static.ptr -> unit
+val update_texture : Texture2D.t -> unit ptr -> unit
 
 val get_texture_data : Texture2D.t -> Image.t
 
 val get_screen_data : unit -> Image.t
 
-val gen_texture_mipmaps : Texture2D.t Ctypes_static.ptr -> unit
+val gen_texture_mipmaps : Texture2D.t ptr -> unit
 
 val set_texture_filter : Texture2D.t -> TextureFilterMode.t -> unit
 
@@ -1307,17 +1663,11 @@ val get_font_default : unit -> Font.t
 
 val load_font : string -> Font.t
 
-val load_font_ex : string -> int -> int Ctypes_static.ptr -> int -> Font.t
+val load_font_ex : string -> int -> int ptr -> int -> Font.t
 
 val load_font_from_image : Image.t -> Color.t -> int -> Font.t
 
-val load_font_data :
-  string ->
-  int ->
-  int Ctypes_static.ptr ->
-  int ->
-  int ->
-  CharInfo.t Ctypes_static.ptr
+val load_font_data : string -> int -> int ptr -> int -> int -> CharInfo.t ptr
 
 val unload_font : Font.t -> unit
 
@@ -1365,7 +1715,7 @@ val text_replace : string -> string -> string -> string
 
 val text_insert : string -> string -> int -> string
 
-val text_append : string -> string -> int Ctypes_static.ptr -> unit
+val text_append : string -> string -> int ptr -> unit
 
 val text_find_index : string -> string -> int
 
@@ -1377,15 +1727,15 @@ val text_to_pascal : string -> string
 
 val text_to_integer : string -> int
 
-val text_to_utf8 : int Ctypes_static.ptr -> int -> string
+val text_to_utf8 : int ptr -> int -> string
 
-val get_codepoints : string -> int Ctypes_static.ptr -> int Ctypes_static.ptr
+val get_codepoints : string -> int ptr -> int ptr
 
 val get_codepoints_count : string -> int
 
-val get_next_codepoint : string -> int Ctypes_static.ptr -> int
+val get_next_codepoint : string -> int ptr -> int
 
-val codepoint_to_utf8 : int -> int Ctypes_static.ptr -> string
+val codepoint_to_utf8 : int -> int ptr -> string
 
 val draw_line_3d : Vector3.t -> Vector3.t -> Color.t -> unit
 
@@ -1430,27 +1780,24 @@ val load_model_from_mesh : Mesh.t -> Model.t
 
 val unload_model : Model.t -> unit
 
-val load_meshes :
-  string -> int Ctypes_static.ptr -> Mesh.t Ctypes_static.ptr option
+val load_meshes : string -> int ptr -> Mesh.t ptr option
 
 val export_mesh : Mesh.t -> string -> unit
 
 val unload_mesh : Mesh.t -> unit
 
-val load_materials :
-  string -> int Ctypes_static.ptr -> Material.t Ctypes_static.ptr
+val load_materials : string -> int ptr -> Material.t ptr
 
 val load_material_default : unit -> Material.t
 
 val unload_material : Material.t -> unit
 
 val set_material_texture :
-  Material.t Ctypes_static.ptr -> MaterialMapType.t -> Texture2D.t -> unit
+  Material.t ptr -> MaterialMapType.t -> Texture2D.t -> unit
 
-val set_model_mesh_material : Model.t Ctypes_static.ptr -> int -> int -> unit
+val set_model_mesh_material : Model.t ptr -> int -> int -> unit
 
-val _load_model_animations :
-  string -> int Ctypes_static.ptr -> ModelAnimation.t Ctypes_static.ptr
+val _load_model_animations : string -> int ptr -> ModelAnimation.t ptr
 
 val update_model_animation : Model.t -> ModelAnimation.t -> int -> unit
 
@@ -1480,9 +1827,9 @@ val gen_mesh_cubicmap : Image.t -> Vector3.t -> Mesh.t
 
 val mesh_bounding_box : Mesh.t -> BoundingBox.t
 
-val mesh_tangents : Mesh.t Ctypes_static.ptr -> unit
+val mesh_tangents : Mesh.t ptr -> unit
 
-val mesh_binormals : Mesh.t Ctypes_static.ptr -> unit
+val mesh_binormals : Mesh.t ptr -> unit
 
 val draw_model : Model.t -> Vector3.t -> float -> Color.t -> unit
 
@@ -1517,7 +1864,7 @@ val check_collision_box_sphere : BoundingBox.t -> Vector3.t -> float -> bool
 val check_collision_ray_sphere : Ray.t -> Vector3.t -> float -> bool
 
 val check_collision_ray_sphere_ex :
-  Ray.t -> Vector3.t -> float -> Vector3.t Ctypes_static.ptr -> bool
+  Ray.t -> Vector3.t -> float -> Vector3.t ptr -> bool
 
 val check_collision_ray_box : Ray.t -> BoundingBox.t -> bool
 
@@ -1549,14 +1896,14 @@ val get_shader_location : Shader.t -> string -> ShaderLocationIndex.t
 val set_shader_value :
   Shader.t ->
   ShaderLocationIndex.t ->
-  unit Ctypes_static.ptr ->
+  unit ptr ->
   ShaderUniformDataType.t ->
   unit
 
 val set_shader_value_v :
   Shader.t ->
   ShaderLocationIndex.t ->
-  unit Ctypes_static.ptr ->
+  unit ptr ->
   ShaderUniformDataType.t ->
   int ->
   unit
@@ -1595,7 +1942,7 @@ val init_vr_simulator : unit -> unit
 
 val close_vr_simulator : unit -> unit
 
-val update_vr_tracking : Camera3D.t Ctypes_static.ptr -> unit
+val update_vr_tracking : Camera3D.t ptr -> unit
 
 val set_vr_configuration : VrDeviceInfo.t -> Shader.t -> unit
 
@@ -1621,7 +1968,7 @@ val load_sound : string -> Sound.t
 
 val load_sound_from_wave : Wave.t -> Sound.t
 
-val update_sound : Sound.t -> unit Ctypes_static.ptr -> int -> unit
+val update_sound : Sound.t -> unit ptr -> int -> unit
 
 val unload_wave : Wave.t -> unit
 
@@ -1651,13 +1998,13 @@ val set_sound_volume : Sound.t -> float -> unit
 
 val set_sound_pitch : Sound.t -> float -> unit
 
-val wave_format : Wave.t Ctypes_static.ptr -> int -> int -> int -> unit
+val wave_format : Wave.t ptr -> int -> int -> int -> unit
 
 val wave_copy : Wave.t -> Wave.t
 
-val wave_crop : Wave.t Ctypes_static.ptr -> int -> int -> unit
+val wave_crop : Wave.t ptr -> int -> int -> unit
 
-val get_wave_data : Wave.t -> float Ctypes_static.ptr
+val get_wave_data : Wave.t -> float ptr
 
 val load_music_stream : string -> Music.t
 
@@ -1687,7 +2034,7 @@ val get_music_time_played : Music.t -> float
 
 val init_audio_stream : int -> int -> int -> AudioStream.t
 
-val update_audio_stream : AudioStream.t -> unit Ctypes_static.ptr -> int -> unit
+val update_audio_stream : AudioStream.t -> unit ptr -> int -> unit
 
 val close_audio_stream : AudioStream.t -> unit
 
@@ -1709,18 +2056,16 @@ val set_audio_stream_pitch : AudioStream.t -> float -> unit
 
 val set_audio_stream_buffer_size_default : int -> unit
 
-val load_file_data : string -> Unsigned.uchar Ctypes.CArray.t
+val load_file_data : string -> Unsigned.uchar CArray.t
 
-val save_file_data : string -> 'a Ctypes.CArray.t -> unit
+val save_file_data : string -> 'a CArray.t -> unit
 
-val get_directory_files : string -> string Ctypes.CArray.t
+val get_directory_files : string -> string CArray.t
 
-val get_dropped_files : unit -> string Ctypes.CArray.t
+val get_dropped_files : unit -> string CArray.t
 
-val compress_data :
-  Unsigned.uchar Ctypes.CArray.t -> Unsigned.uchar Ctypes.CArray.t
+val compress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
 
-val decompress_data :
-  Unsigned.uchar Ctypes.CArray.t -> Unsigned.uchar Ctypes.CArray.t
+val decompress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
 
-val load_model_animations : string -> ModelAnimation.t Ctypes.CArray.t
+val load_model_animations : string -> ModelAnimation.t CArray.t

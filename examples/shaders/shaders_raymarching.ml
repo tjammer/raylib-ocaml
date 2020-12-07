@@ -34,7 +34,7 @@ let setup () =
 
   let resolution = Vector2.create (Float.of_int width) (Float.of_int height) in
   set_shader_value shader locations.resolution
-    (Ctypes.to_voidp (addr resolution))
+    (to_voidp (addr resolution))
     ShaderUniformDataType.Vec2;
 
   set_target_fps 60;
@@ -56,7 +56,7 @@ let rec loop width height shader locations camera runtime =
             Vector2.create (Float.of_int width) (Float.of_int height)
           in
           set_shader_value shader locations.resolution
-            (Ctypes.to_voidp (addr resolution))
+            (to_voidp (addr resolution))
             ShaderUniformDataType.Vec2;
           (width, height) )
         else (width, height)
@@ -69,15 +69,15 @@ let rec loop width height shader locations camera runtime =
       let runtime_v = Vector2.create runtime 0.0 in
 
       set_shader_value shader locations.view_eye
-        (Ctypes.to_voidp (addr (Camera.position camera)))
+        (to_voidp (addr (Camera.position camera)))
         ShaderUniformDataType.Vec3;
 
       set_shader_value shader locations.view_center
-        (Ctypes.to_voidp (addr (Camera.target camera)))
+        (Camera.target camera |> addr |> to_voidp)
         ShaderUniformDataType.Vec3;
 
       set_shader_value shader locations.runtime
-        (Ctypes.to_voidp (addr runtime_v))
+        (to_voidp (addr runtime_v))
         ShaderUniformDataType.Float;
 
       begin_drawing ();

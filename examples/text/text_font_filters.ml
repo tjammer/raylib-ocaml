@@ -7,9 +7,7 @@ let msg = "Loaded Font"
 let setup () =
   let open Raylib in
   init_window 800 450 "raylib [text] example - font filters";
-  let font =
-    load_font_ex "resources/KAISG.ttf" 96 Ctypes.(from_voidp int null) 0
-  in
+  let font = load_font_ex "resources/KAISG.ttf" 96 (ptr_of_int 0) 0 in
   gen_texture_mipmaps (addr (Font.texture font));
   let font_size = Font.base_size font in
   let font_position =
@@ -55,9 +53,7 @@ let rec loop font font_size font_position filter =
           if is_file_extension (CArray.get files 0) ".ttf" then (
             unload_font font;
             let font =
-              load_font_ex (CArray.get files 0) font_size
-                Ctypes.(from_voidp int null)
-                0
+              load_font_ex (CArray.get files 0) font_size (ptr_of_int 0) 0
             in
             clear_dropped_files ();
             font )
