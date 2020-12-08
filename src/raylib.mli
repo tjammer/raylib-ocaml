@@ -653,12 +653,16 @@ and Matrix : sig
   val multiply : t -> t -> t
 
   val frustum : float -> float -> float -> float -> float -> float -> t
+  (** [frustum left right bottom top near far] returns perspective projection matrix *)
 
   val perspective : float -> float -> float -> float -> t
+  (** [perspective fovy aspect near far] returns perspective projection matrix *)
 
   val ortho : float -> float -> float -> float -> float -> float -> t
+  (** [ortho left right bottom top near far] returns orthographic projection matrix *)
 
   val look_at : Vector3.t -> Vector3.t -> Vector3.t -> t
+  (** [look at eye target up] returns camera look-at matrix (view matrix) *)
 end
 
 module Color : sig
@@ -667,6 +671,7 @@ module Color : sig
   type t = t' ctyp
 
   val create : int -> int -> int -> int -> t
+  (** [create red green blue alpha] creates a 24bit+8bit alpha color. *)
 
   val lightgray : t
 
@@ -727,6 +732,7 @@ module Rectangle : sig
   type t = t' ctyp
 
   val create : float -> float -> float -> float -> t
+  (** [create x y width height] creates a rectangle with given dimensions. *)
 
   val x : t -> float
 
@@ -793,6 +799,7 @@ module NPatchInfo : sig
   type t = t' ctyp
 
   val create : Rectangle.t -> int -> int -> int -> int -> NPatchType.t -> t
+  (** [create source_rec left top right bottom type] returns a N-Patch layout info. *)
 
   val source_rec : t -> Rectangle.t
 
@@ -845,6 +852,7 @@ module Camera3D : sig
   type t = t' ctyp
 
   val create : Vector3.t -> Vector3.t -> Vector3.t -> float -> CameraType.t -> t
+  (** [create position target up fovy] defines a camera position/orientation in 3d space *)
 
   val position : t -> Vector3.t
 
@@ -865,6 +873,7 @@ module Camera2D : sig
   type t = t' ctyp
 
   val create : Vector2.t -> Vector2.t -> float -> float -> t
+  (** [create offset target rotation zoom] defines a 2d camera *)
 
   val offset : t -> Vector2.t
 
@@ -901,6 +910,7 @@ module MaterialMap : sig
   type t = t' ctyp
 
   val create : Texture2D.t -> Color.t -> float -> t
+  (** [create texture color value] returns a material texture map *)
 
   val texture : t -> Texture2D.t
 
@@ -939,6 +949,7 @@ module Transform : sig
   type t = t' ctyp
 
   val create : Vector3.t -> Vector4.t -> Vector3.t -> t
+  (** [create translation rotation scale] returns transformation properties *)
 
   val translation : t -> Vector3.t
 
@@ -1005,6 +1016,7 @@ module Ray : sig
   type t = t' ctyp
 
   val create : Vector3.t -> Vector3.t -> t
+  (** [create position direction] returns a ray type for raycasting. *)
 
   val position : t -> Vector3.t
 
@@ -1031,6 +1043,7 @@ module BoundingBox : sig
   type t = t' ctyp
 
   val create : Vector3.t -> Vector3.t -> t
+  (** [create min max] returns a bounding box. *)
 
   val min : t -> Vector3.t
 
@@ -1119,7 +1132,7 @@ end
    *)
 
 val init_window : int -> int -> string -> unit
-(** Initialize window and OpenGL context *)
+(** [init_window width heigth title] initializes window and OpenGL context *)
 
 val window_should_close : unit -> bool
 (** Check if KEY_ESCAPE pressed or Close icon pressed *)
@@ -1152,22 +1165,22 @@ val hide_window : unit -> unit
 (** Hide the window *)
 
 val set_window_icon : Image.t -> unit
-(** Set icon for window (only PLATFORM_DESKTOP) *)
+(**  Set icon for window (only PLATFORM_DESKTOP) *)
 
 val set_window_title : string -> unit
 (** Set title for window (only PLATFORM_DESKTOP) *)
 
 val set_window_position : int -> int -> unit
-(** Set window position on screen (only PLATFORM_DESKTOP) *)
+(** [set_window_position x y] sets window position on screen (only PLATFORM_DESKTOP) *)
 
 val set_window_monitor : int -> unit
 (** Set monitor for the current window (fullscreen mode) *)
 
 val set_window_min_size : int -> int -> unit
-(** Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE) *)
+(** [set_window_min_size width height] sets window minimum dimensions (for FLAG_WINDOW_RESIZABLE) *)
 
 val set_window_size : int -> int -> unit
-(** Set window dimensions *)
+(** [set_window_size width height] sets window dimensions *)
 
 val get_window_handle : unit -> unit ptr option
 (** Get native window handle *)
@@ -1252,7 +1265,7 @@ val end_texture_mode : unit -> unit
 (** Ends drawing to render texture *)
 
 val begin_scissor_mode : int -> int -> int -> int -> unit
-(** Begin scissor mode (define screen area for following drawing) *)
+(** [begin_scissor_mode x y width height] defines screen area for following drawing *)
 
 val end_scissor_mode : unit -> unit
 (** End scissor mode *)
@@ -1272,7 +1285,7 @@ val get_world_to_screen : Vector3.t -> Camera3D.t -> Vector2.t
 (** Returns the screen space position for a 3d world space position *)
 
 val get_world_to_screen_ex : Vector3.t -> Camera3D.t -> int -> int -> Vector2.t
-(** Returns size position for a 3d world space position *)
+(** [get_world_to_screen_ex position camera width height] returns size position for a 3d world space position *)
 
 val get_world_to_screen_2d : Vector2.t -> Camera2D.t -> Vector2.t
 (** Returns the screen space position for a 2d camera world space position *)
@@ -1347,13 +1360,13 @@ val load_file_text : string -> string
 (** Load text data from file (read), returns a '' terminated string *)
 
 val save_file_text : string -> string -> unit
-(** Save text data to file (write), string must be '' terminated *)
+(** [save_file_text filename text] saves text data to file (write), string must be '\0' terminated *)
 
 val file_exists : string -> bool
 (** Check if file exists *)
 
 val is_file_extension : string -> string -> bool
-(** Check file extension *)
+(** [is_file_extension filename ext] checks file extension *)
 
 val directory_exists : string -> bool
 (** Check if a directory path exists *)
@@ -1406,7 +1419,7 @@ val decompress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
 (** {3 Persistent storage management} *)
 
 val save_storage_value : int -> int -> unit
-(** Save integer value to storage file (to defined position) *)
+(** [save_storage_value position value] saves integer value to storage file (to defined position) *)
 
 val load_storage_value : int -> int
 (** Load integer value from storage file (from defined position) *)
@@ -1492,13 +1505,13 @@ val get_mouse_position : unit -> Vector2.t
 (** Returns mouse position XY *)
 
 val set_mouse_position : int -> int -> unit
-(** Set mouse position XY *)
+(** [set_mouse_position x y ] sets mouse position XY *)
 
 val set_mouse_offset : int -> int -> unit
-(** Set mouse offset *)
+(** [set_mouse_offset ofs_x ofs_y] sets mouse offset *)
 
 val set_mouse_scale : float -> float -> unit
-(** Set mouse scaling *)
+(** [set_mouse_scale scale_x scale_y] sets mouse scaling *)
 
 val get_mouse_wheel_move : unit -> int
 (** Returns mouse wheel movement Y *)
@@ -1559,39 +1572,39 @@ val set_camera_smooth_zoom_control : Key.t -> unit
 
 val set_camera_move_controls :
   Key.t -> Key.t -> Key.t -> Key.t -> Key.t -> Key.t -> unit
-(** Set camera move controls (1st person and 3rd person cameras) *)
+(** [set_camera_move_controls front back right left up down] sets camera move controls (1st person and 3rd person cameras) *)
 
 (** {2 Basic Shapes Drawing Functions (Module: shapes)} *)
 
 (** {3 Basic shapes drawing functions} *)
 
 val draw_pixel : int -> int -> Color.t -> unit
-(** Draw a pixel *)
+(** [draw_pixel x y color] draws a pixel at [x, y] *)
 
 val draw_pixel_v : Vector2.t -> Color.t -> unit
 (** Draw a pixel (Vector version) *)
 
 val draw_line : int -> int -> int -> int -> Color.t -> unit
-(** Draw a line *)
+(** [draw_line start_x start_y end_x end_y color] draws a line *)
 
 val draw_line_v : Vector2.t -> Vector2.t -> Color.t -> unit
-(** Draw a line (Vector version) *)
+(** [draw_line_v start end color] draws a line (Vector version) *)
 
 val draw_line_ex : Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** Draw a line defining thickness *)
+(** [draw_line_v start end thickness color] draws a line defining thickness *)
 
 val draw_line_bezier : Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** Draw a line using cubic-bezier curves in-out *)
+(** [draw_line_bezier start end thickness color] draws a line using cubic-bezier curves in-out *)
 
 val draw_line_strip : Vector2.t ptr -> int -> Color.t -> unit
 (** Draw lines sequence *)
 
 val draw_circle : int -> int -> float -> Color.t -> unit
-(** Draw a color-filled circle *)
+(** [draw_circle center_x center_y radius color] draws a color-filled circle *)
 
 val draw_circle_sector :
   Vector2.t -> float -> int -> int -> int -> Color.t -> unit
-(** Draw a piece of a circle *)
+(** [draw_circle_sector center radius start_angle end_angle segments color] draws a piece of a circle *)
 
 val draw_circle_sector_lines :
   Vector2.t -> float -> int -> int -> int -> Color.t -> unit
