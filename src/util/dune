@@ -2,3 +2,8 @@
  (name sanitize_mli)
  (modules Sanitize_mli)
  (libraries str))
+
+(executable
+ (name names_to_itf)
+ (modules Names_to_itf)
+ (libraries re))
