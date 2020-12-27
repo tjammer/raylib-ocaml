@@ -785,12 +785,14 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Load image from raw data with parameters *)
   let load_image_pro =
     foreign "LoadImagePro"
-      (ptr void @-> int @-> int @-> int @-> returning Types.Image.t)
+      ( ptr void @-> int @-> int @-> Constants.PixelFormat.t
+      @-> returning Types.Image.t )
 
   (*  Load image from RAW file data *)
   let load_image_raw =
     foreign "LoadImageRaw"
-      (string @-> int @-> int @-> int @-> int @-> returning Types.Image.t)
+      ( string @-> int @-> int @-> Constants.PixelFormat.t @-> int
+      @-> returning Types.Image.t )
 
   (*  Unload image from CPU memory (RAM) *)
   let unload_image = foreign "UnloadImage" (Types.Image.t @-> returning void)

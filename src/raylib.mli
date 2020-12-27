@@ -1608,85 +1608,85 @@ val draw_circle_sector :
 
 val draw_circle_sector_lines :
   Vector2.t -> float -> int -> int -> int -> Color.t -> unit
-(** Draw circle sector outline *)
+(** [draw_circle_sector_lines center radius startAngle endAngle segments color]  draws circle sector outline *)
 
 val draw_circle_gradient : int -> int -> float -> Color.t -> Color.t -> unit
-(** Draw a gradient-filled circle *)
+(** [draw_circle_gradient centerX centerY radius color1 color2] draws a gradient-filled circle *)
 
 val draw_circle_v : Vector2.t -> float -> Color.t -> unit
-(** Draw a color-filled circle (Vector version) *)
+(** [draw_circle_v center radius color] draws a color-filled circle (Vector version) *)
 
 val draw_circle_lines : int -> int -> float -> Color.t -> unit
-(** Draw circle outline *)
+(** [draw_circle_lines centerX centerY radius color] draws circle outline *)
 
 val draw_ellipse : int -> int -> float -> float -> Color.t -> unit
-(** Draw ellipse *)
+(** [draw_ellipse centerX centerY radiusH radiusV color] draws ellipse *)
 
 val draw_ellipse_lines : int -> int -> float -> float -> Color.t -> unit
-(** Draw ellipse outline *)
+(** [draw_ellipse_lines centerX centerY radiusH radiusV color] draws ellipse outline *)
 
 val draw_ring :
   Vector2.t -> float -> float -> int -> int -> int -> Color.t -> unit
-(** Draw ring *)
+(** [draw_ring center innerRadius outerRadius startAngle endAngle segments color] draws ring *)
 
 val draw_ring_lines :
   Vector2.t -> float -> float -> int -> int -> int -> Color.t -> unit
-(** Draw ring outline *)
+(** [draw_ring_lines center innerRadius outerRadius startAngle endAngle segments color] draws ring outline *)
 
 val draw_rectangle : int -> int -> int -> int -> Color.t -> unit
-(** Draw a color-filled rectangle *)
+(** [draw_rectangle posX posY width height color] draws a color-filled rectangle *)
 
 val draw_rectangle_v : Vector2.t -> Vector2.t -> Color.t -> unit
-(** Draw a color-filled rectangle (Vector version) *)
+(** [draw_rectangle_v position size color] draws a color-filled rectangle (Vector version) *)
 
 val draw_rectangle_rec : Rectangle.t -> Color.t -> unit
-(** Draw a color-filled rectangle *)
+(** [draw_rectangle_rec position size color] draws a color-filled rectangle *)
 
 val draw_rectangle_pro : Rectangle.t -> Vector2.t -> float -> Color.t -> unit
-(** Draw a color-filled rectangle with pro parameters *)
+(** [draw_rectangle_pro rec origin rotation color] draws a color-filled rectangle with pro parameters *)
 
 val draw_rectangle_gradient_v :
   int -> int -> int -> int -> Color.t -> Color.t -> unit
-(** Draw a vertical-gradient-filled rectangle *)
+(** [draw_rectangle_gradient_v posX posY width height color1 color2] draws a vertical-gradient-filled rectangle *)
 
 val draw_rectangle_gradient_h :
   int -> int -> int -> int -> Color.t -> Color.t -> unit
-(** Draw a horizontal-gradient-filled rectangle *)
+(** [draw_rectangle_gradient_h posX posY width height color1 color2] draws a horizontal-gradient-filled rectangle *)
 
 val draw_rectangle_gradient_ex :
   Rectangle.t -> Color.t -> Color.t -> Color.t -> Color.t -> unit
-(** Draw a gradient-filled rectangle with custom vertex colors *)
+(** [draw_rectangle_gradient_ex rec col1 col2 col3 col4] draws a gradient-filled rectangle with custom vertex colors *)
 
 val draw_rectangle_lines : int -> int -> int -> int -> Color.t -> unit
-(** Draw rectangle outline *)
+(** [draw_rectangle_lines posX posY width height color] draws rectangle outline *)
 
 val draw_rectangle_lines_ex : Rectangle.t -> int -> Color.t -> unit
-(** Draw rectangle outline with extended parameters *)
+(** [draw_rectangle_lines_ex rec lineThick color] draws rectangle outline with extended parameters *)
 
 val draw_rectangle_rounded : Rectangle.t -> float -> int -> Color.t -> unit
-(** Draw rectangle with rounded edges *)
+(** [draw_rectangle_rounded rec roundness segments color] draws rectangle with rounded edges *)
 
 val draw_rectangle_rounded_lines :
   Rectangle.t -> float -> int -> int -> Color.t -> unit
-(** Draw rectangle with rounded edges outline *)
+(** [draw_rectangle_rounded_lines rec roundness segments lineThick color] draws rectangle with rounded edges outline *)
 
 val draw_triangle : Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
-(** Draw a color-filled triangle (vertex in counter-clockwise order!) *)
+(** [draw_triangle v1 v2 v3 color] draws a color-filled triangle (vertex in counter-clockwise order!) *)
 
 val draw_triangle_lines : Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
-(** Draw triangle outline (vertex in counter-clockwise order!) *)
+(** [draw_triangle_lines v1 v2 v3 color] draws triangle outline (vertex in counter-clockwise order!) *)
 
 val draw_triangle_fan : Vector2.t ptr -> int -> Color.t -> unit
-(** Draw a triangle fan defined by points (first vertex is the center) *)
+(** [draw_triangle_fan points numCnt color] draws a triangle fan defined by points (first vertex is the center) *)
 
 val draw_triangle_strip : Vector2.t ptr -> int -> Color.t -> unit
-(** Draw a triangle strip defined by points *)
+(** [draw_triangle_strip points pointsCount color] draws a triangle strip defined by points *)
 
 val draw_poly : Vector2.t -> int -> float -> float -> Color.t -> unit
-(** Draw a regular polygon (Vector version) *)
+(** [draw_poly center sides radius rotation color] draws a regular polygon (Vector version) *)
 
 val draw_poly_lines : Vector2.t -> int -> float -> float -> Color.t -> unit
-(** Draw a polygon outline of n sides *)
+(** [draw_poly_lines center sides radius rotation color] draws a polygon outline of n sides *)
 
 (** {3 Basic shapes collision detection functions} *)
 
@@ -1706,11 +1706,11 @@ val check_collision_point_rec : Vector2.t -> Rectangle.t -> bool
 (** Check if point is inside rectangle *)
 
 val check_collision_point_circle : Vector2.t -> Vector2.t -> float -> bool
-(** Check if point is inside circle *)
+(** [check_collision_point_circle point center radius] checks if point is inside circle *)
 
 val check_collision_point_triangle :
   Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> bool
-(** Check if point is inside a triangle *)
+(** [check_collision_point_triangle point p1 p2 p3] checks if point is inside a triangle *)
 
 (** {2 Texture Loading and Drawing Functions (Module: textures)} *)
 
@@ -1720,13 +1720,13 @@ val load_image : string -> Image.t
 (** Load image from file into CPU memory (RAM) *)
 
 val load_image_ex : Color.t ptr -> int -> int -> Image.t
-(** Load image from Color array data (RGBA - 32bit) *)
+(** [load_image_ex pixels width height] loads image from Color array data (RGBA - 32bit) *)
 
-val load_image_pro : unit ptr -> int -> int -> int -> Image.t
-(** Load image from raw data with parameters *)
+val load_image_pro : unit ptr -> int -> int -> PixelFormat.t -> Image.t
+(** [load_image_pro data width height format] loads image from raw data with parameters *)
 
-val load_image_raw : string -> int -> int -> int -> int -> Image.t
-(** Load image from RAW file data *)
+val load_image_raw : string -> int -> int -> PixelFormat.t -> int -> Image.t
+(** [load_image_raw fileName width height format headerSize] loads image from RAW file data *)
 
 val unload_image : Image.t -> unit
 (** Unload image from CPU memory (RAM) *)
@@ -2000,13 +2000,13 @@ val load_font : string -> Font.t
 (** Load font from file into GPU memory (VRAM) *)
 
 val load_font_ex : string -> int -> int ptr -> int -> Font.t
-(** Load font from file with extended parameters *)
+(** [load_font_ex fileName fontSize fontChars charsCount] loads font from file with extended parameters *)
 
 val load_font_from_image : Image.t -> Color.t -> int -> Font.t
-(** Load font from Image (XNA style) *)
+(** [load_font_from_image image kay firstChar] loads font from Image (XNA style) *)
 
 val load_font_data : string -> int -> int ptr -> int -> int -> CharInfo.t ptr
-(** Load font data for further use *)
+(** [load_font_data fileName fontSize fontChars charsCount type] loads font data for further use *)
 
 val unload_font : Font.t -> unit
 (** Unload Font from GPU memory (VRAM) *)
@@ -2014,18 +2014,18 @@ val unload_font : Font.t -> unit
 (** {3 Text drawing functions} *)
 
 val draw_fps : int -> int -> unit
-(** Shows current FPS *)
+(** [draw_fps posX posY] shows current FPS *)
 
 val draw_text : string -> int -> int -> int -> Color.t -> unit
-(** Draw text (using default font) *)
+(** [draw_text text posX posY fontSize color] draws text (using default font) *)
 
 val draw_text_ex :
   Font.t -> string -> Vector2.t -> float -> float -> Color.t -> unit
-(** Draw text using font and additional parameters *)
+(** [draw_text_ex font text position fontSize spacing tint] draws text using font and additional parameters *)
 
 val draw_text_rec :
   Font.t -> string -> Rectangle.t -> float -> float -> bool -> Color.t -> unit
-(** Draw text using font inside rectangle limits *)
+(** [draw_text_rec font text rec fontSize spacing wordWrap tint] draws text using font inside rectangle limits *)
 
 val draw_text_rec_ex :
   Font.t ->
@@ -2040,10 +2040,11 @@ val draw_text_rec_ex :
   Color.t ->
   Color.t ->
   unit
-(** Draw text using font inside rectangle limits with support for text selection *)
+(** [draw_text_rec_ex font text rec fontSize spacing wordWrap tint selectStart selectLength selectTint selectBackTint]
+  draws text using font inside rectangle limits with support for text selection *)
 
 val draw_text_codepoint : Font.t -> int -> Vector2.t -> float -> Color.t -> unit
-(** Draw one character (codepoint) *)
+(** [draw_text_codepoint font codepoint position scale tint] draws one character (codepoint) *)
 
 (** {3 Text misc. functions} *)
 
@@ -2118,58 +2119,58 @@ val codepoint_to_utf8 : int -> int ptr -> string
 (** {3 Basic geometric 3D shapes drawing functions} *)
 
 val draw_line_3d : Vector3.t -> Vector3.t -> Color.t -> unit
-(** Draw a line in 3D world space *)
+(** [draw_line_3d startPos endPos color] draws a line in 3D world space *)
 
 val draw_point_3d : Vector3.t -> Color.t -> unit
-(** Draw a point in 3D space, actually a small line *)
+(** [draw_point_3d position color] draws a point in 3D space, actually a small line *)
 
 val draw_circle_3d : Vector3.t -> float -> Vector3.t -> float -> Color.t -> unit
-(** Draw a circle in 3D world space *)
+(** [draw_circle_3d center radius rotationAxis rotationAngle color] draws a circle in 3D world space *)
 
 val draw_cube : Vector3.t -> float -> float -> float -> Color.t -> unit
-(** Draw cube *)
+(** [draw_cube position width height length color] draws cube *)
 
 val draw_cube_v : Vector3.t -> Vector3.t -> Color.t -> unit
-(** Draw cube (Vector version) *)
+(** [draw_cube_v position size color] draws cube (Vector version) *)
 
 val draw_cube_wires : Vector3.t -> float -> float -> float -> Color.t -> unit
-(** Draw cube wires *)
+(** [draw_cube_wires position width height length color] draws cube wires *)
 
 val draw_cube_wires_v : Vector3.t -> Vector3.t -> Color.t -> unit
-(** Draw cube wires (Vector version) *)
+(** [draw_cube_wires_v position size color] draws cube wires (Vector version) *)
 
 val draw_cube_texture :
   Texture2D.t -> Vector3.t -> float -> float -> float -> Color.t -> unit
-(** Draw cube textured *)
+(** [draw_cube_texture texture position width height length color] draws cube textured *)
 
 val draw_sphere : Vector3.t -> float -> Color.t -> unit
-(** Draw sphere *)
+(** [draw_sphere centerPos radius color] draws sphere *)
 
 val draw_sphere_ex : Vector3.t -> float -> int -> int -> Color.t -> unit
-(** Draw sphere with extended parameters *)
+(** [draw_sphere_ex centerPos radius rings slices color] draws sphere with extended parameters *)
 
 val draw_sphere_wires : Vector3.t -> float -> int -> int -> Color.t -> unit
-(** Draw sphere wires *)
+(** [draw_sphere_wires centerPos radius rings slices color] draws sphere wires *)
 
 val draw_cylinder :
   Vector3.t -> float -> float -> float -> int -> Color.t -> unit
-(** Draw a cylinder/cone *)
+(** [draw_cylinder position radiusTop radiusBottom height slices color] draws a cylinder/cone *)
 
 val draw_cylinder_wires :
   Vector3.t -> float -> float -> float -> int -> Color.t -> unit
-(** Draw a cylinder/cone wires *)
+(** [draw_cylinder_wires position radiusTop radiusBottom height slices color] draws a cylinder/cone wires *)
 
 val draw_plane : Vector3.t -> Vector2.t -> Color.t -> unit
-(** Draw a plane XZ *)
+(** [draw_plane centerPos size color] draws a plane XZ *)
 
 val draw_ray : Ray.t -> Color.t -> unit
-(** Draw a ray line *)
+(** [draw_ray ray color] draws a ray line *)
 
 val draw_grid : int -> float -> unit
-(** Draw a grid (centered at (0, 0, 0)) *)
+(** [draw_grid slices spacing] draws a grid (centered at (0, 0, 0)) *)
 
 val draw_gizmo : Vector3.t -> unit
-(** Draw simple gizmo *)
+(** [draw_gizmo position] draws simple gizmo *)
 
 (** {3 Model loading/unloading functions} *)
 
@@ -2269,25 +2270,25 @@ val mesh_binormals : Mesh.t ptr -> unit
 (** {3 Model drawing functions} *)
 
 val draw_model : Model.t -> Vector3.t -> float -> Color.t -> unit
-(** Draw a model (with texture if set) *)
+(** [draw_model model position scale tint] draws a model (with texture if set) *)
 
 val draw_model_ex :
   Model.t -> Vector3.t -> Vector3.t -> float -> Vector3.t -> Color.t -> unit
-(** Draw a model with extended parameters *)
+(** [draw_model_ex model position rotationAxis rotationAngle scale tint] draws a model with extended parameters *)
 
 val draw_model_wires : Model.t -> Vector3.t -> float -> Color.t -> unit
-(** Draw a model wires (with texture if set) *)
+(** [draw_model_wires model position scale tint] draws a model wires (with texture if set) *)
 
 val draw_model_wires_ex :
   Model.t -> Vector3.t -> Vector3.t -> float -> Vector3.t -> Color.t -> unit
-(** Draw a model wires (with texture if set) with extended parameters *)
+(** [draw_model_wires_ex model position rotationAxis rotationAngle scale tint] draws a model wires (with texture if set) with extended parameters *)
 
 val draw_bounding_box : BoundingBox.t -> Color.t -> unit
-(** Draw bounding box (wires) *)
+(** [draw_bounding_box box color] draws bounding box (wires) *)
 
 val draw_billboard :
   Camera3D.t -> Texture2D.t -> Vector3.t -> float -> Color.t -> unit
-(** Draw a billboard texture *)
+(** [draw_billboard camera texture center size tint] draws a billboard texture *)
 
 val draw_billboard_rec :
   Camera3D.t ->
@@ -2297,7 +2298,7 @@ val draw_billboard_rec :
   float ->
   Color.t ->
   unit
-(** Draw a billboard texture defined by sourceRec *)
+(** [draw_billboard_rec camera texture sourceRec center size tint] draws a billboard texture defined by sourceRec *)
 
 (** {3 Collision detection functions} *)
 
