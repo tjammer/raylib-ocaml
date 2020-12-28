@@ -28,13 +28,24 @@ module Description (F : Ctypes.FOREIGN) = struct
       foreign "Vector2Add"
         (Types.Vector2.t @-> Types.Vector2.t @-> returning Types.Vector2.t)
 
+    let add_value =
+      foreign "Vector2AddValue"
+        (Types.Vector2.t @-> float @-> returning Types.Vector2.t)
+
     (* Subtract two vectors (v1 - v2) *)
     let subtract =
       foreign "Vector2Subtract"
         (Types.Vector2.t @-> Types.Vector2.t @-> returning Types.Vector2.t)
 
+    let subtract_value =
+      foreign "Vector2SubtractValue"
+        (Types.Vector2.t @-> float @-> returning Types.Vector2.t)
+
     (* Calculate vector length *)
     let length = foreign "Vector2Length" (Types.Vector2.t @-> returning float)
+
+    let length_sqr =
+      foreign "Vector2LengthSqr" (Types.Vector2.t @-> returning float)
 
     (* Calculate two vectors dot product *)
     let dot_product =
@@ -57,22 +68,17 @@ module Description (F : Ctypes.FOREIGN) = struct
         (Types.Vector2.t @-> float @-> returning Types.Vector2.t)
 
     (* Multiply vector by vector *)
-    let multiply_v =
-      foreign "Vector2MultiplyV"
+    let multiply =
+      foreign "Vector2Multiply"
         (Types.Vector2.t @-> Types.Vector2.t @-> returning Types.Vector2.t)
 
     (* Negate vector *)
     let negate =
       foreign "Vector2Negate" (Types.Vector2.t @-> returning Types.Vector2.t)
 
-    (* Divide vector by a float value *)
+    (* Divide vector by vector *)
     let divide =
       foreign "Vector2Divide"
-        (Types.Vector2.t @-> float @-> returning Types.Vector2.t)
-
-    (* Divide vector by vector *)
-    let divide_v =
-      foreign "Vector2DivideV"
         (Types.Vector2.t @-> Types.Vector2.t @-> returning Types.Vector2.t)
 
     (* Normalize provided vector *)
@@ -85,10 +91,19 @@ module Description (F : Ctypes.FOREIGN) = struct
         ( Types.Vector2.t @-> Types.Vector2.t @-> float
         @-> returning Types.Vector2.t )
 
+    let reflect =
+      foreign "Vector2Reflect"
+        (Types.Vector2.t @-> Types.Vector2.t @-> returning Types.Vector2.t)
+
     (* Rotate Vector by float in Degrees. *)
     let rotate =
       foreign "Vector2Rotate"
         (Types.Vector2.t @-> float @-> returning Types.Vector2.t)
+
+    let move_towards =
+      foreign "Vector2MoveTowards"
+        ( Types.Vector2.t @-> Types.Vector2.t @-> float
+        @-> returning Types.Vector2.t )
   end
 
   module Vector3 = struct
@@ -106,10 +121,18 @@ module Description (F : Ctypes.FOREIGN) = struct
       foreign "Vector3Add"
         (Types.Vector3.t @-> Types.Vector3.t @-> returning Types.Vector3.t)
 
+    let add_value =
+      foreign "Vector3AddValue"
+        (Types.Vector3.t @-> float @-> returning Types.Vector3.t)
+
     (* Subtract two vectors *)
     let subtract =
       foreign "Vector3Subtract"
         (Types.Vector3.t @-> Types.Vector3.t @-> returning Types.Vector3.t)
+
+    let subtract_value =
+      foreign "Vector3SubtractValue"
+        (Types.Vector3.t @-> float @-> returning Types.Vector3.t)
 
     (* Multiply vector by scalar *)
     let scale =
@@ -134,6 +157,9 @@ module Description (F : Ctypes.FOREIGN) = struct
     (* Calculate vector length *)
     let length = foreign "Vector3Length" (Types.Vector3.t @-> returning float)
 
+    let length_sqr =
+      foreign "Vector3LengthSqr" (Types.Vector3.t @-> returning float)
+
     (* Calculate two vectors dot product *)
     let dot_product =
       foreign "Vector3DotProduct"
@@ -148,14 +174,9 @@ module Description (F : Ctypes.FOREIGN) = struct
     let negate =
       foreign "Vector3Negate" (Types.Vector3.t @-> returning Types.Vector3.t)
 
-    (* Divide vector by a float value *)
+    (* Divide vector by vector *)
     let divide =
       foreign "Vector3Divide"
-        (Types.Vector3.t @-> float @-> returning Types.Vector3.t)
-
-    (* Divide vector by vector *)
-    let divide_v =
-      foreign "Vector3DivideV"
         (Types.Vector3.t @-> Types.Vector3.t @-> returning Types.Vector3.t)
 
     (* Normalize provided vector *)
@@ -207,9 +228,10 @@ module Description (F : Ctypes.FOREIGN) = struct
         ( Types.Vector3.t @-> Types.Vector3.t @-> Types.Vector3.t
         @-> Types.Vector3.t @-> returning Types.Vector3.t )
 
-    (* Returns Vector3 as float array *)
-    (* let to_float_v =
-     *   foreign "Vector3ToFloatV" (Types.Vector3.t @-> returning float3) *)
+    let unproject =
+      foreign "Vector3Unproject"
+        ( Types.Vector3.t @-> Types.Matrix.t @-> Types.Matrix.t
+        @-> returning Types.Vector3.t )
   end
 
   module Matrix = struct
@@ -260,8 +282,11 @@ module Description (F : Ctypes.FOREIGN) = struct
         (Types.Vector3.t @-> float @-> returning Types.Matrix.t)
 
     (* Returns xyz-rotation matrix (angles in radians) *)
-    let rotate_x_y_z =
+    let rotate_xyz =
       foreign "MatrixRotateXYZ" (Types.Vector3.t @-> returning Types.Matrix.t)
+
+    let rotate_zyx =
+      foreign "MatrixRotateZYX" (Types.Vector3.t @-> returning Types.Matrix.t)
 
     (* Returns x-rotation matrix (angle in radians) *)
     let rotate_x = foreign "MatrixRotateX" (float @-> returning Types.Matrix.t)
@@ -311,13 +336,29 @@ module Description (F : Ctypes.FOREIGN) = struct
     (* let to_float_v = foreign "MatrixToFloatV" (Types.Matrix.t @-> returning float16) *)
   end
 
-  module Quaternion = struct
+  module Vector4 = struct
     (*---------------------------------------------------------------------------------- *)
     (* Module Functions Definition - Quaternion math *)
     (*---------------------------------------------------------------------------------- *)
     (* Returns identity quaternion *)
     let identity =
       foreign "QuaternionIdentity" (void @-> returning Types.Vector4.t)
+
+    let add =
+      foreign "QuaternionAdd"
+        (Types.Vector4.t @-> Types.Vector4.t @-> returning Types.Vector4.t)
+
+    let add_value =
+      foreign "QuaternionAddValue"
+        (Types.Vector4.t @-> float @-> returning Types.Vector4.t)
+
+    let subtract =
+      foreign "QuaternionSubtract"
+        (Types.Vector4.t @-> Types.Vector4.t @-> returning Types.Vector4.t)
+
+    let subtract_value =
+      foreign "QuaternionSubtractValue"
+        (Types.Vector4.t @-> float @-> returning Types.Vector4.t)
 
     (* Computes the length of a quaternion *)
     let length = foreign "QuaternionLength" (Types.Vector4.t @-> returning float)
@@ -334,6 +375,14 @@ module Description (F : Ctypes.FOREIGN) = struct
     (* Calculate two quaternion multiplication *)
     let multiply =
       foreign "QuaternionMultiply"
+        (Types.Vector4.t @-> Types.Vector4.t @-> returning Types.Vector4.t)
+
+    let scale =
+      foreign "QuaternionScale"
+        (Types.Vector4.t @-> float @-> returning Types.Vector4.t)
+
+    let divide =
+      foreign "QuaternionDivide"
         (Types.Vector4.t @-> Types.Vector4.t @-> returning Types.Vector4.t)
 
     (* Calculate linear interpolation between two quaternions *)

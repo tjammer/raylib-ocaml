@@ -1,14 +1,19 @@
 module ConfigFlag : sig
   type t =
-    | Reserved
+    | VSync_hint
     | Fullscreen_mode
     | Window_resizable
     | Window_undecorated
-    | Window_transparent
     | Window_hidden
+    | Window_minimized
+    | Window_maximized
+    | Window_unfocused
+    | Window_topmost
     | Window_always_run
+    | Window_transparent
+    | Window_highdpi
     | MSAA_4X_hint
-    | VSync_hint
+    | Window_interlaced_hint
 
   val to_int : t -> int
 
@@ -152,6 +157,25 @@ module MouseButton : sig
   val of_int : int -> t
 end
 
+module MouseCursor : sig
+  type t =
+    | Default
+    | Arrow
+    | Ibeam
+    | Crosshair
+    | Pointing_hand
+    | Resize_EW
+    | Resize_NS
+    | Resize_NWSE
+    | Resize_NESW
+    | Resize_All
+    | Not_allowed
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
 module GamepadNumber : sig
   type t = Player1 | Player2 | Player3 | Player4
 
@@ -187,14 +211,7 @@ module GamepadButton : sig
 end
 
 module GamepadAxis : sig
-  type t =
-    | Unknown
-    | Left_x
-    | Left_y
-    | Right_x
-    | Right_y
-    | Left_trigger
-    | Right_trigger
+  type t = Left_x | Left_y | Right_x | Right_y | Left_trigger | Right_trigger
 
   val to_int : t -> int
 
@@ -348,7 +365,13 @@ module FontType : sig
 end
 
 module BlendMode : sig
-  type t = Alpha | Additive | Multiplied
+  type t =
+    | Alpha
+    | Additive
+    | Multiplied
+    | Add_colors
+    | Subtract_colors
+    | Custom
 
   val to_int : t -> int
 

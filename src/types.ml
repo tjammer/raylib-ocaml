@@ -88,7 +88,7 @@ module Vector4 = struct
 
   let set_w vec w = setf vec Types.Vector4.w w
 
-  include Math.Quaternion
+  include Math.Vector4
 end
 
 module Matrix = struct
@@ -222,20 +222,20 @@ module Rectangle = struct
   let set_height rc height = setf rc Types.Rectangle.height height
 end
 
-module Texture2D = struct
-  type t' = Types.Texture2D.t
+module Texture = struct
+  type t' = Types.Texture.t
 
   type t = t' ctyp
 
-  let id tex = getf tex Types.Texture2D.id
+  let id tex = getf tex Types.Texture.id
 
-  let width tex = getf tex Types.Texture2D.width
+  let width tex = getf tex Types.Texture.width
 
-  let height tex = getf tex Types.Texture2D.height
+  let height tex = getf tex Types.Texture.height
 
-  let mipmaps tex = getf tex Types.Texture2D.mipmaps
+  let mipmaps tex = getf tex Types.Texture.mipmaps
 
-  let format tex = PixelFormat.of_int (getf tex Types.Texture2D.format)
+  let format tex = PixelFormat.of_int (getf tex Types.Texture.format)
 end
 
 module Image = struct
@@ -243,25 +243,23 @@ module Image = struct
 
   type t = t' ctyp
 
-  let width tex = getf tex Types.Texture2D.width
+  let width tex = getf tex Types.Texture.width
 
-  let height tex = getf tex Types.Texture2D.height
+  let height tex = getf tex Types.Texture.height
 
-  let mipmaps tex = getf tex Types.Texture2D.mipmaps
+  let mipmaps tex = getf tex Types.Texture.mipmaps
 
-  let format tex = PixelFormat.of_int (getf tex Types.Texture2D.format)
+  let format tex = PixelFormat.of_int (getf tex Types.Texture.format)
 end
 
-module RenderTexture2D = struct
-  type t' = Types.RenderTexture2D.t
+module RenderTexture = struct
+  type t' = Types.RenderTexture.t
 
   type t = t' ctyp
 
-  let texture tex = getf tex Types.RenderTexture2D.texture
+  let texture tex = getf tex Types.RenderTexture.texture
 
-  let depth tex = getf tex Types.RenderTexture2D.depth
-
-  let depth_texture tex = getf tex Types.RenderTexture2D.depth_texture
+  let depth tex = getf tex Types.RenderTexture.depth
 end
 
 module NPatchInfo = struct
@@ -273,7 +271,7 @@ module NPatchInfo = struct
 
   let create rc left top right bottom typ =
     let np = make t in
-    setf np Types.NPatchInfo.source_rec rc;
+    setf np Types.NPatchInfo.source rc;
     setf np Types.NPatchInfo.left left;
     setf np Types.NPatchInfo.top top;
     setf np Types.NPatchInfo.right right;
@@ -281,7 +279,7 @@ module NPatchInfo = struct
     setf np Types.NPatchInfo.typ (NPatchType.to_int typ);
     np
 
-  let source_rec np = getf np Types.NPatchInfo.source_rec
+  let source np = getf np Types.NPatchInfo.source
 
   let left np = getf np Types.NPatchInfo.left
 
@@ -318,6 +316,8 @@ module Font = struct
   let base_size font = getf font Types.Font.base_size
 
   let chars_count font = getf font Types.Font.chars_count
+
+  let chars_padding font = getf font Types.Font.chars_padding
 
   let texture font = getf font Types.Font.texture
 

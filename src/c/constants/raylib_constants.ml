@@ -2,15 +2,20 @@ let%c () = header "#include <raylib.h>\n#include <rlgl.h>"
 
 module ConfigFlag = struct
   type%c t =
-    | Reserved [@cname "FLAG_RESERVED"]
+    | VSync_hint [@cname "FLAG_VSYNC_HINT"]
     | Fullscreen_mode [@cname "FLAG_FULLSCREEN_MODE"]
     | Window_resizable [@cname "FLAG_WINDOW_RESIZABLE"]
     | Window_undecorated [@cname "FLAG_WINDOW_UNDECORATED"]
-    | Window_transparent [@cname "FLAG_WINDOW_TRANSPARENT"]
     | Window_hidden [@cname "FLAG_WINDOW_HIDDEN"]
+    | Window_minimized [@cname "FLAG_WINDOW_MINIMIZED"]
+    | Window_maximized [@cname "FLAG_WINDOW_MAXIMIZED"]
+    | Window_unfocused [@cname "FLAG_WINDOW_UNFOCUSED"]
+    | Window_topmost [@cname "FLAG_WINDOW_TOPMOST"]
     | Window_always_run [@cname "FLAG_WINDOW_ALWAYS_RUN"]
+    | Window_transparent [@cname "FLAG_WINDOW_TRANSPARENT"]
+    | Window_highdpi [@cname "FLAG_WINDOW_HIGHDPI"]
     | MSAA_4X_hint [@cname "FLAG_MSAA_4X_HINT"]
-    | VSync_hint [@cname "FLAG_VSYNC_HINT"]
+    | Window_interlaced_hint [@cname "FLAG_INTERLACED_HINT"]
   [@@cname "ConfigFlag"] [@@typedef] [@@with_bitmask]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
@@ -176,6 +181,26 @@ module MouseButton = struct
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
+module MouseCursor = struct
+  type%c t =
+    | Default [@cname "MOUSE_CURSOR_DEFAULT"]
+    | Arrow [@cname "MOUSE_CURSOR_ARROW"]
+    | Ibeam [@cname "MOUSE_CURSOR_IBEAM"]
+    | Crosshair [@cname "MOUSE_CURSOR_CROSSHAIR"]
+    | Pointing_hand [@cname "MOUSE_CURSOR_POINTING_HAND"]
+    | Resize_EW [@cname "MOUSE_CURSOR_RESIZE_EW"]
+    | Resize_NS [@cname "MOUSE_CURSOR_RESIZE_NS"]
+    | Resize_NWSE [@cname "MOUSE_CURSOR_RESIZE_NWSE"]
+    | Resize_NESW [@cname "MOUSE_CURSOR_RESIZE_NESW"]
+    | Resize_All [@cname "MOUSE_CURSOR_RESIZE_ALL"]
+    | Not_allowed [@cname "MOUSE_CURSOR_NOT_ALLOWED"]
+  [@@cname "MouseCursor"] [@@typedef]
+
+  let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
+
+  let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
+end
+
 module GamepadNumber = struct
   type%c t =
     | Player1 [@cname "GAMEPAD_PLAYER1"]
@@ -227,8 +252,6 @@ end
 
 module GamepadAxis = struct
   type%c t =
-    (* This is here just for error checking *)
-    | Unknown [@cname "GAMEPAD_AXIS_UNKNOWN"]
     (* Left stick *)
     | Left_x [@cname "GAMEPAD_AXIS_LEFT_X"]
     | Left_y [@cname "GAMEPAD_AXIS_LEFT_Y"]
@@ -411,6 +434,9 @@ module BlendMode = struct
     | Alpha [@cname "BLEND_ALPHA"]
     | Additive [@cname "BLEND_ADDITIVE"]
     | Multiplied [@cname "BLEND_MULTIPLIED"]
+    | Add_colors [@cname "BLEND_ADD_COLORS"]
+    | Subtract_colors [@cname "BLEND_SUBTRACT_COLORS"]
+    | Custom [@cname "BLEND_CUSTOM"]
   [@@cname "BlendMode"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)

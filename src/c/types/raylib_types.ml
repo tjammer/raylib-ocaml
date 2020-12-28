@@ -60,7 +60,7 @@ module Image = struct
   [@@cname "Image"]
 end
 
-module Texture2D = struct
+module Texture = struct
   type%c t = {
     id : uint;
     width : int;
@@ -68,24 +68,23 @@ module Texture2D = struct
     mipmaps : int;
     format : int;
   }
-  [@@cname "Texture2D"]
+  [@@cname "Texture"]
 end
 
-module TextureCubemap = Texture2D
+module TextureCubemap = Texture
 
-module RenderTexture2D = struct
+module RenderTexture = struct
   type%c t = {
     id : uint;
-    texture : Texture2D.t;
-    depth : Texture2D.t;
-    depth_texture : bool; [@cname "depthTexture"]
+    texture : Texture.t;
+    depth : Texture.t;
   }
-  [@@cname "RenderTexture2D"]
+  [@@cname "RenderTexture"]
 end
 
 module NPatchInfo = struct
   type%c t = {
-    source_rec : Rectangle.t; [@cname "sourceRec"]
+    source : Rectangle.t;
     left : int;
     top : int;
     right : int;
@@ -110,7 +109,8 @@ module Font = struct
   type%c t = {
     base_size : int; [@cname "baseSize"]
     chars_count : int; [@cname "charsCount"]
-    texture : Texture2D.t;
+    chars_padding : int; [@cname "charsPadding"]
+    texture : Texture.t;
     recs : Rectangle.t ptr;
     chars : CharInfo.t ptr;
   }
@@ -164,7 +164,7 @@ module Shader = struct
 end
 
 module MaterialMap = struct
-  type%c t = { texture : Texture2D.t; color : Color.t; value : float }
+  type%c t = { texture : Texture.t; color : Color.t; value : float }
   [@@cname "MaterialMap"]
 end
 
@@ -246,29 +246,29 @@ module AudioStream = struct
   let%c audio_buffer = structure "rAudioBuffer"
 
   type%c t = {
+    buffer : audio_buffer ptr;
     sample_rate : uint; [@cname "sampleRate"]
     sample_size : uint; [@cname "sampleSize"]
     channels : uint;
-    buffer : audio_buffer ptr;
   }
   [@@cname "AudioStream"]
 end
 
 module Sound = struct
   type%c t = {
-    sample_count : uint; [@cname "sampleCount"]
     stream : AudioStream.t;
+    sample_count : uint; [@cname "sampleCount"]
   }
   [@@cname "Sound"]
 end
 
 module Music = struct
   type%c t = {
+    stream : AudioStream.t;
+    sample_count : uint; [@cname "sampleCount"]
+    looping : bool;
     ctx_type : int; [@cname "ctxType"]
     ctx_data : void ptr; [@cname "ctxData"]
-    sample_count : uint; [@cname "sampleCount"]
-    loopCount : uint; [@cname "loopCount"]
-    stream : AudioStream.t;
   }
   [@@cname "Music"]
 end

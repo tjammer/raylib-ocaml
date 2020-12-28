@@ -2,15 +2,20 @@ module Constants = Raylib_generated_constants
 
 module ConfigFlag = struct
   type t = Constants.ConfigFlag.t =
-    | Reserved
+    | VSync_hint
     | Fullscreen_mode
     | Window_resizable
     | Window_undecorated
-    | Window_transparent
     | Window_hidden
+    | Window_minimized
+    | Window_maximized
+    | Window_unfocused
+    | Window_topmost
     | Window_always_run
+    | Window_transparent
+    | Window_highdpi
     | MSAA_4X_hint
-    | VSync_hint
+    | Window_interlaced_hint
 
   let t = Constants.ConfigFlag.t
 
@@ -174,6 +179,27 @@ module MouseButton = struct
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
+module MouseCursor = struct
+  type t = Constants.MouseCursor.t =
+    | Default
+    | Arrow
+    | Ibeam
+    | Crosshair
+    | Pointing_hand
+    | Resize_EW
+    | Resize_NS
+    | Resize_NWSE
+    | Resize_NESW
+    | Resize_All
+    | Not_allowed
+
+  let t = Constants.MouseCursor.t
+
+  let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
+
+  let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
+end
+
 module GamepadNumber = struct
   type t = Constants.GamepadNumber.t = Player1 | Player2 | Player3 | Player4
 
@@ -223,8 +249,6 @@ end
 
 module GamepadAxis = struct
   type t = Constants.GamepadAxis.t =
-    (* This is here just for error checking *)
-    | Unknown
     (* Left stick *)
     | Left_x
     | Left_y
@@ -409,7 +433,13 @@ module FontType = struct
 end
 
 module BlendMode = struct
-  type t = Constants.BlendMode.t = Alpha | Additive | Multiplied
+  type t = Constants.BlendMode.t =
+    | Alpha
+    | Additive
+    | Multiplied
+    | Add_colors
+    | Subtract_colors
+    | Custom
 
   let t = Constants.BlendMode.t
 
