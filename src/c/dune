@@ -94,7 +94,7 @@
     (run chmod +w vendor/src/Makefile)
     (with-stdin-from
      mingw64.patch
-     (run patch -p1))
+     (run patch --binary -p1))
     (run make -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/src/libraylib.a libraylib.a)
     (run make -C vendor/src clean)
