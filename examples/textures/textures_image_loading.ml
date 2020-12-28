@@ -19,8 +19,8 @@ let rec loop texture =
       begin_drawing ();
       clear_background Color.raywhite;
       draw_texture texture
-        ((width / 2) - (Texture2D.width texture / 2))
-        ((height / 2) - (Texture2D.height texture / 2))
+        ((width / 2) - (Texture.width texture / 2))
+        ((height / 2) - (Texture.height texture / 2))
         Color.white;
       draw_text "this IS a texture loaded from an image!" 300 370 10 Color.gray;
       end_drawing ();

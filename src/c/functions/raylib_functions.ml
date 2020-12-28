@@ -111,17 +111,14 @@ module Description (F : Ctypes.FOREIGN) = struct
   let get_window_position =
     foreign "GetWindowPosition" (void @-> returning Types.Vector2.t)
 
-
   let get_window_scale_dpi =
     foreign "GetWindowScaleDPI" (void @-> returning Types.Vector2.t)
 
   (*  Get the human-readable, UTF-8 encoded name of the primary monitor *)
   let get_monitor_name = foreign "GetMonitorName" (int @-> returning string)
 
-
   (*  Set clipboard text content *)
   let set_clipboard_text = foreign "SetClipboardText" (string @-> returning void)
-
 
   (*  Get clipboard text content *)
   let get_clipboard_text =
@@ -278,7 +275,6 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Check if file exists *)
   let file_exists = foreign "FileExists" (string @-> returning bool)
 
-
   (*  Check if a directory path exists *)
   let directory_exists = foreign "DirectoryExists" (string @-> returning bool)
 
@@ -286,9 +282,9 @@ module Description (F : Ctypes.FOREIGN) = struct
   let is_file_extension =
     foreign "IsFileExtension" (string @-> string @-> returning bool)
 
-
   (*  Get pointer to extension for a filename string *)
-  let get_file_extension = foreign "GetFileExtension" (string @-> returning string)
+  let get_file_extension =
+    foreign "GetFileExtension" (string @-> returning string)
 
   (*  Get pointer to filename for a path string *)
   let get_file_name = foreign "GetFileName" (string @-> returning string)
@@ -379,8 +375,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   let get_key_pressed =
     foreign "GetKeyPressed" (void @-> returning Constants.Key.t)
 
-  let get_char_pressed =
-    foreign "GetCharPressed" (void @-> returning int)
+  let get_char_pressed = foreign "GetCharPressed" (void @-> returning int)
 
   (* Input-related functions: gamepads *)
   (*  Detect if a gamepad is available *)
@@ -474,11 +469,14 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "SetMouseScale" (float @-> float @-> returning void)
 
   (*  Returns mouse wheel movement Y *)
-  let get_mouse_wheel_move = foreign "GetMouseWheelMove" (void @-> returning float)
+  let get_mouse_wheel_move =
+    foreign "GetMouseWheelMove" (void @-> returning float)
 
-  let get_mouse_cursor = foreign "GetMouseCursor" (void @-> returning Constants.MouseCursor.t)
+  let get_mouse_cursor =
+    foreign "GetMouseCursor" (void @-> returning Constants.MouseCursor.t)
 
-  let set_mouse_cursor = foreign "SetMouseCursor" (Constants.MouseCursor.t @-> returning void)
+  let set_mouse_cursor =
+    foreign "SetMouseCursor" (Constants.MouseCursor.t @-> returning void)
 
   (* Input-related functions: touch *)
   (*  Returns touch position X for touch point 0 (relative to screen size) *)
@@ -788,7 +786,6 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Load image from file into CPU memory (RAM) *)
   let load_image = foreign "LoadImage" (string @-> returning Types.Image.t)
 
-
   (*  Load image from RAW file data *)
   let load_image_raw =
     foreign "LoadImageRaw"
@@ -1054,13 +1051,13 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw text (default font) within an image (destination) *)
   let image_draw_text =
     foreign "ImageDrawText"
-      ( ptr Types.Image.t @-> string @-> int @-> int @-> int
-      @-> Types.Color.t @-> returning void )
+      ( ptr Types.Image.t @-> string @-> int @-> int @-> int @-> Types.Color.t
+      @-> returning void )
 
   (*  Draw text (custom sprite font) within an image (destination) *)
   let image_draw_text_ex =
     foreign "ImageDrawTextEx"
-      ( ptr Types.Image.t @->  Types.Font.t @-> string @-> Types.Vector2.t
+      ( ptr Types.Image.t @-> Types.Font.t @-> string @-> Types.Vector2.t
       @-> float @-> float @-> Types.Color.t @-> returning void )
 
   (* Texture loading functions *)
@@ -1093,9 +1090,9 @@ module Description (F : Ctypes.FOREIGN) = struct
   let update_texture =
     foreign "UpdateTexture" (Types.Texture.t @-> ptr void @-> returning void)
 
-
   let update_texture_rec =
-    foreign "UpdateTextureRec" (Types.Texture.t @-> Types.Rectangle.t @->  ptr void @-> returning void)
+    foreign "UpdateTextureRec"
+      (Types.Texture.t @-> Types.Rectangle.t @-> ptr void @-> returning void)
 
   (*  Get pixel data from GPU texture and return an Image *)
   let get_texture_data =
@@ -1147,12 +1144,13 @@ module Description (F : Ctypes.FOREIGN) = struct
   let draw_texture_quad =
     foreign "DrawTextureQuad"
       ( Types.Texture.t @-> Types.Vector2.t @-> Types.Vector2.t
-        @-> Types.Rectangle.t @-> Types.Color.t @-> returning void )
+      @-> Types.Rectangle.t @-> Types.Color.t @-> returning void )
 
   let draw_texture_tiled =
     foreign "DrawTextureTiled"
       ( Types.Texture.t @-> Types.Rectangle.t @-> Types.Rectangle.t
-      @-> Types.Vector2.t @-> float @-> float @->  Types.Color.t @-> returning void )
+      @-> Types.Vector2.t @-> float @-> float @-> Types.Color.t
+      @-> returning void )
 
   (*  Draw a part of a texture defined by a rectangle with 'pro' parameters *)
   let draw_texture_pro =
@@ -1164,8 +1162,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   let draw_texture_n_patch =
     foreign "DrawTextureNPatch"
       ( Types.Texture.t @-> Types.NPatchInfo.t @-> Types.Rectangle.t
-        @-> Types.Vector2.t @-> float @-> Types.Color.t @-> returning void )
-
+      @-> Types.Vector2.t @-> float @-> Types.Color.t @-> returning void )
 
   (* Color-related functions *)
 
@@ -1187,24 +1184,32 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   (*  Returns a Color from HSV values *)
   let color_from_hsv =
-    foreign "ColorFromHSV" (float @-> float @-> float @-> returning Types.Color.t)
+    foreign "ColorFromHSV"
+      (float @-> float @-> float @-> returning Types.Color.t)
 
+  let color_alpha =
+    foreign "ColorAlpha" (Types.Color.t @-> float @-> returning Types.Color.t)
 
-  let color_alpha = foreign "ColorAlpha" (Types.Color.t @-> float @-> returning Types.Color.t)
-
-  let color_alpha_blend = foreign "ColorAlphaBlend" (Types.Color.t @->Types.Color.t @-> Types.Color.t @-> returning Types.Color.t)
+  let color_alpha_blend =
+    foreign "ColorAlphaBlend"
+      ( Types.Color.t @-> Types.Color.t @-> Types.Color.t
+      @-> returning Types.Color.t )
 
   (*  Returns a Color struct from hexadecimal value *)
   let get_color = foreign "GetColor" (int @-> returning Types.Color.t)
 
-  let get_pixel_color = foreign "GetPixelColor" ( ptr void  @-> Constants.PixelFormat.t @-> returning Types.Color.t)
-        let set_pixel_color = foreign "SetPixelColor" ( ptr void  @-> Types.Color.t @->  Constants.PixelFormat.t @-> returning void)
+  let get_pixel_color =
+    foreign "GetPixelColor"
+      (ptr void @-> Constants.PixelFormat.t @-> returning Types.Color.t)
 
-
+  let set_pixel_color =
+    foreign "SetPixelColor"
+      (ptr void @-> Types.Color.t @-> Constants.PixelFormat.t @-> returning void)
 
   (*  Get pixel data size in bytes (image or texture) *)
   let get_pixel_data_size =
-    foreign "GetPixelDataSize" (int @-> int @-> Constants.PixelFormat.t @-> returning int)
+    foreign "GetPixelDataSize"
+      (int @-> int @-> Constants.PixelFormat.t @-> returning int)
 
   (* Font Loading and Text Drawing Functions (Module: text) *)
 
@@ -1229,13 +1234,13 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Load font data for further use *)
   let load_font_data =
     foreign "LoadFontData"
-      (  ptr uchar @-> int @->  int @-> ptr int @-> int @-> int
+      ( ptr uchar @-> int @-> int @-> ptr int @-> int @-> int
       @-> returning (ptr Types.CharInfo.t) )
 
   (*  Generate image font atlas using chars info *)
   (* let  gen_image_font_atlas  = foreign "GenImageFontAtlas" ( (ptr Types.CharInfo.t) @-> Types.Rectangle.t @-> int @-> int @-> int @-> int @-> returning Types.Image.t) *)
-let unload_font_data = foreign "UnloadFontData" (ptr Types.CharInfo.t @-> int @-> returning void)
-
+  let unload_font_data =
+    foreign "UnloadFontData" (ptr Types.CharInfo.t @-> int @-> returning void)
 
   (*  Unload Font from GPU memory (VRAM) *)
   let unload_font = foreign "UnloadFont" (Types.Font.t @-> returning void)
@@ -1375,19 +1380,16 @@ let unload_font_data = foreign "UnloadFontData" (ptr Types.CharInfo.t @-> int @-
   let draw_circle_3d =
     foreign "DrawCircle3D"
       ( Types.Vector3.t @-> float @-> Types.Vector3.t @-> float
-        @-> Types.Color.t @-> returning void )
-
+      @-> Types.Color.t @-> returning void )
 
   let draw_triangle_3d =
     foreign "DrawTriangle3D"
       ( Types.Vector3.t @-> Types.Vector3.t @-> Types.Vector3.t
-        @-> Types.Color.t @-> returning void )
-
+      @-> Types.Color.t @-> returning void )
 
   let draw_triangle_strip_3d =
     foreign "DrawTriangleStrip3D"
-      ( ptr Types.Vector3.t @-> int
-      @-> Types.Color.t @-> returning void )
+      (ptr Types.Vector3.t @-> int @-> Types.Color.t @-> returning void)
 
   (*  Draw cube *)
   let draw_cube =
@@ -1476,8 +1478,8 @@ let unload_font_data = foreign "UnloadFontData" (ptr Types.CharInfo.t @-> int @-
   (*  Unload model from memory (RAM and/or VRAM) *)
   let unload_model = foreign "UnloadModel" (Types.Model.t @-> returning void)
 
-
-  let unload_model_keep_meshes = foreign "UnloadModelKeepMeshes" (Types.Model.t @-> returning void)
+  let unload_model_keep_meshes =
+    foreign "UnloadModelKeepMeshes" (Types.Model.t @-> returning void)
 
   (* Mesh loading/unloading functions *)
   (*  Load meshes from model file *)
@@ -1598,7 +1600,6 @@ let unload_font_data = foreign "UnloadFontData" (ptr Types.CharInfo.t @-> int @-
   let mesh_binormals =
     foreign "MeshBinormals" (ptr Types.Mesh.t @-> returning void)
 
-
   let mesh_normals_smooth =
     foreign "MeshNormalsSmooth" (ptr Types.Mesh.t @-> returning void)
 
@@ -1677,10 +1678,10 @@ let unload_font_data = foreign "UnloadFontData" (ptr Types.CharInfo.t @-> int @-
     foreign "CheckCollisionRayBox"
       (Types.Ray.t @-> Types.BoundingBox.t @-> returning bool)
 
-
   let get_collision_ray_mesh =
     foreign "GetCollisionRayMesh"
-      (Types.Ray.t @-> Types.Mesh.t @-> Types.Matrix.t @->  returning Types.RayHitInfo.t)
+      ( Types.Ray.t @-> Types.Mesh.t @-> Types.Matrix.t
+      @-> returning Types.RayHitInfo.t )
 
   (*  Get collision info between ray and model *)
   let get_collision_ray_model =
@@ -1741,7 +1742,6 @@ let unload_font_data = foreign "UnloadFontData" (ptr Types.CharInfo.t @-> int @-
     foreign "GetShaderLocation"
       (Types.Shader.t @-> string @-> returning Constants.ShaderLocationIndex.t)
 
-
   let get_shader_location_attrib =
     foreign "GetShaderLocationAttrib"
       (Types.Shader.t @-> string @-> returning Constants.ShaderLocationIndex.t)
@@ -1791,7 +1791,8 @@ let unload_font_data = foreign "UnloadFontData" (ptr Types.CharInfo.t @-> int @-
   (*  Generate cubemap texture from 2D texture *)
   let gen_texture_cubemap =
     foreign "GenTextureCubemap"
-      (Types.Shader.t @-> Types.Texture.t @-> int @-> Constants.PixelFormat.t @-> returning Types.Texture.t)
+      ( Types.Shader.t @-> Types.Texture.t @-> int @-> Constants.PixelFormat.t
+      @-> returning Types.Texture.t )
 
   (*  Generate irradiance texture using cubemap data *)
   let gen_texture_irradiance =
@@ -1873,8 +1874,9 @@ let unload_font_data = foreign "UnloadFontData" (ptr Types.CharInfo.t @-> int @-
   (*  Load wave data from file *)
   let load_wave = foreign "LoadWave" (string @-> returning Types.Wave.t)
 
-
-  let load_wave_from_memory = foreign "LoadWaveFromMemory" (string @-> ptr uchar @-> int @->  returning Types.Wave.t)
+  let load_wave_from_memory =
+    foreign "LoadWaveFromMemory"
+      (string @-> ptr uchar @-> int @-> returning Types.Wave.t)
 
   (*  Load sound from file *)
   let load_sound = foreign "LoadSound" (string @-> returning Types.Sound.t)
@@ -1952,9 +1954,8 @@ let unload_font_data = foreign "UnloadFontData" (ptr Types.CharInfo.t @-> int @-
   let load_wave_samples =
     foreign "LoadWaveSamples" (Types.Wave.t @-> returning (ptr float))
 
-
   let unload_wave_samples =
-    foreign "UnloadWaveSamples" (ptr float @-> returning (void))
+    foreign "UnloadWaveSamples" (ptr float @-> returning void)
 
   (* Music management functions *)
   (*  Load music stream from file *)

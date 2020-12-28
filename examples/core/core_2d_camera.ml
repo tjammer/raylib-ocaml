@@ -59,8 +59,7 @@ let rec loop (player, buildings, colors, camera) =
       );
 
       Camera2D.(
-        set_zoom camera
-          (zoom camera +. (Float.of_int (get_mouse_wheel_move ()) *. 0.05)));
+        set_zoom camera (zoom camera +. (get_mouse_wheel_move () *. 0.05)));
 
       ( if Camera2D.zoom camera > 3.0 then Camera2D.(set_zoom camera 3.0)
       else if Camera2D.zoom camera < 0.1 then Camera2D.(set_zoom camera 0.1) );

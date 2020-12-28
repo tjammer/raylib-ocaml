@@ -2122,7 +2122,8 @@ val load_font_ex : string -> int -> int ptr -> int -> Font.t
 val load_font_from_image : Image.t -> Color.t -> int -> Font.t
 (** [load_font_from_image image kay firstChar] loads font from Image (XNA style) *)
 
-val load_font_data : Unsigned.uchar ptr -> int ->  int -> int ptr -> int -> int -> CharInfo.t ptr
+val load_font_data :
+  Unsigned.uchar ptr -> int -> int -> int ptr -> int -> int -> CharInfo.t ptr
 (** [load_font_data fileData dataSize fontSize fontChars charsCount type] loads font data for further use *)
 
 val unload_font_data : CharInfo.t ptr -> int -> unit
@@ -2543,7 +2544,8 @@ val get_matrix_projection : unit -> Matrix.t
 
 (** {3 Texture maps generation (PBR)} *)
 
-val gen_texture_cubemap : Shader.t -> Texture.t -> int -> PixelFormat.t -> Texture.t
+val gen_texture_cubemap :
+  Shader.t -> Texture.t -> int -> PixelFormat.t -> Texture.t
 (** Generate cubemap texture from 2D texture *)
 
 val gen_texture_irradiance : Shader.t -> Texture.t -> int -> Texture.t

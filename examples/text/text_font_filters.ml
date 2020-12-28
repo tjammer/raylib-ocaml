@@ -26,7 +26,9 @@ let rec loop font font_size font_position filter =
       close_window ()
   | false ->
       let open Raylib in
-      let font_size = font_size + (get_mouse_wheel_move () * 4) in
+      let font_size =
+        font_size + (Int.of_float (get_mouse_wheel_move ()) * 4)
+      in
       let filter =
         if is_key_pressed Key.One then (
           set_texture_filter (Font.texture font) TextureFilterMode.Point;

@@ -58,17 +58,15 @@ let rec loop bunnies bunnies_count tex_bunny =
           V.(set_x b.position (x b.position +. x b.speed));
           V.(set_y b.position (y b.position +. y b.speed));
           ( if
-            V.x b.position +. (Float.of_int (Texture2D.width tex_bunny) /. 2.0)
+            V.x b.position +. (Float.of_int (Texture.width tex_bunny) /. 2.0)
             > Float.of_int (get_screen_width ())
-            || V.x b.position
-               +. (Float.of_int (Texture2D.width tex_bunny) /. 2.0)
+            || V.x b.position +. (Float.of_int (Texture.width tex_bunny) /. 2.0)
                < 0.0
           then V.(set_x b.speed (x b.speed *. -1.0)) );
           if
-            V.y b.position +. (Float.of_int (Texture2D.height tex_bunny) /. 2.0)
+            V.y b.position +. (Float.of_int (Texture.height tex_bunny) /. 2.0)
             > Float.of_int (get_screen_height ())
-            || V.y b.position
-               +. (Float.of_int (Texture2D.width tex_bunny) /. 2.0)
+            || V.y b.position +. (Float.of_int (Texture.width tex_bunny) /. 2.0)
                < 0.0
           then V.(set_y b.speed (y b.speed *. -1.0)))
         bunnies;

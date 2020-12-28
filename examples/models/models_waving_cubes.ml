@@ -50,10 +50,7 @@ let rec loop camera =
                 +. scatter )
             in
             let color =
-              color_from_hsv
-                (Vector3.create
-                   (Float.of_int ((x + y + z) * 18 mod 360))
-                   0.75 0.9)
+              color_from_hsv (Float.of_int ((x + y + z) * 18 mod 360)) 0.75 0.9
             in
             let size = (2.4 -. scale) *. block_scale in
             draw_cube cube_pos size size size color

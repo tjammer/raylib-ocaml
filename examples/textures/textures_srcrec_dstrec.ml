@@ -7,8 +7,8 @@ let setup () =
   init_window width height
     "raylib [textures] example - texture source and destination rectangles";
   let scarfy = load_texture "resources/scarfy.png" in
-  let frame_width = Texture2D.width scarfy / 6 in
-  let frame_height = Texture2D.height scarfy in
+  let frame_width = Texture.width scarfy / 6 in
+  let frame_height = Texture.height scarfy in
   let source_rec =
     Rectangle.create 0.0 0.0 (Float.of_int frame_width)
       (Float.of_int frame_height)

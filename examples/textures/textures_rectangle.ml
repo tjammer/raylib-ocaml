@@ -12,8 +12,8 @@ let setup () =
   let scarfy = load_texture "resources/scarfy.png" in
   let frame_rec =
     Rectangle.create 0.0 0.0
-      (Float.of_int (Texture2D.width scarfy) /. 6.0)
-      (Float.of_int (Texture2D.height scarfy))
+      (Float.of_int (Texture.width scarfy) /. 6.0)
+      (Float.of_int (Texture.height scarfy))
   in
   set_target_fps 60;
   (scarfy, frame_rec)
@@ -33,7 +33,7 @@ let rec loop scarfy frame_rec counter frame frames_speed =
             R.(
               create
                 ( Float.of_int frame
-                *. (Float.of_int (Texture2D.width scarfy) /. 6.0) )
+                *. (Float.of_int (Texture.width scarfy) /. 6.0) )
                 (y frame_rec) (width frame_rec) (height frame_rec))
           in
           (0, frame, frame_rec)
@@ -47,8 +47,8 @@ let rec loop scarfy frame_rec counter frame frames_speed =
       begin_drawing ();
       clear_background Color.raywhite;
       draw_texture scarfy 15 40 Color.white;
-      draw_rectangle_lines 15 40 (Texture2D.width scarfy)
-        (Texture2D.height scarfy) Color.lime;
+      draw_rectangle_lines 15 40 (Texture.width scarfy) (Texture.height scarfy)
+        Color.lime;
       draw_rectangle_lines
         (15 + Int.of_float (R.x frame_rec))
         (40 + Int.of_float (R.y frame_rec))

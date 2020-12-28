@@ -74,11 +74,7 @@ end
 module TextureCubemap = Texture
 
 module RenderTexture = struct
-  type%c t = {
-    id : uint;
-    texture : Texture.t;
-    depth : Texture.t;
-  }
+  type%c t = { id : uint; texture : Texture.t; depth : Texture.t }
   [@@cname "RenderTexture"]
 end
 
