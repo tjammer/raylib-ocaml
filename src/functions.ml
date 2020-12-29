@@ -1,4 +1,4 @@
-include Ctypes_reexports
+open Ctypes_reexports
 open Ctypes
 include Raylib_functions.Description (Raylib_c.Raylib_c_generated_functions)
 

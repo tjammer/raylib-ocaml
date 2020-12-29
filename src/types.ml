@@ -1,7 +1,7 @@
-include Raylib_generated_constants
 module Types = Raylib_functions.Types
 module Math = Raylib_math.Description (Raylib_c.Raylib_c_generated_math)
-include Ctypes_reexports
+open Raylib_generated_constants
+open Ctypes_reexports
 open Ctypes
 
 module Vector2 = struct
