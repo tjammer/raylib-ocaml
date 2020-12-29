@@ -16,10 +16,12 @@ jobs:
           - ubuntu-latest
           - windows-latest
         ocaml-version:
-          - 4.06.0
           - 4.09.1
           - 4.10.0
           - 4.11.1
+        include:
+          - ocaml-version: 4.06.0
+            os: ubuntu-latest
 
     runs-on: ${{ matrix.os }}
 

@@ -122,7 +122,7 @@
      freebsd.patch
      (run patch -sp1))
     (run gmake -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
-    (copy vendor/libraylib.a libraylib.a)
+    (copy vendor/src/libraylib.a libraylib.a)
     (run gmake -C vendor/src clean)
     (run gmake -C vendor/src RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/libraylib.3.5.0.so dllraylib.so)))))
+    (copy vendor/src/libraylib.3.5.0.so dllraylib.so)))))
