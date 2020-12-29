@@ -45,3 +45,7 @@ jobs:
       - run: opam install . --deps-only
 
       - run: opam exec -- dune build
+        if: matrix.ocaml-version != '4.06.0'
+
+      - run: opam install .
+        if: matrix.ocaml-version == '4.06.0'
