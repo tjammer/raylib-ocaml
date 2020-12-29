@@ -2,7 +2,7 @@
 
 # raylib-ocaml
 
-OCaml bindings for <a href="https://www.raylib.com/" target="_blank">raylib</a> (v3.0.0), a simple and easy-to-use library to enjoy videogames programming.
+OCaml bindings for <a href="https://www.raylib.com/" target="_blank">raylib</a> (v3.5.0), a simple and easy-to-use library to enjoy videogames programming.
 
 The bindings are pretty faithful to the original C code, the biggest difference is the conversion of all function names from CamelCase to snake_case.
 Wherever possible, integer arguments are changed to their own variant types, eg. `int key` to `Key.t`.
