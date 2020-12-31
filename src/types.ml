@@ -238,6 +238,8 @@ module Texture = struct
   let format tex = PixelFormat.of_int (getf tex Types.Texture.format)
 end
 
+module Texture2D = Texture
+
 module Image = struct
   type t' = Types.Image.t
 
@@ -261,6 +263,8 @@ module RenderTexture = struct
 
   let depth tex = getf tex Types.RenderTexture.depth
 end
+
+module RenderTexture2D = RenderTexture
 
 module NPatchInfo = struct
   type t' = Types.NPatchInfo.t

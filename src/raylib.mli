@@ -818,6 +818,8 @@ module Texture : sig
   val format : t -> PixelFormat.t
 end
 
+module Texture2D = Texture
+
 module Image : sig
   type t'
 
@@ -841,6 +843,8 @@ module RenderTexture : sig
 
   val depth : t -> Texture.t
 end
+
+module RenderTexture2D = RenderTexture
 
 module NPatchInfo : sig
   type t'
