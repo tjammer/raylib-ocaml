@@ -2025,21 +2025,21 @@ val set_texture_wrap : Texture.t -> TextureWrapMode.t -> unit
 (** {3 Texture drawing functions} *)
 
 val draw_texture : Texture.t -> int -> int -> Color.t -> unit
-(** Draw a Texture *)
+(** [draw_texture texture posX posY tint] draws a Texture *)
 
 val draw_texture_v : Texture.t -> Vector2.t -> Color.t -> unit
-(** Draw a Texture with position defined as Vector2 *)
+(** [draw_texture_v texture position tint] draws a Texture with position defined as Vector2 *)
 
 val draw_texture_ex :
   Texture.t -> Vector2.t -> float -> float -> Color.t -> unit
-(** Draw a Texture with extended parameters *)
+(** [draw_texture_ex texture position rotation scale tint] draws a Texture with extended parameters *)
 
 val draw_texture_rec : Texture.t -> Rectangle.t -> Vector2.t -> Color.t -> unit
-(** Draw a part of a texture defined by a rectangle *)
+(** [draw_texture_rec texture source position tint] draws a part of a texture defined by a rectangle *)
 
 val draw_texture_quad :
   Texture.t -> Vector2.t -> Vector2.t -> Rectangle.t -> Color.t -> unit
-(** Draw texture quad with tiling and offset parameters *)
+(** [draw_texture_quad texture tiling offset quad tint] draws texture quad with tiling and offset parameters *)
 
 val draw_texture_tiled :
   Texture.t ->
@@ -2060,7 +2060,7 @@ val draw_texture_pro :
   float ->
   Color.t ->
   unit
-(** Draw a part of a texture defined by a rectangle with 'pro' parameters *)
+(** [draw_texture_pro texture source dest origin rotation tint] draws a part of a texture defined by a rectangle with 'pro' parameters *)
 
 val draw_texture_n_patch :
   Texture.t ->
