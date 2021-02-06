@@ -14,19 +14,19 @@ let rec loop box_position =
   | false ->
       let open Raylib in
       let box_position =
-        (box_position - (get_mouse_wheel_move ()) * scroll_speed)
+        box_position - (Int.of_float (get_mouse_wheel_move ()) * scroll_speed)
       in
       begin_drawing ();
       clear_background Color.raywhite;
-      draw_rectangle (width/2 - 40) box_position 80 80 Color.maroon;
+      draw_rectangle ((width / 2) - 40) box_position 80 80 Color.maroon;
       draw_text "Use mouse wheel to move the cube up and down!" 10 10 20
         Color.gray;
-      draw_text (Printf.sprintf "Box position Y: %03i" box_position) 20 40 20
-        Color.lightgray;
+      draw_text
+        (Printf.sprintf "Box position Y: %03i" box_position)
+        20 40 20 Color.lightgray;
       end_drawing ();
       loop box_position
 
 let () =
   setup ();
-  loop
-    (height/2)
+  loop (height / 2)
