@@ -1,19 +1,79 @@
 (executable
- (name core_basic_window)
- (modules Core_basic_window)
- (libraries raylib))
+  (name core_2d_camera)
+  (modules Core_2d_camera)
+  (libraries raylib))
 
 (executable
- (name core_input_keys)
- (modules Core_input_keys)
- (libraries raylib))
+  (name core_2d_camera_platformer)
+  (modules Core_2d_camera_platformer)
+  (libraries raylib))
 
 (executable
- (name core_2d_camera)
- (modules Core_2d_camera)
- (libraries raylib))
+  (name core_3d_camera_first_person)
+  (modules Core_3d_camera_first_person)
+  (libraries raylib))
 
 (executable
- (name core_vr_simulator)
- (modules Core_vr_simulator)
- (libraries raylib))
+  (name core_3d_camera_free)
+  (modules Core_3d_camera_free)
+  (libraries raylib))
+
+(executable
+  (name core_3d_camera_mode)
+  (modules Core_3d_camera_mode)
+  (libraries raylib))
+
+(executable
+  (name core_3d_picking)
+  (modules Core_3d_picking)
+  (libraries raylib))
+
+(executable
+  (name core_basic_window)
+  (modules Core_basic_window)
+  (libraries raylib))
+
+(executable
+  (name core_drop_files)
+  (modules Core_drop_files)
+  (libraries raylib))
+
+(executable
+  (name core_input_keys)
+  (modules Core_input_keys)
+  (libraries raylib))
+
+(executable
+  (name core_input_mouse)
+  (modules Core_input_mouse)
+  (libraries raylib))
+
+(executable
+  (name core_input_mouse_wheel)
+  (modules Core_input_mouse_wheel)
+  (libraries raylib))
+
+(executable
+  (name core_loading_thread)
+  (modules Core_loading_thread)
+  (libraries raylib threads))
+
+(executable
+  (name core_random_values)
+  (modules Core_random_values)
+  (libraries raylib))
+
+(executable
+  (name core_storage_values)
+  (modules Core_storage_values)
+  (libraries raylib))
+
+(executable
+  (name core_vr_simulator)
+  (modules Core_vr_simulator)
+  (libraries raylib))
+
+(executable
+  (name core_window_letterbox)
+  (modules Core_window_letterbox)
+  (libraries raylib))
