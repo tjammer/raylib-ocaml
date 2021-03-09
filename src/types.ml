@@ -402,6 +402,15 @@ module Shader = struct
   type t' = Types.Shader.t
 
   type t = t' ctyp
+
+  let locs shader =
+    CArray.from_ptr (getf shader Types.Shader.locs) max_shader_locations
+
+  let set_loc shader loc_index loc =
+    let locs = locs shader in
+    CArray.set locs (ShaderLocationIndex.to_int loc_index) loc
+
+  let set_locs shader locs = setf shader Types.Shader.locs (CArray.start locs)
 end
 
 module MaterialMap = struct

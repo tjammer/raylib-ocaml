@@ -957,6 +957,12 @@ module Shader : sig
   type t'
 
   type t = t' ctyp
+
+  val locs : t -> int CArray.t
+
+  val set_loc : t -> ShaderLocationIndex.t -> int -> unit
+
+  val set_locs : t -> int CArray.t -> unit
 end
 
 module MaterialMap : sig
