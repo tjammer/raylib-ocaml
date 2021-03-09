@@ -1739,36 +1739,33 @@ module Description (F : Ctypes.FOREIGN) = struct
   (* Shader configuration functions *)
   (*  Get shader uniform location *)
   let get_shader_location =
-    foreign "GetShaderLocation"
-      (Types.Shader.t @-> string @-> returning Constants.ShaderLocationIndex.t)
+    foreign "GetShaderLocation" (Types.Shader.t @-> string @-> returning int)
 
   let get_shader_location_attrib =
     foreign "GetShaderLocationAttrib"
-      (Types.Shader.t @-> string @-> returning Constants.ShaderLocationIndex.t)
+      (Types.Shader.t @-> string @-> returning int)
 
   (*  Set shader uniform value *)
   let set_shader_value =
     foreign "SetShaderValue"
-      (Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> ptr void
-     @-> Constants.ShaderUniformDataType.t @-> returning void)
+      (Types.Shader.t @-> int @-> ptr void @-> Constants.ShaderUniformDataType.t
+     @-> returning void)
 
   (*  Set shader uniform value vector *)
   let set_shader_value_v =
     foreign "SetShaderValueV"
-      (Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> ptr void
-     @-> Constants.ShaderUniformDataType.t @-> int @-> returning void)
+      (Types.Shader.t @-> int @-> ptr void @-> Constants.ShaderUniformDataType.t
+     @-> int @-> returning void)
 
   (*  Set shader uniform value (matrix 4x4) *)
   let set_shader_value_matrix =
     foreign "SetShaderValueMatrix"
-      (Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> Types.Matrix.t
-     @-> returning void)
+      (Types.Shader.t @-> int @-> Types.Matrix.t @-> returning void)
 
   (*  Set shader uniform value for texture *)
   let set_shader_value_texture =
     foreign "SetShaderValueTexture"
-      (Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> Types.Texture.t
-     @-> returning void)
+      (Types.Shader.t @-> int @-> Types.Texture.t @-> returning void)
 
   (*  Set a custom projection matrix (replaces internal projection matrix) *)
   let set_matrix_projection =
