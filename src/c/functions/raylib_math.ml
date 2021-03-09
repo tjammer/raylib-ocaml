@@ -88,8 +88,8 @@ module Description (F : Ctypes.FOREIGN) = struct
     (* Calculate linear interpolation between two vectors *)
     let lerp =
       foreign "Vector2Lerp"
-        ( Types.Vector2.t @-> Types.Vector2.t @-> float
-        @-> returning Types.Vector2.t )
+        (Types.Vector2.t @-> Types.Vector2.t @-> float
+       @-> returning Types.Vector2.t)
 
     let reflect =
       foreign "Vector2Reflect"
@@ -102,8 +102,8 @@ module Description (F : Ctypes.FOREIGN) = struct
 
     let move_towards =
       foreign "Vector2MoveTowards"
-        ( Types.Vector2.t @-> Types.Vector2.t @-> float
-        @-> returning Types.Vector2.t )
+        (Types.Vector2.t @-> Types.Vector2.t @-> float
+       @-> returning Types.Vector2.t)
   end
 
   module Vector3 = struct
@@ -203,8 +203,8 @@ module Description (F : Ctypes.FOREIGN) = struct
     (* Calculate linear interpolation between two vectors *)
     let lerp =
       foreign "Vector3Lerp"
-        ( Types.Vector3.t @-> Types.Vector3.t @-> float
-        @-> returning Types.Vector3.t )
+        (Types.Vector3.t @-> Types.Vector3.t @-> float
+       @-> returning Types.Vector3.t)
 
     (* Calculate reflected vector to normal *)
     let reflect =
@@ -225,13 +225,13 @@ module Description (F : Ctypes.FOREIGN) = struct
     (* NOTE: Assumes P is on the plane of the triangle *)
     let barycenter =
       foreign "Vector3Barycenter"
-        ( Types.Vector3.t @-> Types.Vector3.t @-> Types.Vector3.t
-        @-> Types.Vector3.t @-> returning Types.Vector3.t )
+        (Types.Vector3.t @-> Types.Vector3.t @-> Types.Vector3.t
+       @-> Types.Vector3.t @-> returning Types.Vector3.t)
 
     let unproject =
       foreign "Vector3Unproject"
-        ( Types.Vector3.t @-> Types.Matrix.t @-> Types.Matrix.t
-        @-> returning Types.Vector3.t )
+        (Types.Vector3.t @-> Types.Matrix.t @-> Types.Matrix.t
+       @-> returning Types.Vector3.t)
   end
 
   module Matrix = struct
@@ -311,8 +311,8 @@ module Description (F : Ctypes.FOREIGN) = struct
     (* Returns perspective projection matrix *)
     let frustum =
       foreign "MatrixFrustum"
-        ( double @-> double @-> double @-> double @-> double @-> double
-        @-> returning Types.Matrix.t )
+        (double @-> double @-> double @-> double @-> double @-> double
+       @-> returning Types.Matrix.t)
 
     (* Returns perspective projection matrix *)
     (* NOTE: Angle should be provided in radians *)
@@ -323,14 +323,14 @@ module Description (F : Ctypes.FOREIGN) = struct
     (* Returns orthographic projection matrix *)
     let ortho =
       foreign "MatrixOrtho"
-        ( double @-> double @-> double @-> double @-> double @-> double
-        @-> returning Types.Matrix.t )
+        (double @-> double @-> double @-> double @-> double @-> double
+       @-> returning Types.Matrix.t)
 
     (* Returns camera look-at matrix (view matrix) *)
     let look_at =
       foreign "MatrixLookAt"
-        ( Types.Vector3.t @-> Types.Vector3.t @-> Types.Vector3.t
-        @-> returning Types.Matrix.t )
+        (Types.Vector3.t @-> Types.Vector3.t @-> Types.Vector3.t
+       @-> returning Types.Matrix.t)
 
     (* Returns float array of matrix data *)
     (* let to_float_v = foreign "MatrixToFloatV" (Types.Matrix.t @-> returning float16) *)
@@ -388,20 +388,20 @@ module Description (F : Ctypes.FOREIGN) = struct
     (* Calculate linear interpolation between two quaternions *)
     let lerp =
       foreign "QuaternionLerp"
-        ( Types.Vector4.t @-> Types.Vector4.t @-> float
-        @-> returning Types.Vector4.t )
+        (Types.Vector4.t @-> Types.Vector4.t @-> float
+       @-> returning Types.Vector4.t)
 
     (* Calculate slerp-optimized interpolation between two quaternions *)
     let nlerp =
       foreign "QuaternionNlerp"
-        ( Types.Vector4.t @-> Types.Vector4.t @-> float
-        @-> returning Types.Vector4.t )
+        (Types.Vector4.t @-> Types.Vector4.t @-> float
+       @-> returning Types.Vector4.t)
 
     (* Calculates spherical linear interpolation between two quaternions *)
     let slerp =
       foreign "QuaternionSlerp"
-        ( Types.Vector4.t @-> Types.Vector4.t @-> float
-        @-> returning Types.Vector4.t )
+        (Types.Vector4.t @-> Types.Vector4.t @-> float
+       @-> returning Types.Vector4.t)
 
     (* Calculate quaternion based on the rotation from one vector to another *)
     let from_vector3_to_vector3 =
@@ -426,8 +426,8 @@ module Description (F : Ctypes.FOREIGN) = struct
     (* Returns the rotation angle and axis for a given quaternion *)
     let to_axis_angle =
       foreign "QuaternionToAxisAngle"
-        ( Types.Vector4.t @-> ptr Types.Vector3.t @-> ptr float
-        @-> returning void )
+        (Types.Vector4.t @-> ptr Types.Vector3.t @-> ptr float
+       @-> returning void)
 
     (* Returns he quaternion equivalent to Euler angles *)
     let from_euler =

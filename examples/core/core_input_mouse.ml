@@ -20,12 +20,13 @@ let rec loop ball_color =
       in
       begin_drawing ();
       clear_background Color.raywhite;
-      draw_text "move ball_pos with mouse and click mouse button to change color" 10 10 20 Color.darkgray;
+      draw_text
+        "move ball_pos with mouse and click mouse button to change color" 10 10
+        20 Color.darkgray;
       draw_circle_v ball_pos 50.0 ball_color;
       end_drawing ();
       loop ball_color
 
 let () =
   setup ();
-  loop
-    Raylib.Color.darkblue
+  loop Raylib.Color.darkblue

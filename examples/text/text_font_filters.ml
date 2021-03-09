@@ -32,21 +32,21 @@ let rec loop font font_size font_position filter =
       let filter =
         if is_key_pressed Key.One then (
           set_texture_filter (Font.texture font) TextureFilterMode.Point;
-          `Point )
+          `Point)
         else if is_key_pressed Key.Two then (
           set_texture_filter (Font.texture font) TextureFilterMode.Bilinear;
-          `Bilinear )
+          `Bilinear)
         else if is_key_pressed Key.Three then (
           set_texture_filter (Font.texture font) TextureFilterMode.Trilinear;
-          `Trilinear )
+          `Trilinear)
         else filter
       in
       let text_size = measure_text_ex font msg (Float.of_int font_size) 0.0 in
 
-      ( if is_key_down Key.Left then
-        Vector2.(set_x font_position (x font_position -. 10.0))
+      (if is_key_down Key.Left then
+       Vector2.(set_x font_position (x font_position -. 10.0))
       else if is_key_down Key.Right then
-        Vector2.(set_x font_position (x font_position +. 10.0)) );
+        Vector2.(set_x font_position (x font_position +. 10.0)));
 
       let font =
         if is_file_dropped () then
@@ -58,7 +58,7 @@ let rec loop font font_size font_position filter =
               load_font_ex (CArray.get files 0) font_size (ptr_of_int 0) 0
             in
             clear_dropped_files ();
-            font )
+            font)
           else font
         else font
       in
@@ -83,10 +83,10 @@ let rec loop font font_size font_position filter =
            (Vector2.y text_size))
         20 (height - 30) 10 Color.darkgray;
 
-      ( match filter with
+      (match filter with
       | `Point -> draw_text "POINT" 570 400 20 Color.black
       | `Bilinear -> draw_text "BILINEAR" 570 400 20 Color.black
-      | `Trilinear -> draw_text "TRILINEAR" 570 400 20 Color.black );
+      | `Trilinear -> draw_text "TRILINEAR" 570 400 20 Color.black);
 
       end_drawing ();
       loop font font_size font_position filter

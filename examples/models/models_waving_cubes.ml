@@ -42,12 +42,12 @@ let rec loop camera =
             let scatter = sin ((block_scale *. 20.0) +. (time *. 4.0)) in
             let cube_pos =
               Vector3.create
-                ( (Float.of_int (x - (num_blocks / 2)) *. scale *. 3.0)
-                +. scatter )
-                ( (Float.of_int (y - (num_blocks / 2)) *. scale *. 2.0)
-                +. scatter )
-                ( (Float.of_int (z - (num_blocks / 2)) *. scale *. 3.0)
-                +. scatter )
+                ((Float.of_int (x - (num_blocks / 2)) *. scale *. 3.0)
+                +. scatter)
+                ((Float.of_int (y - (num_blocks / 2)) *. scale *. 2.0)
+                +. scatter)
+                ((Float.of_int (z - (num_blocks / 2)) *. scale *. 3.0)
+                +. scatter)
             in
             let color =
               color_from_hsv (Float.of_int ((x + y + z) * 18 mod 360)) 0.75 0.9

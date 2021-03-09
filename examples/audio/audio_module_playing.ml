@@ -74,13 +74,13 @@ let rec loop circles music pause =
 
       if is_key_pressed Key.Space then (
         stop_music_stream music;
-        play_music_stream music );
+        play_music_stream music);
 
       let pause =
         if is_key_pressed Key.P then (
           let pause = not pause in
           if pause then pause_music_stream music else resume_music_stream music;
-          pause )
+          pause)
         else pause
       in
 
@@ -100,8 +100,8 @@ let rec loop circles music pause =
              in
 
              circles.(i) <-
-               ( if alpha <= 0.0 then random_circle ()
-               else { circle with alpha; speed; radius } )))
+               (if alpha <= 0.0 then random_circle ()
+               else { circle with alpha; speed; radius })))
           circles;
       begin_drawing ();
 

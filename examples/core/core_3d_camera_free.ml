@@ -1,9 +1,12 @@
 let width = 800
+
 let height = 450
 
-type column_t = {height: float;
-                 position: Raylib.Vector3.t;
-                 color: Raylib.Color.t}
+type column_t = {
+  height : float;
+  position : Raylib.Vector3.t;
+  color : Raylib.Color.t;
+}
 
 let cube_pos = Raylib.Vector3.create 0.0 0.0 0.0
 
@@ -15,8 +18,7 @@ let setup () =
       (Vector3.create 10.0 10.0 10.0) (* position *)
       (Vector3.create 0.0 0.0 0.0) (* target *)
       (Vector3.create 0.0 1.0 0.0) (* up *)
-      45.0 (* FOV *)
-      CameraType.Perspective
+      45.0 (* FOV *) CameraType.Perspective
   in
   set_camera_mode camera CameraMode.Free;
   set_target_fps 60;
@@ -37,29 +39,25 @@ let draw_all camera =
   draw_text "- Mouse Wheel to Zoom in-out" 40 40 10 Color.darkgray;
   draw_text "- Mouse Wheel Pressed to Pan" 40 60 10 Color.darkgray;
   draw_text "- Alt + Mouse Wheel Pressed to Rotate" 40 80 10 Color.darkgray;
-  draw_text "- Alt + Ctrl + Mouse Wheel Pressed for Smooth Zoom" 40 100 10 Color.darkgray;
+  draw_text "- Alt + Ctrl + Mouse Wheel Pressed for Smooth Zoom" 40 100 10
+    Color.darkgray;
   draw_text "- Z to zoom to (0 0 0)" 40 120 10 Color.darkgray;
   end_drawing ()
 
 let rec loop camera =
   let open Raylib in
-  if window_should_close ()
-  then close_window ()
+  if window_should_close () then close_window ()
   else
     let camera =
-      if is_key_down Key.Z
-      then 
-        Camera.(create
-                  (position camera)
-                  (Vector3.create 0.0 0.0 0.0) (* target *)
-                  (up camera)
-                  45.0 (* FOV *)
-                  CameraType.Perspective)
+      if is_key_down Key.Z then
+        Camera.(
+          create (position camera)
+            (Vector3.create 0.0 0.0 0.0) (* target *)
+            (up camera) 45.0 (* FOV *) CameraType.Perspective)
       else camera
     in
     update_camera (addr camera);
     draw_all camera;
     loop camera
 
-let () =
-  setup () |> loop
+let () = setup () |> loop

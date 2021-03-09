@@ -27,13 +27,13 @@ let rec loop music pause =
       (* Restart music playing (stop and play) *)
       if is_key_pressed Key.Space then (
         stop_music_stream music;
-        play_music_stream music );
+        play_music_stream music);
 
       let pause =
         if is_key_pressed Key.P then (
           let pause = not pause in
           if pause then pause_music_stream music else resume_music_stream music;
-          pause )
+          pause)
         else pause
       in
 

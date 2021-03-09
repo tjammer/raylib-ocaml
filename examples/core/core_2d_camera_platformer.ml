@@ -206,8 +206,8 @@ let update_camera delta (player, env_items, camera, mode) =
           else
             Vector2.add (Camera2D.target camera)
               (Vector2.scale diff
-                 ( delta
-                 *. Float.max smooth_fraction (smooth_min_speed /. length) ))
+                 (delta
+                 *. Float.max smooth_fraction (smooth_min_speed /. length)))
         in
         (half_screen, target, mode)
     | EvenOutOnLanding (true, evening_target) ->

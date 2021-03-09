@@ -8,10 +8,9 @@ let rec loop frame_counter rval =
   | false ->
       let open Raylib in
       let rval, frame_counter =
-        if (frame_counter / 120) mod 2 == 1
-        then (get_random_value (-8) 5, 0)
+        if frame_counter / 120 mod 2 == 1 then (get_random_value (-8) 5, 0)
         else (rval, frame_counter)
-      in 
+      in
       begin_drawing ();
       clear_background Color.raywhite;
       draw_text "Every 2 seconds a new random value is generated:" 130 100 20
@@ -20,4 +19,6 @@ let rec loop frame_counter rval =
       end_drawing ();
       loop (1 + frame_counter) rval
 
-let () = setup (); loop 0 0
+let () =
+  setup ();
+  loop 0 0

@@ -42,7 +42,7 @@ let rec loop camera model anims frame_counter =
           let anims0 = CArray.get anims 0 in
           update_model_animation model anims0 frame_counter;
           if frame_counter >= ModelAnimation.frame_count anims0 then 0
-          else frame_counter )
+          else frame_counter)
         else frame_counter
       in
 

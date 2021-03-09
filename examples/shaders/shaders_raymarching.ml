@@ -58,7 +58,7 @@ let rec loop width height shader locations camera runtime =
           set_shader_value shader locations.resolution
             (to_voidp (addr resolution))
             ShaderUniformDataType.Vec2;
-          (width, height) )
+          (width, height))
         else (width, height)
       in
 

@@ -201,8 +201,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Returns size position for a 3d world space position *)
   let get_world_to_screen_ex =
     foreign "GetWorldToScreenEx"
-      ( Types.Vector3.t @-> Types.Camera3D.t @-> int @-> int
-      @-> returning Types.Vector2.t )
+      (Types.Vector3.t @-> Types.Camera3D.t @-> int @-> int
+     @-> returning Types.Vector2.t)
 
   (*  Returns the screen space position for a 2d camera world space position *)
   let get_world_to_screen_2d =
@@ -394,26 +394,26 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Detect if a gamepad button has been pressed once *)
   let is_gamepad_button_pressed =
     foreign "IsGamepadButtonPressed"
-      ( Constants.GamepadNumber.t @-> Constants.GamepadButton.t
-      @-> returning bool )
+      (Constants.GamepadNumber.t @-> Constants.GamepadButton.t
+     @-> returning bool)
 
   (*  Detect if a gamepad button is being pressed *)
   let is_gamepad_button_down =
     foreign "IsGamepadButtonDown"
-      ( Constants.GamepadNumber.t @-> Constants.GamepadButton.t
-      @-> returning bool )
+      (Constants.GamepadNumber.t @-> Constants.GamepadButton.t
+     @-> returning bool)
 
   (*  Detect if a gamepad button has been released once *)
   let is_gamepad_button_released =
     foreign "IsGamepadButtonReleased"
-      ( Constants.GamepadNumber.t @-> Constants.GamepadButton.t
-      @-> returning bool )
+      (Constants.GamepadNumber.t @-> Constants.GamepadButton.t
+     @-> returning bool)
 
   (*  Detect if a gamepad button is NOT being pressed *)
   let is_gamepad_button_up =
     foreign "IsGamepadButtonUp"
-      ( Constants.GamepadNumber.t @-> Constants.GamepadButton.t
-      @-> returning bool )
+      (Constants.GamepadNumber.t @-> Constants.GamepadButton.t
+     @-> returning bool)
 
   (*  Get the last gamepad button pressed *)
   let get_gamepad_button_pressed =
@@ -550,9 +550,9 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Set camera move controls (1st person and 3rd person cameras) *)
   let set_camera_move_controls =
     foreign "SetCameraMoveControls"
-      ( Constants.Key.t @-> Constants.Key.t @-> Constants.Key.t
-      @-> Constants.Key.t @-> Constants.Key.t @-> Constants.Key.t
-      @-> returning void )
+      (Constants.Key.t @-> Constants.Key.t @-> Constants.Key.t
+     @-> Constants.Key.t @-> Constants.Key.t @-> Constants.Key.t
+     @-> returning void)
 
   (* Basic Shapes Drawing Functions (Module: shapes) *)
 
@@ -578,14 +578,14 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw a line defining thickness *)
   let draw_line_ex =
     foreign "DrawLineEx"
-      ( Types.Vector2.t @-> Types.Vector2.t @-> float @-> Types.Color.t
-      @-> returning void )
+      (Types.Vector2.t @-> Types.Vector2.t @-> float @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a line using cubic-bezier curves in-out *)
   let draw_line_bezier =
     foreign "DrawLineBezier"
-      ( Types.Vector2.t @-> Types.Vector2.t @-> float @-> Types.Color.t
-      @-> returning void )
+      (Types.Vector2.t @-> Types.Vector2.t @-> float @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw lines sequence *)
   let draw_line_strip =
@@ -600,20 +600,20 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw a piece of a circle *)
   let draw_circle_sector =
     foreign "DrawCircleSector"
-      ( Types.Vector2.t @-> float @-> int @-> int @-> int @-> Types.Color.t
-      @-> returning void )
+      (Types.Vector2.t @-> float @-> int @-> int @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw circle sector outline *)
   let draw_circle_sector_lines =
     foreign "DrawCircleSectorLines"
-      ( Types.Vector2.t @-> float @-> int @-> int @-> int @-> Types.Color.t
-      @-> returning void )
+      (Types.Vector2.t @-> float @-> int @-> int @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a gradient-filled circle *)
   let draw_circle_gradient =
     foreign "DrawCircleGradient"
-      ( int @-> int @-> float @-> Types.Color.t @-> Types.Color.t
-      @-> returning void )
+      (int @-> int @-> float @-> Types.Color.t @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a color-filled circle (Vector version) *)
   let draw_circle_v =
@@ -638,14 +638,14 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw ring *)
   let draw_ring =
     foreign "DrawRing"
-      ( Types.Vector2.t @-> float @-> float @-> int @-> int @-> int
-      @-> Types.Color.t @-> returning void )
+      (Types.Vector2.t @-> float @-> float @-> int @-> int @-> int
+     @-> Types.Color.t @-> returning void)
 
   (*  Draw ring outline *)
   let draw_ring_lines =
     foreign "DrawRingLines"
-      ( Types.Vector2.t @-> float @-> float @-> int @-> int @-> int
-      @-> Types.Color.t @-> returning void )
+      (Types.Vector2.t @-> float @-> float @-> int @-> int @-> int
+     @-> Types.Color.t @-> returning void)
 
   (*  Draw a color-filled rectangle *)
   let draw_rectangle =
@@ -665,26 +665,26 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw a color-filled rectangle with pro parameters *)
   let draw_rectangle_pro =
     foreign "DrawRectanglePro"
-      ( Types.Rectangle.t @-> Types.Vector2.t @-> float @-> Types.Color.t
-      @-> returning void )
+      (Types.Rectangle.t @-> Types.Vector2.t @-> float @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a vertical-gradient-filled rectangle *)
   let draw_rectangle_gradient_v =
     foreign "DrawRectangleGradientV"
-      ( int @-> int @-> int @-> int @-> Types.Color.t @-> Types.Color.t
-      @-> returning void )
+      (int @-> int @-> int @-> int @-> Types.Color.t @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a horizontal-gradient-filled rectangle *)
   let draw_rectangle_gradient_h =
     foreign "DrawRectangleGradientH"
-      ( int @-> int @-> int @-> int @-> Types.Color.t @-> Types.Color.t
-      @-> returning void )
+      (int @-> int @-> int @-> int @-> Types.Color.t @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a gradient-filled rectangle with custom vertex colors *)
   let draw_rectangle_gradient_ex =
     foreign "DrawRectangleGradientEx"
-      ( Types.Rectangle.t @-> Types.Color.t @-> Types.Color.t @-> Types.Color.t
-      @-> Types.Color.t @-> returning void )
+      (Types.Rectangle.t @-> Types.Color.t @-> Types.Color.t @-> Types.Color.t
+     @-> Types.Color.t @-> returning void)
 
   (*  Draw rectangle outline *)
   let draw_rectangle_lines =
@@ -704,20 +704,20 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw rectangle with rounded edges outline *)
   let draw_rectangle_rounded_lines =
     foreign "DrawRectangleRoundedLines"
-      ( Types.Rectangle.t @-> float @-> int @-> int @-> Types.Color.t
-      @-> returning void )
+      (Types.Rectangle.t @-> float @-> int @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a color-filled triangle (vertex in counter-clockwise order!) *)
   let draw_triangle =
     foreign "DrawTriangle"
-      ( Types.Vector2.t @-> Types.Vector2.t @-> Types.Vector2.t
-      @-> Types.Color.t @-> returning void )
+      (Types.Vector2.t @-> Types.Vector2.t @-> Types.Vector2.t @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw triangle outline (vertex in counter-clockwise order!) *)
   let draw_triangle_lines =
     foreign "DrawTriangleLines"
-      ( Types.Vector2.t @-> Types.Vector2.t @-> Types.Vector2.t
-      @-> Types.Color.t @-> returning void )
+      (Types.Vector2.t @-> Types.Vector2.t @-> Types.Vector2.t @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a triangle fan defined by points (first vertex is the center) *)
   let draw_triangle_fan =
@@ -732,14 +732,14 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw a regular polygon (Vector version) *)
   let draw_poly =
     foreign "DrawPoly"
-      ( Types.Vector2.t @-> int @-> float @-> float @-> Types.Color.t
-      @-> returning void )
+      (Types.Vector2.t @-> int @-> float @-> float @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a polygon outline of n sides *)
   let draw_poly_lines =
     foreign "DrawPolyLines"
-      ( Types.Vector2.t @-> int @-> float @-> float @-> Types.Color.t
-      @-> returning void )
+      (Types.Vector2.t @-> int @-> float @-> float @-> Types.Color.t
+     @-> returning void)
 
   (* Basic shapes collision detection functions *)
   (*  Check collision between two rectangles *)
@@ -750,8 +750,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Check collision between two circles *)
   let check_collision_circles =
     foreign "CheckCollisionCircles"
-      ( Types.Vector2.t @-> float @-> Types.Vector2.t @-> float
-      @-> returning bool )
+      (Types.Vector2.t @-> float @-> Types.Vector2.t @-> float
+     @-> returning bool)
 
   (*  Check collision between circle and rectangle *)
   let check_collision_circle_rec =
@@ -776,8 +776,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Check if point is inside a triangle *)
   let check_collision_point_triangle =
     foreign "CheckCollisionPointTriangle"
-      ( Types.Vector2.t @-> Types.Vector2.t @-> Types.Vector2.t
-      @-> Types.Vector2.t @-> returning bool )
+      (Types.Vector2.t @-> Types.Vector2.t @-> Types.Vector2.t
+     @-> Types.Vector2.t @-> returning bool)
 
   (* Texture Loading and Drawing Functions (Module: textures) *)
 
@@ -789,8 +789,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Load image from RAW file data *)
   let load_image_raw =
     foreign "LoadImageRaw"
-      ( string @-> int @-> int @-> Constants.PixelFormat.t @-> int
-      @-> returning Types.Image.t )
+      (string @-> int @-> int @-> Constants.PixelFormat.t @-> int
+     @-> returning Types.Image.t)
 
   (*  Unload image from CPU memory (RAM) *)
   let unload_image = foreign "UnloadImage" (Types.Image.t @-> returning void)
@@ -816,26 +816,26 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Generate image: vertical gradient *)
   let gen_image_gradient_v =
     foreign "GenImageGradientV"
-      ( int @-> int @-> Types.Color.t @-> Types.Color.t
-      @-> returning Types.Image.t )
+      (int @-> int @-> Types.Color.t @-> Types.Color.t
+     @-> returning Types.Image.t)
 
   (*  Generate image: horizontal gradient *)
   let gen_image_gradient_h =
     foreign "GenImageGradientH"
-      ( int @-> int @-> Types.Color.t @-> Types.Color.t
-      @-> returning Types.Image.t )
+      (int @-> int @-> Types.Color.t @-> Types.Color.t
+     @-> returning Types.Image.t)
 
   (*  Generate image: radial gradient *)
   let gen_image_gradient_radial =
     foreign "GenImageGradientRadial"
-      ( int @-> int @-> float @-> Types.Color.t @-> Types.Color.t
-      @-> returning Types.Image.t )
+      (int @-> int @-> float @-> Types.Color.t @-> Types.Color.t
+     @-> returning Types.Image.t)
 
   (*  Generate image: checked *)
   let gen_image_checked =
     foreign "GenImageChecked"
-      ( int @-> int @-> int @-> int @-> Types.Color.t @-> Types.Color.t
-      @-> returning Types.Image.t )
+      (int @-> int @-> int @-> int @-> Types.Color.t @-> Types.Color.t
+     @-> returning Types.Image.t)
 
   (*  Generate image: white noise *)
   let gen_image_white_noise =
@@ -869,8 +869,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Create an image from text (custom sprite font) *)
   let image_text_ex =
     foreign "ImageTextEx"
-      ( Types.Font.t @-> string @-> float @-> float @-> Types.Color.t
-      @-> returning Types.Image.t )
+      (Types.Font.t @-> string @-> float @-> float @-> Types.Color.t
+     @-> returning Types.Image.t)
 
   (*  Convert image to POT (power-of-two) *)
   let image_to_pot =
@@ -915,8 +915,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Resize canvas and fill with color *)
   let image_resize_canvas =
     foreign "ImageResizeCanvas"
-      ( ptr Types.Image.t @-> int @-> int @-> int @-> int @-> Types.Color.t
-      @-> returning void )
+      (ptr Types.Image.t @-> int @-> int @-> int @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Generate all mipmap levels for a provided image *)
   let image_mipmaps =
@@ -991,74 +991,74 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw pixel within an image (Vector version) *)
   let image_draw_pixel_v =
     foreign "ImageDrawPixelV"
-      ( ptr Types.Image.t @-> Types.Vector2.t @-> Types.Color.t
-      @-> returning void )
+      (ptr Types.Image.t @-> Types.Vector2.t @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw line within an image *)
   let image_draw_line =
     foreign "ImageDrawLine"
-      ( ptr Types.Image.t @-> int @-> int @-> int @-> int @-> Types.Color.t
-      @-> returning void )
+      (ptr Types.Image.t @-> int @-> int @-> int @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw line within an image (Vector version) *)
   let image_draw_line_v =
     foreign "ImageDrawLineV"
-      ( ptr Types.Image.t @-> Types.Vector2.t @-> Types.Vector2.t
-      @-> Types.Color.t @-> returning void )
+      (ptr Types.Image.t @-> Types.Vector2.t @-> Types.Vector2.t
+     @-> Types.Color.t @-> returning void)
 
   (*  Draw circle within an image *)
   let image_draw_circle =
     foreign "ImageDrawCircle"
-      ( ptr Types.Image.t @-> int @-> int @-> int @-> Types.Color.t
-      @-> returning void )
+      (ptr Types.Image.t @-> int @-> int @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw circle within an image (Vector version) *)
   let image_draw_circle_v =
     foreign "ImageDrawCircleV"
-      ( ptr Types.Image.t @-> Types.Vector2.t @-> int @-> Types.Color.t
-      @-> returning void )
+      (ptr Types.Image.t @-> Types.Vector2.t @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw rectangle within an image *)
   let image_draw_rectangle =
     foreign "ImageDrawRectangle"
-      ( ptr Types.Image.t @-> int @-> int @-> int @-> int @-> Types.Color.t
-      @-> returning void )
+      (ptr Types.Image.t @-> int @-> int @-> int @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw rectangle within an image (Vector version) *)
   let image_draw_rectangle_v =
     foreign "ImageDrawRectangleV"
-      ( ptr Types.Image.t @-> Types.Vector2.t @-> Types.Vector2.t
-      @-> Types.Color.t @-> returning void )
+      (ptr Types.Image.t @-> Types.Vector2.t @-> Types.Vector2.t
+     @-> Types.Color.t @-> returning void)
 
   (*  Draw rectangle within an image  *)
   let image_draw_rectangle_rec =
     foreign "ImageDrawRectangleRec"
-      ( ptr Types.Image.t @-> Types.Rectangle.t @-> Types.Color.t
-      @-> returning void )
+      (ptr Types.Image.t @-> Types.Rectangle.t @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw rectangle lines within an image *)
   let image_draw_rectangle_lines =
     foreign "ImageDrawRectangleLines"
-      ( ptr Types.Image.t @-> Types.Rectangle.t @-> int @-> Types.Color.t
-      @-> returning void )
+      (ptr Types.Image.t @-> Types.Rectangle.t @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a source image within a destination image (tint applied to source) *)
   let image_draw =
     foreign "ImageDraw"
-      ( ptr Types.Image.t @-> Types.Image.t @-> Types.Rectangle.t
-      @-> Types.Rectangle.t @-> Types.Color.t @-> returning void )
+      (ptr Types.Image.t @-> Types.Image.t @-> Types.Rectangle.t
+     @-> Types.Rectangle.t @-> Types.Color.t @-> returning void)
 
   (*  Draw text (default font) within an image (destination) *)
   let image_draw_text =
     foreign "ImageDrawText"
-      ( ptr Types.Image.t @-> string @-> int @-> int @-> int @-> Types.Color.t
-      @-> returning void )
+      (ptr Types.Image.t @-> string @-> int @-> int @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw text (custom sprite font) within an image (destination) *)
   let image_draw_text_ex =
     foreign "ImageDrawTextEx"
-      ( ptr Types.Image.t @-> Types.Font.t @-> string @-> Types.Vector2.t
-      @-> float @-> float @-> Types.Color.t @-> returning void )
+      (ptr Types.Image.t @-> Types.Font.t @-> string @-> Types.Vector2.t
+     @-> float @-> float @-> Types.Color.t @-> returning void)
 
   (* Texture loading functions *)
   (* NOTE: These functions require GPU access *)
@@ -1131,38 +1131,38 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw a Texture with extended parameters *)
   let draw_texture_ex =
     foreign "DrawTextureEx"
-      ( Types.Texture.t @-> Types.Vector2.t @-> float @-> float
-      @-> Types.Color.t @-> returning void )
+      (Types.Texture.t @-> Types.Vector2.t @-> float @-> float @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a part of a texture defined by a rectangle *)
   let draw_texture_rec =
     foreign "DrawTextureRec"
-      ( Types.Texture.t @-> Types.Rectangle.t @-> Types.Vector2.t
-      @-> Types.Color.t @-> returning void )
+      (Types.Texture.t @-> Types.Rectangle.t @-> Types.Vector2.t
+     @-> Types.Color.t @-> returning void)
 
   (*  Draw texture quad with tiling and offset parameters *)
   let draw_texture_quad =
     foreign "DrawTextureQuad"
-      ( Types.Texture.t @-> Types.Vector2.t @-> Types.Vector2.t
-      @-> Types.Rectangle.t @-> Types.Color.t @-> returning void )
+      (Types.Texture.t @-> Types.Vector2.t @-> Types.Vector2.t
+     @-> Types.Rectangle.t @-> Types.Color.t @-> returning void)
 
   let draw_texture_tiled =
     foreign "DrawTextureTiled"
-      ( Types.Texture.t @-> Types.Rectangle.t @-> Types.Rectangle.t
-      @-> Types.Vector2.t @-> float @-> float @-> Types.Color.t
-      @-> returning void )
+      (Types.Texture.t @-> Types.Rectangle.t @-> Types.Rectangle.t
+     @-> Types.Vector2.t @-> float @-> float @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a part of a texture defined by a rectangle with 'pro' parameters *)
   let draw_texture_pro =
     foreign "DrawTexturePro"
-      ( Types.Texture.t @-> Types.Rectangle.t @-> Types.Rectangle.t
-      @-> Types.Vector2.t @-> float @-> Types.Color.t @-> returning void )
+      (Types.Texture.t @-> Types.Rectangle.t @-> Types.Rectangle.t
+     @-> Types.Vector2.t @-> float @-> Types.Color.t @-> returning void)
 
   (*  Draws a texture (or part of it) that stretches or shrinks nicely *)
   let draw_texture_n_patch =
     foreign "DrawTextureNPatch"
-      ( Types.Texture.t @-> Types.NPatchInfo.t @-> Types.Rectangle.t
-      @-> Types.Vector2.t @-> float @-> Types.Color.t @-> returning void )
+      (Types.Texture.t @-> Types.NPatchInfo.t @-> Types.Rectangle.t
+     @-> Types.Vector2.t @-> float @-> Types.Color.t @-> returning void)
 
   (* Color-related functions *)
 
@@ -1192,8 +1192,8 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let color_alpha_blend =
     foreign "ColorAlphaBlend"
-      ( Types.Color.t @-> Types.Color.t @-> Types.Color.t
-      @-> returning Types.Color.t )
+      (Types.Color.t @-> Types.Color.t @-> Types.Color.t
+     @-> returning Types.Color.t)
 
   (*  Returns a Color struct from hexadecimal value *)
   let get_color = foreign "GetColor" (int @-> returning Types.Color.t)
@@ -1234,8 +1234,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Load font data for further use *)
   let load_font_data =
     foreign "LoadFontData"
-      ( ptr uchar @-> int @-> int @-> ptr int @-> int @-> int
-      @-> returning (ptr Types.CharInfo.t) )
+      (ptr uchar @-> int @-> int @-> ptr int @-> int @-> int
+      @-> returning (ptr Types.CharInfo.t))
 
   (*  Generate image font atlas using chars info *)
   (* let  gen_image_font_atlas  = foreign "GenImageFontAtlas" ( (ptr Types.CharInfo.t) @-> Types.Rectangle.t @-> int @-> int @-> int @-> int @-> returning Types.Image.t) *)
@@ -1257,27 +1257,27 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw text using font and additional parameters *)
   let draw_text_ex =
     foreign "DrawTextEx"
-      ( Types.Font.t @-> string @-> Types.Vector2.t @-> float @-> float
-      @-> Types.Color.t @-> returning void )
+      (Types.Font.t @-> string @-> Types.Vector2.t @-> float @-> float
+     @-> Types.Color.t @-> returning void)
 
   (*  Draw text using font inside rectangle limits *)
   let draw_text_rec =
     foreign "DrawTextRec"
-      ( Types.Font.t @-> string @-> Types.Rectangle.t @-> float @-> float
-      @-> bool @-> Types.Color.t @-> returning void )
+      (Types.Font.t @-> string @-> Types.Rectangle.t @-> float @-> float
+     @-> bool @-> Types.Color.t @-> returning void)
 
   (*  Draw text using font inside rectangle limits with support for text selection *)
   let draw_text_rec_ex =
     foreign "DrawTextRecEx"
-      ( Types.Font.t @-> string @-> Types.Rectangle.t @-> float @-> float
-      @-> bool @-> Types.Color.t @-> int @-> int @-> Types.Color.t
-      @-> Types.Color.t @-> returning void )
+      (Types.Font.t @-> string @-> Types.Rectangle.t @-> float @-> float
+     @-> bool @-> Types.Color.t @-> int @-> int @-> Types.Color.t
+     @-> Types.Color.t @-> returning void)
 
   (*  Draw one character (codepoint) *)
   let draw_text_codepoint =
     foreign "DrawTextCodepoint"
-      ( Types.Font.t @-> int @-> Types.Vector2.t @-> float @-> Types.Color.t
-      @-> returning void )
+      (Types.Font.t @-> int @-> Types.Vector2.t @-> float @-> Types.Color.t
+     @-> returning void)
 
   (* Text misc. functions *)
   (*  Measure string width for default font *)
@@ -1379,13 +1379,13 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw a circle in 3D world space *)
   let draw_circle_3d =
     foreign "DrawCircle3D"
-      ( Types.Vector3.t @-> float @-> Types.Vector3.t @-> float
-      @-> Types.Color.t @-> returning void )
+      (Types.Vector3.t @-> float @-> Types.Vector3.t @-> float @-> Types.Color.t
+     @-> returning void)
 
   let draw_triangle_3d =
     foreign "DrawTriangle3D"
-      ( Types.Vector3.t @-> Types.Vector3.t @-> Types.Vector3.t
-      @-> Types.Color.t @-> returning void )
+      (Types.Vector3.t @-> Types.Vector3.t @-> Types.Vector3.t @-> Types.Color.t
+     @-> returning void)
 
   let draw_triangle_strip_3d =
     foreign "DrawTriangleStrip3D"
@@ -1394,8 +1394,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw cube *)
   let draw_cube =
     foreign "DrawCube"
-      ( Types.Vector3.t @-> float @-> float @-> float @-> Types.Color.t
-      @-> returning void )
+      (Types.Vector3.t @-> float @-> float @-> float @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw cube (Vector version) *)
   let draw_cube_v =
@@ -1405,8 +1405,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw cube wires *)
   let draw_cube_wires =
     foreign "DrawCubeWires"
-      ( Types.Vector3.t @-> float @-> float @-> float @-> Types.Color.t
-      @-> returning void )
+      (Types.Vector3.t @-> float @-> float @-> float @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw cube wires (Vector version) *)
   let draw_cube_wires_v =
@@ -1416,8 +1416,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw cube textured *)
   let draw_cube_texture =
     foreign "DrawCubeTexture"
-      ( Types.Texture.t @-> Types.Vector3.t @-> float @-> float @-> float
-      @-> Types.Color.t @-> returning void )
+      (Types.Texture.t @-> Types.Vector3.t @-> float @-> float @-> float
+     @-> Types.Color.t @-> returning void)
 
   (*  Draw sphere *)
   let draw_sphere =
@@ -1427,26 +1427,26 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw sphere with extended parameters *)
   let draw_sphere_ex =
     foreign "DrawSphereEx"
-      ( Types.Vector3.t @-> float @-> int @-> int @-> Types.Color.t
-      @-> returning void )
+      (Types.Vector3.t @-> float @-> int @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw sphere wires *)
   let draw_sphere_wires =
     foreign "DrawSphereWires"
-      ( Types.Vector3.t @-> float @-> int @-> int @-> Types.Color.t
-      @-> returning void )
+      (Types.Vector3.t @-> float @-> int @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a cylinder/cone *)
   let draw_cylinder =
     foreign "DrawCylinder"
-      ( Types.Vector3.t @-> float @-> float @-> float @-> int @-> Types.Color.t
-      @-> returning void )
+      (Types.Vector3.t @-> float @-> float @-> float @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a cylinder/cone wires *)
   let draw_cylinder_wires =
     foreign "DrawCylinderWires"
-      ( Types.Vector3.t @-> float @-> float @-> float @-> int @-> Types.Color.t
-      @-> returning void )
+      (Types.Vector3.t @-> float @-> float @-> float @-> int @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a plane XZ *)
   let draw_plane =
@@ -1511,8 +1511,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Set texture for a material map type (MAP_DIFFUSE, MAP_SPECULAR...) *)
   let set_material_texture =
     foreign "SetMaterialTexture"
-      ( ptr Types.Material.t @-> Constants.MaterialMapType.t @-> Types.Texture.t
-      @-> returning void )
+      (ptr Types.Material.t @-> Constants.MaterialMapType.t @-> Types.Texture.t
+     @-> returning void)
 
   (*  Set material for a mesh *)
   let set_model_mesh_material =
@@ -1607,26 +1607,26 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw a model (with texture if set) *)
   let draw_model =
     foreign "DrawModel"
-      ( Types.Model.t @-> Types.Vector3.t @-> float @-> Types.Color.t
-      @-> returning void )
+      (Types.Model.t @-> Types.Vector3.t @-> float @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a model with extended parameters *)
   let draw_model_ex =
     foreign "DrawModelEx"
-      ( Types.Model.t @-> Types.Vector3.t @-> Types.Vector3.t @-> float
-      @-> Types.Vector3.t @-> Types.Color.t @-> returning void )
+      (Types.Model.t @-> Types.Vector3.t @-> Types.Vector3.t @-> float
+     @-> Types.Vector3.t @-> Types.Color.t @-> returning void)
 
   (*  Draw a model wires (with texture if set) *)
   let draw_model_wires =
     foreign "DrawModelWires"
-      ( Types.Model.t @-> Types.Vector3.t @-> float @-> Types.Color.t
-      @-> returning void )
+      (Types.Model.t @-> Types.Vector3.t @-> float @-> Types.Color.t
+     @-> returning void)
 
   (*  Draw a model wires (with texture if set) with extended parameters *)
   let draw_model_wires_ex =
     foreign "DrawModelWiresEx"
-      ( Types.Model.t @-> Types.Vector3.t @-> Types.Vector3.t @-> float
-      @-> Types.Vector3.t @-> Types.Color.t @-> returning void )
+      (Types.Model.t @-> Types.Vector3.t @-> Types.Vector3.t @-> float
+     @-> Types.Vector3.t @-> Types.Color.t @-> returning void)
 
   (*  Draw bounding box (wires) *)
   let draw_bounding_box =
@@ -1636,21 +1636,21 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Draw a billboard texture *)
   let draw_billboard =
     foreign "DrawBillboard"
-      ( Types.Camera3D.t @-> Types.Texture.t @-> Types.Vector3.t @-> float
-      @-> Types.Color.t @-> returning void )
+      (Types.Camera3D.t @-> Types.Texture.t @-> Types.Vector3.t @-> float
+     @-> Types.Color.t @-> returning void)
 
   (*  Draw a billboard texture defined by sourceRec *)
   let draw_billboard_rec =
     foreign "DrawBillboardRec"
-      ( Types.Camera3D.t @-> Types.Texture.t @-> Types.Rectangle.t
-      @-> Types.Vector3.t @-> float @-> Types.Color.t @-> returning void )
+      (Types.Camera3D.t @-> Types.Texture.t @-> Types.Rectangle.t
+     @-> Types.Vector3.t @-> float @-> Types.Color.t @-> returning void)
 
   (* Collision detection functions *)
   (*  Detect collision between two spheres *)
   let check_collision_spheres =
     foreign "CheckCollisionSpheres"
-      ( Types.Vector3.t @-> float @-> Types.Vector3.t @-> float
-      @-> returning bool )
+      (Types.Vector3.t @-> float @-> Types.Vector3.t @-> float
+     @-> returning bool)
 
   (*  Detect collision between two bounding boxes *)
   let check_collision_boxes =
@@ -1670,8 +1670,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Detect collision between ray and sphere, returns collision point *)
   let check_collision_ray_sphere_ex =
     foreign "CheckCollisionRaySphereEx"
-      ( Types.Ray.t @-> Types.Vector3.t @-> float @-> ptr Types.Vector3.t
-      @-> returning bool )
+      (Types.Ray.t @-> Types.Vector3.t @-> float @-> ptr Types.Vector3.t
+     @-> returning bool)
 
   (*  Detect collision between ray and box *)
   let check_collision_ray_box =
@@ -1680,8 +1680,8 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let get_collision_ray_mesh =
     foreign "GetCollisionRayMesh"
-      ( Types.Ray.t @-> Types.Mesh.t @-> Types.Matrix.t
-      @-> returning Types.RayHitInfo.t )
+      (Types.Ray.t @-> Types.Mesh.t @-> Types.Matrix.t
+      @-> returning Types.RayHitInfo.t)
 
   (*  Get collision info between ray and model *)
   let get_collision_ray_model =
@@ -1691,8 +1691,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Get collision info between ray and triangle *)
   let get_collision_ray_triangle =
     foreign "GetCollisionRayTriangle"
-      ( Types.Ray.t @-> Types.Vector3.t @-> Types.Vector3.t @-> Types.Vector3.t
-      @-> returning Types.RayHitInfo.t )
+      (Types.Ray.t @-> Types.Vector3.t @-> Types.Vector3.t @-> Types.Vector3.t
+      @-> returning Types.RayHitInfo.t)
 
   (*  Get collision info between ray and ground plane (Y-normal plane) *)
   let get_collision_ray_ground =
@@ -1749,26 +1749,26 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Set shader uniform value *)
   let set_shader_value =
     foreign "SetShaderValue"
-      ( Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> ptr void
-      @-> Constants.ShaderUniformDataType.t @-> returning void )
+      (Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> ptr void
+     @-> Constants.ShaderUniformDataType.t @-> returning void)
 
   (*  Set shader uniform value vector *)
   let set_shader_value_v =
     foreign "SetShaderValueV"
-      ( Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> ptr void
-      @-> Constants.ShaderUniformDataType.t @-> int @-> returning void )
+      (Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> ptr void
+     @-> Constants.ShaderUniformDataType.t @-> int @-> returning void)
 
   (*  Set shader uniform value (matrix 4x4) *)
   let set_shader_value_matrix =
     foreign "SetShaderValueMatrix"
-      ( Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> Types.Matrix.t
-      @-> returning void )
+      (Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> Types.Matrix.t
+     @-> returning void)
 
   (*  Set shader uniform value for texture *)
   let set_shader_value_texture =
     foreign "SetShaderValueTexture"
-      ( Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> Types.Texture.t
-      @-> returning void )
+      (Types.Shader.t @-> Constants.ShaderLocationIndex.t @-> Types.Texture.t
+     @-> returning void)
 
   (*  Set a custom projection matrix (replaces internal projection matrix) *)
   let set_matrix_projection =
@@ -1791,8 +1791,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Generate cubemap texture from 2D texture *)
   let gen_texture_cubemap =
     foreign "GenTextureCubemap"
-      ( Types.Shader.t @-> Types.Texture.t @-> int @-> Constants.PixelFormat.t
-      @-> returning Types.Texture.t )
+      (Types.Shader.t @-> Types.Texture.t @-> int @-> Constants.PixelFormat.t
+     @-> returning Types.Texture.t)
 
   (*  Generate irradiance texture using cubemap data *)
   let gen_texture_irradiance =

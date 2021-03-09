@@ -32,8 +32,8 @@ let rec loop scarfy frame_rec counter frame frames_speed =
           let frame_rec =
             R.(
               create
-                ( Float.of_int frame
-                *. (Float.of_int (Texture.width scarfy) /. 6.0) )
+                (Float.of_int frame
+                *. (Float.of_int (Texture.width scarfy) /. 6.0))
                 (y frame_rec) (width frame_rec) (height frame_rec))
           in
           (0, frame, frame_rec)

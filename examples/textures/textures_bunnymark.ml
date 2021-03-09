@@ -31,18 +31,18 @@ let rec loop bunnies bunnies_count tex_bunny =
             | i ->
                 if bunnies_count < max_bunnies then
                   inner
-                    ( {
-                        position = get_mouse_position ();
-                        speed =
-                          Vector2.create
-                            (Float.of_int (get_random_value (-250) 250) /. 60.0)
-                            (Float.of_int (get_random_value (-250) 250) /. 60.0);
-                        color =
-                          Color.create (get_random_value 50 240)
-                            (get_random_value 80 240) (get_random_value 100 240)
-                            255;
-                      }
-                    :: bunnies )
+                    ({
+                       position = get_mouse_position ();
+                       speed =
+                         Vector2.create
+                           (Float.of_int (get_random_value (-250) 250) /. 60.0)
+                           (Float.of_int (get_random_value (-250) 250) /. 60.0);
+                       color =
+                         Color.create (get_random_value 50 240)
+                           (get_random_value 80 240) (get_random_value 100 240)
+                           255;
+                     }
+                     :: bunnies)
                     (bunnies_count + 1) (i - 1)
                 else (bunnies, bunnies_count)
           in
@@ -57,12 +57,12 @@ let rec loop bunnies bunnies_count tex_bunny =
         (fun b ->
           V.(set_x b.position (x b.position +. x b.speed));
           V.(set_y b.position (y b.position +. y b.speed));
-          ( if
-            V.x b.position +. (Float.of_int (Texture.width tex_bunny) /. 2.0)
-            > Float.of_int (get_screen_width ())
-            || V.x b.position +. (Float.of_int (Texture.width tex_bunny) /. 2.0)
-               < 0.0
-          then V.(set_x b.speed (x b.speed *. -1.0)) );
+          (if
+           V.x b.position +. (Float.of_int (Texture.width tex_bunny) /. 2.0)
+           > Float.of_int (get_screen_width ())
+           || V.x b.position +. (Float.of_int (Texture.width tex_bunny) /. 2.0)
+              < 0.0
+          then V.(set_x b.speed (x b.speed *. -1.0)));
           if
             V.y b.position +. (Float.of_int (Texture.height tex_bunny) /. 2.0)
             > Float.of_int (get_screen_height ())

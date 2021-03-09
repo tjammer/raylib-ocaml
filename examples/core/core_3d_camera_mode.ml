@@ -1,9 +1,12 @@
 let width = 800
+
 let height = 450
 
-type column_t = {height: float;
-                 position: Raylib.Vector3.t;
-                 color: Raylib.Color.t}
+type column_t = {
+  height : float;
+  position : Raylib.Vector3.t;
+  color : Raylib.Color.t;
+}
 
 let cube_pos = Raylib.Vector3.create 0.0 0.0 0.0
 
@@ -15,8 +18,7 @@ let setup () =
       (Vector3.create 0.0 10.0 10.0) (* position *)
       (Vector3.create 0.0 0.0 0.0) (* target *)
       (Vector3.create 0.0 1.0 0.0) (* up *)
-      45.0 (* FOV *)
-      CameraType.Perspective
+      45.0 (* FOV *) CameraType.Perspective
   in
   set_camera_mode camera CameraMode.Free;
   set_target_fps 60;
@@ -36,13 +38,9 @@ let draw_all camera =
   end_drawing ()
 
 let rec loop camera =
-  if Raylib.window_should_close ()
-  then Raylib.close_window ()
-  else
-    begin
-      draw_all camera;
-      loop camera
-    end
+  if Raylib.window_should_close () then Raylib.close_window ()
+  else (
+    draw_all camera;
+    loop camera)
 
-let () =
-  setup () |> loop
+let () = setup () |> loop
