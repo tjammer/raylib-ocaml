@@ -6,7 +6,7 @@
  (foreign_stubs
   (language c)
   (names c_generated_functions c_generated_math)
-  (include_dirs %{project_root}/src/c/vendor/src))
+  (include_dirs %{project_root}/src/c/vendor/raylib/src))
  (libraries ctypes.stubs raylib_functions raylib_math
    raylib_generated_constants raylib_generated_types)
  (library_flags
@@ -49,20 +49,20 @@
    (= %{system} linux)
    (= %{system} linux_elf)))
  (deps
-  (source_tree vendor)
+  (source_tree vendor/raylib)
   linux.patch)
  (action
   (no-infer
    (progn
-    (run chmod +w vendor/src/config.h)
+    (run chmod +w vendor/raylib/src/config.h)
     (with-stdin-from
      linux.patch
      (run patch --binary -p1))
-    (run make -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
-    (copy vendor/libraylib.a libraylib.a)
-    (run make -C vendor/src clean)
-    (run make -C vendor/src RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/libraylib.so.3.5.0 dllraylib.so)))))
+    (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
+    (copy vendor/raylib/libraylib.a libraylib.a)
+    (run make -C vendor/raylib/src clean)
+    (run make -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
+    (copy vendor/raylib/libraylib.so.3.5.0 dllraylib.so)))))
 
 (rule
  (alias build-raylib)
@@ -70,15 +70,15 @@
  (enabled_if
   (= %{system} macosx))
  (deps
-  (source_tree vendor))
+  (source_tree vendor/raylib))
  (action
   (no-infer
    (progn
-    (run make -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
-    (copy vendor/src/libraylib.a libraylib.a)
-    (run make -C vendor/src clean)
-    (run make -C vendor/src RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/src/libraylib.3.5.0.dylib dllraylib.so)))))
+    (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
+    (copy vendor/raylib/src/libraylib.a libraylib.a)
+    (run make -C vendor/raylib/src clean)
+    (run make -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
+    (copy vendor/raylib/src/libraylib.3.5.0.dylib dllraylib.so)))))
 
 (rule
  (alias build-raylib)
@@ -86,20 +86,20 @@
  (enabled_if
   (= %{system} mingw64))
  (deps
-  (source_tree vendor)
+  (source_tree vendor/raylib)
   mingw64.patch)
  (action
   (no-infer
    (progn
-    (run chmod +w vendor/src/Makefile)
+    (run chmod +w vendor/raylib/src/Makefile)
     (with-stdin-from
      mingw64.patch
      (run patch --binary -p1))
-    (run make -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
-    (copy vendor/src/libraylib.a libraylib.a)
-    (run make -C vendor/src clean)
-    (run make -C vendor/src RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/src/raylib.dll dllraylib.dll)))))
+    (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
+    (copy vendor/raylib/src/libraylib.a libraylib.a)
+    (run make -C vendor/raylib/src clean)
+    (run make -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
+    (copy vendor/raylib/src/raylib.dll dllraylib.dll)))))
 
 (rule
  (alias build-raylib)
@@ -112,17 +112,17 @@
    (= %{system} bsd)
    (= %{system} bsd_elf)))
  (deps
-  (source_tree vendor)
+  (source_tree vendor/raylib)
   freebsd.patch)
  (action
   (no-infer
    (progn
-    (run chmod +w vendor/src/Makefile)
+    (run chmod +w vendor/raylib/src/Makefile)
     (with-stdin-from
      freebsd.patch
      (run patch -sp1))
-    (run gmake -C vendor/src RAYLIB_LIBTYPE=STATIC -j 8)
-    (copy vendor/src/libraylib.a libraylib.a)
-    (run gmake -C vendor/src clean)
-    (run gmake -C vendor/src RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/src/libraylib.3.5.0.so dllraylib.so)))))
+    (run gmake -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
+    (copy vendor/raylib/src/libraylib.a libraylib.a)
+    (run gmake -C vendor/raylib/src clean)
+    (run gmake -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
+    (copy vendor/raylib/src/libraylib.3.5.0.so dllraylib.so)))))

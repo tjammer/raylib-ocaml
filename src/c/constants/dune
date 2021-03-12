@@ -18,4 +18,4 @@
   (chdir
    %{project_root}
    (run %{bin:ppx_cstubs} %{first-dep} -o %{targets} -I
-     %{project_root}/src/c/vendor/src))))
+     %{project_root}/src/c/vendor/raylib/src))))

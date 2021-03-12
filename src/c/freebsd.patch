@@ -1,6 +1,6 @@
-diff -u a/vendor/src/Makefile b/vendor/src/Makefile
---- a/vendor/src/Makefile
-+++ b/vendor/src/Makefile
+diff -u a/vendor/raylib/src/Makefile b/vendor/raylib/src/Makefile
+--- a/vendor/raylib/src/Makefile
++++ b/vendor/raylib/src/Makefile
 @@ -225,7 +225,8 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
      endif
      ifeq ($(PLATFORM_OS),BSD)
