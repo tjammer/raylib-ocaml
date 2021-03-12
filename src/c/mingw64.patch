@@ -1,8 +1,8 @@
-diff --git a/vendor/src/Makefile /b/vendor/src/Makefile
+diff --git a/vendor/raylib/src/Makefile /b/vendor/raylib/src/Makefile
 deleted file mode 100644
 index 193e3eb5..11412e60 100644
---- a/vendor/src/Makefile
-+++ /b/vendor/src/Makefile
+--- a/vendor/raylib/src/Makefile
++++ /b/vendor/raylib/src/Makefile
 @@ -225,8 +225,8 @@ ifeq ($(PLATFORM),PLATFORM_ANDROID)
  endif
  

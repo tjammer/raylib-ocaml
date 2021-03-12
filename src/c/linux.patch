@@ -1,6 +1,6 @@
-diff --binary -ur a/vendor/src/config.h b/vendor/src/config.h
---- a/vendor/src/config.h
-+++ b/vendor/src/config.h
+diff --binary -ur a/vendor/raylib/src/config.h b/vendor/raylib/src/config.h
+--- a/vendor/raylib/src/config.h
++++ b/vendor/raylib/src/config.h
 @@ -49,7 +49,7 @@
  // Use busy wait loop for timing sync, if not defined, a high-resolution timer is setup and used
  //#define SUPPORT_BUSY_WAIT_LOOP      1
