@@ -17,3 +17,13 @@
   dune-configurator
   ctypes
   ppx_cstubs))
+
+(package
+ (name raygui)
+ (synopsis "OCaml bindings for raygui")
+ (depends
+  dune
+  dune-configurator
+  ctypes
+  ppx_cstubs
+  raylib))

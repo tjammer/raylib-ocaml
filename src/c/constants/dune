@@ -19,3 +19,22 @@
    %{project_root}
    (run %{bin:ppx_cstubs} %{first-dep} -o %{targets} -I
      %{project_root}/src/c/vendor/raylib/src))))
+
+(library
+ (public_name raygui.constants)
+ (name raygui_generated_constants)
+ (modules raygui_generated_constants)
+ (preprocess
+  (pps ppx_cstubs.merlin))
+ (libraries ctypes ppx_cstubs))
+
+(rule
+ (targets raygui_generated_constants.ml)
+ (deps
+  (:first-dep raygui_constants.ml))
+ (action
+  (chdir
+   %{project_root}
+   (run %{bin:ppx_cstubs} %{first-dep} -o %{targets} -I
+     %{project_root}/src/c/vendor/raygui/src -I
+     %{project_root}/src/c/vendor/raylib/src))))

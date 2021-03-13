@@ -20,3 +20,13 @@
  (name generate_ml_math)
  (modules Generate_ml_math)
  (libraries ctypes.stubs raylib_math))
+
+(executable
+ (name generate_c_gui)
+ (modules Generate_c_gui)
+ (libraries ctypes.stubs raygui_functions))
+
+(executable
+ (name generate_ml_gui)
+ (modules Generate_ml_gui)
+ (libraries ctypes.stubs raygui_functions))

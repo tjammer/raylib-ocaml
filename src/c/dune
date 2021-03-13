@@ -126,3 +126,27 @@
     (run gmake -C vendor/raylib/src clean)
     (run gmake -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
     (copy vendor/raylib/src/libraylib.3.5.0.so dllraylib.so)))))
+
+(library
+ (name raygui_c)
+ (public_name raygui.c)
+ (modules C_generated_gui)
+ ; (foreign_archives raygui)
+ (foreign_stubs
+  (language c)
+  (names c_generated_gui)
+  (include_dirs %{project_root}/src/c/vendor/raygui/src
+    %{project_root}/src/c/vendor/raylib/src))
+ (libraries ctypes.stubs raygui_functions raygui_generated_constants)
+ (library_flags
+  (:include library_flags.sexp)))
+
+(rule
+ (with-stdout-to
+  c_generated_gui.c
+  (run stubgen/generate_c_gui.exe raygui_stub)))
+
+(rule
+ (with-stdout-to
+  c_generated_gui.ml
+  (run stubgen/generate_ml_gui.exe raygui_stub)))
