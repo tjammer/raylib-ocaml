@@ -31,7 +31,10 @@
 (rule
  (targets raygui_generated_constants.ml)
  (deps
-  (:first-dep raygui_constants.ml))
+  (:first-dep raygui_constants.ml)
+   ; we build the constants together with the core lib
+   ; otherwise some includes don't add up
+  (alias %{project_root}/src/c/build-raylib))
  (action
   (chdir
    %{project_root}
