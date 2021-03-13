@@ -25,7 +25,7 @@ module TextAlignment = struct
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
-module Control = struct
+module Wrapped_Control = struct
   type%c t =
     | Default [@cname "DEFAULT"]
     | Label [@cname "LABEL"]

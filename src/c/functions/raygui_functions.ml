@@ -36,10 +36,12 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   (* Style set/get functions *)
   (*  Set one style property *)
-  let set_style = foreign "GuiSetStyle" (int @-> int @-> int @-> returning void)
+  let _set_style = foreign "GuiSetStyle" (Constants.Wrapped_Control.t @-> int @-> int @-> returning void)
 
   (*  Get one style property *)
-  let get_style = foreign "GuiGetStyle" (int @-> int @-> returning int)
+  let _get_style =
+    foreign "GuiGetStyle"
+      (Constants.Wrapped_Control.t @-> int @-> returning int)
 
   (* Tooltips set functions *)
   (*  Enable gui tooltips *)
