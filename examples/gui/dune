@@ -1,0 +1,4 @@
+(executable
+ (name controls_test_suite)
+ (modules Controls_test_suite)
+ (libraries raygui))
