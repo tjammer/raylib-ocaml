@@ -13,3 +13,11 @@
  (flags
   (:standard -w -9-27))
  (libraries ctypes.stubs raylib_generated_types))
+
+(library
+ (name raygui_functions)
+ (public_name raygui.functions)
+ (modules Raygui_functions)
+ (flags
+  (:standard -w -9-27))
+ (libraries ctypes.stubs raylib_generated_types raygui_generated_constants))
