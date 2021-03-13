@@ -1,4 +1,4 @@
-[submodule "src/c/vendor"]
+[submodule "src/c/vendor/raylib"]
 	path = src/c/vendor/raylib
 	url = https://github.com/raysan5/raylib
 [submodule "src/c/vendor/raygui"]
