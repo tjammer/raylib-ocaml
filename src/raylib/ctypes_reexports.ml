@@ -7,6 +7,8 @@ type 'a ctyp = 'a Ctypes.structure
 
 type 'a ptr = 'a Ctypes.ptr
 
+let to_ctyp (a : 'a Ctypes.structure) = a
+
 let addr (x : 'a ctyp) = Ctypes.addr x
 
 let to_voidp = Ctypes.to_voidp

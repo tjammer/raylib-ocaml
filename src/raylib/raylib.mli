@@ -2,9 +2,18 @@
 
   Basic types and utility functions shared by the following modules *)
 
-type 'a ctyp
+(* Normally the ctypes show up as
+ * ('a, ['Struct]) Ctypes_static.structured.
+ * To shorten this a bit we make it private. Ideally it would be
+ * a completely abstract type but the gui bindings need to be able to
+ * handle this as well.
+ * If anyone reading this has an idea an how to improve this,
+ * I'd be happy *)
+type 'a ctyp = private 'a Ctypes.structure
 
-type 'a ptr
+type 'a ptr = 'a Ctypes.ptr
+
+val to_ctyp : 'a Ctypes.structure -> 'a ctyp
 
 val addr : 'a ctyp -> 'a ctyp ptr
 
@@ -450,7 +459,7 @@ val max_shader_locations : int
 (** {1 Types} *)
 
 module Vector2 : sig
-  type t'
+  type t' = Raylib_generated_types.Vector2.t
 
   type t = t' ctyp
 
@@ -717,7 +726,7 @@ and Matrix : sig
 end
 
 module Color : sig
-  type t'
+  type t' = Raylib_generated_types.Color.t
 
   type t = t' ctyp
 
@@ -778,7 +787,7 @@ module Color : sig
 end
 
 module Rectangle : sig
-  type t'
+  type t' = Raylib_functions.Types.Rectangle.t
 
   type t = t' ctyp
 
@@ -803,7 +812,7 @@ module Rectangle : sig
 end
 
 module Texture : sig
-  type t'
+  type t' = Raylib_generated_types.Texture.t
 
   type t = t' ctyp
 
@@ -884,7 +893,7 @@ module CharInfo : sig
 end
 
 module Font : sig
-  type t'
+  type t' = Raylib_generated_types.Font.t
 
   type t = t' ctyp
 
