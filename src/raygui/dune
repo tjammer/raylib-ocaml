@@ -1,4 +1,4 @@
 (library
  (name raygui)
  (public_name raygui)
- (libraries raylib raygui_c))
+ (libraries raygui_c raylib))
