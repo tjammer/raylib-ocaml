@@ -96,7 +96,7 @@ module Control = struct
     | Progressbar of [ prop | ProgressBar.t ]
     | Checkbox of [ prop | CheckBox.t ]
     | Combobox of [ prop | ComboBox.t ]
-    | Dropdownbox of [ prop | DropdownBox.t ]
+    | DropdownBox of [ prop | DropdownBox.t ]
     | Textbox of [ prop | TextBox.t ]
     | Valuebox of prop
     | Spinner of [ prop | Spinner.t ]
@@ -170,7 +170,7 @@ let get_style = function
   | Progressbar prop -> _get_style Progressbar (prop_to_int prop)
   | Checkbox prop -> _get_style Checkbox (prop_to_int prop)
   | Combobox prop -> _get_style Combobox (prop_to_int prop)
-  | Dropdownbox prop -> _get_style Dropdownbox (prop_to_int prop)
+  | DropdownBox prop -> _get_style Dropdownbox (prop_to_int prop)
   | Textbox prop -> _get_style Textbox (prop_to_int prop)
   | Valuebox prop -> _get_style Valuebox (prop_to_int prop)
   | Spinner prop -> _get_style Spinner (prop_to_int prop)
@@ -190,7 +190,7 @@ let set_style ctl value =
   | Progressbar prop -> _set_style Progressbar (prop_to_int prop) value
   | Checkbox prop -> _set_style Checkbox (prop_to_int prop) value
   | Combobox prop -> _set_style Combobox (prop_to_int prop) value
-  | Dropdownbox prop -> _set_style Dropdownbox (prop_to_int prop) value
+  | DropdownBox prop -> _set_style Dropdownbox (prop_to_int prop) value
   | Textbox prop -> _set_style Textbox (prop_to_int prop) value
   | Valuebox prop -> _set_style Valuebox (prop_to_int prop) value
   | Spinner prop -> _set_style Spinner (prop_to_int prop) value

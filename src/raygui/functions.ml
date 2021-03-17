@@ -65,15 +65,26 @@ let text_box rct txt state =
       (CArray.length str_arr + 1)
       state
   in
-  (coerce (ptr char) string (CArray.start str_arr), rt)
+  (String.init (CArray.length str_arr) (CArray.unsafe_get str_arr), rt)
 
-let text_box_multi rct = _text_box_multi @@ to_struct rct
+let text_box_multi rct txt state =
+  let open Ctypes in
+  let str_arr = CArray.of_string txt in
+  let rt =
+    _text_box_multi (to_struct rct) (CArray.start str_arr)
+      (CArray.length str_arr + 1)
+      state
+  in
+  (String.init (CArray.length str_arr) (CArray.unsafe_get str_arr), rt)
 
-let slider rct = _slider @@ to_struct rct
+let slider rct label txt value ~min ~max =
+  _slider (to_struct rct) label txt value min max
 
-let slider_bar rct = _slider_bar @@ to_struct rct
+let slider_bar rct label txt value ~min ~max =
+  _slider_bar (to_struct rct) label txt value min max
 
-let progress_bar rct = _progress_bar @@ to_struct rct
+let progress_bar rct label txt value ~min ~max =
+  _progress_bar (to_struct rct) label txt value min max
 
 let status_bar rct = _status_bar @@ to_struct rct
 
@@ -83,9 +94,21 @@ let scroll_bar rct = _scroll_bar @@ to_struct rct
 
 let grid rct b c = _grid (to_struct rct) b c |> Raylib.to_ctyp
 
-let list_view rct = _list_view @@ to_struct rct
+let list_view rct label index active =
+  let vl_ptr = Raylib.ptr_of_int index in
+  let rt = _list_view (to_struct rct) label vl_ptr active in
+  (rt, Ctypes.(!@vl_ptr))
 
-let list_view_ex rct = _list_view_ex @@ to_struct rct
+let list_view_ex rct strings focus index active =
+  let open Ctypes in
+  let str_arr = CArray.of_list Ctypes.string strings in
+  let focus_ptr = Raylib.ptr_of_int focus in
+  let index_ptr = Raylib.ptr_of_int index in
+  let active =
+    _list_view_ex (to_struct rct) (CArray.start str_arr) (List.length strings)
+      focus_ptr index_ptr active
+  in
+  (active, !@focus_ptr, !@index_ptr)
 
 let message_box rct = _message_box @@ to_struct rct
 

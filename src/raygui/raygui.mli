@@ -103,17 +103,34 @@ val value_box :
 
 val text_box : Raylib.Rectangle.t -> string -> bool -> string * bool
 
-val text_box_multi :
-  Raylib.Rectangle.t -> string Raylib.ptr -> int -> bool -> bool
+val text_box_multi : Raylib.Rectangle.t -> string -> bool -> string * bool
 
 val slider :
-  Raylib.Rectangle.t -> string -> string -> float -> float -> float -> float
+  Raylib.Rectangle.t ->
+  string ->
+  string ->
+  float ->
+  min:float ->
+  max:float ->
+  float
 
 val slider_bar :
-  Raylib.Rectangle.t -> string -> string -> float -> float -> float -> float
+  Raylib.Rectangle.t ->
+  string ->
+  string ->
+  float ->
+  min:float ->
+  max:float ->
+  float
 
 val progress_bar :
-  Raylib.Rectangle.t -> string -> string -> float -> float -> float -> float
+  Raylib.Rectangle.t ->
+  string ->
+  string ->
+  float ->
+  min:float ->
+  max:float ->
+  float
 
 val status_bar : Raylib.Rectangle.t -> string -> unit
 
@@ -123,17 +140,10 @@ val scroll_bar : Raylib.Rectangle.t -> int -> int -> int -> int
 
 val grid : Raylib.Rectangle.t -> float -> int -> Raylib.Vector2.t
 
-val list_view :
-  Raylib.Rectangle.t -> string -> int Ctypes_static.ptr -> int -> int
+val list_view : Raylib.Rectangle.t -> string -> int -> int -> int * int
 
 val list_view_ex :
-  Raylib.Rectangle.t ->
-  string Ctypes_static.ptr ->
-  int ->
-  int Ctypes_static.ptr ->
-  int Ctypes_static.ptr ->
-  int ->
-  int
+  Raylib.Rectangle.t -> string list -> int -> int -> int -> int * int * int
 
 val message_box : Raylib.Rectangle.t -> string -> string -> string -> int
 
@@ -347,7 +357,7 @@ module Control : sig
         | `Text_color_pressed
         | `Text_padding
         | `Width_combobox ]
-    | Dropdownbox of
+    | DropdownBox of
         [ `Arrow_padding
         | `Base_color_disabled
         | `Base_color_focused

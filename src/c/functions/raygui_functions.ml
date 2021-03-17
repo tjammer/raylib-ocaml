@@ -22,10 +22,12 @@ module Description (F : Ctypes.FOREIGN) = struct
   let fade = foreign "GuiFade" (float @-> returning void)
 
   (*  Set gui state (global state) *)
-  let set_state = foreign "GuiSetState" (Constants.ControlState.t @-> returning void)
+  let set_state =
+    foreign "GuiSetState" (Constants.ControlState.t @-> returning void)
 
   (*  Get gui state (global state) *)
-  let get_state = foreign "GuiGetState" (void @-> returning Constants.ControlState.t)
+  let get_state =
+    foreign "GuiGetState" (void @-> returning Constants.ControlState.t)
 
   (* Font set/get functions *)
   (*  Set gui custom font (global state) *)
@@ -147,7 +149,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Text Box control with multiple lines *)
   let _text_box_multi =
     foreign "GuiTextBoxMulti"
-      (Types.Rectangle.t @-> ptr string @-> int @-> bool @-> returning bool)
+      (Types.Rectangle.t @-> ptr char @-> int @-> bool @-> returning bool)
 
   (*  Slider control, returns selected value *)
   let _slider =
