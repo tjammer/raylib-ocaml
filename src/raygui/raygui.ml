@@ -93,17 +93,17 @@ module Control = struct
     | Button of prop
     | Toggle of [ prop | Toggle.t ]
     | Slider of [ prop | Slider.t ]
-    | Progressbar of [ prop | ProgressBar.t ]
-    | Checkbox of [ prop | CheckBox.t ]
-    | Combobox of [ prop | ComboBox.t ]
+    | ProgressBar of [ prop | ProgressBar.t ]
+    | CheckBox of [ prop | CheckBox.t ]
+    | ComboBox of [ prop | ComboBox.t ]
     | DropdownBox of [ prop | DropdownBox.t ]
-    | Textbox of [ prop | TextBox.t ]
+    | TextBox of [ prop | TextBox.t ]
     | Valuebox of prop
     | Spinner of [ prop | Spinner.t ]
-    | Listview of [ prop | ListView.t ]
-    | Colorpicker of [ prop | ColorPicker.t ]
-    | Scrollbar of [ prop | ScrollBar.t ]
-    | Statusbar of prop
+    | ListView of [ prop | ListView.t ]
+    | ColorPicker of [ prop | ColorPicker.t ]
+    | ScrollBar of [ prop | ScrollBar.t ]
+    | StatusBar of prop
 end
 
 let prop_to_int = function
@@ -167,17 +167,17 @@ let get_style = function
   | Button prop -> _get_style Button (prop_to_int prop)
   | Toggle prop -> _get_style Toggle (prop_to_int prop)
   | Slider prop -> _get_style Slider (prop_to_int prop)
-  | Progressbar prop -> _get_style Progressbar (prop_to_int prop)
-  | Checkbox prop -> _get_style Checkbox (prop_to_int prop)
-  | Combobox prop -> _get_style Combobox (prop_to_int prop)
+  | ProgressBar prop -> _get_style Progressbar (prop_to_int prop)
+  | CheckBox prop -> _get_style Checkbox (prop_to_int prop)
+  | ComboBox prop -> _get_style Combobox (prop_to_int prop)
   | DropdownBox prop -> _get_style Dropdownbox (prop_to_int prop)
-  | Textbox prop -> _get_style Textbox (prop_to_int prop)
+  | TextBox prop -> _get_style Textbox (prop_to_int prop)
   | Valuebox prop -> _get_style Valuebox (prop_to_int prop)
   | Spinner prop -> _get_style Spinner (prop_to_int prop)
-  | Scrollbar prop -> _get_style Scrollbar (prop_to_int prop)
-  | Listview prop -> _get_style Listview (prop_to_int prop)
-  | Colorpicker prop -> _get_style Colorpicker (prop_to_int prop)
-  | Statusbar prop -> _get_style Statusbar (prop_to_int prop)
+  | ScrollBar prop -> _get_style Scrollbar (prop_to_int prop)
+  | ListView prop -> _get_style Listview (prop_to_int prop)
+  | ColorPicker prop -> _get_style Colorpicker (prop_to_int prop)
+  | StatusBar prop -> _get_style Statusbar (prop_to_int prop)
 
 let set_style ctl value =
   match ctl with
@@ -187,14 +187,14 @@ let set_style ctl value =
   | Button prop -> _set_style Button (prop_to_int prop) value
   | Toggle prop -> _set_style Toggle (prop_to_int prop) value
   | Slider prop -> _set_style Slider (prop_to_int prop) value
-  | Progressbar prop -> _set_style Progressbar (prop_to_int prop) value
-  | Checkbox prop -> _set_style Checkbox (prop_to_int prop) value
-  | Combobox prop -> _set_style Combobox (prop_to_int prop) value
+  | ProgressBar prop -> _set_style Progressbar (prop_to_int prop) value
+  | CheckBox prop -> _set_style Checkbox (prop_to_int prop) value
+  | ComboBox prop -> _set_style Combobox (prop_to_int prop) value
   | DropdownBox prop -> _set_style Dropdownbox (prop_to_int prop) value
-  | Textbox prop -> _set_style Textbox (prop_to_int prop) value
+  | TextBox prop -> _set_style Textbox (prop_to_int prop) value
   | Valuebox prop -> _set_style Valuebox (prop_to_int prop) value
   | Spinner prop -> _set_style Spinner (prop_to_int prop) value
-  | Scrollbar prop -> _set_style Scrollbar (prop_to_int prop) value
-  | Listview prop -> _set_style Listview (prop_to_int prop) value
-  | Colorpicker prop -> _set_style Colorpicker (prop_to_int prop) value
-  | Statusbar prop -> _set_style Statusbar (prop_to_int prop) value
+  | ScrollBar prop -> _set_style Scrollbar (prop_to_int prop) value
+  | ListView prop -> _set_style Listview (prop_to_int prop) value
+  | ColorPicker prop -> _set_style Colorpicker (prop_to_int prop) value
+  | StatusBar prop -> _set_style Statusbar (prop_to_int prop) value
