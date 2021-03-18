@@ -90,7 +90,7 @@ let status_bar rct = _status_bar @@ to_struct rct
 
 let dummy_rec rct = _dummy_rec @@ to_struct rct
 
-let scroll_bar rct = _scroll_bar @@ to_struct rct
+let scroll_bar rct value ~min ~max = _scroll_bar (to_struct rct) value min max
 
 let grid rct b c = _grid (to_struct rct) b c |> Raylib.to_ctyp
 
@@ -115,7 +115,9 @@ let message_box rct = _message_box @@ to_struct rct
 let text_input_box rct title message buttons text =
   let open Ctypes in
   let str_arr = CArray.of_string text in
-  let rt = _text_input_box (to_struct rct) title message buttons (CArray.start str_arr) in
+  let rt =
+    _text_input_box (to_struct rct) title message buttons (CArray.start str_arr)
+  in
   (String.init (CArray.length str_arr) (CArray.unsafe_get str_arr), rt)
 
 let color_picker rct col =
