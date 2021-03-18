@@ -112,7 +112,11 @@ let list_view_ex rct strings focus index active =
 
 let message_box rct = _message_box @@ to_struct rct
 
-let text_input_box rct = _text_input_box @@ to_struct rct
+let text_input_box rct title message buttons text =
+  let open Ctypes in
+  let str_arr = CArray.of_string text in
+  let rt = _text_input_box (to_struct rct) title message buttons (CArray.start str_arr) in
+  (String.init (CArray.length str_arr) (CArray.unsafe_get str_arr), rt)
 
 let color_picker rct col =
   _color_picker (to_struct rct) (to_struct col) |> Raylib.to_ctyp

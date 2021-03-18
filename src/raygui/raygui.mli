@@ -148,7 +148,7 @@ val list_view_ex :
 val message_box : Raylib.Rectangle.t -> string -> string -> string -> int
 
 val text_input_box :
-  Raylib.Rectangle.t -> string -> string -> string -> string -> int
+  Raylib.Rectangle.t -> string -> string -> string -> string -> string * int
 
 val color_picker : Raylib.Rectangle.t -> Raylib.Color.t -> Raylib.Color.t
 
