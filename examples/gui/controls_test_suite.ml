@@ -79,7 +79,7 @@ let rec loop s =
         Raygui.(check_box rect "FORCE CHECK!" s.force_squared_check)
       in
 
-      Raygui.(set_style (Textbox `Text_alignment) TextAlignment.(to_int Center));
+      Raygui.(set_style (TextBox `Text_alignment) TextAlignment.(to_int Center));
 
       let rect = Rectangle.create 25.0 135.0 125.0 30.0 in
       let spinner1_val =
@@ -105,7 +105,7 @@ let rec loop s =
         | vl, false -> vl
       in
 
-      Raygui.(set_style (Textbox `Text_alignment) TextAlignment.(to_int Left));
+      Raygui.(set_style (TextBox `Text_alignment) TextAlignment.(to_int Left));
 
       let rect = Rectangle.create 25.0 215.0 125.0 30.0 in
       let text_box_text =
@@ -116,7 +116,7 @@ let rec loop s =
         | vl, false -> vl
       in
 
-      Raygui.(set_style (Textbox `Text_alignment) TextAlignment.(to_int Center));
+      Raygui.(set_style (TextBox `Text_alignment) TextAlignment.(to_int Center));
 
       Raygui.set_tooltip "Save current file.";
       let rect = Rectangle.create 25.0 255.0 125.0 30.0 in
