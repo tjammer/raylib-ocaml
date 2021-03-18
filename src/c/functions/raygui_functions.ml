@@ -207,7 +207,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   (*  Text Input Box control, ask for text *)
   let _text_input_box =
     foreign "GuiTextInputBox"
-      (Types.Rectangle.t @-> string @-> string @-> string @-> string
+      (Types.Rectangle.t @-> string @-> string @-> string @-> ptr char
      @-> returning int)
 
   (*  Color Picker control (multiple color controls) *)

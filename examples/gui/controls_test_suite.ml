@@ -11,6 +11,7 @@ type state = {
   text_box_text : string;
   mutable text_box_edit_mode : bool;
   show_text_input_box : bool;
+  text_input_text : string;
   combo_box_active : int;
   dropdown1_active : int;
   mutable dropdown1_edit_mode : bool;
@@ -42,6 +43,7 @@ let setup () =
     text_box_text = "Text box";
     text_box_edit_mode = false;
     show_text_input_box = false;
+    text_input_text = "";
     combo_box_active = 0;
     dropdown1_active = 0;
     dropdown1_edit_mode = false;
@@ -149,29 +151,25 @@ let rec loop s =
       Raygui.(
         set_style (DropdownBox `Text_alignment) TextAlignment.(to_int Left));
       let rect = Rectangle.create 25.0 65.0 125.0 30.0 in
-      let dropdown1_active =
+      let dropdown1_active, dropdown1_edit_mode =
         match
           Raygui.dropdown_box rect "ONE;TWO;THREE;FOUR" s.dropdown1_active
             s.dropdown1_edit_mode
         with
-        | vl, true ->
-            s.dropdown1_edit_mode <- s.dropdown1_edit_mode;
-            vl
-        | vl, false -> vl
+        | vl, true -> (vl, not s.dropdown1_edit_mode)
+        | vl, false -> (vl, s.dropdown1_edit_mode)
       in
 
       Raygui.(
         set_style (DropdownBox `Text_alignment) TextAlignment.(to_int Center));
       let rect = Rectangle.create 25.0 25.0 125.0 30.0 in
-      let dropdown0_active =
+      let dropdown0_active, dropdown0_edit_mode =
         match
           Raygui.dropdown_box rect "ONE;TWO;THREE" s.dropdown0_active
             s.dropdown0_edit_mode
         with
-        | vl, true ->
-            s.dropdown0_edit_mode <- s.dropdown0_edit_mode;
-            vl
-        | vl, false -> vl
+        | vl, true -> (vl, not s.dropdown0_edit_mode)
+        | vl, false -> (vl, s.dropdown0_edit_mode)
       in
 
       (* second column *)
@@ -242,6 +240,25 @@ let rec loop s =
         Raygui.progress_bar rect "" "" s.progress_val ~min:0.0 ~max:1.0
       in
 
+      let text_input_text, show_text_input_box =
+        if show_text_input_box then (
+          draw_rectangle 0 0 (get_screen_width ()) (get_screen_height ())
+            (fade Color.raywhite 0.8);
+
+          let text_input_text, res =
+            Raygui.text_input_box
+              (Rectangle.create
+                 ((float_of_int (get_screen_width ()) /. 2.0) -. 120.0)
+                 ((float_of_int (get_screen_height ()) /. 2.0) -. 60.0)
+                 240.0 140.0)
+              "Save file as..." "Introduce a save file name" "Ok;Cancel"
+              s.text_input_text
+          in
+          if res = 0 || res = 1 || res = 2 then (text_input_text, false)
+          else (text_input_text, show_text_input_box))
+        else (s.text_input_text, show_text_input_box)
+      in
+
       end_drawing ();
       loop
         {
@@ -251,9 +268,12 @@ let rec loop s =
           value_box_val;
           text_box_text;
           show_text_input_box;
+          text_input_text;
           combo_box_active;
           dropdown1_active;
+          dropdown1_edit_mode;
           dropdown0_active;
+          dropdown0_edit_mode;
           list_view_scroll_index;
           list_view_active;
           list_view_ex_active;
