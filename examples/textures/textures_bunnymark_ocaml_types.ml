@@ -29,24 +29,22 @@ let rec loop bunnies bunnies_count tex_bunny =
             | i ->
                 if bunnies_count < max_bunnies then
                   inner
-                    ( (let pos = get_mouse_position () in
-                       {
-                         position = { x = Vector2.x pos; y = Vector2.y pos };
-                         speed =
-                           {
-                             x =
-                               Float.of_int (get_random_value (-250) 250)
-                               /. 60.0;
-                             y =
-                               Float.of_int (get_random_value (-250) 250)
-                               /. 60.0;
-                           };
-                         color =
-                           Color.create (get_random_value 50 240)
-                             (get_random_value 80 240)
-                             (get_random_value 100 240) 255;
-                       })
-                    :: bunnies )
+                    ((let pos = get_mouse_position () in
+                      {
+                        position = { x = Vector2.x pos; y = Vector2.y pos };
+                        speed =
+                          {
+                            x =
+                              Float.of_int (get_random_value (-250) 250) /. 60.0;
+                            y =
+                              Float.of_int (get_random_value (-250) 250) /. 60.0;
+                          };
+                        color =
+                          Color.create (get_random_value 50 240)
+                            (get_random_value 80 240) (get_random_value 100 240)
+                            255;
+                      })
+                     :: bunnies)
                     (bunnies_count + 1) (i - 1)
                 else (bunnies, bunnies_count)
           in
