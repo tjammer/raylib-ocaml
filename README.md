@@ -1,4 +1,4 @@
-![logo](logo/logo.png)
+![logo](images/logo.png)
 
 # raylib-ocaml
 
@@ -56,7 +56,12 @@ dune build
 ```
 inside this repo. The binaries can then be found in `_build/default/examples`.
 
+## Raygui
+In addition to raylib, there are bindings to <a href="https://github.com/raysan5/raygui" target="_blank">raygui</a>, an immediate mode gui library which complements raylib.
+As with the raylib bindings, the bindings stick close to the C source.
+An exception to this are the `*_style` functions, which take a polymorphic variant. An example can be found in `examples/gui`.
+
+![gui_example](images/raygui.gif)
+
 ## TODO
-* Port more examples to cover the whole surface of raylib
 * Split the library into components (core, sound, 3D, VR etc) for a smaller memory footprint
-* Provide some ergonomics (somehow?)
