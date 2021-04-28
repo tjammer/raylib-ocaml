@@ -74,6 +74,8 @@ let rec loop s =
       begin_drawing ();
       clear_background col;
 
+      if s.show_text_input_box then Raygui.lock ();
+
       let rect = Rectangle.create 25.0 108.0 15.0 15.0 in
       let force_squared_check =
         Raygui.(check_box rect "FORCE CHECK!" s.force_squared_check)
@@ -140,7 +142,7 @@ let rec loop s =
         set_state ControlState.Disabled;
         ignore (button (Rectangle.create 30.0 425.0 115.0 30.0) "DISABLED"));
       Raygui.set_state Raygui.ControlState.Normal;
-      Raygui.unlock ();
+      if not s.show_text_input_box then Raygui.unlock ();
 
       let rect = Rectangle.create 25.0 470.0 125.0 30.0 in
       let combo_box_active =
@@ -239,6 +241,7 @@ let rec loop s =
       let progress_val =
         Raygui.progress_bar rect "" "" s.progress_val ~min:0.0 ~max:1.0
       in
+      Raygui.unlock ();
 
       let text_input_text, show_text_input_box =
         if show_text_input_box then (
