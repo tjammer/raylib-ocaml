@@ -1,4 +1,4 @@
-(lang dune 2.6)
+(lang dune 2.8)
 (name raylib)
 (version 0.2.2)
 

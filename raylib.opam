@@ -8,13 +8,14 @@ license: "MIT"
 homepage: "https://github.com/tjammer/raylib-ocaml"
 bug-reports: "https://github.com/tjammer/raylib-ocaml/issues"
 depends: [
-  "dune" {>= "2.6"}
+  "dune" {>= "2.8"}
   "dune-configurator"
   "ctypes"
   "ppx_cstubs"
+  "odoc" {with-doc}
 ]
 build: [
-  ["dune" "subst"] {pinned}
+  ["dune" "subst"] {dev}
   [
     "dune"
     "build"

@@ -1,6 +1,6 @@
 (library
  (name raylib_functions)
- (public_name raylib.functions)
+ (package raylib)
  (modules Raylib_functions)
  (flags
   (:standard -w -9-27))
@@ -8,7 +8,7 @@
 
 (library
  (name raylib_math)
- (public_name raylib.math)
+ (package raylib)
  (modules Raylib_math)
  (flags
   (:standard -w -9-27))
@@ -16,7 +16,7 @@
 
 (library
  (name raygui_functions)
- (public_name raygui.functions)
+ (package raygui)
  (modules Raygui_functions)
  (flags
   (:standard -w -9-27))

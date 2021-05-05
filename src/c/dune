@@ -1,6 +1,6 @@
 (library
  (name raylib_c)
- (public_name raylib.c)
+ (package raylib)
  (modules Raylib_c_generated_functions Raylib_c_generated_math)
  (foreign_archives raylib)
  (foreign_stubs
@@ -129,7 +129,7 @@
 
 (library
  (name raygui_c)
- (public_name raygui.c)
+ (package raygui)
  (modules C_generated_gui)
  ; (foreign_archives raygui)
  (foreign_stubs

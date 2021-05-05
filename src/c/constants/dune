@@ -2,7 +2,7 @@
 ; c_flags.sexp and c_library_flags.sexp are created above
 
 (library
- (public_name raylib.constants)
+ (package raylib)
  (name raylib_generated_constants)
  (modules raylib_generated_constants)
  (preprocess
@@ -21,7 +21,7 @@
      %{project_root}/src/c/vendor/raylib/src))))
 
 (library
- (public_name raygui.constants)
+ (package raygui)
  (name raygui_generated_constants)
  (modules raygui_generated_constants)
  (preprocess
