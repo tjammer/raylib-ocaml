@@ -7,8 +7,12 @@
   (language c)
   (names c_generated_functions c_generated_math)
   (include_dirs %{project_root}/src/c/vendor/raylib/src))
- (libraries ctypes.stubs raylib_functions raylib_math
-   raylib_generated_constants raylib_generated_types)
+ (libraries
+  ctypes.stubs
+  raylib_functions
+  raylib_math
+  raylib_generated_constants
+  raylib_generated_types)
  (library_flags
   (:include library_flags.sexp)))
 
@@ -135,8 +139,9 @@
  (foreign_stubs
   (language c)
   (names c_generated_gui)
-  (include_dirs %{project_root}/src/c/vendor/raygui/src
-    %{project_root}/src/c/vendor/raylib/src))
+  (include_dirs
+   %{project_root}/src/c/vendor/raygui/src
+   %{project_root}/src/c/vendor/raylib/src))
  (libraries ctypes.stubs raygui_functions raygui_generated_constants)
  (library_flags
   (:include library_flags.sexp)))
