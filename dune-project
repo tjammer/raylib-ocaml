@@ -1,8 +1,8 @@
 (lang dune 2.8)
 (name raylib)
-(version 0.3.0)
 
-(generate_opam_files true)
+; cannot specify conditional deps otherwise
+(generate_opam_files false)
 
 (source (github tjammer/raylib-ocaml))
 (license MIT)
@@ -11,6 +11,7 @@
 
 (package
  (name raylib)
+ (version 0.3.0)
  (description "OCaml bindings for raylib")
  (synopsis "OCaml bindings for raylib")
  (depends
@@ -21,6 +22,7 @@
 
 (package
  (name raygui)
+ (version 0.1.0)
  (description "OCaml bindings for raygui")
  (synopsis "OCaml bindings for raygui")
  (depends
