@@ -11,7 +11,7 @@
 
 (package
  (name raylib)
- (version 0.3.0)
+ (version 0.3.1)
  (description "OCaml bindings for raylib")
  (synopsis "OCaml bindings for raylib")
  (depends

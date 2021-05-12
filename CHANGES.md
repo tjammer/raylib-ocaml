@@ -1,3 +1,9 @@
+0.3.1 (2021-05-12)
+-----------------
+
+* Use conf packages instead of depexts for raylib
+* Fix raygui version
+
 0.3 (2021-05-05)
 ----------------
 
