@@ -17,8 +17,8 @@
  (depends
   dune
   dune-configurator
-  ctypes
-  ppx_cstubs))
+  (ctypes (>= 0.14))
+  (ppx_cstubs (>= 0.6))))
 
 (package
  (name raygui)
@@ -28,6 +28,6 @@
  (depends
   dune
   dune-configurator
-  ctypes
-  ppx_cstubs
-  raylib))
+  (ctypes (>= 0.14))
+  (ppx_cstubs (>= 0.6))
+  (raylib (>= 0.3))))
