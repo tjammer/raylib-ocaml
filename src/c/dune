@@ -96,6 +96,7 @@
   (no-infer
    (progn
     (run chmod +w vendor/raylib/src/Makefile)
+    (run unix2dos vendor/raylib/src/Makefile)
     (with-stdin-from
      mingw64.patch
      (run patch --binary -p1))
