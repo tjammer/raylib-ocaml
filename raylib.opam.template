@@ -1,5 +1,5 @@
 available: [arch != "arm32" & arch != "ppc64"]
 x-ci-accept-failures: [
-  "centos-7"
-  "oraclelinux-7"
+  "centos-7" # C compiler is too old
+  "oraclelinux-7" # C compiler is too old
 ]
