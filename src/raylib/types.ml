@@ -398,6 +398,8 @@ module Mesh = struct
   type t = t' ctyp
 end
 
+type shader_loc = int
+
 module Shader = struct
   type t' = Types.Shader.t
 

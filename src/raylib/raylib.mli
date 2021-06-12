@@ -962,16 +962,18 @@ module Mesh : sig
   type t = t' ctyp
 end
 
+type shader_loc
+
 module Shader : sig
   type t'
 
   type t = t' ctyp
 
-  val locs : t -> int CArray.t
+  val locs : t -> shader_loc CArray.t
 
-  val set_loc : t -> ShaderLocationIndex.t -> int -> unit
+  val set_loc : t -> ShaderLocationIndex.t -> shader_loc -> unit
 
-  val set_locs : t -> int CArray.t -> unit
+  val set_locs : t -> shader_loc CArray.t -> unit
 end
 
 module MaterialMap : sig
@@ -2518,24 +2520,24 @@ val set_shapes_texture : Texture.t -> Rectangle.t -> unit
 
 (** {3 Shader configuration functions} *)
 
-val get_shader_location : Shader.t -> string -> int
+val get_shader_location : Shader.t -> string -> shader_loc
 (** Get shader uniform location *)
 
-val get_shader_location_attrib : Shader.t -> string -> int
+val get_shader_location_attrib : Shader.t -> string -> shader_loc
 (** Get shader attribute location *)
 
 val set_shader_value :
-  Shader.t -> int -> unit ptr -> ShaderUniformDataType.t -> unit
+  Shader.t -> shader_loc -> unit ptr -> ShaderUniformDataType.t -> unit
 (** Set shader uniform value *)
 
 val set_shader_value_v :
-  Shader.t -> int -> unit ptr -> ShaderUniformDataType.t -> int -> unit
+  Shader.t -> shader_loc -> unit ptr -> ShaderUniformDataType.t -> int -> unit
 (** Set shader uniform value vector *)
 
-val set_shader_value_matrix : Shader.t -> int -> Matrix.t -> unit
+val set_shader_value_matrix : Shader.t -> shader_loc -> Matrix.t -> unit
 (** Set shader uniform value (matrix 4x4) *)
 
-val set_shader_value_texture : Shader.t -> int -> Texture.t -> unit
+val set_shader_value_texture : Shader.t -> shader_loc -> Texture.t -> unit
 (** Set shader uniform value for texture *)
 
 val set_matrix_projection : Matrix.t -> unit
