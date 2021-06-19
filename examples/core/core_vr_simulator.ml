@@ -4,7 +4,7 @@ let height = 450
 
 let setup () =
   let open Raylib in
-  set_config_flags [ ConfigFlag.MSAA_4X_hint ];
+  set_config_flags [ ConfigFlag.Msaa_4x_hint ];
   init_window width height "raylib [core] example - vr simulator";
   init_vr_simulator ();
 

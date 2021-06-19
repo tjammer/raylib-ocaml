@@ -7,3 +7,8 @@
  (name names_to_itf)
  (modules Names_to_itf)
  (libraries re))
+
+(executable
+ (name hello_json)
+ (modules Hello_json)
+ (libraries containers re yojson))
