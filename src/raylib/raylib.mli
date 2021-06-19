@@ -31,7 +31,7 @@ module CArray = Ctypes.CArray
 
 module ConfigFlag : sig
   type t =
-    | VSync_hint
+    | Vsync_hint
     | Fullscreen_mode
     | Window_resizable
     | Window_undecorated
@@ -43,8 +43,8 @@ module ConfigFlag : sig
     | Window_always_run
     | Window_transparent
     | Window_highdpi
-    | MSAA_4X_hint
-    | Window_interlaced_hint
+    | Msaa_4x_hint
+    | Interlaced_hint
 
   val to_int : t -> int
 
@@ -144,28 +144,28 @@ module Key : sig
     | Right_control
     | Right_alt
     | Right_super
-    | Keyboard_menu
+    | Kb_menu
     | Left_bracket
     | Backslash
     | Right_bracket
     | Grave
-    | Keypad_0
-    | Keypad_1
-    | Keypad_2
-    | Keypad_3
-    | Keypad_4
-    | Keypad_5
-    | Keypad_6
-    | Keypad_7
-    | Keypad_8
-    | Keypad_9
-    | Keypad_decimal
-    | Keypad_divide
-    | Keypad_multiply
-    | Keypad_subtract
-    | Keypad_add
-    | Keypad_enter
-    | Keypad_equal
+    | Kp_0
+    | Kp_1
+    | Kp_2
+    | Kp_3
+    | Kp_4
+    | Kp_5
+    | Kp_6
+    | Kp_7
+    | Kp_8
+    | Kp_9
+    | Kp_decimal
+    | Kp_divide
+    | Kp_multiply
+    | Kp_subtract
+    | Kp_add
+    | Kp_enter
+    | Kp_equal
 
   val to_int : t -> int
 
@@ -195,11 +195,11 @@ module MouseCursor : sig
     | Ibeam
     | Crosshair
     | Pointing_hand
-    | Resize_EW
-    | Resize_NS
-    | Resize_NWSE
-    | Resize_NESW
-    | Resize_All
+    | Resize_ew
+    | Resize_ns
+    | Resize_nwse
+    | Resize_nesw
+    | Resize_all
     | Not_allowed
 
   val to_int : t -> int
@@ -275,9 +275,7 @@ module ShaderLocationIndex : sig
     | Map_cubemap
     | Map_irradiance
     | Map_prefilter
-    | Map_BRDF
-    | Map_diffuse
-    | Map_specular
+    | Map_brdf
 
   val to_int : t -> int
 
@@ -291,10 +289,10 @@ module ShaderUniformDataType : sig
     | Vec3
     | Vec4
     | Int
-    | IVec2
-    | IVec3
-    | IVec4
-    | Sampler2D
+    | Ivec2
+    | Ivec3
+    | Ivec4
+    | Sampler2d
 
   val to_int : t -> int
 
@@ -313,9 +311,7 @@ module MaterialMapType : sig
     | Cubemap
     | Irradiance
     | Prefilter
-    | BRDF
-    | Diffuse
-    | Specular
+    | Brdf
 
   val to_int : t -> int
 
@@ -326,25 +322,25 @@ module PixelFormat : sig
   type t =
     | Uncompressed_grayscale
     | Uncompressed_gray_alpha
-    | Uncompressed_R5G6B5
-    | Uncompressed_R8G8B8
-    | Uncompressed_R5G5B5A1
-    | Uncompressed_R4G4B4A4
-    | Uncompressed_R8G8B8A8
-    | Uncompressed_R32
-    | Uncompressed_R32G32B32
-    | Uncompressed_R32G32B32A32
-    | Compressed_DXT1_RGB
-    | Compressed_DXT1_RGBA
-    | Compressed_DXT3_RGBA
-    | Compressed_DXT5_RGBA
-    | Compressed_ETC1_RGB
-    | Compressed_ETC2_RGB
-    | Compressed_ETC2_EAC_RGBA
-    | Compressed_PVRT_RGB
-    | Compressed_PVRT_RGBA
-    | Compressed_ASTC_4x4_RGBA
-    | Compressed_ASTC_8x8_RGBA
+    | Uncompressed_r5g6b5
+    | Uncompressed_r8g8b8
+    | Uncompressed_r5g5b5a1
+    | Uncompressed_r4g4b4a4
+    | Uncompressed_r8g8b8a8
+    | Uncompressed_r32
+    | Uncompressed_r32g32b32
+    | Uncompressed_r32g32b32a32
+    | Compressed_dxt1_rgb
+    | Compressed_dxt1_rgba
+    | Compressed_dxt3_rgba
+    | Compressed_dxt5_rgba
+    | Compressed_etc1_rgb
+    | Compressed_etc2_rgb
+    | Compressed_etc2_eac_rgba
+    | Compressed_pvrt_rgb
+    | Compressed_pvrt_rgba
+    | Compressed_astc_4x4_rgba
+    | Compressed_astc_8x8_rgba
 
   val to_int : t -> int
 
@@ -356,9 +352,17 @@ module TextureFilterMode : sig
     | Point
     | Bilinear
     | Trilinear
-    | Anisotropic_4X
-    | Anisotropic_8X
-    | Anisotropic_16X
+    | Anisotropic_4x
+    | Anisotropic_8x
+    | Anisotropic_16x
+
+  val to_int : t -> int
+
+  val of_int : int -> t
+end
+
+module TextureWrapMode : sig
+  type t = Repeat | Clamp | Mirror_repeat | Mirror_clamp
 
   val to_int : t -> int
 
@@ -379,16 +383,8 @@ module CubemapLayoutType : sig
   val of_int : int -> t
 end
 
-module TextureWrapMode : sig
-  type t = Repeat | Clamp | Mirror_repeat | Mirror_clamp
-
-  val to_int : t -> int
-
-  val of_int : int -> t
-end
-
 module FontType : sig
-  type t = Default | Bitmap | SDF
+  type t = Default | Bitmap | Sdf
 
   val to_int : t -> int
 

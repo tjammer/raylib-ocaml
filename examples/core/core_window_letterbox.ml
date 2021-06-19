@@ -15,7 +15,7 @@ let init_colors () =
 
 let setup () =
   let open Raylib in
-  set_config_flags [ ConfigFlag.Window_resizable; ConfigFlag.VSync_hint ];
+  set_config_flags [ ConfigFlag.Window_resizable; ConfigFlag.Vsync_hint ];
 
   init_window 800 450 "raylib [core] example - window scale letterbox";
   set_window_min_size 320 240;

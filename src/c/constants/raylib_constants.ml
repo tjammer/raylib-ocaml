@@ -2,7 +2,7 @@ let%c () = header "#include <raylib.h>\n#include <rlgl.h>"
 
 module ConfigFlag = struct
   type%c t =
-    | VSync_hint [@cname "FLAG_VSYNC_HINT"]
+    | Vsync_hint [@cname "FLAG_VSYNC_HINT"]
     | Fullscreen_mode [@cname "FLAG_FULLSCREEN_MODE"]
     | Window_resizable [@cname "FLAG_WINDOW_RESIZABLE"]
     | Window_undecorated [@cname "FLAG_WINDOW_UNDECORATED"]
@@ -14,8 +14,8 @@ module ConfigFlag = struct
     | Window_always_run [@cname "FLAG_WINDOW_ALWAYS_RUN"]
     | Window_transparent [@cname "FLAG_WINDOW_TRANSPARENT"]
     | Window_highdpi [@cname "FLAG_WINDOW_HIGHDPI"]
-    | MSAA_4X_hint [@cname "FLAG_MSAA_4X_HINT"]
-    | Window_interlaced_hint [@cname "FLAG_INTERLACED_HINT"]
+    | Msaa_4x_hint [@cname "FLAG_MSAA_4X_HINT"]
+    | Interlaced_hint [@cname "FLAG_INTERLACED_HINT"]
   [@@cname "ConfigFlag"] [@@typedef] [@@with_bitmask]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
@@ -85,7 +85,6 @@ module Key = struct
     | X [@cname "KEY_X"]
     | Y [@cname "KEY_Y"]
     | Z [@cname "KEY_Z"]
-    (* Function keys *)
     | Space [@cname "KEY_SPACE"]
     | Escape [@cname "KEY_ESCAPE"]
     | Enter [@cname "KEY_ENTER"]
@@ -126,29 +125,28 @@ module Key = struct
     | Right_control [@cname "KEY_RIGHT_CONTROL"]
     | Right_alt [@cname "KEY_RIGHT_ALT"]
     | Right_super [@cname "KEY_RIGHT_SUPER"]
-    | Keyboard_menu [@cname "KEY_KB_MENU"]
+    | Kb_menu [@cname "KEY_KB_MENU"]
     | Left_bracket [@cname "KEY_LEFT_BRACKET"]
     | Backslash [@cname "KEY_BACKSLASH"]
     | Right_bracket [@cname "KEY_RIGHT_BRACKET"]
     | Grave [@cname "KEY_GRAVE"]
-    (* Keypad keys *)
-    | Keypad_0 [@cname "KEY_KP_0"]
-    | Keypad_1 [@cname "KEY_KP_1"]
-    | Keypad_2 [@cname "KEY_KP_2"]
-    | Keypad_3 [@cname "KEY_KP_3"]
-    | Keypad_4 [@cname "KEY_KP_4"]
-    | Keypad_5 [@cname "KEY_KP_5"]
-    | Keypad_6 [@cname "KEY_KP_6"]
-    | Keypad_7 [@cname "KEY_KP_7"]
-    | Keypad_8 [@cname "KEY_KP_8"]
-    | Keypad_9 [@cname "KEY_KP_9"]
-    | Keypad_decimal [@cname "KEY_KP_DECIMAL"]
-    | Keypad_divide [@cname "KEY_KP_DIVIDE"]
-    | Keypad_multiply [@cname "KEY_KP_MULTIPLY"]
-    | Keypad_subtract [@cname "KEY_KP_SUBTRACT"]
-    | Keypad_add [@cname "KEY_KP_ADD"]
-    | Keypad_enter [@cname "KEY_KP_ENTER"]
-    | Keypad_equal [@cname "KEY_KP_EQUAL"]
+    | Kp_0 [@cname "KEY_KP_0"]
+    | Kp_1 [@cname "KEY_KP_1"]
+    | Kp_2 [@cname "KEY_KP_2"]
+    | Kp_3 [@cname "KEY_KP_3"]
+    | Kp_4 [@cname "KEY_KP_4"]
+    | Kp_5 [@cname "KEY_KP_5"]
+    | Kp_6 [@cname "KEY_KP_6"]
+    | Kp_7 [@cname "KEY_KP_7"]
+    | Kp_8 [@cname "KEY_KP_8"]
+    | Kp_9 [@cname "KEY_KP_9"]
+    | Kp_decimal [@cname "KEY_KP_DECIMAL"]
+    | Kp_divide [@cname "KEY_KP_DIVIDE"]
+    | Kp_multiply [@cname "KEY_KP_MULTIPLY"]
+    | Kp_subtract [@cname "KEY_KP_SUBTRACT"]
+    | Kp_add [@cname "KEY_KP_ADD"]
+    | Kp_enter [@cname "KEY_KP_ENTER"]
+    | Kp_equal [@cname "KEY_KP_EQUAL"]
   [@@cname "KeyboardKey"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
@@ -188,11 +186,11 @@ module MouseCursor = struct
     | Ibeam [@cname "MOUSE_CURSOR_IBEAM"]
     | Crosshair [@cname "MOUSE_CURSOR_CROSSHAIR"]
     | Pointing_hand [@cname "MOUSE_CURSOR_POINTING_HAND"]
-    | Resize_EW [@cname "MOUSE_CURSOR_RESIZE_EW"]
-    | Resize_NS [@cname "MOUSE_CURSOR_RESIZE_NS"]
-    | Resize_NWSE [@cname "MOUSE_CURSOR_RESIZE_NWSE"]
-    | Resize_NESW [@cname "MOUSE_CURSOR_RESIZE_NESW"]
-    | Resize_All [@cname "MOUSE_CURSOR_RESIZE_ALL"]
+    | Resize_ew [@cname "MOUSE_CURSOR_RESIZE_EW"]
+    | Resize_ns [@cname "MOUSE_CURSOR_RESIZE_NS"]
+    | Resize_nwse [@cname "MOUSE_CURSOR_RESIZE_NWSE"]
+    | Resize_nesw [@cname "MOUSE_CURSOR_RESIZE_NESW"]
+    | Resize_all [@cname "MOUSE_CURSOR_RESIZE_ALL"]
     | Not_allowed [@cname "MOUSE_CURSOR_NOT_ALLOWED"]
   [@@cname "MouseCursor"] [@@typedef]
 
@@ -216,31 +214,22 @@ end
 
 module GamepadButton = struct
   type%c t =
-    (* This is here just for error checking *)
     | Unknown [@cname "GAMEPAD_BUTTON_UNKNOWN"]
-    (* This is normally a DPAD *)
     | Left_face_up [@cname "GAMEPAD_BUTTON_LEFT_FACE_UP"]
     | Left_face_right [@cname "GAMEPAD_BUTTON_LEFT_FACE_RIGHT"]
     | Left_face_down [@cname "GAMEPAD_BUTTON_LEFT_FACE_DOWN"]
     | Left_face_left [@cname "GAMEPAD_BUTTON_LEFT_FACE_LEFT"]
-    (* This normally corresponds with PlayStation and Xbox controllers *)
-    (* XBOX: [Y,X,A,B]
-     * PS3: [Triangle,Square,Cross,Circle] *)
-    (* No support for 6 button controllers though.. *)
     | Right_face_up [@cname "GAMEPAD_BUTTON_RIGHT_FACE_UP"]
     | Right_face_right [@cname "GAMEPAD_BUTTON_RIGHT_FACE_RIGHT"]
     | Right_face_down [@cname "GAMEPAD_BUTTON_RIGHT_FACE_DOWN"]
     | Right_face_left [@cname "GAMEPAD_BUTTON_RIGHT_FACE_LEFT"]
-    (* Triggers *)
     | Left_trigger_1 [@cname "GAMEPAD_BUTTON_LEFT_TRIGGER_1"]
     | Left_trigger_2 [@cname "GAMEPAD_BUTTON_LEFT_TRIGGER_2"]
     | Right_trigger_1 [@cname "GAMEPAD_BUTTON_RIGHT_TRIGGER_1"]
     | Right_trigger_2 [@cname "GAMEPAD_BUTTON_RIGHT_TRIGGER_2"]
-    (* These are buttons in the center of the gamepad *)
     | Middle_left [@cname "GAMEPAD_BUTTON_MIDDLE_LEFT"]
     | Middle [@cname "GAMEPAD_BUTTON_MIDDLE"]
     | Middle_right [@cname "GAMEPAD_BUTTON_MIDDLE_RIGHT"]
-    (* These are the joystick press in buttons *)
     | Left_thumb [@cname "GAMEPAD_BUTTON_LEFT_THUMB"]
     | Right_thumb [@cname "GAMEPAD_BUTTON_RIGHT_THUMB"]
   [@@cname "GamepadButton"] [@@typedef]
@@ -252,13 +241,10 @@ end
 
 module GamepadAxis = struct
   type%c t =
-    (* Left stick *)
     | Left_x [@cname "GAMEPAD_AXIS_LEFT_X"]
     | Left_y [@cname "GAMEPAD_AXIS_LEFT_Y"]
-    (* Right stick *)
     | Right_x [@cname "GAMEPAD_AXIS_RIGHT_X"]
     | Right_y [@cname "GAMEPAD_AXIS_RIGHT_Y"]
-    (* Pressure levels for the back triggers *)
     | Left_trigger [@cname "GAMEPAD_AXIS_LEFT_TRIGGER"]
     | Right_trigger [@cname "GAMEPAD_AXIS_RIGHT_TRIGGER"]
   [@@cname "GamepadAxis"] [@@typedef]
@@ -294,9 +280,7 @@ module ShaderLocationIndex = struct
     | Map_cubemap [@cname "LOC_MAP_CUBEMAP"]
     | Map_irradiance [@cname "LOC_MAP_IRRADIANCE"]
     | Map_prefilter [@cname "LOC_MAP_PREFILTER"]
-    | Map_BRDF [@cname "LOC_MAP_BRDF"]
-    | Map_diffuse [@cname "LOC_MAP_ALBEDO"]
-    | Map_specular [@cname "LOC_MAP_METALNESS"]
+    | Map_brdf [@cname "LOC_MAP_BRDF"]
   [@@cname "ShaderLocationIndex"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
@@ -311,10 +295,10 @@ module ShaderUniformDataType = struct
     | Vec3 [@cname "UNIFORM_VEC3"]
     | Vec4 [@cname "UNIFORM_VEC4"]
     | Int [@cname "UNIFORM_INT"]
-    | IVec2 [@cname "UNIFORM_IVEC2"]
-    | IVec3 [@cname "UNIFORM_IVEC3"]
-    | IVec4 [@cname "UNIFORM_IVEC4"]
-    | Sampler2D [@cname "UNIFORM_SAMPLER2D"]
+    | Ivec2 [@cname "UNIFORM_IVEC2"]
+    | Ivec3 [@cname "UNIFORM_IVEC3"]
+    | Ivec4 [@cname "UNIFORM_IVEC4"]
+    | Sampler2d [@cname "UNIFORM_SAMPLER2D"]
   [@@cname "ShaderUniformDataType"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
@@ -334,9 +318,7 @@ module MaterialMapType = struct
     | Cubemap [@cname "MAP_CUBEMAP"]
     | Irradiance [@cname "MAP_IRRADIANCE"]
     | Prefilter [@cname "MAP_PREFILTER"]
-    | BRDF [@cname "MAP_BRDF"]
-    | Diffuse [@cname "MAP_ALBEDO"]
-    | Specular [@cname "MAP_METALNESS"]
+    | Brdf [@cname "MAP_BRDF"]
   [@@cname "MaterialMapType"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
@@ -348,25 +330,25 @@ module PixelFormat = struct
   type%c t =
     | Uncompressed_grayscale [@cname "UNCOMPRESSED_GRAYSCALE"]
     | Uncompressed_gray_alpha [@cname "UNCOMPRESSED_GRAY_ALPHA"]
-    | Uncompressed_R5G6B5 [@cname "UNCOMPRESSED_R5G6B5"]
-    | Uncompressed_R8G8B8 [@cname "UNCOMPRESSED_R8G8B8"]
-    | Uncompressed_R5G5B5A1 [@cname "UNCOMPRESSED_R5G5B5A1"]
-    | Uncompressed_R4G4B4A4 [@cname "UNCOMPRESSED_R4G4B4A4"]
-    | Uncompressed_R8G8B8A8 [@cname "UNCOMPRESSED_R8G8B8A8"]
-    | Uncompressed_R32 [@cname "UNCOMPRESSED_R32"]
-    | Uncompressed_R32G32B32 [@cname "UNCOMPRESSED_R32G32B32"]
-    | Uncompressed_R32G32B32A32 [@cname "UNCOMPRESSED_R32G32B32A32"]
-    | Compressed_DXT1_RGB [@cname "COMPRESSED_DXT1_RGB"]
-    | Compressed_DXT1_RGBA [@cname "COMPRESSED_DXT1_RGBA"]
-    | Compressed_DXT3_RGBA [@cname "COMPRESSED_DXT3_RGBA"]
-    | Compressed_DXT5_RGBA [@cname "COMPRESSED_DXT5_RGBA"]
-    | Compressed_ETC1_RGB [@cname "COMPRESSED_ETC1_RGB"]
-    | Compressed_ETC2_RGB [@cname "COMPRESSED_ETC2_RGB"]
-    | Compressed_ETC2_EAC_RGBA [@cname "COMPRESSED_ETC2_EAC_RGBA"]
-    | Compressed_PVRT_RGB [@cname "COMPRESSED_PVRT_RGB"]
-    | Compressed_PVRT_RGBA [@cname "COMPRESSED_PVRT_RGBA"]
-    | Compressed_ASTC_4x4_RGBA [@cname "COMPRESSED_ASTC_4x4_RGBA"]
-    | Compressed_ASTC_8x8_RGBA [@cname "COMPRESSED_ASTC_8x8_RGBA"]
+    | Uncompressed_r5g6b5 [@cname "UNCOMPRESSED_R5G6B5"]
+    | Uncompressed_r8g8b8 [@cname "UNCOMPRESSED_R8G8B8"]
+    | Uncompressed_r5g5b5a1 [@cname "UNCOMPRESSED_R5G5B5A1"]
+    | Uncompressed_r4g4b4a4 [@cname "UNCOMPRESSED_R4G4B4A4"]
+    | Uncompressed_r8g8b8a8 [@cname "UNCOMPRESSED_R8G8B8A8"]
+    | Uncompressed_r32 [@cname "UNCOMPRESSED_R32"]
+    | Uncompressed_r32g32b32 [@cname "UNCOMPRESSED_R32G32B32"]
+    | Uncompressed_r32g32b32a32 [@cname "UNCOMPRESSED_R32G32B32A32"]
+    | Compressed_dxt1_rgb [@cname "COMPRESSED_DXT1_RGB"]
+    | Compressed_dxt1_rgba [@cname "COMPRESSED_DXT1_RGBA"]
+    | Compressed_dxt3_rgba [@cname "COMPRESSED_DXT3_RGBA"]
+    | Compressed_dxt5_rgba [@cname "COMPRESSED_DXT5_RGBA"]
+    | Compressed_etc1_rgb [@cname "COMPRESSED_ETC1_RGB"]
+    | Compressed_etc2_rgb [@cname "COMPRESSED_ETC2_RGB"]
+    | Compressed_etc2_eac_rgba [@cname "COMPRESSED_ETC2_EAC_RGBA"]
+    | Compressed_pvrt_rgb [@cname "COMPRESSED_PVRT_RGB"]
+    | Compressed_pvrt_rgba [@cname "COMPRESSED_PVRT_RGBA"]
+    | Compressed_astc_4x4_rgba [@cname "COMPRESSED_ASTC_4x4_RGBA"]
+    | Compressed_astc_8x8_rgba [@cname "COMPRESSED_ASTC_8x8_RGBA"]
   [@@cname "PixelFormat"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
@@ -379,10 +361,23 @@ module TextureFilterMode = struct
     | Point [@cname "FILTER_POINT"]
     | Bilinear [@cname "FILTER_BILINEAR"]
     | Trilinear [@cname "FILTER_TRILINEAR"]
-    | Anisotropic_4X [@cname "FILTER_ANISOTROPIC_4X"]
-    | Anisotropic_8X [@cname "FILTER_ANISOTROPIC_8X"]
-    | Anisotropic_16X [@cname "FILTER_ANISOTROPIC_16X"]
+    | Anisotropic_4x [@cname "FILTER_ANISOTROPIC_4X"]
+    | Anisotropic_8x [@cname "FILTER_ANISOTROPIC_8X"]
+    | Anisotropic_16x [@cname "FILTER_ANISOTROPIC_16X"]
   [@@cname "TextureFilterMode"] [@@typedef]
+
+  let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
+
+  let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
+end
+
+module TextureWrapMode = struct
+  type%c t =
+    | Repeat [@cname "WRAP_REPEAT"]
+    | Clamp [@cname "WRAP_CLAMP"]
+    | Mirror_repeat [@cname "WRAP_MIRROR_REPEAT"]
+    | Mirror_clamp [@cname "WRAP_MIRROR_CLAMP"]
+  [@@cname "TextureWrapMode"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
 
@@ -404,24 +399,11 @@ module CubemapLayoutType = struct
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
-module TextureWrapMode = struct
-  type%c t =
-    | Repeat [@cname "WRAP_REPEAT"]
-    | Clamp [@cname "WRAP_CLAMP"]
-    | Mirror_repeat [@cname "WRAP_MIRROR_REPEAT"]
-    | Mirror_clamp [@cname "WRAP_MIRROR_CLAMP"]
-  [@@cname "TextureWrapMode"] [@@typedef]
-
-  let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
-  let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
-end
-
 module FontType = struct
   type%c t =
     | Default [@cname "FONT_DEFAULT"]
     | Bitmap [@cname "FONT_BITMAP"]
-    | SDF [@cname "FONT_SDF"]
+    | Sdf [@cname "FONT_SDF"]
   [@@cname "FontType"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
