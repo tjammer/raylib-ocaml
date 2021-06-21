@@ -12,12 +12,6 @@ module Vector4 = struct
   type%c t = { x : float; y : float; z : float; w : float } [@@cname "Vector4"]
 end
 
-module Quaternion = struct
-  type t = Vector4.t
-
-  let%c t = Vector4.t
-end
-
 module Matrix = struct
   type%c t = {
     m0 : float;
@@ -70,8 +64,6 @@ module Texture = struct
   }
   [@@cname "Texture"]
 end
-
-module TextureCubemap = Texture
 
 module RenderTexture = struct
   type%c t = { id : uint; texture : Texture.t; depth : Texture.t }
@@ -172,7 +164,7 @@ end
 module Transform = struct
   type%c t = {
     translation : Vector3.t;
-    rotation : Quaternion.t;
+    rotation : Vector4.t;
     scale : Vector3.t;
   }
   [@@cname "Transform"]
@@ -188,8 +180,8 @@ module Model = struct
   type%c t = {
     transform : Matrix.t;
     mesh_count : int; [@cname "meshCount"]
-    meshes : Mesh.t ptr;
     material_count : int; [@cname "materialCount"]
+    meshes : Mesh.t ptr;
     materials : Material.t ptr;
     mesh_material : int ptr; [@cname "meshMaterial"]
     bone_count : int; [@cname "boneCount"]
@@ -202,8 +194,8 @@ end
 module ModelAnimation = struct
   type%c t = {
     bone_count : int; [@cname "boneCount"]
-    bones : BoneInfo.t ptr;
     frame_count : int; [@cname "frameCount"]
+    bones : BoneInfo.t ptr;
     frame_poses : Transform.t ptr ptr; [@cname "framePoses"]
   }
   [@@cname "ModelAnimation"]
@@ -239,10 +231,10 @@ module Wave = struct
 end
 
 module AudioStream = struct
-  let%c audio_buffer = structure "rAudioBuffer"
+  let%c r_audio_buffer = structure "rAudioBuffer"
 
   type%c t = {
-    buffer : audio_buffer ptr;
+    buffer : r_audio_buffer ptr;
     sample_rate : uint; [@cname "sampleRate"]
     sample_size : uint; [@cname "sampleSize"]
     channels : uint;

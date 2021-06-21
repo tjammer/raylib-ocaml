@@ -99,13 +99,19 @@ module Type = struct
   let () = StrTbl.replace type_tbl "Quaternion" "Vector4"
 
   (* TODO add description *)
+
   type field = { name : name; typ : name }
 
   type array_t = { typ : string; size : string }
 
   let array_t_eq a b = String.equal a.typ b.typ && String.equal a.size b.size
 
-  type t = { name : name; fields : field list; arr : array_t list }
+  type t = {
+    name : name;
+    fields : field list;
+    arr : array_t list;
+    forward : name list;
+  }
 
   (* let def s = String.(lowercase_ascii s |> capitalize_ascii) *)
   let is_uppercase = function 'A' .. 'Z' -> true | _ -> false
@@ -132,6 +138,13 @@ module Type = struct
 
   let special_names = function "type" -> "typ" | name -> name
 
+  let special_types = function
+    (* hardcoded for now, but we could detect *)
+    | "rAudioBuffer ptr" ->
+        ( "audio_buffer ptr",
+          Some { name = "audio_buffer"; cname = "rAudioBuffer" } )
+    | typ -> (typ, None)
+
   let type_name cname type_tbl =
     let raytype name =
       match StrTbl.find_opt type_tbl name with
@@ -153,7 +166,7 @@ module Type = struct
 
     (* field *)
     let ctyp = member "type" field |> to_string in
-    let stubs_type = type_name ctyp type_tbl in
+    let stubs_type, forw = type_name ctyp type_tbl |> special_types in
     let name, stubs_type, arr =
       match arr with
       | None -> (name, stubs_type, None)
@@ -163,7 +176,11 @@ module Type = struct
     let name = { name; cname } in
 
     let ret = { name; typ = { name = stubs_type; cname = ctyp } } in
-    match arr with None -> `Std ret | Some arr -> `Array (arr, ret)
+    match (arr, forw) with
+    | None, None -> `Std ret
+    | None, Some typname -> `Forw (typname, ret)
+    | Some arr, None -> `Array (arr, ret)
+    | Some _, Some _ -> failwith "Can`t deal with that"
 
   let name_of_cname cname = { name = cname; cname }
 
@@ -182,20 +199,22 @@ module Type = struct
                 typ = { name = "float"; cname = "float" };
               })
         in
-        { name; fields; arr = [] }
+        { name; fields; arr = []; forward = [] }
     | _ ->
-        let arr, fields =
+        let (arr, forward), fields =
           json |> member "fields" |> to_list
           |> List.map (field_of_json type_tbl)
           |> List.fold_map
-               (fun arrs field ->
+               (fun (arrs, forws) field ->
                  match field with
-                 | `Std field -> (arrs, field)
-                 | `Array (arr, field) -> (arr :: arrs, field))
-               []
+                 | `Std field -> ((arrs, forws), field)
+                 | `Array (arr, field) -> ((arr :: arrs, forws), field)
+                 | `Forw (typname, (field : field)) ->
+                     ((arrs, typname :: forws), field))
+               ([], [])
         in
         let arr = List.uniq ~eq:array_t_eq arr in
-        { name; fields; arr }
+        { name; fields; arr; forward }
 
   let stubs types =
     Printf.sprintf "module %s = struct\n" types.name.name
@@ -205,6 +224,10 @@ module Type = struct
           ^ Printf.sprintf "  let%%c %s_array_%s = array %s %s\n\n" typ size
               size typ)
         "" types.arr
+    ^ List.fold_left
+        (fun acc { name; cname } ->
+          acc ^ Printf.sprintf "  let%%c %s = structure \"%s\"\n\n" name cname)
+        "" types.forward
     ^ "  type%c t = {\n"
     ^ (List.map
          (fun (field : field) ->
