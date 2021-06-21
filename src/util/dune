@@ -9,6 +9,8 @@
  (libraries re))
 
 (executable
- (name hello_json)
- (modules Hello_json)
+ (name raylib_gen)
+ (public_name raylib-gen)
+ (package raylib-gen)
+ (modules Raylib_gen)
  (libraries containers re yojson))
