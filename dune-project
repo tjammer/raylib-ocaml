@@ -31,3 +31,13 @@
   (ctypes (>= 0.14))
   (ppx_cstubs (>= 0.6))
   (raylib (>= 0.3))))
+
+(package
+ (name raylib-gen)
+ (version 0.1.0)
+ (description "Binding generation for raylib")
+ (synopsis "Binding generation for raylib")
+ (depends
+  dune
+  yojson
+  re))
