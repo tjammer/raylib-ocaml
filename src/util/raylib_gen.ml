@@ -2,7 +2,7 @@ open Containers
 
 (* json notes:
  * escape quotes for file endings
- * *)
+ * forward decls *)
 
 (* TODO add descriptions *)
 
@@ -70,12 +70,12 @@ module Enum = struct
          (fun (value : name) ->
            Printf.sprintf "    | %s [@cname \"%s\"]\n" value.name value.cname)
          enum.values
-      |> List.fold_left ( ^ ) "")
+      |> String.concat "")
     ^ Printf.sprintf "  [@@cname \"%s\"] [@@typedef]%s" enum.name.cname
         (if enum.bitmask then " [@@with_bitmask]\n\n" else "\n\n")
     ^ lower
 
-  let mli enum =
+  let itf enum =
     let lower =
       "\n  val to_int : t -> int\n\n" ^ "  val of_int : int -> t\n" ^ "end\n\n"
     in
@@ -84,36 +84,11 @@ module Enum = struct
     ^ (List.map
          (fun (value : name) -> Printf.sprintf "    | %s\n" value.name)
          enum.values
-      |> List.fold_left ( ^ ) "")
+      |> String.concat "")
     ^ lower
 end
 
-module Type = struct
-  module StrTbl = Hashtbl.Make (String)
-
-  let type_tbl = StrTbl.create 1
-
-  (* special treatment for typedefs *)
-  let () = StrTbl.replace type_tbl "Texture2D" "Texture"
-
-  let () = StrTbl.replace type_tbl "Quaternion" "Vector4"
-
-  (* TODO add description *)
-
-  type field = { name : name; typ : name }
-
-  type array_t = { typ : string; size : string }
-
-  let array_t_eq a b = String.equal a.typ b.typ && String.equal a.size b.size
-
-  type t = {
-    name : name;
-    fields : field list;
-    arr : array_t list;
-    forward : name list;
-  }
-
-  (* let def s = String.(lowercase_ascii s |> capitalize_ascii) *)
+module Naming = struct
   let is_uppercase = function 'A' .. 'Z' -> true | _ -> false
 
   let to_snake_case s =
@@ -127,6 +102,70 @@ module Type = struct
       | [] -> List.rev acc |> String.of_list
     in
     aux false [] (String.to_list s)
+end
+
+module Type = struct
+  module StrTbl = Hashtbl.Make (String)
+
+  module Typing = struct
+    type t =
+      | C of string
+      | Ray of string
+      | Forw_decl of name
+      | Array of int * string
+      | Ptr of t
+
+    let is_builtin = function
+      | "int" | "uint" | "char" | "uchar" | "float" | "bool" | "void" | "short"
+      | "ushort" ->
+          true
+      | _ -> false
+
+    let array_eq (asize, atyp) (bsize, btyp) =
+      String.equal atyp btyp && asize = bsize
+
+    let type_tbl = StrTbl.create 1
+
+    (* special treatment for typedefs *)
+    let () = StrTbl.replace type_tbl "Texture2D" "Texture"
+
+    let () = StrTbl.replace type_tbl "Quaternion" "Vector4"
+
+    let of_cname cname arr =
+      let convert a =
+        if is_builtin a then match a with "uint" -> C "int" | _ -> C a
+        else
+          match StrTbl.find_opt type_tbl a with
+          | Some name -> Ray name
+          | None -> Forw_decl { name = Naming.to_snake_case a; cname = a }
+      in
+
+      let rec aux acc = function
+        | "unsigned" :: tl -> aux (acc ^ "u") tl
+        | "\\*" :: _ | "\\*\\*" :: _ -> failwith "Something after pointer"
+        | [ "*" ] -> Ptr (convert acc)
+        | [ "**" ] -> Ptr (Ptr (convert acc))
+        | str :: tl -> aux (acc ^ str) tl
+        | [] -> convert acc
+      in
+      match (arr, aux "" @@ String.split_on_char ' ' cname) with
+      | Some count, C typ -> Array (count, typ)
+      | None, ret -> ret
+      | Some _, _ -> failwith "Array with wrong type"
+
+    let rec name_type ?(ptr = "") = function
+      | C name -> name ^ ptr
+      | Ray name -> name ^ ".t" ^ ptr
+      | Forw_decl name -> name.name ^ ptr
+      | Array (size, name) -> Printf.sprintf "%s_array_%i" name size ^ ptr
+      | Ptr typ -> name_type ~ptr:(" ptr" ^ ptr) typ
+  end
+
+  type field = { name : name; typ : Typing.t }
+
+  (* TODO add description *)
+
+  type t = { name : name; fields : field list }
 
   let strip_array name =
     match String.index_opt name '[' with
@@ -134,111 +173,157 @@ module Type = struct
     | Some start ->
         let end_ = String.index name ']' in
         let size = String.sub name (start + 1) (end_ - start - 1) in
-        (String.take start name, Some size)
+        (String.take start name, Some (int_of_string size))
 
   let special_names = function "type" -> "typ" | name -> name
 
-  let special_types = function
-    (* hardcoded for now, but we could detect *)
-    | "rAudioBuffer ptr" ->
-        ( "audio_buffer ptr",
-          Some { name = "audio_buffer"; cname = "rAudioBuffer" } )
-    | typ -> (typ, None)
-
-  let type_name cname type_tbl =
-    let raytype name =
-      match StrTbl.find_opt type_tbl name with
-      | Some name -> name ^ ".t"
-      | None -> name
-    in
-    String.split_on_char ' ' cname
-    |> List.map (function
-         | "unsigned" -> "u"
-         | "*" -> " ptr"
-         | "**" -> " ptr ptr"
-         | name -> raytype name)
-    |> List.fold_left ( ^ ) ""
-
-  let field_of_json type_tbl field =
+  let field_of_json field =
     let open Yojson.Basic.Util in
     let cname, arr = member "name" field |> to_string |> strip_array in
-    let name = to_snake_case cname |> special_names in
+    let name = Naming.to_snake_case cname |> special_names in
 
     (* field *)
     let ctyp = member "type" field |> to_string in
-    let stubs_type, forw = type_name ctyp type_tbl |> special_types in
-    let name, stubs_type, arr =
-      match arr with
-      | None -> (name, stubs_type, None)
-      | Some size ->
-          (name, stubs_type ^ "_array_" ^ size, Some { typ = stubs_type; size })
-    in
+    let typ = Typing.of_cname ctyp arr in
     let name = { name; cname } in
 
-    let ret = { name; typ = { name = stubs_type; cname = ctyp } } in
-    match (arr, forw) with
-    | None, None -> `Std ret
-    | None, Some typname -> `Forw (typname, ret)
-    | Some arr, None -> `Array (arr, ret)
-    | Some _, Some _ -> failwith "Can`t deal with that"
+    { name; typ }
 
   let name_of_cname cname = { name = cname; cname }
 
   let of_json json =
     let open Yojson.Basic.Util in
     let name = json |> member "name" |> to_string |> name_of_cname in
-    StrTbl.add type_tbl name.cname name.name;
+    StrTbl.add Typing.type_tbl name.cname name.name;
     (* hardcode matrix *)
     match name.name with
     | "Matrix" ->
         let fields =
           List.init 16 (fun i ->
               let cname = Printf.sprintf "m%i" i in
-              {
-                name = { name = cname; cname };
-                typ = { name = "float"; cname = "float" };
-              })
+              { name = { name = cname; cname }; typ = C "float" })
         in
-        { name; fields; arr = []; forward = [] }
+        { name; fields }
     | _ ->
-        let (arr, forward), fields =
-          json |> member "fields" |> to_list
-          |> List.map (field_of_json type_tbl)
-          |> List.fold_map
-               (fun (arrs, forws) field ->
-                 match field with
-                 | `Std field -> ((arrs, forws), field)
-                 | `Array (arr, field) -> ((arr :: arrs, forws), field)
-                 | `Forw (typname, (field : field)) ->
-                     ((arrs, typname :: forws), field))
-               ([], [])
+        let fields =
+          json |> member "fields" |> to_list |> List.map field_of_json
         in
-        let arr = List.uniq ~eq:array_t_eq arr in
-        { name; fields; arr; forward }
 
-  let stubs types =
-    Printf.sprintf "module %s = struct\n" types.name.name
-    ^ List.fold_left
-        (fun acc { typ; size } ->
-          acc
-          ^ Printf.sprintf "  let%%c %s_array_%s = array %s %s\n\n" typ size
-              size typ)
-        "" types.arr
-    ^ List.fold_left
-        (fun acc { name; cname } ->
-          acc ^ Printf.sprintf "  let%%c %s = structure \"%s\"\n\n" name cname)
-        "" types.forward
+        { name; fields }
+
+  let stub_of_field { name; typ } =
+    "    " ^ name.name ^ " : " ^ Typing.name_type typ
+    ^
+    if String.(name.name <> name.cname) then
+      Printf.sprintf " [@cname \"%s\"]\n" name.cname
+    else "\n"
+
+  let ctor_itf typ =
+    if
+      List.for_all
+        (fun field ->
+          match field.typ with
+          | Ptr _ | Array _ | Forw_decl _ -> false
+          | _ -> true)
+        typ.fields
+    then
+      ( List.map
+          (fun field ->
+            match field.typ with
+            | C name -> name
+            | Ray name -> name ^ ".t"
+            | _ -> failwith "We should be in the other branch")
+          typ.fields
+      |> fun types ->
+        List.fold_left (fun acc s -> acc ^ s ^ " -> ") "  val create : " types
+      )
+      ^ "t\n\n"
+    else ""
+
+  let getter_itf has_count (field : field) =
+    let start = Printf.sprintf "  val %s : t -> " field.name.name in
+    if String.mem ~sub:"_count" field.name.name then None
+    else
+      match field.typ with
+      | Ptr (Forw_decl _) -> None
+      | Ptr typ when has_count field.name.name ->
+          Some (start ^ Typing.name_type typ ^ " CArray.t\n\n")
+      | C _ | Ray _ | Ptr _ -> Some (start ^ Typing.name_type field.typ ^ "\n\n")
+      | Forw_decl _ -> None
+      | Array (size, typ) ->
+          (* arbitrary cutoff at 10 *)
+          if size > 10 then None
+          else Some (start ^ typ ^ " Ctypes_static.carray\n\n")
+
+  let setter_itf has_count (field : field) =
+    let start = Printf.sprintf "  val set_%s : t -> " field.name.name in
+    let end_ = " -> unit\n\n" in
+    if String.mem ~sub:"_count" field.name.name then None
+    else
+      match field.typ with
+      | Ptr (Forw_decl _) -> None
+      | Ptr typ when has_count field.name.name ->
+          Some (start ^ Typing.name_type typ ^ " CArray.t" ^ end_)
+      | C _ | Ray _ | Ptr _ -> Some (start ^ Typing.name_type field.typ ^ end_)
+      | Forw_decl _ -> None
+      | Array (size, typ) ->
+          if size > 10 then None
+          else
+            Some
+              (start
+              ^ String.concat " -> " (List.init size (fun _ -> typ))
+              ^ end_)
+
+  let itf typ =
+    let has_count plural =
+      List.exists
+        (fun (f : field) ->
+          match String.(find ~sub:"_count" f.name.name) with
+          | -1 -> false
+          | idx -> String.(mem ~sub:(take idx f.name.name) plural))
+        typ.fields
+    in
+
+    Printf.sprintf "module %s : sig\n" typ.name.name
+    ^ "  type t'\n\n" ^ "  type t = t' ctyp\n\n" ^ ctor_itf typ
+    (* getters *)
+    ^ (List.filter_map (getter_itf has_count) typ.fields |> String.concat "")
+    (* setters *)
+    ^ (List.filter_map (setter_itf has_count) typ.fields |> String.concat "")
+    ^ "end\n\n"
+
+  let stub typ =
+    Printf.sprintf "module %s = struct\n" typ.name.name
+    (* arrays *)
+    ^ (List.filter_map
+         (fun field ->
+           match field.typ with
+           | Typing.Array (size, typ) -> Some (size, typ)
+           | _ -> None)
+         typ.fields
+      |> List.uniq ~eq:Typing.array_eq
+      |> List.fold_left
+           (fun acc (size, typ) ->
+             acc
+             ^ Printf.sprintf "  let%%c %s_array_%i = array %i %s\n\n" typ size
+                 size typ)
+           "")
+    (* forward decls *)
+    ^ (List.filter_map
+         (fun field ->
+           match field.typ with
+           | Typing.Forw_decl name | Ptr (Forw_decl name) -> Some name
+           | _ -> None)
+         typ.fields
+      |> List.fold_left
+           (fun acc { name; cname } ->
+             acc
+             ^ Printf.sprintf "  let%%c %s = structure \"%s\"\n\n" name cname)
+           "")
     ^ "  type%c t = {\n"
-    ^ (List.map
-         (fun (field : field) ->
-           Printf.sprintf "    %s : %s;%s" field.name.name field.typ.name
-             (if String.(field.name.name <> field.name.cname) then
-              " [@cname \"" ^ field.name.cname ^ "\"]\n"
-             else "\n"))
-         types.fields
-      |> List.fold_left ( ^ ) "")
+    ^ (List.map stub_of_field typ.fields |> String.concat "")
     ^ "  }\n"
-    ^ ("  [@@cname \"" ^ types.name.cname ^ "\"]\n")
+    ^ ("  [@@cname \"" ^ typ.name.cname ^ "\"]\n")
     ^ "end\n\n"
 end
 
@@ -254,28 +339,30 @@ let () =
   let stubs =
     (* TODO split rlgl off *)
     "let%c () = header \"#include <raylib.h>\\n#include <rlgl.h>\"\n\n"
-    ^ (enums |> List.map Enum.stubs |> List.fold_left ( ^ ) "")
+    ^ (enums |> List.map Enum.stubs |> String.concat "")
     ^ "let max_material_maps = [%c constant \"MAX_MATERIAL_MAPS\" camlint]\n\n"
     ^ "let max_shader_locations = [%c constant \"MAX_SHADER_LOCATIONS\" \
        camlint]"
   in
   (* print_string stubs; *)
   ignore stubs;
-  let mli =
+  let itf =
     "(** {1 Constants} *)\n\n"
-    ^ (enums |> List.map Enum.mli |> List.fold_left ( ^ ) "")
+    ^ (enums |> List.map Enum.itf |> String.concat "")
     ^ "val max_material_maps : int\n\n" ^ "val max_shader_locations : int\n\n"
   in
-  (* print_string mli; *)
-  ignore mli;
+  (* print_string itf; *)
+  ignore itf;
 
   let types = api |> member "structs" |> to_list |> List.map Type.of_json in
   let stubs =
     "let%c () = header \"#include <raylib.h>\"\n\n"
-    ^ (types |> List.map Type.stubs |> List.fold_left ( ^ ) "")
+    ^ (types |> List.map Type.stub |> String.concat "")
   in
-
-  print_string stubs;
+  (* print_string stubs; *)
+  ignore stubs;
+  let itf = types |> List.map Type.itf |> String.concat "" in
+  print_string itf;
 
   ()
 (* IO.(with_in "input14.txt" read_lines_l)
