@@ -161,7 +161,7 @@ module Type = struct
       | Ptr typ -> name_type ~ptr:(" ptr" ^ ptr) typ
   end
 
-  type field = { name : name; typ : Typing.t }
+  type field = { name : name; typ : Typing.t; desc : string option }
 
   (* TODO add description *)
 
@@ -187,7 +187,12 @@ module Type = struct
     let typ = Typing.of_cname ctyp arr in
     let name = { name; cname } in
 
-    { name; typ }
+    let desc =
+      member "description" field |> to_string |> fun s ->
+      if String.is_empty s then None else Some s
+    in
+
+    { name; typ; desc }
 
   let name_of_cname cname = { name = cname; cname }
 
@@ -201,7 +206,7 @@ module Type = struct
         let fields =
           List.init 16 (fun i ->
               let cname = Printf.sprintf "m%i" i in
-              { name = { name = cname; cname }; typ = C "float" })
+              { name = { name = cname; cname }; typ = C "float"; desc = None })
         in
         { name; fields }
     | _ ->
@@ -211,14 +216,14 @@ module Type = struct
 
         { name; fields }
 
-  let stub_of_field { name; typ } =
+  let stub_of_field { name; typ; desc = _ } =
     "    " ^ name.name ^ " : " ^ Typing.name_type typ
     ^
     if String.(name.name <> name.cname) then
       Printf.sprintf " [@cname \"%s\"]\n" name.cname
     else "\n"
 
-  let ctor_itf typ =
+  let ctor_fields typ f =
     if
       List.for_all
         (fun field ->
@@ -226,43 +231,50 @@ module Type = struct
           | Ptr _ | Array _ | Forw_decl _ -> false
           | _ -> true)
         typ.fields
-    then
-      ( List.map
-          (fun field ->
-            match field.typ with
-            | C name -> name
-            | Ray name -> name ^ ".t"
-            | _ -> failwith "We should be in the other branch")
-          typ.fields
-      |> fun types ->
-        List.fold_left (fun acc s -> acc ^ s ^ " -> ") "  val create : " types
-      )
-      ^ "t\n\n"
-    else ""
+    then Some (List.map f typ.fields)
+    else None
+
+  let ctor_types typ = ctor_fields typ (fun field -> Typing.name_type field.typ)
+
+  let ctor_itf typ =
+    match ctor_types typ with
+    | Some names ->
+        List.fold_left (fun acc s -> acc ^ s ^ " -> ") "  val create : " names
+        ^ "t\n" ^ "  {** ["
+        ^ (List.map (fun (f : field) -> f.name.name) typ.fields
+          |> String.concat " ")
+        ^ "] *}\n\n"
+    | None -> ""
 
   let getter_itf has_count (field : field) =
+    let open Option.Infix in
     let start = Printf.sprintf "  val %s : t -> " field.name.name in
     if String.mem ~sub:"_count" field.name.name then None
     else
-      match field.typ with
-      | Ptr (Forw_decl _) -> None
-      | Ptr typ when has_count field.name.name ->
-          Some (start ^ Typing.name_type typ ^ " CArray.t\n\n")
-      | C _ | Ray _ | Ptr _ -> Some (start ^ Typing.name_type field.typ ^ "\n\n")
-      | Forw_decl _ -> None
-      | Array (size, typ) ->
-          (* arbitrary cutoff at 10 *)
-          if size > 10 then None
-          else Some (start ^ typ ^ " Ctypes_static.carray\n\n")
+      let* getter =
+        match field.typ with
+        | Ptr (Forw_decl _) -> None
+        | Ptr typ when has_count field.name.name |> Option.is_some ->
+            Some (start ^ Typing.name_type typ ^ " CArray.t\n")
+        | C _ | Ray _ | Ptr _ -> Some (start ^ Typing.name_type field.typ ^ "\n")
+        | Forw_decl _ -> None
+        | Array (size, typ) ->
+            (* arbitrary cutoff at 10 *)
+            if size > 10 then None
+            else Some (start ^ typ ^ " Ctypes_static.carray\n")
+      in
+      match field.desc with
+      | Some desc -> getter ^ "  {** " ^ desc ^ " *}\n" |> Option.pure
+      | None -> getter ^ "" |> Option.pure
 
   let setter_itf has_count (field : field) =
     let start = Printf.sprintf "  val set_%s : t -> " field.name.name in
-    let end_ = " -> unit\n\n" in
+    let end_ = " -> unit\n" in
     if String.mem ~sub:"_count" field.name.name then None
     else
       match field.typ with
       | Ptr (Forw_decl _) -> None
-      | Ptr typ when has_count field.name.name ->
+      | Ptr typ when has_count field.name.name |> Option.is_some ->
           Some (start ^ Typing.name_type typ ^ " CArray.t" ^ end_)
       | C _ | Ray _ | Ptr _ -> Some (start ^ Typing.name_type field.typ ^ end_)
       | Forw_decl _ -> None
@@ -274,22 +286,120 @@ module Type = struct
               ^ String.concat " -> " (List.init size (fun _ -> typ))
               ^ end_)
 
-  let itf typ =
-    let has_count plural =
-      List.exists
+  let has_count fields plural =
+    match
+      List.find_opt
         (fun (f : field) ->
           match String.(find ~sub:"_count" f.name.name) with
           | -1 -> false
           | idx -> String.(mem ~sub:(take idx f.name.name) plural))
-        typ.fields
-    in
+        fields
+    with
+    | Some field -> Some field.name.name
+    | None -> None
 
+  let itf typ =
     Printf.sprintf "module %s : sig\n" typ.name.name
     ^ "  type t'\n\n" ^ "  type t = t' ctyp\n\n" ^ ctor_itf typ
     (* getters *)
-    ^ (List.filter_map (getter_itf has_count) typ.fields |> String.concat "")
+    ^ (List.filter_map (getter_itf @@ has_count typ.fields) typ.fields
+      |> String.concat "\n")
     (* setters *)
-    ^ (List.filter_map (setter_itf has_count) typ.fields |> String.concat "")
+    ^ "\n"
+    ^ (List.filter_map (setter_itf @@ has_count typ.fields) typ.fields
+      |> String.concat "\n")
+    ^ "end\n\n"
+
+  let ctor_names typ = ctor_fields typ (fun field -> field.name.name)
+
+  let ctor_impl typ =
+    match ctor_names typ with
+    | Some names ->
+        let typ_nm = String.lowercase_ascii typ.name.cname in
+        "  let create " ^ String.concat " " names ^ " =\n"
+        ^ Printf.sprintf "    let %s = make t in\n" typ_nm
+        ^ (List.map
+             (fun name ->
+               Printf.sprintf "    setf %s Types.%s.%s %s;" typ_nm typ.name.name
+                 name name)
+             names
+          |> String.concat "\n")
+        ^ "\n    " ^ typ_nm ^ "\n\n"
+    | None -> ""
+
+  let getter_impl typ has_count (field : field) =
+    let typ_nm = String.lowercase_ascii typ.name.name in
+    let start = Printf.sprintf "  let %s %s = " field.name.name typ_nm in
+    let def =
+      start
+      ^ Printf.sprintf "\n    getf %s Types.%s.%s\n" typ_nm typ.name.name
+          field.name.name
+    in
+    if String.mem ~sub:"_count" field.name.name then None
+    else
+      match (field.typ, has_count field.name.name) with
+      | Ptr (Forw_decl _), _ -> None
+      | Ptr _, Some count ->
+          Some
+            (start
+            ^ Printf.sprintf "\n    let count = getf %s Types.%s.%s in\n" typ_nm
+                typ.name.name count
+            ^ Printf.sprintf "    CArray.from_ptr (getf %s Types.%s.%s) count\n"
+                typ_nm typ.name.name field.name.name)
+      | C _, _ | Ray _, _ | Ptr _, _ -> Some def
+      | Forw_decl _, _ -> None
+      | Array (size, _), _ ->
+          (* arbitrary cutoff at 10 *)
+          if size > 10 then None else Some def
+
+  let setter_impl typ has_count (field : field) =
+    let typ_nm = String.lowercase_ascii typ.name.name in
+    let start =
+      Printf.sprintf "  let set_%s %s %s =\n" field.name.name typ_nm
+        field.name.name
+    in
+    if String.mem ~sub:"_count" field.name.name then None
+    else
+      match field.typ with
+      | Ptr (Forw_decl _) -> None
+      | Ptr _ when has_count field.name.name |> Option.is_some ->
+          Some
+            (start
+            ^ Printf.sprintf "    setf %s Types.%s.%s (CArray.start %s)\n"
+                typ_nm typ.name.name field.name.name field.name.name)
+      | C _ | Ray _ | Ptr _ ->
+          Some
+            (start
+            ^ Printf.sprintf "    setf %s Types.%s.%s %s\n" typ_nm typ.name.name
+                field.name.name field.name.name)
+      | Forw_decl _ -> None
+      | Array (size, _) ->
+          if size > 10 then None
+          else
+            let vals = List.init size (fun i -> "v" ^ string_of_int i) in
+
+            Printf.sprintf "  let set_%s %s " field.name.name typ_nm
+            ^ String.concat " " vals ^ " = \n"
+            ^ Printf.sprintf "    let arr = %s %s in\n    " field.name.name
+                typ_nm
+            ^ (List.mapi
+                 (fun i s -> "CArray.set arr " ^ string_of_int i ^ " " ^ s)
+                 vals
+              |> String.concat ";\n    ") ^ "\n"
+            |> Option.pure
+
+  let impl typ =
+    let nm = typ.name.name in
+    Printf.sprintf "module %s = struct\n" nm
+    ^ "  type t' = Types." ^ nm ^ ".t\n\n" ^ "  type t = t' ctyp\n\n"
+    ^ "  let t = Types." ^ nm ^ ".t\n\n" ^ ctor_impl typ
+    (* getters *)
+    ^ (List.filter_map (getter_impl typ @@ has_count typ.fields) typ.fields
+      |> String.concat "\n")
+    (* setters *)
+     ^ "\n"
+    ^ (List.filter_map (setter_impl typ @@ has_count typ.fields) typ.fields
+      |> String.concat "\n")
     ^ "end\n\n"
 
   let stub typ =
@@ -330,9 +440,6 @@ end
 let () =
   let api = Yojson.Basic.from_file "raylib_api.json" in
   let open Yojson.Basic.Util in
-  (* let () = api |> member "structs" |> to_list |> List.iter (fun s ->
-   *     s |> member "name" |> to_string |> print_endline
-   *   ) in *)
   let enums =
     api |> member "enums" |> to_list |> List.filter_map Enum.of_json
   in
@@ -362,8 +469,10 @@ let () =
   (* print_string stubs; *)
   ignore stubs;
   let itf = types |> List.map Type.itf |> String.concat "" in
-  print_string itf;
+  (* print_string itf; *)
+  ignore itf;
+  let impl = types |> List.map Type.impl |> String.concat "" in
+  print_string impl;
 
+  (* ignore impl; *)
   ()
-(* IO.(with_in "input14.txt" read_lines_l)
- * |> List.map decode |> apply_p1 |> print_int *)
