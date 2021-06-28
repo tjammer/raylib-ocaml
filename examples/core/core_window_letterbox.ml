@@ -23,7 +23,7 @@ let setup () =
   let target =
     load_render_texture (Int.of_float game_width) (Int.of_float game_height)
   in
-  set_texture_filter (RenderTexture2D.texture target) TextureFilterMode.Bilinear;
+  set_texture_filter (RenderTexture.texture target) TextureFilterMode.Bilinear;
 
   set_target_fps 60;
 
@@ -80,7 +80,7 @@ let draw (target, colors) =
 
   end_texture_mode ();
 
-  let tex = RenderTexture2D.texture target in
+  let tex = RenderTexture.texture target in
   draw_texture_pro tex
     (Rectangle.create 0.0 0.0
        (Float.of_int (Texture2D.width tex))

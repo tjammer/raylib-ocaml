@@ -59,7 +59,7 @@ let rec loop camera model anims frame_counter =
       CArray.iter
         (fun bone ->
           draw_cube (Transform.translation bone) 0.2 0.2 0.2 Color.red)
-        (ModelAnimation.frame_pose_at (CArray.get anims 0) frame_counter);
+        (ModelAnimation.frame_poses_at (CArray.get anims 0) frame_counter);
       draw_grid 10 1.0;
 
       end_mode_3d ();
