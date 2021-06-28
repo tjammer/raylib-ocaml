@@ -133,13 +133,14 @@ module Type = struct
 
     let of_cname cname arr =
       let convert a =
-        if is_builtin a then match a with "uint" -> C "int" | _ -> C a
+        if is_builtin a then C a
         else
           match StrTbl.find_opt type_tbl a with
           | Some name -> Ray name
           | None -> Forw_decl { name = Naming.to_snake_case a; cname = a }
       in
 
+      (* TODO don't add function if C types are involved *)
       let rec aux acc = function
         | "unsigned" :: tl -> aux (acc ^ "u") tl
         | "\\*" :: _ | "\\*\\*" :: _ -> failwith "Something after pointer"
@@ -162,8 +163,6 @@ module Type = struct
   end
 
   type field = { name : name; typ : Typing.t; desc : string option }
-
-  (* TODO add description *)
 
   type t = { name : name; fields : field list }
 
@@ -228,7 +227,8 @@ module Type = struct
       List.for_all
         (fun field ->
           match field.typ with
-          | Ptr _ | Array _ | Forw_decl _ -> false
+          | C "int" | C "float" -> true
+          | Ptr _ | Array _ | Forw_decl _ | C _ -> false
           | _ -> true)
         typ.fields
     then Some (List.map f typ.fields)
@@ -240,10 +240,10 @@ module Type = struct
     match ctor_types typ with
     | Some names ->
         List.fold_left (fun acc s -> acc ^ s ^ " -> ") "  val create : " names
-        ^ "t\n" ^ "  {** ["
+        ^ "t\n" ^ "  (** ["
         ^ (List.map (fun (f : field) -> f.name.name) typ.fields
           |> String.concat " ")
-        ^ "] *}\n\n"
+        ^ "] *)\n\n"
     | None -> ""
 
   let getter_itf has_count (field : field) =
@@ -253,7 +253,7 @@ module Type = struct
     else
       let* getter =
         match field.typ with
-        | Ptr (Forw_decl _) -> None
+        | Ptr (Forw_decl _) | Ptr (C _) -> None
         | Ptr typ when has_count field.name.name |> Option.is_some ->
             Some (start ^ Typing.name_type typ ^ " CArray.t\n")
         | C _ | Ray _ | Ptr _ -> Some (start ^ Typing.name_type field.typ ^ "\n")
@@ -264,7 +264,7 @@ module Type = struct
             else Some (start ^ typ ^ " Ctypes_static.carray\n")
       in
       match field.desc with
-      | Some desc -> getter ^ "  {** " ^ desc ^ " *}\n" |> Option.pure
+      | Some desc -> getter ^ "  (** " ^ desc ^ " *)\n" |> Option.pure
       | None -> getter ^ "" |> Option.pure
 
   let setter_itf has_count (field : field) =
@@ -273,7 +273,7 @@ module Type = struct
     if String.mem ~sub:"_count" field.name.name then None
     else
       match field.typ with
-      | Ptr (Forw_decl _) -> None
+      | Ptr (Forw_decl _) | Ptr (C _) -> None
       | Ptr typ when has_count field.name.name |> Option.is_some ->
           Some (start ^ Typing.name_type typ ^ " CArray.t" ^ end_)
       | C _ | Ray _ | Ptr _ -> Some (start ^ Typing.name_type field.typ ^ end_)
@@ -338,7 +338,7 @@ module Type = struct
     if String.mem ~sub:"_count" field.name.name then None
     else
       match (field.typ, has_count field.name.name) with
-      | Ptr (Forw_decl _), _ -> None
+      | Ptr (Forw_decl _), _ | Ptr (C _), _ -> None
       | Ptr _, Some count ->
           Some
             (start
@@ -361,7 +361,7 @@ module Type = struct
     if String.mem ~sub:"_count" field.name.name then None
     else
       match field.typ with
-      | Ptr (Forw_decl _) -> None
+      | Ptr (Forw_decl _) | Ptr (C _) -> None
       | Ptr _ when has_count field.name.name |> Option.is_some ->
           Some
             (start
@@ -385,7 +385,8 @@ module Type = struct
             ^ (List.mapi
                  (fun i s -> "CArray.set arr " ^ string_of_int i ^ " " ^ s)
                  vals
-              |> String.concat ";\n    ") ^ "\n"
+              |> String.concat ";\n    ")
+            ^ "\n"
             |> Option.pure
 
   let impl typ =
@@ -397,7 +398,7 @@ module Type = struct
     ^ (List.filter_map (getter_impl typ @@ has_count typ.fields) typ.fields
       |> String.concat "\n")
     (* setters *)
-     ^ "\n"
+    ^ "\n"
     ^ (List.filter_map (setter_impl typ @@ has_count typ.fields) typ.fields
       |> String.concat "\n")
     ^ "end\n\n"
@@ -473,6 +474,6 @@ let () =
   ignore itf;
   let impl = types |> List.map Type.impl |> String.concat "" in
   print_string impl;
-
   (* ignore impl; *)
+
   ()
