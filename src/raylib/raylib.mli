@@ -460,6 +460,7 @@ module Vector2 : sig
   type t = t' ctyp
 
   val create : float -> float -> t
+  (** [x y] *)
 
   val x : t -> float
 
@@ -516,6 +517,7 @@ module rec Vector3 : sig
   type t = t' ctyp
 
   val create : float -> float -> float -> t
+  (** [x y z] *)
 
   val x : t -> float
 
@@ -588,6 +590,7 @@ and Vector4 : sig
   type t = t' ctyp
 
   val create : float -> float -> float -> float -> t
+  (** [x y z w] *)
 
   val x : t -> float
 
@@ -655,24 +658,72 @@ and Matrix : sig
 
   type t = t' ctyp
 
-  val create :
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    float ->
-    t
+  val create : float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> t
+  (** [m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 m10 m11 m12 m13 m14 m15] *)
+
+  val m0 : t -> float
+
+  val m1 : t -> float
+
+  val m2 : t -> float
+
+  val m3 : t -> float
+
+  val m4 : t -> float
+
+  val m5 : t -> float
+
+  val m6 : t -> float
+
+  val m7 : t -> float
+
+  val m8 : t -> float
+
+  val m9 : t -> float
+
+  val m10 : t -> float
+
+  val m11 : t -> float
+
+  val m12 : t -> float
+
+  val m13 : t -> float
+
+  val m14 : t -> float
+
+  val m15 : t -> float
+
+  val set_m0 : t -> float -> unit
+
+  val set_m1 : t -> float -> unit
+
+  val set_m2 : t -> float -> unit
+
+  val set_m3 : t -> float -> unit
+
+  val set_m4 : t -> float -> unit
+
+  val set_m5 : t -> float -> unit
+
+  val set_m6 : t -> float -> unit
+
+  val set_m7 : t -> float -> unit
+
+  val set_m8 : t -> float -> unit
+
+  val set_m9 : t -> float -> unit
+
+  val set_m10 : t -> float -> unit
+
+  val set_m11 : t -> float -> unit
+
+  val set_m12 : t -> float -> unit
+
+  val set_m13 : t -> float -> unit
+
+  val set_m14 : t -> float -> unit
+
+  val set_m15 : t -> float -> unit
 
   val determinant : t -> float
 
@@ -788,7 +839,7 @@ module Rectangle : sig
   type t = t' ctyp
 
   val create : float -> float -> float -> float -> t
-  (** [create x y width height] creates a rectangle with given dimensions. *)
+  (** [x y width height] *)
 
   val x : t -> float
 
@@ -807,37 +858,43 @@ module Rectangle : sig
   val set_height : t -> float -> unit
 end
 
-module Texture : sig
-  type t' = Raylib_generated_types.Texture.t
-
-  type t = t' ctyp
-
-  val id : t -> Unsigned.uint
-
-  val width : t -> int
-
-  val height : t -> int
-
-  val mipmaps : t -> int
-
-  val format : t -> PixelFormat.t
-end
-
-module Texture2D = Texture
-
 module Image : sig
   type t'
 
   type t = t' ctyp
 
-  val width : Texture.t -> int
+  val width : t -> int
+  (** Image base width *)
 
-  val height : Texture.t -> int
+  val height : t -> int
+  (** Image base height *)
 
-  val mipmaps : Texture.t -> int
+  val mipmaps : t -> int
+  (** Mipmap levels, 1 by default *)
 
-  val format : Texture.t -> PixelFormat.t
+  val format : t -> PixelFormat.t
+  (** Data format (PixelFormat type) *)
 end
+
+module Texture : sig
+  type t' = Raylib_generated_types.Texture.t
+
+  type t = t' ctyp
+
+  val width : t -> int
+  (** Texture base width *)
+
+  val height : t -> int
+  (** Texture base height *)
+
+  val mipmaps : t -> int
+  (** Mipmap levels, 1 by default *)
+
+  val format : t ->  PixelFormat.t
+  (** Data format (PixelFormat type) *)
+end
+
+module Texture2D = Texture
 
 module RenderTexture : sig
   type t'
@@ -845,11 +902,15 @@ module RenderTexture : sig
   type t = t' ctyp
 
   val texture : t -> Texture.t
+  (** Color buffer attachment texture *)
 
   val depth : t -> Texture.t
-end
+  (** Depth buffer attachment texture *)
 
-module RenderTexture2D = RenderTexture
+  val set_texture : t -> Texture.t -> unit
+
+  val set_depth : t -> Texture.t -> unit
+end
 
 module NPatchInfo : sig
   type t'
@@ -857,19 +918,37 @@ module NPatchInfo : sig
   type t = t' ctyp
 
   val create : Rectangle.t -> int -> int -> int -> int -> NPatchType.t -> t
-  (** [create source left top right bottom type] returns a N-Patch layout info. *)
+  (** [source left top right bottom typ] *)
 
   val source : t -> Rectangle.t
+  (** Region in the texture *)
 
   val left : t -> int
+  (** left border offset *)
 
   val top : t -> int
+  (** top border offset *)
 
   val right : t -> int
+  (** right border offset *)
 
   val bottom : t -> int
+  (** bottom border offset *)
 
   val typ : t -> NPatchType.t
+  (** layout of the n-patch: 3x3, 1x3 or 3x1 *)
+
+  val set_source : t -> Rectangle.t -> unit
+
+  val set_left : t -> int -> unit
+
+  val set_top : t -> int -> unit
+
+  val set_right : t -> int -> unit
+
+  val set_bottom : t -> int -> unit
+
+  val set_typ : t -> NPatchType.t -> unit
 end
 
 module CharInfo : sig
@@ -877,15 +956,33 @@ module CharInfo : sig
 
   type t = t' ctyp
 
+  val create : int -> int -> int -> int -> Image.t -> t
+  (** [value offset_x offset_y advance_x image] *)
+
   val value : t -> int
+  (** Character value (Unicode) *)
 
   val offset_x : t -> int
+  (** Character offset X when drawing *)
 
   val offset_y : t -> int
+  (** Character offset Y when drawing *)
 
   val advance_x : t -> int
+  (** Character advance position X *)
 
   val image : t -> Image.t
+  (** Character image data *)
+
+  val set_value : t -> int -> unit
+
+  val set_offset_x : t -> int -> unit
+
+  val set_offset_y : t -> int -> unit
+
+  val set_advance_x : t -> int -> unit
+
+  val set_image : t -> Image.t -> unit
 end
 
 module Font : sig
@@ -894,16 +991,29 @@ module Font : sig
   type t = t' ctyp
 
   val base_size : t -> int
-
-  val chars_count : t -> int
+  (** Base size (default chars height) *)
 
   val chars_padding : t -> int
+  (** Padding around the chars *)
 
   val texture : t -> Texture.t
+  (** Characters texture atlas *)
 
   val recs : t -> Rectangle.t ptr
+  (** Characters rectangles in texture *)
 
   val chars : t -> CharInfo.t CArray.t
+  (** Characters info data *)
+
+  val set_base_size : t -> int -> unit
+
+  val set_chars_padding : t -> int -> unit
+
+  val set_texture : t -> Texture.t -> unit
+
+  val set_recs : t -> Rectangle.t ptr -> unit
+
+  val set_chars : t -> CharInfo.t CArray.t -> unit
 end
 
 module Camera3D : sig
@@ -912,17 +1022,32 @@ module Camera3D : sig
   type t = t' ctyp
 
   val create : Vector3.t -> Vector3.t -> Vector3.t -> float -> CameraType.t -> t
-  (** [create position target up fovy] defines a camera position/orientation in 3d space *)
+  (** [position target up fovy typ] *)
 
   val position : t -> Vector3.t
+  (** Camera position *)
 
   val target : t -> Vector3.t
+  (** Camera target it looks-at *)
 
   val up : t -> Vector3.t
+  (** Camera up vector (rotation over its axis) *)
 
   val fovy : t -> float
+  (** Camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic *)
 
   val typ : t -> CameraType.t
+  (** Camera type, defines projection type: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC *)
+
+  val set_position : t -> Vector3.t -> unit
+
+  val set_target : t -> Vector3.t -> unit
+
+  val set_up : t -> Vector3.t -> unit
+
+  val set_fovy : t -> float -> unit
+
+  val set_typ : t -> CameraType.t -> unit
 end
 
 module Camera = Camera3D
@@ -933,15 +1058,19 @@ module Camera2D : sig
   type t = t' ctyp
 
   val create : Vector2.t -> Vector2.t -> float -> float -> t
-  (** [create offset target rotation zoom] defines a 2d camera *)
+  (** [offset target rotation zoom] *)
 
   val offset : t -> Vector2.t
+  (** Camera offset (displacement from target) *)
 
   val target : t -> Vector2.t
+  (** Camera target (rotation and zoom origin) *)
 
   val rotation : t -> float
+  (** Camera rotation in degrees *)
 
   val zoom : t -> float
+  (** Camera zoom (scaling), should be 1.0f by default *)
 
   val set_offset : t -> Vector2.t -> unit
 
@@ -958,18 +1087,20 @@ module Mesh : sig
   type t = t' ctyp
 end
 
-type shader_loc
+module ShaderLoc : sig
+  type t
+end
 
 module Shader : sig
   type t'
 
   type t = t' ctyp
 
-  val locs : t -> shader_loc CArray.t
+  val locs : t -> ShaderLoc.t CArray.t
 
-  val set_loc : t -> ShaderLocationIndex.t -> shader_loc -> unit
+  val set_loc : t -> ShaderLocationIndex.t -> ShaderLoc.t -> unit
 
-  val set_locs : t -> shader_loc CArray.t -> unit
+  val set_locs : t -> ShaderLoc.t CArray.t -> unit
 end
 
 module MaterialMap : sig
@@ -978,13 +1109,16 @@ module MaterialMap : sig
   type t = t' ctyp
 
   val create : Texture.t -> Color.t -> float -> t
-  (** [create texture color value] returns a material texture map *)
+  (** [texture color value] *)
 
   val texture : t -> Texture.t
+  (** Material map texture *)
 
   val color : t -> Color.t
+  (** Material map color *)
 
   val value : t -> float
+  (** Material map value *)
 
   val set_texture : t -> Texture.t -> unit
 
@@ -998,13 +1132,11 @@ module Material : sig
 
   type t = t' ctyp
 
-  val create : Shader.t -> MaterialMap.t ptr -> float ptr -> t
-
   val shader : t -> Shader.t
+  (** Material shader *)
 
   val maps : t -> MaterialMap.t CArray.t
-
-  val params : t -> float CArray.t
+  (** Material maps array (MAX_MATERIAL_MAPS) *)
 
   val set_shader : t -> Shader.t -> unit
 
@@ -1017,13 +1149,16 @@ module Transform : sig
   type t = t' ctyp
 
   val create : Vector3.t -> Vector4.t -> Vector3.t -> t
-  (** [create translation rotation scale] returns transformation properties *)
+  (** [translation rotation scale] *)
 
   val translation : t -> Vector3.t
+  (** Translation *)
 
   val rotation : t -> Vector4.t
+  (** Rotation *)
 
   val scale : t -> Vector3.t
+  (** Scale *)
 
   val set_translation : t -> Vector3.t -> unit
 
@@ -1036,6 +1171,11 @@ module BoneInfo : sig
   type t'
 
   type t = t' ctyp
+
+  val parent : t -> int
+  (** Bone parent *)
+
+  val set_parent : t -> int -> unit
 end
 
 module Model : sig
@@ -1044,14 +1184,19 @@ module Model : sig
   type t = t' ctyp
 
   val transform : t -> Matrix.t
+  (** Local transform matrix *)
 
   val meshes : t -> Mesh.t CArray.t
+  (** Meshes array *)
 
   val materials : t -> Material.t CArray.t
+  (** Materials array *)
 
   val bones : t -> BoneInfo.t CArray.t
+  (** Bones information (skeleton) *)
 
   val bind_pose : t -> Transform.t ptr
+  (** Bones base transformation (pose) *)
 
   val set_transform : t -> Matrix.t -> unit
 
@@ -1070,12 +1215,14 @@ module ModelAnimation : sig
   type t = t' ctyp
 
   val bones : t -> BoneInfo.t CArray.t
-
-  val bone_count : t -> int
+  (** Bones information (skeleton) *)
 
   val frame_count : t -> int
 
-  val frame_pose_at : t -> int -> Transform.t CArray.t
+  val frame_poses_at : t -> int -> Transform.t CArray.t
+  (** Poses array by frame *)
+
+  val set_bones : t -> BoneInfo.t CArray.t -> unit
 end
 
 module Ray : sig
@@ -1084,11 +1231,17 @@ module Ray : sig
   type t = t' ctyp
 
   val create : Vector3.t -> Vector3.t -> t
-  (** [create position direction] returns a ray type for raycasting. *)
+  (** [position direction] *)
 
   val position : t -> Vector3.t
+  (** Ray position (origin) *)
 
   val direction : t -> Vector3.t
+  (** Ray direction *)
+
+  val set_position : t -> Vector3.t -> unit
+
+  val set_direction : t -> Vector3.t -> unit
 end
 
 module RayHitInfo : sig
@@ -1097,12 +1250,16 @@ module RayHitInfo : sig
   type t = t' ctyp
 
   val hit : t -> bool
+  (** Did the ray hit something? *)
 
   val distance : t -> float
+  (** Distance to nearest hit *)
 
   val position : t -> Vector3.t
+  (** Position of nearest hit *)
 
   val normal : t -> Vector3.t
+  (** Surface normal of hit *)
 end
 
 module BoundingBox : sig
@@ -1111,11 +1268,13 @@ module BoundingBox : sig
   type t = t' ctyp
 
   val create : Vector3.t -> Vector3.t -> t
-  (** [create min max] returns a bounding box. *)
+  (** [min max] *)
 
   val min : t -> Vector3.t
+  (** Minimum vertex box-corner *)
 
   val max : t -> Vector3.t
+  (** Maximum vertex box-corner *)
 
   val set_min : t -> Vector3.t -> unit
 
@@ -1138,12 +1297,32 @@ module Sound : sig
   type t'
 
   type t = t' ctyp
+
+  val stream : t -> AudioStream.t
+  (** Audio stream *)
+
+  val set_stream : t -> AudioStream.t -> unit
 end
 
 module Music : sig
   type t'
 
   type t = t' ctyp
+
+  val stream : t -> AudioStream.t
+  (** Audio stream *)
+
+  val looping : t -> bool
+  (** Music looping enable *)
+
+  val ctx_type : t -> int
+  (** Type of music context (audio filetype) *)
+
+  val set_stream : t -> AudioStream.t -> unit
+
+  val set_looping : t -> bool -> unit
+
+  val set_ctx_type : t -> int -> unit
 end
 
 module VrDeviceInfo : sig
@@ -1154,24 +1333,34 @@ module VrDeviceInfo : sig
   val create : unit -> t
 
   val h_resolution : t -> int
+  (** HMD horizontal resolution in pixels *)
 
   val v_resolution : t -> int
+  (** HMD vertical resolution in pixels *)
 
   val h_screen_size : t -> float
+  (** HMD horizontal size in meters *)
 
   val v_screen_size : t -> float
+  (** HMD vertical size in meters *)
 
   val v_screen_center : t -> float
+  (** HMD screen center in meters *)
 
   val eye_to_screen_distance : t -> float
+  (** HMD distance between eye and display in meters *)
 
   val lens_separation_distance : t -> float
+  (** HMD lens separation distance in meters *)
 
   val interpupillary_distance : t -> float
+  (** HMD IPD (distance between pupils) in meters *)
 
   val lens_distortion_values : t -> float Ctypes_static.carray
+  (** HMD lens distortion constant parameters *)
 
   val chroma_ab_correction : t -> float Ctypes_static.carray
+  (** HMD chromatic aberration correction parameters *)
 
   val set_h_resolution : t -> int -> unit
 
@@ -2516,24 +2705,24 @@ val set_shapes_texture : Texture.t -> Rectangle.t -> unit
 
 (** {3 Shader configuration functions} *)
 
-val get_shader_location : Shader.t -> string -> shader_loc
+val get_shader_location : Shader.t -> string -> ShaderLoc.t
 (** Get shader uniform location *)
 
-val get_shader_location_attrib : Shader.t -> string -> shader_loc
+val get_shader_location_attrib : Shader.t -> string -> ShaderLoc.t
 (** Get shader attribute location *)
 
 val set_shader_value :
-  Shader.t -> shader_loc -> unit ptr -> ShaderUniformDataType.t -> unit
+  Shader.t -> ShaderLoc.t -> unit ptr -> ShaderUniformDataType.t -> unit
 (** Set shader uniform value *)
 
 val set_shader_value_v :
-  Shader.t -> shader_loc -> unit ptr -> ShaderUniformDataType.t -> int -> unit
+  Shader.t -> ShaderLoc.t -> unit ptr -> ShaderUniformDataType.t -> int -> unit
 (** Set shader uniform value vector *)
 
-val set_shader_value_matrix : Shader.t -> shader_loc -> Matrix.t -> unit
+val set_shader_value_matrix : Shader.t -> ShaderLoc.t -> Matrix.t -> unit
 (** Set shader uniform value (matrix 4x4) *)
 
-val set_shader_value_texture : Shader.t -> shader_loc -> Texture.t -> unit
+val set_shader_value_texture : Shader.t -> ShaderLoc.t -> Texture.t -> unit
 (** Set shader uniform value for texture *)
 
 val set_matrix_projection : Matrix.t -> unit
