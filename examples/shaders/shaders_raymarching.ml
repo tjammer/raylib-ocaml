@@ -3,10 +3,10 @@ let width = 800
 let height = 450
 
 type locations = {
-  view_eye : Raylib.shader_loc;
-  view_center : Raylib.shader_loc;
-  runtime : Raylib.shader_loc;
-  resolution : Raylib.shader_loc;
+  view_eye : Raylib.ShaderLoc.t;
+  view_center : Raylib.ShaderLoc.t;
+  runtime : Raylib.ShaderLoc.t;
+  resolution : Raylib.ShaderLoc.t;
 }
 
 let setup () =
