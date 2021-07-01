@@ -316,7 +316,8 @@ module Type = struct
     match ctor_names typ with
     | Some names ->
         let typ_nm = String.lowercase_ascii typ.name.cname in
-        "  let create " ^ String.concat " " names ^ " =\n"
+        "  let create " ^ String.concat " " names ^ " =\n" ^ "    let t = Types."
+        ^ typ.name.name ^ ".t in\n"
         ^ Printf.sprintf "    let %s = make t in\n" typ_nm
         ^ (List.map
              (fun name ->
@@ -393,7 +394,7 @@ module Type = struct
     let nm = typ.name.name in
     Printf.sprintf "module %s = struct\n" nm
     ^ "  type t' = Types." ^ nm ^ ".t\n\n" ^ "  type t = t' ctyp\n\n"
-    ^ "  let t = Types." ^ nm ^ ".t\n\n" ^ ctor_impl typ
+    ^ ctor_impl typ
     (* getters *)
     ^ (List.filter_map (getter_impl typ @@ has_count typ.fields) typ.fields
       |> String.concat "\n")
@@ -474,6 +475,6 @@ let () =
   ignore itf;
   let impl = types |> List.map Type.impl |> String.concat "" in
   print_string impl;
-  (* ignore impl; *)
 
+  (* ignore impl; *)
   ()
