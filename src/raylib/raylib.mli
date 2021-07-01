@@ -460,7 +460,7 @@ module Vector2 : sig
   type t = t' ctyp
 
   val create : float -> float -> t
-  (** [x y] *)
+  (** [create x y] *)
 
   val x : t -> float
 
@@ -517,7 +517,7 @@ module rec Vector3 : sig
   type t = t' ctyp
 
   val create : float -> float -> float -> t
-  (** [x y z] *)
+  (** [create x y z] *)
 
   val x : t -> float
 
@@ -590,7 +590,7 @@ and Vector4 : sig
   type t = t' ctyp
 
   val create : float -> float -> float -> float -> t
-  (** [x y z w] *)
+  (** [create x y z w] *)
 
   val x : t -> float
 
@@ -658,8 +658,25 @@ and Matrix : sig
 
   type t = t' ctyp
 
-  val create : float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> float -> t
-  (** [m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 m10 m11 m12 m13 m14 m15] *)
+  val create :
+    float ->
+    float ->
+    float ->
+    float ->
+    float ->
+    float ->
+    float ->
+    float ->
+    float ->
+    float ->
+    float ->
+    float ->
+    float ->
+    float ->
+    float ->
+    float ->
+    t
+  (** [create m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 m10 m11 m12 m13 m14 m15] *)
 
   val m0 : t -> float
 
@@ -839,7 +856,7 @@ module Rectangle : sig
   type t = t' ctyp
 
   val create : float -> float -> float -> float -> t
-  (** [x y width height] *)
+  (** [create x y width height] *)
 
   val x : t -> float
 
@@ -890,7 +907,7 @@ module Texture : sig
   val mipmaps : t -> int
   (** Mipmap levels, 1 by default *)
 
-  val format : t ->  PixelFormat.t
+  val format : t -> PixelFormat.t
   (** Data format (PixelFormat type) *)
 end
 
@@ -918,7 +935,7 @@ module NPatchInfo : sig
   type t = t' ctyp
 
   val create : Rectangle.t -> int -> int -> int -> int -> NPatchType.t -> t
-  (** [source left top right bottom typ] *)
+  (** [create source left top right bottom typ] *)
 
   val source : t -> Rectangle.t
   (** Region in the texture *)
@@ -957,7 +974,7 @@ module CharInfo : sig
   type t = t' ctyp
 
   val create : int -> int -> int -> int -> Image.t -> t
-  (** [value offset_x offset_y advance_x image] *)
+  (** [create value offset_x offset_y advance_x image] *)
 
   val value : t -> int
   (** Character value (Unicode) *)
@@ -1022,7 +1039,7 @@ module Camera3D : sig
   type t = t' ctyp
 
   val create : Vector3.t -> Vector3.t -> Vector3.t -> float -> CameraType.t -> t
-  (** [position target up fovy typ] *)
+  (** [create position target up fovy typ] *)
 
   val position : t -> Vector3.t
   (** Camera position *)
@@ -1058,7 +1075,7 @@ module Camera2D : sig
   type t = t' ctyp
 
   val create : Vector2.t -> Vector2.t -> float -> float -> t
-  (** [offset target rotation zoom] *)
+  (** [create offset target rotation zoom] *)
 
   val offset : t -> Vector2.t
   (** Camera offset (displacement from target) *)
@@ -1109,7 +1126,7 @@ module MaterialMap : sig
   type t = t' ctyp
 
   val create : Texture.t -> Color.t -> float -> t
-  (** [texture color value] *)
+  (** [create texture color value] *)
 
   val texture : t -> Texture.t
   (** Material map texture *)
@@ -1149,7 +1166,7 @@ module Transform : sig
   type t = t' ctyp
 
   val create : Vector3.t -> Vector4.t -> Vector3.t -> t
-  (** [translation rotation scale] *)
+  (** [create translation rotation scale] *)
 
   val translation : t -> Vector3.t
   (** Translation *)
@@ -1231,7 +1248,7 @@ module Ray : sig
   type t = t' ctyp
 
   val create : Vector3.t -> Vector3.t -> t
-  (** [position direction] *)
+  (** [create position direction] *)
 
   val position : t -> Vector3.t
   (** Ray position (origin) *)
@@ -1268,7 +1285,7 @@ module BoundingBox : sig
   type t = t' ctyp
 
   val create : Vector3.t -> Vector3.t -> t
-  (** [min max] *)
+  (** [create min max] *)
 
   val min : t -> Vector3.t
   (** Minimum vertex box-corner *)
