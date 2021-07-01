@@ -9,9 +9,8 @@ module Vector2 = struct
 
   type t = t' ctyp
 
-  let t = Types.Vector2.t
-
   let create x y =
+    let t = Types.Vector2.t in
     let vector2 = make t in
     setf vector2 Types.Vector2.x x;
     setf vector2 Types.Vector2.y y;
@@ -37,9 +36,8 @@ module Vector3 = struct
 
   type t = t' ctyp
 
-  let t = Types.Vector3.t
-
   let create x y z =
+    let t = Types.Vector3.t in
     let vector3 = make t in
     setf vector3 Types.Vector3.x x;
     setf vector3 Types.Vector3.y y;
@@ -72,9 +70,8 @@ module Vector4 = struct
 
   type t = t' ctyp
 
-  let t = Types.Vector4.t
-
   let create x y z w =
+    let t = Types.Vector4.t in
     let vector4 = make t in
     setf vector4 Types.Vector4.x x;
     setf vector4 Types.Vector4.y y;
@@ -114,9 +111,8 @@ module Matrix = struct
 
   type t = t' ctyp
 
-  let t = Types.Matrix.t
-
   let create m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 m10 m11 m12 m13 m14 m15 =
+    let t = Types.Matrix.t in
     let matrix = make t in
     setf matrix Types.Matrix.m0 m0;
     setf matrix Types.Matrix.m1 m1;
@@ -240,9 +236,8 @@ module Color = struct
 
   type t = t' ctyp
 
-  let t = Types.Color.t
-
   let create r g b a =
+    let t = Types.Color.t in
     let color = make t in
     setf color Types.Color.r (Unsigned.UChar.of_int r);
     setf color Types.Color.g (Unsigned.UChar.of_int g);
@@ -309,9 +304,8 @@ module Rectangle = struct
 
   type t = t' ctyp
 
-  let t = Types.Rectangle.t
-
   let create x y width height =
+    let t = Types.Rectangle.t in
     let rectangle = make t in
     setf rectangle Types.Rectangle.x x;
     setf rectangle Types.Rectangle.y y;
@@ -349,8 +343,6 @@ module Image = struct
 
   type t = t' ctyp
 
-  let t = Types.Image.t
-
   let width image =
     getf image Types.Image.width
 
@@ -368,8 +360,6 @@ module Texture = struct
   type t' = Types.Texture.t
 
   type t = t' ctyp
-
-  let t = Types.Texture.t
 
   let width texture =
     getf texture Types.Texture.width
@@ -391,8 +381,6 @@ module RenderTexture = struct
 
   type t = t' ctyp
 
-  let t = Types.RenderTexture.t
-
   let texture rendertexture =
     getf rendertexture Types.RenderTexture.texture
 
@@ -411,9 +399,8 @@ module NPatchInfo = struct
 
   type t = t' ctyp
 
-  let t = Types.NPatchInfo.t
-
   let create source left top right bottom typ =
+    let t = Types.NPatchInfo.t in
     let npatchinfo = make t in
     setf npatchinfo Types.NPatchInfo.source source;
     setf npatchinfo Types.NPatchInfo.left left;
@@ -465,9 +452,8 @@ module CharInfo = struct
 
   type t = t' ctyp
 
-  let t = Types.CharInfo.t
-
   let create value offset_x offset_y advance_x image =
+    let t = Types.CharInfo.t in
     let charinfo = make t in
     setf charinfo Types.CharInfo.value value;
     setf charinfo Types.CharInfo.offset_x offset_x;
@@ -512,8 +498,6 @@ module Font = struct
 
   type t = t' ctyp
 
-  let t = Types.Font.t
-
   let base_size font =
     getf font Types.Font.base_size
 
@@ -551,9 +535,8 @@ module Camera3D = struct
 
   type t = t' ctyp
 
-  let t = Types.Camera3D.t
-
   let create position target up fovy typ =
+    let t = Types.Camera3D.t in
     let camera3d = make t in
     setf camera3d Types.Camera3D.position position;
     setf camera3d Types.Camera3D.target target;
@@ -600,9 +583,8 @@ module Camera2D = struct
 
   type t = t' ctyp
 
-  let t = Types.Camera2D.t
-
   let create offset target rotation zoom =
+    let t = Types.Camera2D.t in
     let camera2d = make t in
     setf camera2d Types.Camera2D.offset offset;
     setf camera2d Types.Camera2D.target target;
@@ -665,9 +647,8 @@ module MaterialMap = struct
 
   type t = t' ctyp
 
-  let t = Types.MaterialMap.t
-
   let create texture color value =
+    let t = Types.MaterialMap.t in
     let materialmap = make t in
     setf materialmap Types.MaterialMap.texture texture;
     setf materialmap Types.MaterialMap.color color;
@@ -698,8 +679,6 @@ module Material = struct
 
   type t = t' ctyp
 
-  let t = Types.Material.t
-
   let shader material =
     getf material Types.Material.shader
 
@@ -720,9 +699,8 @@ module Transform = struct
 
   type t = t' ctyp
 
-  let t = Types.Transform.t
-
   let create translation rotation scale =
+    let t = Types.Transform.t in
     let transform = make t in
     setf transform Types.Transform.translation translation;
     setf transform Types.Transform.rotation rotation;
@@ -765,8 +743,6 @@ module Model = struct
 
   type t = t' ctyp
 
-  let t = Types.Model.t
-
   let transform model =
     getf model Types.Model.transform
 
@@ -806,8 +782,6 @@ module ModelAnimation = struct
 
   type t = t' ctyp
 
-  let t = Types.ModelAnimation.t
-
   let bones modelanimation =
     let count = getf modelanimation Types.ModelAnimation.bone_count in
     CArray.from_ptr (getf modelanimation Types.ModelAnimation.bones) count
@@ -835,9 +809,8 @@ module Ray = struct
 
   type t = t' ctyp
 
-  let t = Types.Ray.t
-
   let create position direction =
+    let t = Types.Ray.t in
     let ray = make t in
     setf ray Types.Ray.position position;
     setf ray Types.Ray.direction direction;
@@ -861,8 +834,6 @@ module RayHitInfo = struct
 
   type t = t' ctyp
 
-  let t = Types.RayHitInfo.t
-
   let hit rayhitinfo =
     getf rayhitinfo Types.RayHitInfo.hit
 
@@ -881,9 +852,8 @@ module BoundingBox = struct
 
   type t = t' ctyp
 
-  let t = Types.BoundingBox.t
-
   let create min max =
+    let t = Types.BoundingBox.t in
     let boundingbox = make t in
     setf boundingbox Types.BoundingBox.min min;
     setf boundingbox Types.BoundingBox.max max;
@@ -931,8 +901,6 @@ module Music = struct
 
   type t = t' ctyp
 
-  let t = Types.Music.t
-
   let stream music =
     getf music Types.Music.stream
 
@@ -957,9 +925,9 @@ module VrDeviceInfo = struct
 
   type t = t' ctyp
 
-  let t = Types.VrDeviceInfo.t
-
-  let create () = make t
+  let create () =
+    let t = Types.VrDeviceInfo.t in
+    make t
 
   let h_resolution vrdeviceinfo =
     getf vrdeviceinfo Types.VrDeviceInfo.h_resolution

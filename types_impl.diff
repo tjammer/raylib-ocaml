@@ -1,0 +1,420 @@
+diff --git a/src/raylib/types.ml b/src/raylib/types.ml
+index 871bee6..ae6a682 100644
+--- a/src/raylib/types.ml
++++ b/src/raylib/types.ml
+@@ -27,6 +27,8 @@ module Vector2 = struct
+ 
+   let set_y vector2 y =
+     setf vector2 Types.Vector2.y y
++
++  include Math.Vector2
+ end
+ 
+ module Vector3 = struct
+@@ -59,6 +61,8 @@ module Vector3 = struct
+ 
+   let set_z vector3 z =
+     setf vector3 Types.Vector3.z z
++
++  include Math.Vector3
+ end
+ 
+ module Vector4 = struct
+@@ -98,6 +102,8 @@ module Vector4 = struct
+ 
+   let set_w vector4 w =
+     setf vector4 Types.Vector4.w w
++
++  include Math.Vector4
+ end
+ 
+ module Matrix = struct
+@@ -221,6 +227,8 @@ module Matrix = struct
+ 
+   let set_m15 matrix m15 =
+     setf matrix Types.Matrix.m15 m15
++
++  include Math.Matrix
+ end
+ 
+ module Color = struct
+@@ -228,29 +236,67 @@ module Color = struct
+ 
+   type t = t' ctyp
+ 
+-  let r color =
+-    getf color Types.Color.r
++  let create r g b a =
++    let t = Types.Color.t in
++    let color = make t in
++    setf color Types.Color.r (Unsigned.UChar.of_int r);
++    setf color Types.Color.g (Unsigned.UChar.of_int g);
++    setf color Types.Color.b (Unsigned.UChar.of_int b);
++    setf color Types.Color.a (Unsigned.UChar.of_int a);
++    color
++
++  (* Some Basic Colors *)
++  let lightgray = create 200 200 200 255
++
++  let gray = create 130 130 130 255
++
++  let darkgray = create 80 80 80 255
++
++  let yellow = create 253 249 0 255
++
++  let gold = create 255 203 0 255
++
++  let orange = create 255 161 0 255
++
++  let pink = create 255 109 194 255
++
++  let red = create 230 41 55 255
++
++  let maroon = create 190 33 55 255
++
++  let green = create 0 228 48 255
++
++  let lime = create 0 158 47 255
+ 
+-  let g color =
+-    getf color Types.Color.g
++  let darkgreen = create 0 117 44 255
+ 
+-  let b color =
+-    getf color Types.Color.b
++  let skyblue = create 102 191 255 255
+ 
+-  let a color =
+-    getf color Types.Color.a
++  let blue = create 0 121 241 255
+ 
+-  let set_r color r =
+-    setf color Types.Color.r r
++  let darkblue = create 0 82 172 255
+ 
+-  let set_g color g =
+-    setf color Types.Color.g g
++  let purple = create 200 122 255 255
+ 
+-  let set_b color b =
+-    setf color Types.Color.b b
++  let violet = create 135 60 190 255
+ 
+-  let set_a color a =
+-    setf color Types.Color.a a
++  let darkpurple = create 112 31 126 255
++
++  let beige = create 211 176 131 255
++
++  let brown = create 127 106 79 255
++
++  let darkbrown = create 76 63 47 255
++
++  let white = create 255 255 255 255
++
++  let black = create 0 0 0 255
++
++  let blank = create 0 0 0 0
++
++  let magenta = create 255 0 255 255
++
++  let raywhite = create 245 245 245 255
+ end
+ 
+ module Rectangle = struct
+@@ -307,19 +353,7 @@ module Image = struct
+     getf image Types.Image.mipmaps
+ 
+   let format image =
+-    getf image Types.Image.format
+-
+-  let set_width image width =
+-    setf image Types.Image.width width
+-
+-  let set_height image height =
+-    setf image Types.Image.height height
+-
+-  let set_mipmaps image mipmaps =
+-    setf image Types.Image.mipmaps mipmaps
+-
+-  let set_format image format =
+-    setf image Types.Image.format format
++    getf image Types.Image.format |> PixelFormat.of_int
+ end
+ 
+ module Texture = struct
+@@ -327,9 +361,6 @@ module Texture = struct
+ 
+   type t = t' ctyp
+ 
+-  let id texture =
+-    getf texture Types.Texture.id
+-
+   let width texture =
+     getf texture Types.Texture.width
+ 
+@@ -340,41 +371,22 @@ module Texture = struct
+     getf texture Types.Texture.mipmaps
+ 
+   let format texture =
+-    getf texture Types.Texture.format
+-
+-  let set_id texture id =
+-    setf texture Types.Texture.id id
+-
+-  let set_width texture width =
+-    setf texture Types.Texture.width width
+-
+-  let set_height texture height =
+-    setf texture Types.Texture.height height
+-
+-  let set_mipmaps texture mipmaps =
+-    setf texture Types.Texture.mipmaps mipmaps
+-
+-  let set_format texture format =
+-    setf texture Types.Texture.format format
++    getf texture Types.Texture.format |> PixelFormat.of_int
+ end
+ 
++module Texture2D = Texture
++
+ module RenderTexture = struct
+   type t' = Types.RenderTexture.t
+ 
+   type t = t' ctyp
+ 
+-  let id rendertexture =
+-    getf rendertexture Types.RenderTexture.id
+-
+   let texture rendertexture =
+     getf rendertexture Types.RenderTexture.texture
+ 
+   let depth rendertexture =
+     getf rendertexture Types.RenderTexture.depth
+ 
+-  let set_id rendertexture id =
+-    setf rendertexture Types.RenderTexture.id id
+-
+   let set_texture rendertexture texture =
+     setf rendertexture Types.RenderTexture.texture texture
+ 
+@@ -395,7 +407,7 @@ module NPatchInfo = struct
+     setf npatchinfo Types.NPatchInfo.top top;
+     setf npatchinfo Types.NPatchInfo.right right;
+     setf npatchinfo Types.NPatchInfo.bottom bottom;
+-    setf npatchinfo Types.NPatchInfo.typ typ;
++    setf npatchinfo Types.NPatchInfo.typ (NPatchType.to_int typ);
+     npatchinfo
+ 
+   let source npatchinfo =
+@@ -414,7 +426,7 @@ module NPatchInfo = struct
+     getf npatchinfo Types.NPatchInfo.bottom
+ 
+   let typ npatchinfo =
+-    getf npatchinfo Types.NPatchInfo.typ
++    getf npatchinfo Types.NPatchInfo.typ |> NPatchType.of_int
+ 
+   let set_source npatchinfo source =
+     setf npatchinfo Types.NPatchInfo.source source
+@@ -432,7 +444,7 @@ module NPatchInfo = struct
+     setf npatchinfo Types.NPatchInfo.bottom bottom
+ 
+   let set_typ npatchinfo typ =
+-    setf npatchinfo Types.NPatchInfo.typ typ
++    setf npatchinfo Types.NPatchInfo.typ (NPatchType.to_int typ)
+ end
+ 
+ module CharInfo = struct
+@@ -530,7 +542,7 @@ module Camera3D = struct
+     setf camera3d Types.Camera3D.target target;
+     setf camera3d Types.Camera3D.up up;
+     setf camera3d Types.Camera3D.fovy fovy;
+-    setf camera3d Types.Camera3D.typ typ;
++    setf camera3d Types.Camera3D.typ (CameraType.to_int typ);
+     camera3d
+ 
+   let position camera3d =
+@@ -546,7 +558,7 @@ module Camera3D = struct
+     getf camera3d Types.Camera3D.fovy
+ 
+   let typ camera3d =
+-    getf camera3d Types.Camera3D.typ
++    getf camera3d Types.Camera3D.typ |> CameraType.of_int
+ 
+   let set_position camera3d position =
+     setf camera3d Types.Camera3D.position position
+@@ -561,9 +573,11 @@ module Camera3D = struct
+     setf camera3d Types.Camera3D.fovy fovy
+ 
+   let set_typ camera3d typ =
+-    setf camera3d Types.Camera3D.typ typ
++    setf camera3d Types.Camera3D.typ (CameraType.to_int typ)
+ end
+ 
++module Camera = Camera3D
++
+ module Camera2D = struct
+   type t' = Types.Camera2D.t
+ 
+@@ -607,12 +621,10 @@ module Mesh = struct
+   type t' = Types.Mesh.t
+ 
+   type t = t' ctyp
++end
+ 
+-  let vao_id mesh =
+-    getf mesh Types.Mesh.vao_id
+-
+-  let set_vao_id mesh vao_id =
+-    setf mesh Types.Mesh.vao_id vao_id
++module ShaderLoc = struct
++  type t = int
+ end
+ 
+ module Shader = struct
+@@ -620,11 +632,14 @@ module Shader = struct
+ 
+   type t = t' ctyp
+ 
+-  let id shader =
+-    getf shader Types.Shader.id
++  let locs shader =
++    CArray.from_ptr (getf shader Types.Shader.locs) max_shader_locations
++
++  let set_loc shader loc_index loc =
++    let locs = locs shader in
++    CArray.set locs (ShaderLocationIndex.to_int loc_index) loc
+ 
+-  let set_id shader id =
+-    setf shader Types.Shader.id id
++  let set_locs shader locs = setf shader Types.Shader.locs (CArray.start locs)
+ end
+ 
+ module MaterialMap = struct
+@@ -668,13 +683,15 @@ module Material = struct
+     getf material Types.Material.shader
+ 
+   let maps material =
+-    getf material Types.Material.maps
++    CArray.from_ptr (getf material Types.Material.maps) max_material_maps
+ 
+-  let set_shader material shader =
+-    setf material Types.Material.shader shader
++  let params material =
++    CArray.from_ptr (getf material Types.Material.params) max_shader_locations
++
++  let set_shader material shader = setf material Types.Material.shader shader
+ 
+   let set_maps material maps =
+-    setf material Types.Material.maps maps
++    setf material Types.Material.maps (CArray.start maps)
+ end
+ 
+ module Transform = struct
+@@ -769,15 +786,22 @@ module ModelAnimation = struct
+     let count = getf modelanimation Types.ModelAnimation.bone_count in
+     CArray.from_ptr (getf modelanimation Types.ModelAnimation.bones) count
+ 
+-  let frame_poses modelanimation =
+-    let count = getf modelanimation Types.ModelAnimation.frame_count in
+-    CArray.from_ptr (getf modelanimation Types.ModelAnimation.frame_poses) count
++  let frame_count modelanimation =
++    getf modelanimation Types.ModelAnimation.frame_count
++
++  let frame_poses_at anim index =
++    let frame_count = getf anim Types.ModelAnimation.frame_count in
++    let poses =
++      CArray.from_ptr
++        (getf anim Types.ModelAnimation.frame_poses)
++        frame_count
++    in
++    let bone_count = getf anim Types.ModelAnimation.bone_count in
++    CArray.from_ptr (CArray.get poses index) bone_count
+ 
+   let set_bones modelanimation bones =
+     setf modelanimation Types.ModelAnimation.bones (CArray.start bones)
+ 
+-  let set_frame_poses modelanimation frame_poses =
+-    setf modelanimation Types.ModelAnimation.frame_poses (CArray.start frame_poses)
+ end
+ 
+ module Ray = struct
+@@ -821,18 +845,6 @@ module RayHitInfo = struct
+ 
+   let normal rayhitinfo =
+     getf rayhitinfo Types.RayHitInfo.normal
+-
+-  let set_hit rayhitinfo hit =
+-    setf rayhitinfo Types.RayHitInfo.hit hit
+-
+-  let set_distance rayhitinfo distance =
+-    setf rayhitinfo Types.RayHitInfo.distance distance
+-
+-  let set_position rayhitinfo position =
+-    setf rayhitinfo Types.RayHitInfo.position position
+-
+-  let set_normal rayhitinfo normal =
+-    setf rayhitinfo Types.RayHitInfo.normal normal
+ end
+ 
+ module BoundingBox = struct
+@@ -864,48 +876,12 @@ module Wave = struct
+   type t' = Types.Wave.t
+ 
+   type t = t' ctyp
+-
+-  let sample_rate wave =
+-    getf wave Types.Wave.sample_rate
+-
+-  let sample_size wave =
+-    getf wave Types.Wave.sample_size
+-
+-  let channels wave =
+-    getf wave Types.Wave.channels
+-
+-  let set_sample_rate wave sample_rate =
+-    setf wave Types.Wave.sample_rate sample_rate
+-
+-  let set_sample_size wave sample_size =
+-    setf wave Types.Wave.sample_size sample_size
+-
+-  let set_channels wave channels =
+-    setf wave Types.Wave.channels channels
+ end
+ 
+ module AudioStream = struct
+   type t' = Types.AudioStream.t
+ 
+   type t = t' ctyp
+-
+-  let sample_rate audiostream =
+-    getf audiostream Types.AudioStream.sample_rate
+-
+-  let sample_size audiostream =
+-    getf audiostream Types.AudioStream.sample_size
+-
+-  let channels audiostream =
+-    getf audiostream Types.AudioStream.channels
+-
+-  let set_sample_rate audiostream sample_rate =
+-    setf audiostream Types.AudioStream.sample_rate sample_rate
+-
+-  let set_sample_size audiostream sample_size =
+-    setf audiostream Types.AudioStream.sample_size sample_size
+-
+-  let set_channels audiostream channels =
+-    setf audiostream Types.AudioStream.channels channels
+ end
+ 
+ module Sound = struct
+@@ -949,6 +925,10 @@ module VrDeviceInfo = struct
+ 
+   type t = t' ctyp
+ 
++  let create () =
++    let t = Types.VrDeviceInfo.t in
++    make t
++
+   let h_resolution vrdeviceinfo =
+     getf vrdeviceinfo Types.VrDeviceInfo.h_resolution
+ 
