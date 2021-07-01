@@ -104,64 +104,63 @@ module Naming = struct
     aux false [] (String.to_list s)
 end
 
-module Type = struct
+module Typing = struct
   module StrTbl = Hashtbl.Make (String)
 
-  module Typing = struct
-    type t =
-      | C of string
-      | Ray of string
-      | Forw_decl of name
-      | Array of int * string
-      | Ptr of t
+  type t =
+    | C of string
+    | Ray of string
+    | Forw_decl of name
+    | Array of int * string
+    | Ptr of t
 
-    let is_builtin = function
-      | "int" | "uint" | "char" | "uchar" | "float" | "bool" | "void" | "short"
-      | "ushort" ->
-          true
-      | _ -> false
+  let is_builtin = function
+    | "int" | "uint" | "char" | "uchar" | "float" | "bool" | "void" | "short"
+    | "ushort" ->
+        true
+    | _ -> false
 
-    let array_eq (asize, atyp) (bsize, btyp) =
-      String.equal atyp btyp && asize = bsize
+  let array_eq (asize, atyp) (bsize, btyp) =
+    String.equal atyp btyp && asize = bsize
 
-    let type_tbl = StrTbl.create 1
+  let type_tbl = StrTbl.create 1
 
-    (* special treatment for typedefs *)
-    let () = StrTbl.replace type_tbl "Texture2D" "Texture"
+  (* special treatment for typedefs *)
+  let () = StrTbl.replace type_tbl "Texture2D" "Texture"
 
-    let () = StrTbl.replace type_tbl "Quaternion" "Vector4"
+  let () = StrTbl.replace type_tbl "Quaternion" "Vector4"
 
-    let of_cname cname arr =
-      let convert a =
-        if is_builtin a then C a
-        else
-          match StrTbl.find_opt type_tbl a with
-          | Some name -> Ray name
-          | None -> Forw_decl { name = Naming.to_snake_case a; cname = a }
-      in
+  let of_cname cname arr =
+    let convert a =
+      if is_builtin a then C a
+      else
+        match StrTbl.find_opt type_tbl a with
+        | Some name -> Ray name
+        | None -> Forw_decl { name = Naming.to_snake_case a; cname = a }
+    in
 
-      (* TODO don't add function if C types are involved *)
-      let rec aux acc = function
-        | "unsigned" :: tl -> aux (acc ^ "u") tl
-        | "\\*" :: _ | "\\*\\*" :: _ -> failwith "Something after pointer"
-        | [ "*" ] -> Ptr (convert acc)
-        | [ "**" ] -> Ptr (Ptr (convert acc))
-        | str :: tl -> aux (acc ^ str) tl
-        | [] -> convert acc
-      in
-      match (arr, aux "" @@ String.split_on_char ' ' cname) with
-      | Some count, C typ -> Array (count, typ)
-      | None, ret -> ret
-      | Some _, _ -> failwith "Array with wrong type"
+    let rec aux acc = function
+      | "unsigned" :: tl -> aux (acc ^ "u") tl
+      | "\\*" :: _ | "\\*\\*" :: _ -> failwith "Something after pointer"
+      | [ "*" ] -> Ptr (convert acc)
+      | [ "**" ] -> Ptr (Ptr (convert acc))
+      | str :: tl -> aux (acc ^ str) tl
+      | [] -> convert acc
+    in
+    match (arr, aux "" @@ String.split_on_char ' ' cname) with
+    | Some count, C typ -> Array (count, typ)
+    | None, ret -> ret
+    | Some _, _ -> failwith "Array with wrong type"
 
-    let rec name_type ?(ptr = "") = function
-      | C name -> name ^ ptr
-      | Ray name -> name ^ ".t" ^ ptr
-      | Forw_decl name -> name.name ^ ptr
-      | Array (size, name) -> Printf.sprintf "%s_array_%i" name size ^ ptr
-      | Ptr typ -> name_type ~ptr:(" ptr" ^ ptr) typ
-  end
+  let rec name_type ?(ptr = "") = function
+    | C name -> name ^ ptr
+    | Ray name -> name ^ ".t" ^ ptr
+    | Forw_decl name -> name.name ^ ptr
+    | Array (size, name) -> Printf.sprintf "%s_array_%i" name size ^ ptr
+    | Ptr typ -> name_type ~ptr:(" ptr" ^ ptr) typ
+end
 
+module Type = struct
   type field = { name : name; typ : Typing.t; desc : string option }
 
   type t = { name : name; fields : field list }
@@ -198,7 +197,7 @@ module Type = struct
   let of_json json =
     let open Yojson.Basic.Util in
     let name = json |> member "name" |> to_string |> name_of_cname in
-    StrTbl.add Typing.type_tbl name.cname name.name;
+    Typing.(StrTbl.add type_tbl name.cname name.name);
     (* hardcode matrix *)
     match name.name with
     | "Matrix" ->
@@ -240,7 +239,7 @@ module Type = struct
     match ctor_types typ with
     | Some names ->
         List.fold_left (fun acc s -> acc ^ s ^ " -> ") "  val create : " names
-        ^ "t\n" ^ "  (** ["
+        ^ "t\n" ^ "  (** [create "
         ^ (List.map (fun (f : field) -> f.name.name) typ.fields
           |> String.concat " ")
         ^ "] *)\n\n"
@@ -316,8 +315,8 @@ module Type = struct
     match ctor_names typ with
     | Some names ->
         let typ_nm = String.lowercase_ascii typ.name.cname in
-        "  let create " ^ String.concat " " names ^ " =\n" ^ "    let t = Types."
-        ^ typ.name.name ^ ".t in\n"
+        "  let create " ^ String.concat " " names ^ " =\n"
+        ^ "    let t = Types." ^ typ.name.name ^ ".t in\n"
         ^ Printf.sprintf "    let %s = make t in\n" typ_nm
         ^ (List.map
              (fun name ->
@@ -471,10 +470,9 @@ let () =
   (* print_string stubs; *)
   ignore stubs;
   let itf = types |> List.map Type.itf |> String.concat "" in
-  (* print_string itf; *)
-  ignore itf;
+  print_string itf;
+  (* ignore itf; *)
   let impl = types |> List.map Type.impl |> String.concat "" in
-  print_string impl;
-
-  (* ignore impl; *)
+  (* print_string impl; *)
+  ignore impl;
   ()
