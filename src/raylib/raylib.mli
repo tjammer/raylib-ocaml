@@ -1639,7 +1639,7 @@ val load_file_data : string -> Unsigned.uchar CArray.t
 val unload_file_data : string -> unit
 (** Unload file data allocated by load_file_data *)
 
-val save_file_data : string -> 'a CArray.t -> unit
+val save_file_data : string -> 'a CArray.t -> bool
 (** Save data to file from byte array (write) *)
 
 val load_file_text : string -> string
@@ -1648,7 +1648,7 @@ val load_file_text : string -> string
 val unload_file_text : string -> unit
 (** Unload file text data allocated by load_file_text *)
 
-val save_file_text : string -> string -> unit
+val save_file_text : string -> string -> bool
 (** [save_file_text filename text] saves text data to file (write), string must be '\0' terminated *)
 
 val file_exists : string -> bool
@@ -1707,7 +1707,7 @@ val decompress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
 
 (** {3 Persistent storage management} *)
 
-val save_storage_value : int -> int -> unit
+val save_storage_value : int -> int -> bool
 (** [save_storage_value position value] saves integer value to storage file (to defined position), returns true on success *)
 
 val load_storage_value : int -> int
@@ -2281,7 +2281,7 @@ val draw_texture_pro :
   unit
 (** [draw_texture_pro texture source dest origin rotation tint] draws a part of a texture defined by a rectangle with 'pro' parameters *)
 
-val draw_texture_n_patch :
+val draw_texture_npatch :
   Texture.t ->
   NPatchInfo.t ->
   Rectangle.t ->
@@ -2544,7 +2544,7 @@ val load_meshes : string -> int ptr -> Mesh.t ptr option
 val unload_mesh : Mesh.t -> unit
 (** Unload mesh from memory (RAM and/or VRAM) *)
 
-val export_mesh : Mesh.t -> string -> unit
+val export_mesh : Mesh.t -> string -> bool
 (** Export mesh data to file *)
 
 (** {3 Material loading/unloading functions} *)
@@ -2766,7 +2766,7 @@ val gen_texture_irradiance : Shader.t -> Texture.t -> int -> Texture.t
 val gen_texture_prefilter : Shader.t -> Texture.t -> int -> Texture.t
 (** Generate prefilter texture using cubemap data *)
 
-val gen_texture_b_r_d_f : Shader.t -> int -> Texture.t
+val gen_texture_brdf : Shader.t -> int -> Texture.t
 (** Generate BRDF texture *)
 
 (** {3 Shading begin/end functions} *)

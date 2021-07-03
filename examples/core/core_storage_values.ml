@@ -33,8 +33,8 @@ let update (score, hiscore, frame_counter) =
     with
     | true, _, _ -> (get_random_value 1000 2000, get_random_value 2000 4000)
     | _, true, _ ->
-        save_storage_value storage_position_score score;
-        save_storage_value storage_position_hiscore hiscore;
+        assert (save_storage_value storage_position_score score);
+        assert (save_storage_value storage_position_hiscore hiscore);
         (score, hiscore)
     | _, _, true ->
         ( load_storage_value storage_position_score,

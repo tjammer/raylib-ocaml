@@ -119,6 +119,7 @@ module Typing = struct
     | "int" | "uint" | "char" | "uchar" | "float" | "bool" | "void" | "short"
     | "ushort" ->
         true
+    | "const char" -> true
     | _ -> false
 
   let array_eq (asize, atyp) (bsize, btyp) =
@@ -141,6 +142,7 @@ module Typing = struct
     in
 
     let rec aux acc = function
+      | "const" :: tl -> aux (acc ^ "const ") tl
       | "unsigned" :: tl -> aux (acc ^ "u") tl
       | "\\*" :: _ | "\\*\\*" :: _ -> failwith "Something after pointer"
       | [ "*" ] -> Ptr (convert acc)
@@ -154,11 +156,20 @@ module Typing = struct
     | Some _, _ -> failwith "Array with wrong type"
 
   let rec name_type ?(ptr = "") = function
+    | C "const char" -> "string"
     | C name -> name ^ ptr
     | Ray name -> name ^ ".t" ^ ptr
     | Forw_decl name -> name.name ^ ptr
     | Array (size, name) -> Printf.sprintf "%s_array_%i" name size ^ ptr
     | Ptr typ -> name_type ~ptr:(" ptr" ^ ptr) typ
+
+  let rec name_type_ctypes ?(acc = "") = function
+    | C "const char" when String.(acc = "ptr ") -> "string"
+    | C name -> acc ^ name
+    | Ray name -> acc ^ name ^ ".t"
+    | Forw_decl name -> acc ^ name.name
+    | Array (size, name) -> acc ^ Printf.sprintf "%s_array_%i" name size
+    | Ptr typ -> name_type_ctypes ~acc:(acc ^ "ptr ") typ
 end
 
 module Type = struct
@@ -216,7 +227,7 @@ module Type = struct
         { name; fields }
 
   let stub_of_field { name; typ; desc = _ } =
-    "    " ^ name.name ^ " : " ^ Typing.name_type typ
+    "    " ^ name.name ^ " : " ^ Typing.name_type typ ^ ";"
     ^
     if String.(name.name <> name.cname) then
       Printf.sprintf " [@cname \"%s\"]\n" name.cname
@@ -475,12 +486,15 @@ module Function = struct
     { name; desc; return; params }
 
   let stub func =
-    "  let " ^ func.name.name ^ " =\n    foreign \"" ^ func.name.cname ^ " (" ^
-    (match func.params with
-     | [] -> "void"
-     | l ->
-       (List.map (fun p -> Typing.name_type p.typ ) l |> String.concat " @-> " ))
-    ^ " @-> returning " ^ Typing.name_type func.return ^ ")\n\n"
+    "  let " ^ func.name.name ^ " =\n    foreign \"" ^ func.name.cname ^ "\" ("
+    ^ (match func.params with
+      | [] -> "void"
+      | l ->
+          List.map (fun p -> Typing.name_type_ctypes p.typ) l
+          |> String.concat " @-> ")
+    ^ " @-> returning "
+    ^ Typing.name_type_ctypes func.return
+    ^ ")\n\n"
 end
 
 let () =
@@ -521,8 +535,11 @@ let () =
   (* print_string impl; *)
   ignore impl;
 
-  let funcs = api |> member "functions" |> to_list |> List.map Function.of_json in
+  let funcs =
+    api |> member "functions" |> to_list |> List.map Function.of_json
+  in
   let stubs = funcs |> List.map Function.stub |> String.concat "" in
   print_string stubs;
 
+  (* ignore stubs; *)
   ()
