@@ -101,7 +101,8 @@ module Naming = struct
       | hd :: tl -> aux false (hd :: acc) tl
       | [] -> List.rev acc |> String.of_list
     in
-    aux false [] (String.to_list s)
+    (* true, b/c we want to start lowercase without '_' *)
+    aux true [] (String.to_list s)
 end
 
 module Typing = struct
@@ -438,6 +439,50 @@ module Type = struct
     ^ "end\n\n"
 end
 
+module Function = struct
+  type param = { name : name; typ : Typing.t }
+
+  type t = {
+    name : name;
+    desc : string option;
+    return : Typing.t;
+    params : param list;
+  }
+
+  let to_name cname = { name = Naming.to_snake_case cname; cname }
+
+  let to_param cname typ =
+    { name = to_name cname; typ = Typing.of_cname typ None }
+
+  let of_json json =
+    let open Yojson.Basic.Util in
+    let name = json |> member "name" |> to_string |> to_name in
+
+    let desc =
+      json |> member "description" |> to_string |> fun s ->
+      if String.is_empty s then None else Some s
+    in
+    let return =
+      json |> member "returnType" |> to_string |> fun cname ->
+      Typing.of_cname cname None
+    in
+    let params =
+      json |> member "params"
+      |> (function
+           | `Null -> [] | `Assoc l -> l | _ -> failwith "Expected Assoc")
+      |> List.map (fun (key, value) -> to_param key @@ to_string value)
+    in
+    { name; desc; return; params }
+
+  let stub func =
+    "  let " ^ func.name.name ^ " =\n    foreign \"" ^ func.name.cname ^ " (" ^
+    (match func.params with
+     | [] -> "void"
+     | l ->
+       (List.map (fun p -> Typing.name_type p.typ ) l |> String.concat " @-> " ))
+    ^ " @-> returning " ^ Typing.name_type func.return ^ ")\n\n"
+end
+
 let () =
   let api = Yojson.Basic.from_file "raylib_api.json" in
   let open Yojson.Basic.Util in
@@ -470,9 +515,14 @@ let () =
   (* print_string stubs; *)
   ignore stubs;
   let itf = types |> List.map Type.itf |> String.concat "" in
-  print_string itf;
-  (* ignore itf; *)
+  (* print_string itf; *)
+  ignore itf;
   let impl = types |> List.map Type.impl |> String.concat "" in
   (* print_string impl; *)
   ignore impl;
+
+  let funcs = api |> member "functions" |> to_list |> List.map Function.of_json in
+  let stubs = funcs |> List.map Function.stub |> String.concat "" in
+  print_string stubs;
+
   ()
