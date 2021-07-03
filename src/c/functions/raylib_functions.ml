@@ -4,7 +4,6 @@ module Description (F : Ctypes.FOREIGN) = struct
   open Raylib_generated_types
   open Raylib_generated_constants
 
-
   let init_window =
     foreign "InitWindow" (int @-> int @-> string @-> returning void)
 
@@ -172,8 +171,15 @@ module Description (F : Ctypes.FOREIGN) = struct
   let set_trace_log_exit =
     foreign "SetTraceLogExit" (TraceLogType.t @-> returning void)
 
+  (* let set_trace_log_callback =
+   *   foreign "SetTraceLogCallback" (trace_log_callback @-> returning void) *)
+
   let trace_log =
     foreign "TraceLog" (TraceLogType.t @-> string @-> returning void)
+
+  let mem_alloc = foreign "MemAlloc" (int @-> returning (ptr void))
+
+  let mem_free = foreign "MemFree" (ptr void @-> returning void)
 
   let take_screenshot = foreign "TakeScreenshot" (string @-> returning void)
 
@@ -185,14 +191,14 @@ module Description (F : Ctypes.FOREIGN) = struct
   let unload_file_data = foreign "UnloadFileData" (string @-> returning void)
 
   let _save_file_data =
-    foreign "SaveFileData" (string @-> ptr void @-> int @-> returning void)
+    foreign "SaveFileData" (string @-> ptr void @-> int @-> returning bool)
 
   let load_file_text = foreign "LoadFileText" (string @-> returning string)
 
   let unload_file_text = foreign "UnloadFileText" (string @-> returning void)
 
   let save_file_text =
-    foreign "SaveFileText" (string @-> string @-> returning void)
+    foreign "SaveFileText" (string @-> string @-> returning bool)
 
   let file_exists = foreign "FileExists" (string @-> returning bool)
 
@@ -244,7 +250,7 @@ module Description (F : Ctypes.FOREIGN) = struct
       (ptr uchar @-> int @-> ptr int @-> returning (ptr uchar))
 
   let save_storage_value =
-    foreign "SaveStorageValue" (int @-> int @-> returning void)
+    foreign "SaveStorageValue" (int @-> int @-> returning bool)
 
   let load_storage_value = foreign "LoadStorageValue" (int @-> returning int)
 
@@ -343,6 +349,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   let get_touch_position =
     foreign "GetTouchPosition" (int @-> returning Vector2.t)
 
+  let set_gestures_enabled =
+    foreign "SetGesturesEnabled" (uint @-> returning void)
 
   let is_gesture_detected = foreign "IsGestureDetected" (int @-> returning bool)
 
@@ -367,7 +375,6 @@ module Description (F : Ctypes.FOREIGN) = struct
   let get_gesture_pinch_angle =
     foreign "GetGesturePinchAngle" (void @-> returning float)
 
-
   let set_camera_mode =
     foreign "SetCameraMode" (Camera3D.t @-> CameraMode.t @-> returning void)
 
@@ -386,7 +393,6 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "SetCameraMoveControls"
       (Key.t @-> Key.t @-> Key.t @-> Key.t @-> Key.t @-> Key.t
      @-> returning void)
-
 
   let draw_pixel =
     foreign "DrawPixel" (int @-> int @-> Color.t @-> returning void)
@@ -534,10 +540,6 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "CheckCollisionCircleRec"
       (Vector2.t @-> float @-> Rectangle.t @-> returning bool)
 
-  let get_collision_rec =
-    foreign "GetCollisionRec"
-      (Rectangle.t @-> Rectangle.t @-> returning Rectangle.t)
-
   let check_collision_point_rec =
     foreign "CheckCollisionPointRec"
       (Vector2.t @-> Rectangle.t @-> returning bool)
@@ -550,12 +552,27 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "CheckCollisionPointTriangle"
       (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> returning bool)
 
+  let check_collision_lines =
+    foreign "CheckCollisionLines"
+      (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> ptr Vector2.t
+     @-> returning bool)
+
+  let get_collision_rec =
+    foreign "GetCollisionRec"
+      (Rectangle.t @-> Rectangle.t @-> returning Rectangle.t)
 
   let load_image = foreign "LoadImage" (string @-> returning Image.t)
 
   let load_image_raw =
     foreign "LoadImageRaw"
       (string @-> int @-> int @-> PixelFormat.t @-> int @-> returning Image.t)
+
+  let load_image_anim =
+    foreign "LoadImageAnim" (string @-> ptr int @-> returning Image.t)
+
+  let load_image_from_memory =
+    foreign "LoadImageFromMemory"
+      (string @-> ptr uchar @-> int @-> returning Image.t)
 
   let unload_image = foreign "UnloadImage" (Image.t @-> returning void)
 
@@ -606,27 +623,27 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "ImageTextEx"
       (Font.t @-> string @-> float @-> float @-> Color.t @-> returning Image.t)
 
-  let image_to_pot =
-    foreign "ImageToPOT" (ptr Image.t @-> Color.t @-> returning void)
-
   let image_format =
     foreign "ImageFormat" (ptr Image.t @-> int @-> returning void)
 
-  let image_alpha_mask =
-    foreign "ImageAlphaMask" (ptr Image.t @-> Image.t @-> returning void)
+  let image_to_pot =
+    foreign "ImageToPOT" (ptr Image.t @-> Color.t @-> returning void)
+
+  let image_crop =
+    foreign "ImageCrop" (ptr Image.t @-> Rectangle.t @-> returning void)
+
+  let image_alpha_crop =
+    foreign "ImageAlphaCrop" (ptr Image.t @-> float @-> returning void)
 
   let image_alpha_clear =
     foreign "ImageAlphaClear"
       (ptr Image.t @-> Color.t @-> float @-> returning void)
 
-  let image_alpha_crop =
-    foreign "ImageAlphaCrop" (ptr Image.t @-> float @-> returning void)
+  let image_alpha_mask =
+    foreign "ImageAlphaMask" (ptr Image.t @-> Image.t @-> returning void)
 
   let image_alpha_premultiply =
     foreign "ImageAlphaPremultiply" (ptr Image.t @-> returning void)
-
-  let image_crop =
-    foreign "ImageCrop" (ptr Image.t @-> Rectangle.t @-> returning void)
 
   let image_resize =
     foreign "ImageResize" (ptr Image.t @-> int @-> int @-> returning void)
@@ -674,6 +691,19 @@ module Description (F : Ctypes.FOREIGN) = struct
   let image_color_replace =
     foreign "ImageColorReplace"
       (ptr Image.t @-> Color.t @-> Color.t @-> returning void)
+
+  let load_image_colors =
+    foreign "LoadImageColors" (Image.t @-> returning (ptr Color.t))
+
+  let load_image_palette =
+    foreign "LoadImagePalette"
+      (Image.t @-> int @-> ptr int @-> returning (ptr Color.t))
+
+  let unload_image_colors =
+    foreign "UnloadImageColors" (ptr Color.t @-> returning void)
+
+  let unload_image_palette =
+    foreign "UnloadImagePalette" (ptr Color.t @-> returning void)
 
   let get_image_alpha_border =
     foreign "GetImageAlphaBorder" (Image.t @-> float @-> returning Rectangle.t)
@@ -808,11 +838,10 @@ module Description (F : Ctypes.FOREIGN) = struct
       (Texture.t @-> Rectangle.t @-> Rectangle.t @-> Vector2.t @-> float
      @-> Color.t @-> returning void)
 
-  let draw_texture_n_patch =
+  let draw_texture_npatch =
     foreign "DrawTextureNPatch"
       (Texture.t @-> NPatchInfo.t @-> Rectangle.t @-> Vector2.t @-> float
      @-> Color.t @-> returning void)
-
 
   let fade = foreign "Fade" (Color.t @-> float @-> returning Color.t)
 
@@ -848,7 +877,6 @@ module Description (F : Ctypes.FOREIGN) = struct
   let get_pixel_data_size =
     foreign "GetPixelDataSize" (int @-> int @-> PixelFormat.t @-> returning int)
 
-
   let get_font_default = foreign "GetFontDefault" (void @-> returning Font.t)
 
   let load_font = foreign "LoadFont" (string @-> returning Font.t)
@@ -861,10 +889,21 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "LoadFontFromImage"
       (Image.t @-> Color.t @-> int @-> returning Font.t)
 
+  let load_font_from_memory =
+    foreign "LoadFontFromMemory"
+      (string @-> ptr uchar @-> int @-> int @-> ptr int @-> int
+     @-> returning Font.t)
+
   let load_font_data =
     foreign "LoadFontData"
       (ptr uchar @-> int @-> int @-> ptr int @-> int @-> int
       @-> returning (ptr CharInfo.t))
+
+  let gen_image_font_atlas =
+    foreign "GenImageFontAtlas"
+      (ptr CharInfo.t
+      @-> ptr (ptr Rectangle.t)
+      @-> int @-> int @-> int @-> int @-> returning Image.t)
 
   let unload_font_data =
     foreign "UnloadFontData" (ptr CharInfo.t @-> int @-> returning void)
@@ -912,6 +951,9 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let text_length = foreign "TextLength" (string @-> returning int)
 
+  (* let text_format =
+   *   foreign "TextFormat" (string @->  @-> returning string) *)
+
   let text_subtext =
     foreign "TextSubtext" (string @-> int @-> int @-> returning string)
 
@@ -921,7 +963,11 @@ module Description (F : Ctypes.FOREIGN) = struct
   let text_insert =
     foreign "TextInsert" (string @-> string @-> int @-> returning string)
 
-   *   foreign "TextJoin" (ptr string @-> int @-> string @-> returning string) *)
+  (* let text_join =
+   *   foreign "TextJoin" (ptr ptr const char @-> int @-> string @-> returning string)
+   *
+   * let text_split =
+   *   foreign "TextSplit" (string @-> char @-> ptr int @-> returning ptr ptr const char) *)
 
   let text_append =
     foreign "TextAppend" (string @-> string @-> ptr int @-> returning void)
@@ -950,7 +996,6 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let codepoint_to_utf8 =
     foreign "CodepointToUtf8" (int @-> ptr int @-> returning string)
-
 
   let draw_line_3d =
     foreign "DrawLine3D" (Vector3.t @-> Vector3.t @-> Color.t @-> returning void)
@@ -1034,9 +1079,9 @@ module Description (F : Ctypes.FOREIGN) = struct
   let load_meshes =
     foreign "LoadMeshes" (string @-> ptr int @-> returning (ptr_opt Mesh.t))
 
-  let export_mesh = foreign "ExportMesh" (Mesh.t @-> string @-> returning void)
-
   let unload_mesh = foreign "UnloadMesh" (Mesh.t @-> returning void)
+
+  let export_mesh = foreign "ExportMesh" (Mesh.t @-> string @-> returning bool)
 
   let load_materials =
     foreign "LoadMaterials" (string @-> ptr int @-> returning (ptr Material.t))
@@ -1248,7 +1293,7 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "GenTexturePrefilter"
       (Shader.t @-> Texture.t @-> int @-> returning Texture.t)
 
-  let gen_texture_b_r_d_f =
+  let gen_texture_brdf =
     foreign "GenTextureBRDF" (Shader.t @-> int @-> returning Texture.t)
 
   let begin_shader_mode = foreign "BeginShaderMode" (Shader.t @-> returning void)
