@@ -1,4 +1,4 @@
-module Types = Raylib_functions.Types
+module Types = Raylib_generated_types
 module Math = Raylib_math.Description (Raylib_c.Raylib_c_generated_math)
 open Constants
 open Ctypes_reexports

@@ -851,7 +851,7 @@ module Color : sig
 end
 
 module Rectangle : sig
-  type t' = Raylib_functions.Types.Rectangle.t
+  type t' = Raylib_generated_types.Rectangle.t
 
   type t = t' ctyp
 
