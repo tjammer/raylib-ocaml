@@ -128,9 +128,16 @@ module Typing = struct
   let type_tbl = StrTbl.create 1
 
   (* special treatment for typedefs *)
-  let () = StrTbl.replace type_tbl "Texture2D" "Texture"
-
-  let () = StrTbl.replace type_tbl "Quaternion" "Vector4"
+  let () =
+    StrTbl.replace_seq type_tbl
+      (Seq.of_list
+         [
+           ("Texture2D", "Texture");
+           ("Quaternion", "Vector4");
+           ("RenderTexture2D", "RenderTexture");
+           ("TextureCubemap", "Texture");
+           ("Camera", "Camera3D");
+         ])
 
   let of_cname cname arr =
     let convert a =
@@ -495,6 +502,23 @@ module Function = struct
     ^ " @-> returning "
     ^ Typing.name_type_ctypes func.return
     ^ ")\n\n"
+
+  let itf func =
+    "val " ^ func.name.name ^ " : "
+    ^ (match func.params with
+      | [] -> "unit"
+      | l ->
+          List.map (fun p -> Typing.name_type p.typ) l |> String.concat " -> ")
+    ^ " -> "
+    ^ String.replace ~sub:"void" ~by:"unit"
+    @@ Typing.name_type func.return
+    ^ "\n(** [" ^ func.name.name ^ " "
+    ^ (match func.params with
+      | [] -> "()"
+      | l -> List.map (fun (p : param) -> p.name.name) l |> String.concat " ")
+    ^ "] "
+    ^ (match func.desc with None -> "" | Some d -> d)
+    ^ "*)\n"
 end
 
 let () =
@@ -540,6 +564,7 @@ let () =
   in
   let stubs = funcs |> List.map Function.stub |> String.concat "" in
   print_string stubs;
-
   (* ignore stubs; *)
+  let itf = funcs |> List.map Function.itf |> String.concat "\n" in
+  print_string itf;
   ()

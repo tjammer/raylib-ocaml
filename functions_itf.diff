@@ -1,0 +1,2537 @@
+diff --git a/src/raylib/raylib.mli b/src/raylib/raylib.mli
+index 472fbdf..51a236e 100644
+--- a/src/raylib/raylib.mli
++++ b/src/raylib/raylib.mli
+@@ -1404,1430 +1404,6 @@ end
+   {2 Window and Graphics Device Functions (Module: core) }
+   {3 Window-related functions }
+    *)
+-  let init_window =
+-    foreign "InitWindow" (int @-> int @-> string @-> returning void)
+-
+-  let window_should_close =
+-    foreign "WindowShouldClose" (void @-> returning bool)
+-
+-  let close_window =
+-    foreign "CloseWindow" (void @-> returning void)
+-
+-  let is_window_ready =
+-    foreign "IsWindowReady" (void @-> returning bool)
+-
+-  let is_window_fullscreen =
+-    foreign "IsWindowFullscreen" (void @-> returning bool)
+-
+-  let is_window_hidden =
+-    foreign "IsWindowHidden" (void @-> returning bool)
+-
+-  let is_window_minimized =
+-    foreign "IsWindowMinimized" (void @-> returning bool)
+-
+-  let is_window_maximized =
+-    foreign "IsWindowMaximized" (void @-> returning bool)
+-
+-  let is_window_focused =
+-    foreign "IsWindowFocused" (void @-> returning bool)
+-
+-  let is_window_resized =
+-    foreign "IsWindowResized" (void @-> returning bool)
+-
+-  let is_window_state =
+-    foreign "IsWindowState" (uint @-> returning bool)
+-
+-  let set_window_state =
+-    foreign "SetWindowState" (uint @-> returning void)
+-
+-  let clear_window_state =
+-    foreign "ClearWindowState" (uint @-> returning void)
+-
+-  let toggle_fullscreen =
+-    foreign "ToggleFullscreen" (void @-> returning void)
+-
+-  let maximize_window =
+-    foreign "MaximizeWindow" (void @-> returning void)
+-
+-  let minimize_window =
+-    foreign "MinimizeWindow" (void @-> returning void)
+-
+-  let restore_window =
+-    foreign "RestoreWindow" (void @-> returning void)
+-
+-  let set_window_icon =
+-    foreign "SetWindowIcon" (Image.t @-> returning void)
+-
+-  let set_window_title =
+-    foreign "SetWindowTitle" (string @-> returning void)
+-
+-  let set_window_position =
+-    foreign "SetWindowPosition" (int @-> int @-> returning void)
+-
+-  let set_window_monitor =
+-    foreign "SetWindowMonitor" (int @-> returning void)
+-
+-  let set_window_min_size =
+-    foreign "SetWindowMinSize" (int @-> int @-> returning void)
+-
+-  let set_window_size =
+-    foreign "SetWindowSize" (int @-> int @-> returning void)
+-
+-  let get_window_handle =
+-    foreign "GetWindowHandle" (void @-> returning ptr void)
+-
+-  let get_screen_width =
+-    foreign "GetScreenWidth" (void @-> returning int)
+-
+-  let get_screen_height =
+-    foreign "GetScreenHeight" (void @-> returning int)
+-
+-  let get_monitor_count =
+-    foreign "GetMonitorCount" (void @-> returning int)
+-
+-  let get_monitor_position =
+-    foreign "GetMonitorPosition" (int @-> returning Vector2.t)
+-
+-  let get_monitor_width =
+-    foreign "GetMonitorWidth" (int @-> returning int)
+-
+-  let get_monitor_height =
+-    foreign "GetMonitorHeight" (int @-> returning int)
+-
+-  let get_monitor_physical_width =
+-    foreign "GetMonitorPhysicalWidth" (int @-> returning int)
+-
+-  let get_monitor_physical_height =
+-    foreign "GetMonitorPhysicalHeight" (int @-> returning int)
+-
+-  let get_monitor_refresh_rate =
+-    foreign "GetMonitorRefreshRate" (int @-> returning int)
+-
+-  let get_window_position =
+-    foreign "GetWindowPosition" (void @-> returning Vector2.t)
+-
+-  let get_window_scale_dpi =
+-    foreign "GetWindowScaleDPI" (void @-> returning Vector2.t)
+-
+-  let get_monitor_name =
+-    foreign "GetMonitorName" (int @-> returning string)
+-
+-  let set_clipboard_text =
+-    foreign "SetClipboardText" (string @-> returning void)
+-
+-  let get_clipboard_text =
+-    foreign "GetClipboardText" (void @-> returning string)
+-
+-  let show_cursor =
+-    foreign "ShowCursor" (void @-> returning void)
+-
+-  let hide_cursor =
+-    foreign "HideCursor" (void @-> returning void)
+-
+-  let is_cursor_hidden =
+-    foreign "IsCursorHidden" (void @-> returning bool)
+-
+-  let enable_cursor =
+-    foreign "EnableCursor" (void @-> returning void)
+-
+-  let disable_cursor =
+-    foreign "DisableCursor" (void @-> returning void)
+-
+-  let is_cursor_on_screen =
+-    foreign "IsCursorOnScreen" (void @-> returning bool)
+-
+-  let clear_background =
+-    foreign "ClearBackground" (Color.t @-> returning void)
+-
+-  let begin_drawing =
+-    foreign "BeginDrawing" (void @-> returning void)
+-
+-  let end_drawing =
+-    foreign "EndDrawing" (void @-> returning void)
+-
+-  let begin_mode2_d =
+-    foreign "BeginMode2D" (Camera2D.t @-> returning void)
+-
+-  let end_mode2_d =
+-    foreign "EndMode2D" (void @-> returning void)
+-
+-  let begin_mode3_d =
+-    foreign "BeginMode3D" (Camera3D.t @-> returning void)
+-
+-  let end_mode3_d =
+-    foreign "EndMode3D" (void @-> returning void)
+-
+-  let begin_texture_mode =
+-    foreign "BeginTextureMode" (render_texture2_d @-> returning void)
+-
+-  let end_texture_mode =
+-    foreign "EndTextureMode" (void @-> returning void)
+-
+-  let begin_scissor_mode =
+-    foreign "BeginScissorMode" (int @-> int @-> int @-> int @-> returning void)
+-
+-  let end_scissor_mode =
+-    foreign "EndScissorMode" (void @-> returning void)
+-
+-  let get_mouse_ray =
+-    foreign "GetMouseRay" (Vector2.t @-> camera @-> returning Ray.t)
+-
+-  let get_camera_matrix =
+-    foreign "GetCameraMatrix" (camera @-> returning Matrix.t)
+-
+-  let get_camera_matrix2_d =
+-    foreign "GetCameraMatrix2D" (Camera2D.t @-> returning Matrix.t)
+-
+-  let get_world_to_screen =
+-    foreign "GetWorldToScreen" (Vector3.t @-> camera @-> returning Vector2.t)
+-
+-  let get_world_to_screen_ex =
+-    foreign "GetWorldToScreenEx" (Vector3.t @-> camera @-> int @-> int @-> returning Vector2.t)
+-
+-  let get_world_to_screen2_d =
+-    foreign "GetWorldToScreen2D" (Vector2.t @-> Camera2D.t @-> returning Vector2.t)
+-
+-  let get_screen_to_world2_d =
+-    foreign "GetScreenToWorld2D" (Vector2.t @-> Camera2D.t @-> returning Vector2.t)
+-
+-  let set_target_fps =
+-    foreign "SetTargetFPS" (int @-> returning void)
+-
+-  let get_fps =
+-    foreign "GetFPS" (void @-> returning int)
+-
+-  let get_frame_time =
+-    foreign "GetFrameTime" (void @-> returning float)
+-
+-  let get_time =
+-    foreign "GetTime" (void @-> returning double)
+-
+-  let set_config_flags =
+-    foreign "SetConfigFlags" (uint @-> returning void)
+-
+-  let set_trace_log_level =
+-    foreign "SetTraceLogLevel" (int @-> returning void)
+-
+-  let set_trace_log_exit =
+-    foreign "SetTraceLogExit" (int @-> returning void)
+-
+-  let set_trace_log_callback =
+-    foreign "SetTraceLogCallback" (trace_log_callback @-> returning void)
+-
+-  let trace_log =
+-    foreign "TraceLog" (int @-> string @->  @-> returning void)
+-
+-  let mem_alloc =
+-    foreign "MemAlloc" (int @-> returning ptr void)
+-
+-  let mem_free =
+-    foreign "MemFree" (ptr void @-> returning void)
+-
+-  let take_screenshot =
+-    foreign "TakeScreenshot" (string @-> returning void)
+-
+-  let get_random_value =
+-    foreign "GetRandomValue" (int @-> int @-> returning int)
+-
+-  let load_file_data =
+-    foreign "LoadFileData" (string @-> ptr uint @-> returning ptr uchar)
+-
+-  let unload_file_data =
+-    foreign "UnloadFileData" (ptr uchar @-> returning void)
+-
+-  let save_file_data =
+-    foreign "SaveFileData" (string @-> ptr void @-> uint @-> returning bool)
+-
+-  let load_file_text =
+-    foreign "LoadFileText" (string @-> returning ptr char)
+-
+-  let unload_file_text =
+-    foreign "UnloadFileText" (ptr uchar @-> returning void)
+-
+-  let save_file_text =
+-    foreign "SaveFileText" (string @-> ptr char @-> returning bool)
+-
+-  let file_exists =
+-    foreign "FileExists" (string @-> returning bool)
+-
+-  let directory_exists =
+-    foreign "DirectoryExists" (string @-> returning bool)
+-
+-  let is_file_extension =
+-    foreign "IsFileExtension" (string @-> string @-> returning bool)
+-
+-  let get_file_extension =
+-    foreign "GetFileExtension" (string @-> returning string)
+-
+-  let get_file_name =
+-    foreign "GetFileName" (string @-> returning string)
+-
+-  let get_file_name_without_ext =
+-    foreign "GetFileNameWithoutExt" (string @-> returning string)
+-
+-  let get_directory_path =
+-    foreign "GetDirectoryPath" (string @-> returning string)
+-
+-  let get_prev_directory_path =
+-    foreign "GetPrevDirectoryPath" (string @-> returning string)
+-
+-  let get_working_directory =
+-    foreign "GetWorkingDirectory" (void @-> returning string)
+-
+-  let get_directory_files =
+-    foreign "GetDirectoryFiles" (string @-> ptr int @-> returning ptr ptr char)
+-
+-  let clear_directory_files =
+-    foreign "ClearDirectoryFiles" (void @-> returning void)
+-
+-  let change_directory =
+-    foreign "ChangeDirectory" (string @-> returning bool)
+-
+-  let is_file_dropped =
+-    foreign "IsFileDropped" (void @-> returning bool)
+-
+-  let get_dropped_files =
+-    foreign "GetDroppedFiles" (ptr int @-> returning ptr ptr char)
+-
+-  let clear_dropped_files =
+-    foreign "ClearDroppedFiles" (void @-> returning void)
+-
+-  let get_file_mod_time =
+-    foreign "GetFileModTime" (string @-> returning long)
+-
+-  let compress_data =
+-    foreign "CompressData" (ptr uchar @-> int @-> ptr int @-> returning ptr uchar)
+-
+-  let decompress_data =
+-    foreign "DecompressData" (ptr uchar @-> int @-> ptr int @-> returning ptr uchar)
+-
+-  let save_storage_value =
+-    foreign "SaveStorageValue" (uint @-> int @-> returning bool)
+-
+-  let load_storage_value =
+-    foreign "LoadStorageValue" (uint @-> returning int)
+-
+-  let open_url =
+-    foreign "OpenURL" (string @-> returning void)
+-
+-  let is_key_pressed =
+-    foreign "IsKeyPressed" (int @-> returning bool)
+-
+-  let is_key_down =
+-    foreign "IsKeyDown" (int @-> returning bool)
+-
+-  let is_key_released =
+-    foreign "IsKeyReleased" (int @-> returning bool)
+-
+-  let is_key_up =
+-    foreign "IsKeyUp" (int @-> returning bool)
+-
+-  let set_exit_key =
+-    foreign "SetExitKey" (int @-> returning void)
+-
+-  let get_key_pressed =
+-    foreign "GetKeyPressed" (void @-> returning int)
+-
+-  let get_char_pressed =
+-    foreign "GetCharPressed" (void @-> returning int)
+-
+-  let is_gamepad_available =
+-    foreign "IsGamepadAvailable" (int @-> returning bool)
+-
+-  let is_gamepad_name =
+-    foreign "IsGamepadName" (int @-> string @-> returning bool)
+-
+-  let get_gamepad_name =
+-    foreign "GetGamepadName" (int @-> returning string)
+-
+-  let is_gamepad_button_pressed =
+-    foreign "IsGamepadButtonPressed" (int @-> int @-> returning bool)
+-
+-  let is_gamepad_button_down =
+-    foreign "IsGamepadButtonDown" (int @-> int @-> returning bool)
+-
+-  let is_gamepad_button_released =
+-    foreign "IsGamepadButtonReleased" (int @-> int @-> returning bool)
+-
+-  let is_gamepad_button_up =
+-    foreign "IsGamepadButtonUp" (int @-> int @-> returning bool)
+-
+-  let get_gamepad_button_pressed =
+-    foreign "GetGamepadButtonPressed" (void @-> returning int)
+-
+-  let get_gamepad_axis_count =
+-    foreign "GetGamepadAxisCount" (int @-> returning int)
+-
+-  let get_gamepad_axis_movement =
+-    foreign "GetGamepadAxisMovement" (int @-> int @-> returning float)
+-
+-  let is_mouse_button_pressed =
+-    foreign "IsMouseButtonPressed" (int @-> returning bool)
+-
+-  let is_mouse_button_down =
+-    foreign "IsMouseButtonDown" (int @-> returning bool)
+-
+-  let is_mouse_button_released =
+-    foreign "IsMouseButtonReleased" (int @-> returning bool)
+-
+-  let is_mouse_button_up =
+-    foreign "IsMouseButtonUp" (int @-> returning bool)
+-
+-  let get_mouse_x =
+-    foreign "GetMouseX" (void @-> returning int)
+-
+-  let get_mouse_y =
+-    foreign "GetMouseY" (void @-> returning int)
+-
+-  let get_mouse_position =
+-    foreign "GetMousePosition" (void @-> returning Vector2.t)
+-
+-  let set_mouse_position =
+-    foreign "SetMousePosition" (int @-> int @-> returning void)
+-
+-  let set_mouse_offset =
+-    foreign "SetMouseOffset" (int @-> int @-> returning void)
+-
+-  let set_mouse_scale =
+-    foreign "SetMouseScale" (float @-> float @-> returning void)
+-
+-  let get_mouse_wheel_move =
+-    foreign "GetMouseWheelMove" (void @-> returning float)
+-
+-  let get_mouse_cursor =
+-    foreign "GetMouseCursor" (void @-> returning int)
+-
+-  let set_mouse_cursor =
+-    foreign "SetMouseCursor" (int @-> returning void)
+-
+-  let get_touch_x =
+-    foreign "GetTouchX" (void @-> returning int)
+-
+-  let get_touch_y =
+-    foreign "GetTouchY" (void @-> returning int)
+-
+-  let get_touch_position =
+-    foreign "GetTouchPosition" (int @-> returning Vector2.t)
+-
+-  let set_gestures_enabled =
+-    foreign "SetGesturesEnabled" (uint @-> returning void)
+-
+-  let is_gesture_detected =
+-    foreign "IsGestureDetected" (int @-> returning bool)
+-
+-  let get_gesture_detected =
+-    foreign "GetGestureDetected" (void @-> returning int)
+-
+-  let get_touch_points_count =
+-    foreign "GetTouchPointsCount" (void @-> returning int)
+-
+-  let get_gesture_hold_duration =
+-    foreign "GetGestureHoldDuration" (void @-> returning float)
+-
+-  let get_gesture_drag_vector =
+-    foreign "GetGestureDragVector" (void @-> returning Vector2.t)
+-
+-  let get_gesture_drag_angle =
+-    foreign "GetGestureDragAngle" (void @-> returning float)
+-
+-  let get_gesture_pinch_vector =
+-    foreign "GetGesturePinchVector" (void @-> returning Vector2.t)
+-
+-  let get_gesture_pinch_angle =
+-    foreign "GetGesturePinchAngle" (void @-> returning float)
+-
+-  let set_camera_mode =
+-    foreign "SetCameraMode" (camera @-> int @-> returning void)
+-
+-  let update_camera =
+-    foreign "UpdateCamera" (ptr camera @-> returning void)
+-
+-  let set_camera_pan_control =
+-    foreign "SetCameraPanControl" (int @-> returning void)
+-
+-  let set_camera_alt_control =
+-    foreign "SetCameraAltControl" (int @-> returning void)
+-
+-  let set_camera_smooth_zoom_control =
+-    foreign "SetCameraSmoothZoomControl" (int @-> returning void)
+-
+-  let set_camera_move_controls =
+-    foreign "SetCameraMoveControls" (int @-> int @-> int @-> int @-> int @-> int @-> returning void)
+-
+-  let draw_pixel =
+-    foreign "DrawPixel" (int @-> int @-> Color.t @-> returning void)
+-
+-  let draw_pixel_v =
+-    foreign "DrawPixelV" (Vector2.t @-> Color.t @-> returning void)
+-
+-  let draw_line =
+-    foreign "DrawLine" (int @-> int @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let draw_line_v =
+-    foreign "DrawLineV" (Vector2.t @-> Vector2.t @-> Color.t @-> returning void)
+-
+-  let draw_line_ex =
+-    foreign "DrawLineEx" (Vector2.t @-> Vector2.t @-> float @-> Color.t @-> returning void)
+-
+-  let draw_line_bezier =
+-    foreign "DrawLineBezier" (Vector2.t @-> Vector2.t @-> float @-> Color.t @-> returning void)
+-
+-  let draw_line_strip =
+-    foreign "DrawLineStrip" (ptr Vector2.t @-> int @-> Color.t @-> returning void)
+-
+-  let draw_circle =
+-    foreign "DrawCircle" (int @-> int @-> float @-> Color.t @-> returning void)
+-
+-  let draw_circle_sector =
+-    foreign "DrawCircleSector" (Vector2.t @-> float @-> int @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let draw_circle_sector_lines =
+-    foreign "DrawCircleSectorLines" (Vector2.t @-> float @-> int @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let draw_circle_gradient =
+-    foreign "DrawCircleGradient" (int @-> int @-> float @-> Color.t @-> Color.t @-> returning void)
+-
+-  let draw_circle_v =
+-    foreign "DrawCircleV" (Vector2.t @-> float @-> Color.t @-> returning void)
+-
+-  let draw_circle_lines =
+-    foreign "DrawCircleLines" (int @-> int @-> float @-> Color.t @-> returning void)
+-
+-  let draw_ellipse =
+-    foreign "DrawEllipse" (int @-> int @-> float @-> float @-> Color.t @-> returning void)
+-
+-  let draw_ellipse_lines =
+-    foreign "DrawEllipseLines" (int @-> int @-> float @-> float @-> Color.t @-> returning void)
+-
+-  let draw_ring =
+-    foreign "DrawRing" (Vector2.t @-> float @-> float @-> int @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let draw_ring_lines =
+-    foreign "DrawRingLines" (Vector2.t @-> float @-> float @-> int @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let draw_rectangle =
+-    foreign "DrawRectangle" (int @-> int @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let draw_rectangle_v =
+-    foreign "DrawRectangleV" (Vector2.t @-> Vector2.t @-> Color.t @-> returning void)
+-
+-  let draw_rectangle_rec =
+-    foreign "DrawRectangleRec" (Rectangle.t @-> Color.t @-> returning void)
+-
+-  let draw_rectangle_pro =
+-    foreign "DrawRectanglePro" (Rectangle.t @-> Vector2.t @-> float @-> Color.t @-> returning void)
+-
+-  let draw_rectangle_gradient_v =
+-    foreign "DrawRectangleGradientV" (int @-> int @-> int @-> int @-> Color.t @-> Color.t @-> returning void)
+-
+-  let draw_rectangle_gradient_h =
+-    foreign "DrawRectangleGradientH" (int @-> int @-> int @-> int @-> Color.t @-> Color.t @-> returning void)
+-
+-  let draw_rectangle_gradient_ex =
+-    foreign "DrawRectangleGradientEx" (Rectangle.t @-> Color.t @-> Color.t @-> Color.t @-> Color.t @-> returning void)
+-
+-  let draw_rectangle_lines =
+-    foreign "DrawRectangleLines" (int @-> int @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let draw_rectangle_lines_ex =
+-    foreign "DrawRectangleLinesEx" (Rectangle.t @-> int @-> Color.t @-> returning void)
+-
+-  let draw_rectangle_rounded =
+-    foreign "DrawRectangleRounded" (Rectangle.t @-> float @-> int @-> Color.t @-> returning void)
+-
+-  let draw_rectangle_rounded_lines =
+-    foreign "DrawRectangleRoundedLines" (Rectangle.t @-> float @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let draw_triangle =
+-    foreign "DrawTriangle" (Vector2.t @-> Vector2.t @-> Vector2.t @-> Color.t @-> returning void)
+-
+-  let draw_triangle_lines =
+-    foreign "DrawTriangleLines" (Vector2.t @-> Vector2.t @-> Vector2.t @-> Color.t @-> returning void)
+-
+-  let draw_triangle_fan =
+-    foreign "DrawTriangleFan" (ptr Vector2.t @-> int @-> Color.t @-> returning void)
+-
+-  let draw_triangle_strip =
+-    foreign "DrawTriangleStrip" (ptr Vector2.t @-> int @-> Color.t @-> returning void)
+-
+-  let draw_poly =
+-    foreign "DrawPoly" (Vector2.t @-> int @-> float @-> float @-> Color.t @-> returning void)
+-
+-  let draw_poly_lines =
+-    foreign "DrawPolyLines" (Vector2.t @-> int @-> float @-> float @-> Color.t @-> returning void)
+-
+-  let check_collision_recs =
+-    foreign "CheckCollisionRecs" (Rectangle.t @-> Rectangle.t @-> returning bool)
+-
+-  let check_collision_circles =
+-    foreign "CheckCollisionCircles" (Vector2.t @-> float @-> Vector2.t @-> float @-> returning bool)
+-
+-  let check_collision_circle_rec =
+-    foreign "CheckCollisionCircleRec" (Vector2.t @-> float @-> Rectangle.t @-> returning bool)
+-
+-  let check_collision_point_rec =
+-    foreign "CheckCollisionPointRec" (Vector2.t @-> Rectangle.t @-> returning bool)
+-
+-  let check_collision_point_circle =
+-    foreign "CheckCollisionPointCircle" (Vector2.t @-> Vector2.t @-> float @-> returning bool)
+-
+-  let check_collision_point_triangle =
+-    foreign "CheckCollisionPointTriangle" (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> returning bool)
+-
+-  let check_collision_lines =
+-    foreign "CheckCollisionLines" (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> ptr Vector2.t @-> returning bool)
+-
+-  let get_collision_rec =
+-    foreign "GetCollisionRec" (Rectangle.t @-> Rectangle.t @-> returning Rectangle.t)
+-
+-  let load_image =
+-    foreign "LoadImage" (string @-> returning Image.t)
+-
+-  let load_image_raw =
+-    foreign "LoadImageRaw" (string @-> int @-> int @-> int @-> int @-> returning Image.t)
+-
+-  let load_image_anim =
+-    foreign "LoadImageAnim" (string @-> ptr int @-> returning Image.t)
+-
+-  let load_image_from_memory =
+-    foreign "LoadImageFromMemory" (string @-> ptr const uchar @-> int @-> returning Image.t)
+-
+-  let unload_image =
+-    foreign "UnloadImage" (Image.t @-> returning void)
+-
+-  let export_image =
+-    foreign "ExportImage" (Image.t @-> string @-> returning bool)
+-
+-  let export_image_as_code =
+-    foreign "ExportImageAsCode" (Image.t @-> string @-> returning bool)
+-
+-  let gen_image_color =
+-    foreign "GenImageColor" (int @-> int @-> Color.t @-> returning Image.t)
+-
+-  let gen_image_gradient_v =
+-    foreign "GenImageGradientV" (int @-> int @-> Color.t @-> Color.t @-> returning Image.t)
+-
+-  let gen_image_gradient_h =
+-    foreign "GenImageGradientH" (int @-> int @-> Color.t @-> Color.t @-> returning Image.t)
+-
+-  let gen_image_gradient_radial =
+-    foreign "GenImageGradientRadial" (int @-> int @-> float @-> Color.t @-> Color.t @-> returning Image.t)
+-
+-  let gen_image_checked =
+-    foreign "GenImageChecked" (int @-> int @-> int @-> int @-> Color.t @-> Color.t @-> returning Image.t)
+-
+-  let gen_image_white_noise =
+-    foreign "GenImageWhiteNoise" (int @-> int @-> float @-> returning Image.t)
+-
+-  let gen_image_perlin_noise =
+-    foreign "GenImagePerlinNoise" (int @-> int @-> int @-> int @-> float @-> returning Image.t)
+-
+-  let gen_image_cellular =
+-    foreign "GenImageCellular" (int @-> int @-> int @-> returning Image.t)
+-
+-  let image_copy =
+-    foreign "ImageCopy" (Image.t @-> returning Image.t)
+-
+-  let image_from_image =
+-    foreign "ImageFromImage" (Image.t @-> Rectangle.t @-> returning Image.t)
+-
+-  let image_text =
+-    foreign "ImageText" (string @-> int @-> Color.t @-> returning Image.t)
+-
+-  let image_text_ex =
+-    foreign "ImageTextEx" (Font.t @-> string @-> float @-> float @-> Color.t @-> returning Image.t)
+-
+-  let image_format =
+-    foreign "ImageFormat" (ptr Image.t @-> int @-> returning void)
+-
+-  let image_to_pot =
+-    foreign "ImageToPOT" (ptr Image.t @-> Color.t @-> returning void)
+-
+-  let image_crop =
+-    foreign "ImageCrop" (ptr Image.t @-> Rectangle.t @-> returning void)
+-
+-  let image_alpha_crop =
+-    foreign "ImageAlphaCrop" (ptr Image.t @-> float @-> returning void)
+-
+-  let image_alpha_clear =
+-    foreign "ImageAlphaClear" (ptr Image.t @-> Color.t @-> float @-> returning void)
+-
+-  let image_alpha_mask =
+-    foreign "ImageAlphaMask" (ptr Image.t @-> Image.t @-> returning void)
+-
+-  let image_alpha_premultiply =
+-    foreign "ImageAlphaPremultiply" (ptr Image.t @-> returning void)
+-
+-  let image_resize =
+-    foreign "ImageResize" (ptr Image.t @-> int @-> int @-> returning void)
+-
+-  let image_resize_nn =
+-    foreign "ImageResizeNN" (ptr Image.t @-> int @-> int @-> returning void)
+-
+-  let image_resize_canvas =
+-    foreign "ImageResizeCanvas" (ptr Image.t @-> int @-> int @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let image_mipmaps =
+-    foreign "ImageMipmaps" (ptr Image.t @-> returning void)
+-
+-  let image_dither =
+-    foreign "ImageDither" (ptr Image.t @-> int @-> int @-> int @-> int @-> returning void)
+-
+-  let image_flip_vertical =
+-    foreign "ImageFlipVertical" (ptr Image.t @-> returning void)
+-
+-  let image_flip_horizontal =
+-    foreign "ImageFlipHorizontal" (ptr Image.t @-> returning void)
+-
+-  let image_rotate_cw =
+-    foreign "ImageRotateCW" (ptr Image.t @-> returning void)
+-
+-  let image_rotate_ccw =
+-    foreign "ImageRotateCCW" (ptr Image.t @-> returning void)
+-
+-  let image_color_tint =
+-    foreign "ImageColorTint" (ptr Image.t @-> Color.t @-> returning void)
+-
+-  let image_color_invert =
+-    foreign "ImageColorInvert" (ptr Image.t @-> returning void)
+-
+-  let image_color_grayscale =
+-    foreign "ImageColorGrayscale" (ptr Image.t @-> returning void)
+-
+-  let image_color_contrast =
+-    foreign "ImageColorContrast" (ptr Image.t @-> float @-> returning void)
+-
+-  let image_color_brightness =
+-    foreign "ImageColorBrightness" (ptr Image.t @-> int @-> returning void)
+-
+-  let image_color_replace =
+-    foreign "ImageColorReplace" (ptr Image.t @-> Color.t @-> Color.t @-> returning void)
+-
+-  let load_image_colors =
+-    foreign "LoadImageColors" (Image.t @-> returning ptr Color.t)
+-
+-  let load_image_palette =
+-    foreign "LoadImagePalette" (Image.t @-> int @-> ptr int @-> returning ptr Color.t)
+-
+-  let unload_image_colors =
+-    foreign "UnloadImageColors" (ptr Color.t @-> returning void)
+-
+-  let unload_image_palette =
+-    foreign "UnloadImagePalette" (ptr Color.t @-> returning void)
+-
+-  let get_image_alpha_border =
+-    foreign "GetImageAlphaBorder" (Image.t @-> float @-> returning Rectangle.t)
+-
+-  let image_clear_background =
+-    foreign "ImageClearBackground" (ptr Image.t @-> Color.t @-> returning void)
+-
+-  let image_draw_pixel =
+-    foreign "ImageDrawPixel" (ptr Image.t @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let image_draw_pixel_v =
+-    foreign "ImageDrawPixelV" (ptr Image.t @-> Vector2.t @-> Color.t @-> returning void)
+-
+-  let image_draw_line =
+-    foreign "ImageDrawLine" (ptr Image.t @-> int @-> int @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let image_draw_line_v =
+-    foreign "ImageDrawLineV" (ptr Image.t @-> Vector2.t @-> Vector2.t @-> Color.t @-> returning void)
+-
+-  let image_draw_circle =
+-    foreign "ImageDrawCircle" (ptr Image.t @-> int @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let image_draw_circle_v =
+-    foreign "ImageDrawCircleV" (ptr Image.t @-> Vector2.t @-> int @-> Color.t @-> returning void)
+-
+-  let image_draw_rectangle =
+-    foreign "ImageDrawRectangle" (ptr Image.t @-> int @-> int @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let image_draw_rectangle_v =
+-    foreign "ImageDrawRectangleV" (ptr Image.t @-> Vector2.t @-> Vector2.t @-> Color.t @-> returning void)
+-
+-  let image_draw_rectangle_rec =
+-    foreign "ImageDrawRectangleRec" (ptr Image.t @-> Rectangle.t @-> Color.t @-> returning void)
+-
+-  let image_draw_rectangle_lines =
+-    foreign "ImageDrawRectangleLines" (ptr Image.t @-> Rectangle.t @-> int @-> Color.t @-> returning void)
+-
+-  let image_draw =
+-    foreign "ImageDraw" (ptr Image.t @-> Image.t @-> Rectangle.t @-> Rectangle.t @-> Color.t @-> returning void)
+-
+-  let image_draw_text =
+-    foreign "ImageDrawText" (ptr Image.t @-> string @-> int @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let image_draw_text_ex =
+-    foreign "ImageDrawTextEx" (ptr Image.t @-> Font.t @-> string @-> Vector2.t @-> float @-> float @-> Color.t @-> returning void)
+-
+-  let load_texture =
+-    foreign "LoadTexture" (string @-> returning Texture.t)
+-
+-  let load_texture_from_image =
+-    foreign "LoadTextureFromImage" (Image.t @-> returning Texture.t)
+-
+-  let load_texture_cubemap =
+-    foreign "LoadTextureCubemap" (Image.t @-> int @-> returning texture_cubemap)
+-
+-  let load_render_texture =
+-    foreign "LoadRenderTexture" (int @-> int @-> returning render_texture2_d)
+-
+-  let unload_texture =
+-    foreign "UnloadTexture" (Texture.t @-> returning void)
+-
+-  let unload_render_texture =
+-    foreign "UnloadRenderTexture" (render_texture2_d @-> returning void)
+-
+-  let update_texture =
+-    foreign "UpdateTexture" (Texture.t @-> ptr const void @-> returning void)
+-
+-  let update_texture_rec =
+-    foreign "UpdateTextureRec" (Texture.t @-> Rectangle.t @-> ptr const void @-> returning void)
+-
+-  let get_texture_data =
+-    foreign "GetTextureData" (Texture.t @-> returning Image.t)
+-
+-  let get_screen_data =
+-    foreign "GetScreenData" (void @-> returning Image.t)
+-
+-  let gen_texture_mipmaps =
+-    foreign "GenTextureMipmaps" (ptr Texture.t @-> returning void)
+-
+-  let set_texture_filter =
+-    foreign "SetTextureFilter" (Texture.t @-> int @-> returning void)
+-
+-  let set_texture_wrap =
+-    foreign "SetTextureWrap" (Texture.t @-> int @-> returning void)
+-
+-  let draw_texture =
+-    foreign "DrawTexture" (Texture.t @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let draw_texture_v =
+-    foreign "DrawTextureV" (Texture.t @-> Vector2.t @-> Color.t @-> returning void)
+-
+-  let draw_texture_ex =
+-    foreign "DrawTextureEx" (Texture.t @-> Vector2.t @-> float @-> float @-> Color.t @-> returning void)
+-
+-  let draw_texture_rec =
+-    foreign "DrawTextureRec" (Texture.t @-> Rectangle.t @-> Vector2.t @-> Color.t @-> returning void)
+-
+-  let draw_texture_quad =
+-    foreign "DrawTextureQuad" (Texture.t @-> Vector2.t @-> Vector2.t @-> Rectangle.t @-> Color.t @-> returning void)
+-
+-  let draw_texture_tiled =
+-    foreign "DrawTextureTiled" (Texture.t @-> Rectangle.t @-> Rectangle.t @-> Vector2.t @-> float @-> float @-> Color.t @-> returning void)
+-
+-  let draw_texture_pro =
+-    foreign "DrawTexturePro" (Texture.t @-> Rectangle.t @-> Rectangle.t @-> Vector2.t @-> float @-> Color.t @-> returning void)
+-
+-  let draw_texture_npatch =
+-    foreign "DrawTextureNPatch" (Texture.t @-> NPatchInfo.t @-> Rectangle.t @-> Vector2.t @-> float @-> Color.t @-> returning void)
+-
+-  let fade =
+-    foreign "Fade" (Color.t @-> float @-> returning Color.t)
+-
+-  let color_to_int =
+-    foreign "ColorToInt" (Color.t @-> returning int)
+-
+-  let color_normalize =
+-    foreign "ColorNormalize" (Color.t @-> returning Vector4.t)
+-
+-  let color_from_normalized =
+-    foreign "ColorFromNormalized" (Vector4.t @-> returning Color.t)
+-
+-  let color_to_hsv =
+-    foreign "ColorToHSV" (Color.t @-> returning Vector3.t)
+-
+-  let color_from_hsv =
+-    foreign "ColorFromHSV" (float @-> float @-> float @-> returning Color.t)
+-
+-  let color_alpha =
+-    foreign "ColorAlpha" (Color.t @-> float @-> returning Color.t)
+-
+-  let color_alpha_blend =
+-    foreign "ColorAlphaBlend" (Color.t @-> Color.t @-> Color.t @-> returning Color.t)
+-
+-  let get_color =
+-    foreign "GetColor" (int @-> returning Color.t)
+-
+-  let get_pixel_color =
+-    foreign "GetPixelColor" (ptr void @-> int @-> returning Color.t)
+-
+-  let set_pixel_color =
+-    foreign "SetPixelColor" (ptr void @-> Color.t @-> int @-> returning void)
+-
+-  let get_pixel_data_size =
+-    foreign "GetPixelDataSize" (int @-> int @-> int @-> returning int)
+-
+-  let get_font_default =
+-    foreign "GetFontDefault" (void @-> returning Font.t)
+-
+-  let load_font =
+-    foreign "LoadFont" (string @-> returning Font.t)
+-
+-  let load_font_ex =
+-    foreign "LoadFontEx" (string @-> int @-> ptr int @-> int @-> returning Font.t)
+-
+-  let load_font_from_image =
+-    foreign "LoadFontFromImage" (Image.t @-> Color.t @-> int @-> returning Font.t)
+-
+-  let load_font_from_memory =
+-    foreign "LoadFontFromMemory" (string @-> ptr const uchar @-> int @-> int @-> ptr int @-> int @-> returning Font.t)
+-
+-  let load_font_data =
+-    foreign "LoadFontData" (ptr const uchar @-> int @-> int @-> ptr int @-> int @-> int @-> returning ptr CharInfo.t)
+-
+-  let gen_image_font_atlas =
+-    foreign "GenImageFontAtlas" (ptr const _char_info @-> ptr ptr Rectangle.t @-> int @-> int @-> int @-> int @-> returning Image.t)
+-
+-  let unload_font_data =
+-    foreign "UnloadFontData" (ptr CharInfo.t @-> int @-> returning void)
+-
+-  let unload_font =
+-    foreign "UnloadFont" (Font.t @-> returning void)
+-
+-  let draw_fps =
+-    foreign "DrawFPS" (int @-> int @-> returning void)
+-
+-  let draw_text =
+-    foreign "DrawText" (string @-> int @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let draw_text_ex =
+-    foreign "DrawTextEx" (Font.t @-> string @-> Vector2.t @-> float @-> float @-> Color.t @-> returning void)
+-
+-  let draw_text_rec =
+-    foreign "DrawTextRec" (Font.t @-> string @-> Rectangle.t @-> float @-> float @-> bool @-> Color.t @-> returning void)
+-
+-  let draw_text_rec_ex =
+-    foreign "DrawTextRecEx" (Font.t @-> string @-> Rectangle.t @-> float @-> float @-> bool @-> Color.t @-> returning void)
+-
+-  let draw_text_codepoint =
+-    foreign "DrawTextCodepoint" (Font.t @-> int @-> Vector2.t @-> float @-> Color.t @-> returning void)
+-
+-  let measure_text =
+-    foreign "MeasureText" (string @-> int @-> returning int)
+-
+-  let measure_text_ex =
+-    foreign "MeasureTextEx" (Font.t @-> string @-> float @-> float @-> returning Vector2.t)
+-
+-  let get_glyph_index =
+-    foreign "GetGlyphIndex" (Font.t @-> int @-> returning int)
+-
+-  let text_copy =
+-    foreign "TextCopy" (ptr char @-> string @-> returning int)
+-
+-  let text_is_equal =
+-    foreign "TextIsEqual" (string @-> string @-> returning bool)
+-
+-  let text_length =
+-    foreign "TextLength" (string @-> returning uint)
+-
+-  let text_format =
+-    foreign "TextFormat" (string @->  @-> returning string)
+-
+-  let text_subtext =
+-    foreign "TextSubtext" (string @-> int @-> int @-> returning string)
+-
+-  let text_replace =
+-    foreign "TextReplace" (ptr char @-> string @-> string @-> returning ptr char)
+-
+-  let text_insert =
+-    foreign "TextInsert" (string @-> string @-> int @-> returning ptr char)
+-
+-  let text_join =
+-    foreign "TextJoin" (ptr ptr const char @-> int @-> string @-> returning string)
+-
+-  let text_split =
+-    foreign "TextSplit" (string @-> char @-> ptr int @-> returning ptr ptr const char)
+-
+-  let text_append =
+-    foreign "TextAppend" (ptr char @-> string @-> ptr int @-> returning void)
+-
+-  let text_find_index =
+-    foreign "TextFindIndex" (string @-> string @-> returning int)
+-
+-  let text_to_upper =
+-    foreign "TextToUpper" (string @-> returning string)
+-
+-  let text_to_lower =
+-    foreign "TextToLower" (string @-> returning string)
+-
+-  let text_to_pascal =
+-    foreign "TextToPascal" (string @-> returning string)
+-
+-  let text_to_integer =
+-    foreign "TextToInteger" (string @-> returning int)
+-
+-  let text_to_utf8 =
+-    foreign "TextToUtf8" (ptr int @-> int @-> returning ptr char)
+-
+-  let get_codepoints =
+-    foreign "GetCodepoints" (string @-> ptr int @-> returning ptr int)
+-
+-  let get_codepoints_count =
+-    foreign "GetCodepointsCount" (string @-> returning int)
+-
+-  let get_next_codepoint =
+-    foreign "GetNextCodepoint" (string @-> ptr int @-> returning int)
+-
+-  let codepoint_to_utf8 =
+-    foreign "CodepointToUtf8" (int @-> ptr int @-> returning string)
+-
+-  let draw_line3_d =
+-    foreign "DrawLine3D" (Vector3.t @-> Vector3.t @-> Color.t @-> returning void)
+-
+-  let draw_point3_d =
+-    foreign "DrawPoint3D" (Vector3.t @-> Color.t @-> returning void)
+-
+-  let draw_circle3_d =
+-    foreign "DrawCircle3D" (Vector3.t @-> float @-> Vector3.t @-> float @-> Color.t @-> returning void)
+-
+-  let draw_triangle3_d =
+-    foreign "DrawTriangle3D" (Vector3.t @-> Vector3.t @-> Vector3.t @-> Color.t @-> returning void)
+-
+-  let draw_triangle_strip3_d =
+-    foreign "DrawTriangleStrip3D" (ptr Vector3.t @-> int @-> Color.t @-> returning void)
+-
+-  let draw_cube =
+-    foreign "DrawCube" (Vector3.t @-> float @-> float @-> float @-> Color.t @-> returning void)
+-
+-  let draw_cube_v =
+-    foreign "DrawCubeV" (Vector3.t @-> Vector3.t @-> Color.t @-> returning void)
+-
+-  let draw_cube_wires =
+-    foreign "DrawCubeWires" (Vector3.t @-> float @-> float @-> float @-> Color.t @-> returning void)
+-
+-  let draw_cube_wires_v =
+-    foreign "DrawCubeWiresV" (Vector3.t @-> Vector3.t @-> Color.t @-> returning void)
+-
+-  let draw_cube_texture =
+-    foreign "DrawCubeTexture" (Texture.t @-> Vector3.t @-> float @-> float @-> float @-> Color.t @-> returning void)
+-
+-  let draw_sphere =
+-    foreign "DrawSphere" (Vector3.t @-> float @-> Color.t @-> returning void)
+-
+-  let draw_sphere_ex =
+-    foreign "DrawSphereEx" (Vector3.t @-> float @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let draw_sphere_wires =
+-    foreign "DrawSphereWires" (Vector3.t @-> float @-> int @-> int @-> Color.t @-> returning void)
+-
+-  let draw_cylinder =
+-    foreign "DrawCylinder" (Vector3.t @-> float @-> float @-> float @-> int @-> Color.t @-> returning void)
+-
+-  let draw_cylinder_wires =
+-    foreign "DrawCylinderWires" (Vector3.t @-> float @-> float @-> float @-> int @-> Color.t @-> returning void)
+-
+-  let draw_plane =
+-    foreign "DrawPlane" (Vector3.t @-> Vector2.t @-> Color.t @-> returning void)
+-
+-  let draw_ray =
+-    foreign "DrawRay" (Ray.t @-> Color.t @-> returning void)
+-
+-  let draw_grid =
+-    foreign "DrawGrid" (int @-> float @-> returning void)
+-
+-  let draw_gizmo =
+-    foreign "DrawGizmo" (Vector3.t @-> returning void)
+-
+-  let load_model =
+-    foreign "LoadModel" (string @-> returning Model.t)
+-
+-  let load_model_from_mesh =
+-    foreign "LoadModelFromMesh" (Mesh.t @-> returning Model.t)
+-
+-  let unload_model =
+-    foreign "UnloadModel" (Model.t @-> returning void)
+-
+-  let unload_model_keep_meshes =
+-    foreign "UnloadModelKeepMeshes" (Model.t @-> returning void)
+-
+-  let load_meshes =
+-    foreign "LoadMeshes" (string @-> ptr int @-> returning ptr Mesh.t)
+-
+-  let unload_mesh =
+-    foreign "UnloadMesh" (Mesh.t @-> returning void)
+-
+-  let export_mesh =
+-    foreign "ExportMesh" (Mesh.t @-> string @-> returning bool)
+-
+-  let load_materials =
+-    foreign "LoadMaterials" (string @-> ptr int @-> returning ptr Material.t)
+-
+-  let load_material_default =
+-    foreign "LoadMaterialDefault" (void @-> returning Material.t)
+-
+-  let unload_material =
+-    foreign "UnloadMaterial" (Material.t @-> returning void)
+-
+-  let set_material_texture =
+-    foreign "SetMaterialTexture" (ptr Material.t @-> int @-> Texture.t @-> returning void)
+-
+-  let set_model_mesh_material =
+-    foreign "SetModelMeshMaterial" (ptr Model.t @-> int @-> int @-> returning void)
+-
+-  let load_model_animations =
+-    foreign "LoadModelAnimations" (string @-> ptr int @-> returning ptr ModelAnimation.t)
+-
+-  let update_model_animation =
+-    foreign "UpdateModelAnimation" (Model.t @-> ModelAnimation.t @-> int @-> returning void)
+-
+-  let unload_model_animation =
+-    foreign "UnloadModelAnimation" (ModelAnimation.t @-> returning void)
+-
+-  let is_model_animation_valid =
+-    foreign "IsModelAnimationValid" (Model.t @-> ModelAnimation.t @-> returning bool)
+-
+-  let gen_mesh_poly =
+-    foreign "GenMeshPoly" (int @-> float @-> returning Mesh.t)
+-
+-  let gen_mesh_plane =
+-    foreign "GenMeshPlane" (float @-> float @-> int @-> int @-> returning Mesh.t)
+-
+-  let gen_mesh_cube =
+-    foreign "GenMeshCube" (float @-> float @-> float @-> returning Mesh.t)
+-
+-  let gen_mesh_sphere =
+-    foreign "GenMeshSphere" (float @-> int @-> int @-> returning Mesh.t)
+-
+-  let gen_mesh_hemi_sphere =
+-    foreign "GenMeshHemiSphere" (float @-> int @-> int @-> returning Mesh.t)
+-
+-  let gen_mesh_cylinder =
+-    foreign "GenMeshCylinder" (float @-> float @-> int @-> returning Mesh.t)
+-
+-  let gen_mesh_torus =
+-    foreign "GenMeshTorus" (float @-> float @-> int @-> int @-> returning Mesh.t)
+-
+-  let gen_mesh_knot =
+-    foreign "GenMeshKnot" (float @-> float @-> int @-> int @-> returning Mesh.t)
+-
+-  let gen_mesh_heightmap =
+-    foreign "GenMeshHeightmap" (Image.t @-> Vector3.t @-> returning Mesh.t)
+-
+-  let gen_mesh_cubicmap =
+-    foreign "GenMeshCubicmap" (Image.t @-> Vector3.t @-> returning Mesh.t)
+-
+-  let mesh_bounding_box =
+-    foreign "MeshBoundingBox" (Mesh.t @-> returning BoundingBox.t)
+-
+-  let mesh_tangents =
+-    foreign "MeshTangents" (ptr Mesh.t @-> returning void)
+-
+-  let mesh_binormals =
+-    foreign "MeshBinormals" (ptr Mesh.t @-> returning void)
+-
+-  let mesh_normals_smooth =
+-    foreign "MeshNormalsSmooth" (ptr Mesh.t @-> returning void)
+-
+-  let draw_model =
+-    foreign "DrawModel" (Model.t @-> Vector3.t @-> float @-> Color.t @-> returning void)
+-
+-  let draw_model_ex =
+-    foreign "DrawModelEx" (Model.t @-> Vector3.t @-> Vector3.t @-> float @-> Vector3.t @-> Color.t @-> returning void)
+-
+-  let draw_model_wires =
+-    foreign "DrawModelWires" (Model.t @-> Vector3.t @-> float @-> Color.t @-> returning void)
+-
+-  let draw_model_wires_ex =
+-    foreign "DrawModelWiresEx" (Model.t @-> Vector3.t @-> Vector3.t @-> float @-> Vector3.t @-> Color.t @-> returning void)
+-
+-  let draw_bounding_box =
+-    foreign "DrawBoundingBox" (BoundingBox.t @-> Color.t @-> returning void)
+-
+-  let draw_billboard =
+-    foreign "DrawBillboard" (camera @-> Texture.t @-> Vector3.t @-> float @-> Color.t @-> returning void)
+-
+-  let draw_billboard_rec =
+-    foreign "DrawBillboardRec" (camera @-> Texture.t @-> Rectangle.t @-> Vector3.t @-> float @-> Color.t @-> returning void)
+-
+-  let check_collision_spheres =
+-    foreign "CheckCollisionSpheres" (Vector3.t @-> float @-> Vector3.t @-> float @-> returning bool)
+-
+-  let check_collision_boxes =
+-    foreign "CheckCollisionBoxes" (BoundingBox.t @-> BoundingBox.t @-> returning bool)
+-
+-  let check_collision_box_sphere =
+-    foreign "CheckCollisionBoxSphere" (BoundingBox.t @-> Vector3.t @-> float @-> returning bool)
+-
+-  let check_collision_ray_sphere =
+-    foreign "CheckCollisionRaySphere" (Ray.t @-> Vector3.t @-> float @-> returning bool)
+-
+-  let check_collision_ray_sphere_ex =
+-    foreign "CheckCollisionRaySphereEx" (Ray.t @-> Vector3.t @-> float @-> ptr Vector3.t @-> returning bool)
+-
+-  let check_collision_ray_box =
+-    foreign "CheckCollisionRayBox" (Ray.t @-> BoundingBox.t @-> returning bool)
+-
+-  let get_collision_ray_mesh =
+-    foreign "GetCollisionRayMesh" (Ray.t @-> Mesh.t @-> Matrix.t @-> returning RayHitInfo.t)
+-
+-  let get_collision_ray_model =
+-    foreign "GetCollisionRayModel" (Ray.t @-> Model.t @-> returning RayHitInfo.t)
+-
+-  let get_collision_ray_triangle =
+-    foreign "GetCollisionRayTriangle" (Ray.t @-> Vector3.t @-> Vector3.t @-> Vector3.t @-> returning RayHitInfo.t)
+-
+-  let get_collision_ray_ground =
+-    foreign "GetCollisionRayGround" (Ray.t @-> float @-> returning RayHitInfo.t)
+-
+-  let load_shader =
+-    foreign "LoadShader" (string @-> string @-> returning Shader.t)
+-
+-  let load_shader_code =
+-    foreign "LoadShaderCode" (string @-> string @-> returning Shader.t)
+-
+-  let unload_shader =
+-    foreign "UnloadShader" (Shader.t @-> returning void)
+-
+-  let get_shader_default =
+-    foreign "GetShaderDefault" (void @-> returning Shader.t)
+-
+-  let get_texture_default =
+-    foreign "GetTextureDefault" (void @-> returning Texture.t)
+-
+-  let get_shapes_texture =
+-    foreign "GetShapesTexture" (void @-> returning Texture.t)
+-
+-  let get_shapes_texture_rec =
+-    foreign "GetShapesTextureRec" (void @-> returning Rectangle.t)
+-
+-  let set_shapes_texture =
+-    foreign "SetShapesTexture" (Texture.t @-> Rectangle.t @-> returning void)
+-
+-  let get_shader_location =
+-    foreign "GetShaderLocation" (Shader.t @-> string @-> returning int)
+-
+-  let get_shader_location_attrib =
+-    foreign "GetShaderLocationAttrib" (Shader.t @-> string @-> returning int)
+-
+-  let set_shader_value =
+-    foreign "SetShaderValue" (Shader.t @-> int @-> ptr const void @-> int @-> returning void)
+-
+-  let set_shader_value_v =
+-    foreign "SetShaderValueV" (Shader.t @-> int @-> ptr const void @-> int @-> int @-> returning void)
+-
+-  let set_shader_value_matrix =
+-    foreign "SetShaderValueMatrix" (Shader.t @-> int @-> Matrix.t @-> returning void)
+-
+-  let set_shader_value_texture =
+-    foreign "SetShaderValueTexture" (Shader.t @-> int @-> Texture.t @-> returning void)
+-
+-  let set_matrix_projection =
+-    foreign "SetMatrixProjection" (Matrix.t @-> returning void)
+-
+-  let set_matrix_modelview =
+-    foreign "SetMatrixModelview" (Matrix.t @-> returning void)
+-
+-  let get_matrix_modelview =
+-    foreign "GetMatrixModelview" (void @-> returning Matrix.t)
+-
+-  let get_matrix_projection =
+-    foreign "GetMatrixProjection" (void @-> returning Matrix.t)
+-
+-  let gen_texture_cubemap =
+-    foreign "GenTextureCubemap" (Shader.t @-> Texture.t @-> int @-> int @-> returning texture_cubemap)
+-
+-  let gen_texture_irradiance =
+-    foreign "GenTextureIrradiance" (Shader.t @-> texture_cubemap @-> int @-> returning texture_cubemap)
+-
+-  let gen_texture_prefilter =
+-    foreign "GenTexturePrefilter" (Shader.t @-> texture_cubemap @-> int @-> returning texture_cubemap)
+-
+-  let gen_texture_brdf =
+-    foreign "GenTextureBRDF" (Shader.t @-> int @-> returning Texture.t)
+-
+-  let begin_shader_mode =
+-    foreign "BeginShaderMode" (Shader.t @-> returning void)
+-
+-  let end_shader_mode =
+-    foreign "EndShaderMode" (void @-> returning void)
+-
+-  let begin_blend_mode =
+-    foreign "BeginBlendMode" (int @-> returning void)
+-
+-  let end_blend_mode =
+-    foreign "EndBlendMode" (void @-> returning void)
+-
+-  let init_vr_simulator =
+-    foreign "InitVrSimulator" (void @-> returning void)
+-
+-  let close_vr_simulator =
+-    foreign "CloseVrSimulator" (void @-> returning void)
+-
+-  let update_vr_tracking =
+-    foreign "UpdateVrTracking" (ptr camera @-> returning void)
+-
+-  let set_vr_configuration =
+-    foreign "SetVrConfiguration" (VrDeviceInfo.t @-> Shader.t @-> returning void)
+-
+-  let is_vr_simulator_ready =
+-    foreign "IsVrSimulatorReady" (void @-> returning bool)
+-
+-  let toggle_vr_mode =
+-    foreign "ToggleVrMode" (void @-> returning void)
+-
+-  let begin_vr_drawing =
+-    foreign "BeginVrDrawing" (void @-> returning void)
+-
+-  let end_vr_drawing =
+-    foreign "EndVrDrawing" (void @-> returning void)
+-
+-  let init_audio_device =
+-    foreign "InitAudioDevice" (void @-> returning void)
+-
+-  let close_audio_device =
+-    foreign "CloseAudioDevice" (void @-> returning void)
+-
+-  let is_audio_device_ready =
+-    foreign "IsAudioDeviceReady" (void @-> returning bool)
+-
+-  let set_master_volume =
+-    foreign "SetMasterVolume" (float @-> returning void)
+-
+-  let load_wave =
+-    foreign "LoadWave" (string @-> returning Wave.t)
+-
+-  let load_wave_from_memory =
+-    foreign "LoadWaveFromMemory" (string @-> ptr const uchar @-> int @-> returning Wave.t)
+-
+-  let load_sound =
+-    foreign "LoadSound" (string @-> returning Sound.t)
+-
+-  let load_sound_from_wave =
+-    foreign "LoadSoundFromWave" (Wave.t @-> returning Sound.t)
+-
+-  let update_sound =
+-    foreign "UpdateSound" (Sound.t @-> ptr const void @-> int @-> returning void)
+-
+-  let unload_wave =
+-    foreign "UnloadWave" (Wave.t @-> returning void)
+-
+-  let unload_sound =
+-    foreign "UnloadSound" (Sound.t @-> returning void)
+-
+-  let export_wave =
+-    foreign "ExportWave" (Wave.t @-> string @-> returning bool)
+-
+-  let export_wave_as_code =
+-    foreign "ExportWaveAsCode" (Wave.t @-> string @-> returning bool)
+-
+-  let play_sound =
+-    foreign "PlaySound" (Sound.t @-> returning void)
+-
+-  let stop_sound =
+-    foreign "StopSound" (Sound.t @-> returning void)
+-
+-  let pause_sound =
+-    foreign "PauseSound" (Sound.t @-> returning void)
+-
+-  let resume_sound =
+-    foreign "ResumeSound" (Sound.t @-> returning void)
+-
+-  let play_sound_multi =
+-    foreign "PlaySoundMulti" (Sound.t @-> returning void)
+-
+-  let stop_sound_multi =
+-    foreign "StopSoundMulti" (void @-> returning void)
+-
+-  let get_sounds_playing =
+-    foreign "GetSoundsPlaying" (void @-> returning int)
+-
+-  let is_sound_playing =
+-    foreign "IsSoundPlaying" (Sound.t @-> returning bool)
+-
+-  let set_sound_volume =
+-    foreign "SetSoundVolume" (Sound.t @-> float @-> returning void)
+-
+-  let set_sound_pitch =
+-    foreign "SetSoundPitch" (Sound.t @-> float @-> returning void)
+-
+-  let wave_format =
+-    foreign "WaveFormat" (ptr Wave.t @-> int @-> int @-> int @-> returning void)
+-
+-  let wave_copy =
+-    foreign "WaveCopy" (Wave.t @-> returning Wave.t)
+-
+-  let wave_crop =
+-    foreign "WaveCrop" (ptr Wave.t @-> int @-> int @-> returning void)
+-
+-  let load_wave_samples =
+-    foreign "LoadWaveSamples" (Wave.t @-> returning ptr float)
+-
+-  let unload_wave_samples =
+-    foreign "UnloadWaveSamples" (ptr float @-> returning void)
+-
+-  let load_music_stream =
+-    foreign "LoadMusicStream" (string @-> returning Music.t)
+-
+-  let unload_music_stream =
+-    foreign "UnloadMusicStream" (Music.t @-> returning void)
+-
+-  let play_music_stream =
+-    foreign "PlayMusicStream" (Music.t @-> returning void)
+-
+-  let update_music_stream =
+-    foreign "UpdateMusicStream" (Music.t @-> returning void)
+-
+-  let stop_music_stream =
+-    foreign "StopMusicStream" (Music.t @-> returning void)
+-
+-  let pause_music_stream =
+-    foreign "PauseMusicStream" (Music.t @-> returning void)
+-
+-  let resume_music_stream =
+-    foreign "ResumeMusicStream" (Music.t @-> returning void)
+-
+-  let is_music_playing =
+-    foreign "IsMusicPlaying" (Music.t @-> returning bool)
+-
+-  let set_music_volume =
+-    foreign "SetMusicVolume" (Music.t @-> float @-> returning void)
+-
+-  let set_music_pitch =
+-    foreign "SetMusicPitch" (Music.t @-> float @-> returning void)
+-
+-  let get_music_time_length =
+-    foreign "GetMusicTimeLength" (Music.t @-> returning float)
+-
+-  let get_music_time_played =
+-    foreign "GetMusicTimePlayed" (Music.t @-> returning float)
+-
+-  let init_audio_stream =
+-    foreign "InitAudioStream" (uint @-> uint @-> uint @-> returning AudioStream.t)
+-
+-  let update_audio_stream =
+-    foreign "UpdateAudioStream" (AudioStream.t @-> ptr const void @-> int @-> returning void)
+-
+-  let close_audio_stream =
+-    foreign "CloseAudioStream" (AudioStream.t @-> returning void)
+-
+-  let is_audio_stream_processed =
+-    foreign "IsAudioStreamProcessed" (AudioStream.t @-> returning bool)
+-
+-  let play_audio_stream =
+-    foreign "PlayAudioStream" (AudioStream.t @-> returning void)
+-
+-  let pause_audio_stream =
+-    foreign "PauseAudioStream" (AudioStream.t @-> returning void)
+-
+-  let resume_audio_stream =
+-    foreign "ResumeAudioStream" (AudioStream.t @-> returning void)
+-
+-  let is_audio_stream_playing =
+-    foreign "IsAudioStreamPlaying" (AudioStream.t @-> returning bool)
+-
+-  let stop_audio_stream =
+-    foreign "StopAudioStream" (AudioStream.t @-> returning void)
+-
+-  let set_audio_stream_volume =
+-    foreign "SetAudioStreamVolume" (AudioStream.t @-> float @-> returning void)
+-
+-  let set_audio_stream_pitch =
+-    foreign "SetAudioStreamPitch" (AudioStream.t @-> float @-> returning void)
+-
+-  let set_audio_stream_buffer_size_default =
+-    foreign "SetAudioStreamBufferSizeDefault" (int @-> returning void)
+ 
+ val init_window : int -> int -> string -> unit
+ (** [init_window width height title] Initialize window and OpenGL context*)
+@@ -2859,13 +1435,13 @@ val is_window_focused : unit -> bool
+ val is_window_resized : unit -> bool
+ (** [is_window_resized ()] Check if window has been resized last frame*)
+ 
+-val is_window_state : uint -> bool
++val is_window_state : ConfigFlag.t -> bool
+ (** [is_window_state flag] Check if one specific window flag is enabled*)
+ 
+-val set_window_state : uint -> unit
++val set_window_state : ConfigFlag.t list -> unit
+ (** [set_window_state flags] Set window configuration state using flags*)
+ 
+-val clear_window_state : uint -> unit
++val clear_window_state : ConfigFlag.t list -> unit
+ (** [clear_window_state flags] Clear window configuration state flags*)
+ 
+ val toggle_fullscreen : unit -> unit
+@@ -2898,7 +1474,7 @@ val set_window_min_size : int -> int -> unit
+ val set_window_size : int -> int -> unit
+ (** [set_window_size width height] Set window dimensions*)
+ 
+-val get_window_handle : unit -> ptr unit
++val get_window_handle : unit -> unit ptr option
+ (** [get_window_handle ()] Get native window handle*)
+ 
+ val get_screen_width : unit -> int
+@@ -2940,9 +1516,11 @@ val get_monitor_name : int -> string
+ val set_clipboard_text : string -> unit
+ (** [set_clipboard_text text] Set clipboard text content*)
+ 
+-val get_clipboard_text : unit -> string
++val get_clipboard_text : unit -> string option
+ (** [get_clipboard_text ()] Get clipboard text content*)
+ 
++(** {3 Cursor-related functions} *)
++
+ val show_cursor : unit -> unit
+ (** [show_cursor ()] Shows cursor*)
+ 
+@@ -2961,6 +1539,8 @@ val disable_cursor : unit -> unit
+ val is_cursor_on_screen : unit -> bool
+ (** [is_cursor_on_screen ()] Check if cursor is on the current screen.*)
+ 
++(** {3 Drawing-related functions} *)
++
+ val clear_background : Color.t -> unit
+ (** [clear_background color] Set background color (framebuffer clear color)*)
+ 
+@@ -2970,19 +1550,19 @@ val begin_drawing : unit -> unit
+ val end_drawing : unit -> unit
+ (** [end_drawing ()] End canvas drawing and swap buffers (double buffering)*)
+ 
+-val begin_mode2_d : Camera2D.t -> unit
++val begin_mode_2d : Camera2D.t -> unit
+ (** [begin_mode2_d camera] Initialize 2D mode with custom camera (2D)*)
+ 
+-val end_mode2_d : unit -> unit
++val end_mode_2d : unit -> unit
+ (** [end_mode2_d ()] Ends 2D mode with custom camera*)
+ 
+-val begin_mode3_d : Camera3D.t -> unit
++val begin_mode_3d : Camera3D.t -> unit
+ (** [begin_mode3_d camera] Initializes 3D mode with custom camera (3D)*)
+ 
+-val end_mode3_d : unit -> unit
++val end_mode_3d : unit -> unit
+ (** [end_mode3_d ()] Ends 3D mode and returns to default 2D orthographic mode*)
+ 
+-val begin_texture_mode : render_texture2_d -> unit
++val begin_texture_mode : RenderTexture.t -> unit
+ (** [begin_texture_mode target] Initializes render texture for drawing*)
+ 
+ val end_texture_mode : unit -> unit
+@@ -2994,26 +1574,28 @@ val begin_scissor_mode : int -> int -> int -> int -> unit
+ val end_scissor_mode : unit -> unit
+ (** [end_scissor_mode ()] End scissor mode*)
+ 
+-val get_mouse_ray : Vector2.t -> camera -> Ray.t
++(** {3 Screen-space-related functions} *)
++
++val get_mouse_ray : Vector2.t -> Camera3D.t -> Ray.t
+ (** [get_mouse_ray mouse_position camera] Returns a ray trace from mouse position*)
+ 
+-val get_camera_matrix : camera -> Matrix.t
++val get_camera_matrix : Camera3D.t -> Matrix.t
+ (** [get_camera_matrix camera] Returns camera transform matrix (view matrix)*)
+ 
+-val get_camera_matrix2_d : Camera2D.t -> Matrix.t
++val get_camera_matrix_2d : Camera2D.t -> Matrix.t
+ (** [get_camera_matrix2_d camera] Returns camera 2d transform matrix*)
+ 
+-val get_world_to_screen : Vector3.t -> camera -> Vector2.t
++val get_world_to_screen : Vector3.t -> Camera3D.t -> Vector2.t
+ (** [get_world_to_screen position camera] Returns the screen space position for a 3d world space position*)
+ 
+-val get_world_to_screen_ex : Vector3.t -> camera -> int -> int -> Vector2.t
++val get_world_to_screen_ex : Vector3.t -> Camera3D.t -> int -> int -> Vector2.t
+ (** [get_world_to_screen_ex position camera width height] Returns size position for a 3d world space position*)
+ 
+-val get_world_to_screen2_d : Vector2.t -> Camera2D.t -> Vector2.t
++val get_world_to_screen_2d : Vector2.t -> Camera2D.t -> Vector2.t
+ (** [get_world_to_screen2_d position camera] Returns the screen space position for a 2d camera world space position*)
+ 
+-val get_screen_to_world2_d : Vector2.t -> Camera2D.t -> Vector2.t
+-(** [get_screen_to_world2_d position camera] Returns the world space position for a 2d camera screen space position*)
++val get_screen_to_world_2d : Vector2.t -> Camera2D.t -> Vector2.t
++(** [get_screen_to_world_2d position camera] Returns the world space position for a 2d camera screen space position*)
+ 
+ val set_target_fps : int -> unit
+ (** [set_target_fps fps] Set target FPS (maximum)*)
+@@ -3024,28 +1606,25 @@ val get_fps : unit -> int
+ val get_frame_time : unit -> float
+ (** [get_frame_time ()] Returns time in seconds for last frame drawn*)
+ 
+-val get_time : unit -> double
++val get_time : unit -> float
+ (** [get_time ()] Returns elapsed time in seconds since InitWindow()*)
+ 
+-val set_config_flags : uint -> unit
++val set_config_flags : ConfigFlag.t list -> unit
+ (** [set_config_flags flags] Setup init configuration flags (view FLAGS)*)
+ 
+-val set_trace_log_level : int -> unit
++val set_trace_log_level : TraceLogType.t -> unit
+ (** [set_trace_log_level log_type] Set the current threshold (minimum) log level*)
+ 
+-val set_trace_log_exit : int -> unit
++val set_trace_log_exit : TraceLogType.t -> unit
+ (** [set_trace_log_exit log_type] Set the exit threshold (minimum) log level*)
+ 
+-val set_trace_log_callback : trace_log_callback -> unit
+-(** [set_trace_log_callback callback] Set a trace log callback to enable custom logging*)
+-
+-val trace_log : int -> string ->  -> unit
++val trace_log : TraceLogType.t -> string -> unit
+ (** [trace_log log_type text ] Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR)*)
+ 
+-val mem_alloc : int -> ptr unit
++val mem_alloc : int -> unit ptr
+ (** [mem_alloc size] Internal memory allocator*)
+ 
+-val mem_free : ptr void -> unit
++val mem_free : unit ptr -> unit
+ (** [mem_free ptr] Internal memory free*)
+ 
+ val take_screenshot : string -> unit
+@@ -3054,22 +1633,22 @@ val take_screenshot : string -> unit
+ val get_random_value : int -> int -> int
+ (** [get_random_value min max] Returns a random value between min and max (both included)*)
+ 
+-val load_file_data : string -> ptr uint -> ptr uchar
++val load_file_data : string -> Unsigned.uchar CArray.t
+ (** [load_file_data file_name bytes_read] Load file data as byte array (read)*)
+ 
+-val unload_file_data : ptr uchar -> unit
++val unload_file_data : string -> unit
+ (** [unload_file_data data] Unload file data allocated by LoadFileData()*)
+ 
+-val save_file_data : string -> ptr void -> uint -> bool
++val save_file_data : string -> 'a CArray.t -> bool
+ (** [save_file_data file_name data bytes_to_write] Save data to file from byte array (write), returns true on success*)
+ 
+-val load_file_text : string -> ptr char
++val load_file_text : string -> string
+ (** [load_file_text file_name] Load text data from file (read), returns a ' 0' terminated string*)
+ 
+-val unload_file_text : ptr uchar -> unit
++val unload_file_text : string -> unit
+ (** [unload_file_text text] Unload file text data allocated by LoadFileText()*)
+ 
+-val save_file_text : string -> ptr char -> bool
++val save_file_text : string -> string -> bool
+ (** [save_file_text file_name text] Save text data to file (write), string must be ' 0' terminated, returns true on success*)
+ 
+ val file_exists : string -> bool
+@@ -3099,8 +1678,8 @@ val get_prev_directory_path : string -> string
+ val get_working_directory : unit -> string
+ (** [get_working_directory ()] Get current working directory (uses static string)*)
+ 
+-val get_directory_files : string -> ptr int -> ptr ptr char
+-(** [get_directory_files dir_path count] Get filenames in a directory path (memory should be freed)*)
++val get_directory_files : string -> string CArray.t
++(** [get_directory_files dir_path] Get filenames in a directory path (memory should be freed)*)
+ 
+ val clear_directory_files : unit -> unit
+ (** [clear_directory_files ()] Clear directory files paths buffers (free memory)*)
+@@ -3111,91 +1690,99 @@ val change_directory : string -> bool
+ val is_file_dropped : unit -> bool
+ (** [is_file_dropped ()] Check if a file has been dropped into window*)
+ 
+-val get_dropped_files : ptr int -> ptr ptr char
++val get_dropped_files : unit -> string CArray.t
+ (** [get_dropped_files count] Get dropped files names (memory should be freed)*)
+ 
+ val clear_dropped_files : unit -> unit
+ (** [clear_dropped_files ()] Clear dropped files paths buffer (free memory)*)
+ 
+-val get_file_mod_time : string -> long
++val get_file_mod_time : string -> Signed.long
+ (** [get_file_mod_time file_name] Get file modification time (last write time)*)
+ 
+-val compress_data : ptr uchar -> int -> ptr int -> ptr uchar
++val compress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
+ (** [compress_data data data_length comp_data_length] Compress data (DEFLATE algorithm)*)
+ 
+-val decompress_data : ptr uchar -> int -> ptr int -> ptr uchar
++val decompress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
+ (** [decompress_data comp_data comp_data_length data_length] Decompress data (DEFLATE algorithm)*)
+ 
+-val save_storage_value : uint -> int -> bool
++val save_storage_value : int -> int -> bool
+ (** [save_storage_value position value] Save integer value to storage file (to defined position), returns true on success*)
+ 
+-val load_storage_value : uint -> int
++val load_storage_value : int -> int
+ (** [load_storage_value position] Load integer value from storage file (from defined position)*)
+ 
+ val open_url : string -> unit
+ (** [open_url url] Open URL with default system browser (if available)*)
+ 
+-val is_key_pressed : int -> bool
++(** {2 Input Handling Functions (Module: core)} *)
++
++(** {3 Input-related functions: keyboard} *)
++
++val is_key_pressed : Key.t -> bool
+ (** [is_key_pressed key] Detect if a key has been pressed once*)
+ 
+-val is_key_down : int -> bool
++val is_key_down : Key.t -> bool
+ (** [is_key_down key] Detect if a key is being pressed*)
+ 
+-val is_key_released : int -> bool
++val is_key_released : Key.t -> bool
+ (** [is_key_released key] Detect if a key has been released once*)
+ 
+-val is_key_up : int -> bool
++val is_key_up : Key.t -> bool
+ (** [is_key_up key] Detect if a key is NOT being pressed*)
+ 
+-val set_exit_key : int -> unit
++val set_exit_key : Key.t -> unit
+ (** [set_exit_key key] Set a custom key to exit program (default is ESC)*)
+ 
+-val get_key_pressed : unit -> int
++val get_key_pressed : unit -> Key.t
+ (** [get_key_pressed ()] Get key pressed (keycode), call it multiple times for keys queued*)
+ 
+ val get_char_pressed : unit -> int
+ (** [get_char_pressed ()] Get char pressed (unicode), call it multiple times for chars queued*)
+ 
+-val is_gamepad_available : int -> bool
++(** {3 Input-related functions: gamepads} *)
++
++val is_gamepad_available : GamepadNumber.t -> bool
+ (** [is_gamepad_available gamepad] Detect if a gamepad is available*)
+ 
+-val is_gamepad_name : int -> string -> bool
++val is_gamepad_name : GamepadNumber.t -> string -> bool
+ (** [is_gamepad_name gamepad name] Check gamepad name (if available)*)
+ 
+-val get_gamepad_name : int -> string
++val get_gamepad_name : GamepadNumber.t -> string
+ (** [get_gamepad_name gamepad] Return gamepad internal name id*)
+ 
+-val is_gamepad_button_pressed : int -> int -> bool
++val is_gamepad_button_pressed : GamepadNumber.t -> GamepadButton.t -> bool
+ (** [is_gamepad_button_pressed gamepad button] Detect if a gamepad button has been pressed once*)
+ 
+-val is_gamepad_button_down : int -> int -> bool
++val is_gamepad_button_down : GamepadNumber.t -> GamepadButton.t -> bool
+ (** [is_gamepad_button_down gamepad button] Detect if a gamepad button is being pressed*)
+ 
+-val is_gamepad_button_released : int -> int -> bool
++val is_gamepad_button_released : GamepadNumber.t -> GamepadButton.t -> bool
+ (** [is_gamepad_button_released gamepad button] Detect if a gamepad button has been released once*)
+ 
+-val is_gamepad_button_up : int -> int -> bool
++val is_gamepad_button_up : GamepadNumber.t -> GamepadButton.t -> bool
+ (** [is_gamepad_button_up gamepad button] Detect if a gamepad button is NOT being pressed*)
+ 
+-val get_gamepad_button_pressed : unit -> int
++val get_gamepad_button_pressed : unit -> GamepadButton.t
+ (** [get_gamepad_button_pressed ()] Get the last gamepad button pressed*)
+ 
+-val get_gamepad_axis_count : int -> int
++val get_gamepad_axis_count : GamepadNumber.t -> int
+ (** [get_gamepad_axis_count gamepad] Return gamepad axis count for a gamepad*)
+ 
+-val get_gamepad_axis_movement : int -> int -> float
++val get_gamepad_axis_movement : GamepadNumber.t -> GamepadAxis.t -> float
+ (** [get_gamepad_axis_movement gamepad axis] Return axis movement value for a gamepad axis*)
+ 
+-val is_mouse_button_pressed : int -> bool
++(** {3 Input-related functions: mouse} *)
++
++val is_mouse_button_pressed : MouseButton.t -> bool
+ (** [is_mouse_button_pressed button] Detect if a mouse button has been pressed once*)
+ 
+-val is_mouse_button_down : int -> bool
++val is_mouse_button_down : MouseButton.t -> bool
+ (** [is_mouse_button_down button] Detect if a mouse button is being pressed*)
+ 
+-val is_mouse_button_released : int -> bool
++val is_mouse_button_released : MouseButton.t -> bool
+ (** [is_mouse_button_released button] Detect if a mouse button has been released once*)
+ 
+-val is_mouse_button_up : int -> bool
++val is_mouse_button_up : MouseButton.t -> bool
+ (** [is_mouse_button_up button] Detect if a mouse button is NOT being pressed*)
+ 
+ val get_mouse_x : unit -> int
+@@ -3219,12 +1806,14 @@ val set_mouse_scale : float -> float -> unit
+ val get_mouse_wheel_move : unit -> float
+ (** [get_mouse_wheel_move ()] Returns mouse wheel movement Y*)
+ 
+-val get_mouse_cursor : unit -> int
++val get_mouse_cursor : unit -> MouseCursor.t
+ (** [get_mouse_cursor ()] Returns mouse cursor if (MouseCursor enum)*)
+ 
+-val set_mouse_cursor : int -> unit
++val set_mouse_cursor : MouseCursor.t -> unit
+ (** [set_mouse_cursor cursor] Set mouse cursor*)
+ 
++(** {3 Input-related functions: touch} *)
++
+ val get_touch_x : unit -> int
+ (** [get_touch_x ()] Returns touch position X for touch point 0 (relative to screen size)*)
+ 
+@@ -3234,7 +1823,9 @@ val get_touch_y : unit -> int
+ val get_touch_position : int -> Vector2.t
+ (** [get_touch_position index] Returns touch position XY for a touch point index (relative to screen size)*)
+ 
+-val set_gestures_enabled : uint -> unit
++(** {3 Gestures and Touch Handling Functions (Module: gestures)} *)
++
++val set_gestures_enabled : GestureType.t list -> unit
+ (** [set_gestures_enabled gesture_flags] Enable a set of gestures using flags*)
+ 
+ val is_gesture_detected : int -> bool
+@@ -3261,24 +1852,30 @@ val get_gesture_pinch_vector : unit -> Vector2.t
+ val get_gesture_pinch_angle : unit -> float
+ (** [get_gesture_pinch_angle ()] Get gesture pinch angle*)
+ 
+-val set_camera_mode : camera -> int -> unit
++(** {3 Camera System Functions (Module: camera)} *)
++
++val set_camera_mode : Camera3D.t -> CameraMode.t -> unit
+ (** [set_camera_mode camera mode] Set camera mode (multiple camera modes available)*)
+ 
+-val update_camera : ptr camera -> unit
++val update_camera : Camera3D.t ptr -> unit
+ (** [update_camera camera] Update camera position for selected mode*)
+ 
+-val set_camera_pan_control : int -> unit
++val set_camera_pan_control : Key.t -> unit
+ (** [set_camera_pan_control key_pan] Set camera pan key to combine with mouse movement (free camera)*)
+ 
+-val set_camera_alt_control : int -> unit
++val set_camera_alt_control : Key.t -> unit
+ (** [set_camera_alt_control key_alt] Set camera alt key to combine with mouse movement (free camera)*)
+ 
+-val set_camera_smooth_zoom_control : int -> unit
++val set_camera_smooth_zoom_control : Key.t -> unit
+ (** [set_camera_smooth_zoom_control key_smooth_zoom] Set camera smooth zoom key to combine with mouse (free camera)*)
+ 
+-val set_camera_move_controls : int -> int -> int -> int -> int -> int -> unit
++val set_camera_move_controls : Key.t -> Key.t -> Key.t -> Key.t -> Key.t -> Key.t -> unit
+ (** [set_camera_move_controls key_front key_back key_right key_left key_up key_down] Set camera move controls (1st person and 3rd person cameras)*)
+ 
++(** {2 Basic Shapes Drawing Functions (Module: shapes)} *)
++
++(** {3 Basic shapes drawing functions} *)
++
+ val draw_pixel : int -> int -> Color.t -> unit
+ (** [draw_pixel pos_x pos_y color] Draw a pixel*)
+ 
+@@ -3297,7 +1894,7 @@ val draw_line_ex : Vector2.t -> Vector2.t -> float -> Color.t -> unit
+ val draw_line_bezier : Vector2.t -> Vector2.t -> float -> Color.t -> unit
+ (** [draw_line_bezier start_pos end_pos thick color] Draw a line using cubic-bezier curves in-out*)
+ 
+-val draw_line_strip : ptr Vector2.t -> int -> Color.t -> unit
++val draw_line_strip : Vector2.t ptr -> int -> Color.t -> unit
+ (** [draw_line_strip points points_count color] Draw lines sequence*)
+ 
+ val draw_circle : int -> int -> float -> Color.t -> unit
+@@ -3369,10 +1966,10 @@ val draw_triangle : Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
+ val draw_triangle_lines : Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
+ (** [draw_triangle_lines v1 v2 v3 color] Draw triangle outline (vertex in counter-clockwise order!)*)
+ 
+-val draw_triangle_fan : ptr Vector2.t -> int -> Color.t -> unit
++val draw_triangle_fan : Vector2.t ptr -> int -> Color.t -> unit
+ (** [draw_triangle_fan points points_count color] Draw a triangle fan defined by points (first vertex is the center)*)
+ 
+-val draw_triangle_strip : ptr Vector2.t -> int -> Color.t -> unit
++val draw_triangle_strip : Vector2.t ptr -> int -> Color.t -> unit
+ (** [draw_triangle_strip points points_count color] Draw a triangle strip defined by points*)
+ 
+ val draw_poly : Vector2.t -> int -> float -> float -> Color.t -> unit
+@@ -3381,6 +1978,8 @@ val draw_poly : Vector2.t -> int -> float -> float -> Color.t -> unit
+ val draw_poly_lines : Vector2.t -> int -> float -> float -> Color.t -> unit
+ (** [draw_poly_lines center sides radius rotation color] Draw a polygon outline of n sides*)
+ 
++(** {3 Basic shapes collision detection functions} *)
++
+ val check_collision_recs : Rectangle.t -> Rectangle.t -> bool
+ (** [check_collision_recs rec1 rec2] Check collision between two rectangles*)
+ 
+@@ -3399,22 +1998,26 @@ val check_collision_point_circle : Vector2.t -> Vector2.t -> float -> bool
+ val check_collision_point_triangle : Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> bool
+ (** [check_collision_point_triangle point p1 p2 p3] Check if point is inside a triangle*)
+ 
+-val check_collision_lines : Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> ptr Vector2.t -> bool
++val check_collision_lines : Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t ptr -> bool
+ (** [check_collision_lines start_pos1 end_pos1 start_pos2 end_pos2 collision_point] Check the collision between two lines defined by two points each, returns collision point by reference*)
+ 
+ val get_collision_rec : Rectangle.t -> Rectangle.t -> Rectangle.t
+ (** [get_collision_rec rec1 rec2] Get collision rectangle for two rectangles collision*)
+ 
++(** {2 Texture Loading and Drawing Functions (Module: textures)} *)
++
++(** {3 Image loading functions} *)
++
+ val load_image : string -> Image.t
+ (** [load_image file_name] Load image from file into CPU memory (RAM)*)
+ 
+-val load_image_raw : string -> int -> int -> int -> int -> Image.t
++val load_image_raw : string -> int -> int -> PixelFormat.t -> int -> Image.t
+ (** [load_image_raw file_name width height format header_size] Load image from RAW file data*)
+ 
+-val load_image_anim : string -> ptr int -> Image.t
++val load_image_anim : string -> int ptr -> Image.t
+ (** [load_image_anim file_name frames] Load image sequence from file (frames appended to image.data)*)
+ 
+-val load_image_from_memory : string -> ptr const uchar -> int -> Image.t
++val load_image_from_memory : string -> Unsigned.uchar ptr -> int -> Image.t
+ (** [load_image_from_memory file_type file_data data_size] Load image from memory buffer, fileType refers to extension: i.e. "png"*)
+ 
+ val unload_image : Image.t -> unit
+@@ -3450,6 +2053,8 @@ val gen_image_perlin_noise : int -> int -> int -> int -> float -> Image.t
+ val gen_image_cellular : int -> int -> int -> Image.t
+ (** [gen_image_cellular width height tile_size] Generate image: cellular algorithm. Bigger tileSize means bigger cells*)
+ 
++(** {3 Image manipulation functions} *)
++
+ val image_copy : Image.t -> Image.t
+ (** [image_copy image] Create an image duplicate (useful for transformations)*)
+ 
+@@ -3462,151 +2067,153 @@ val image_text : string -> int -> Color.t -> Image.t
+ val image_text_ex : Font.t -> string -> float -> float -> Color.t -> Image.t
+ (** [image_text_ex font text font_size spacing tint] Create an image from text (custom sprite font)*)
+ 
+-val image_format : ptr Image.t -> int -> unit
++val image_format : Image.t ptr -> int -> unit
+ (** [image_format image new_format] Convert image data to desired format*)
+ 
+-val image_to_pot : ptr Image.t -> Color.t -> unit
++val image_to_pot : Image.t ptr -> Color.t -> unit
+ (** [image_to_pot image fill] Convert image to POT (power-of-two)*)
+ 
+-val image_crop : ptr Image.t -> Rectangle.t -> unit
++val image_crop : Image.t ptr -> Rectangle.t -> unit
+ (** [image_crop image crop] Crop an image to a defined rectangle*)
+ 
+-val image_alpha_crop : ptr Image.t -> float -> unit
++val image_alpha_crop : Image.t ptr -> float -> unit
+ (** [image_alpha_crop image threshold] Crop image depending on alpha value*)
+ 
+-val image_alpha_clear : ptr Image.t -> Color.t -> float -> unit
++val image_alpha_clear : Image.t ptr -> Color.t -> float -> unit
+ (** [image_alpha_clear image color threshold] Clear alpha channel to desired color*)
+ 
+-val image_alpha_mask : ptr Image.t -> Image.t -> unit
++val image_alpha_mask : Image.t ptr -> Image.t -> unit
+ (** [image_alpha_mask image alpha_mask] Apply alpha mask to image*)
+ 
+-val image_alpha_premultiply : ptr Image.t -> unit
++val image_alpha_premultiply : Image.t ptr -> unit
+ (** [image_alpha_premultiply image] Premultiply alpha channel*)
+ 
+-val image_resize : ptr Image.t -> int -> int -> unit
++val image_resize : Image.t ptr -> int -> int -> unit
+ (** [image_resize image new_width new_height] Resize image (Bicubic scaling algorithm)*)
+ 
+-val image_resize_nn : ptr Image.t -> int -> int -> unit
++val image_resize_nn : Image.t ptr -> int -> int -> unit
+ (** [image_resize_nn image new_width new_height] Resize image (Nearest-Neighbor scaling algorithm)*)
+ 
+-val image_resize_canvas : ptr Image.t -> int -> int -> int -> int -> Color.t -> unit
++val image_resize_canvas : Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
+ (** [image_resize_canvas image new_width new_height offset_x offset_y fill] Resize canvas and fill with color*)
+ 
+-val image_mipmaps : ptr Image.t -> unit
++val image_mipmaps : Image.t ptr -> unit
+ (** [image_mipmaps image] Generate all mipmap levels for a provided image*)
+ 
+-val image_dither : ptr Image.t -> int -> int -> int -> int -> unit
++val image_dither : Image.t ptr -> int -> int -> int -> int -> unit
+ (** [image_dither image r_bpp g_bpp b_bpp a_bpp] Dither image data to 16bpp or lower (Floyd-Steinberg dithering)*)
+ 
+-val image_flip_vertical : ptr Image.t -> unit
++val image_flip_vertical : Image.t ptr -> unit
+ (** [image_flip_vertical image] Flip image vertically*)
+ 
+-val image_flip_horizontal : ptr Image.t -> unit
++val image_flip_horizontal : Image.t ptr -> unit
+ (** [image_flip_horizontal image] Flip image horizontally*)
+ 
+-val image_rotate_cw : ptr Image.t -> unit
++val image_rotate_cw : Image.t ptr -> unit
+ (** [image_rotate_cw image] Rotate image clockwise 90deg*)
+ 
+-val image_rotate_ccw : ptr Image.t -> unit
++val image_rotate_ccw : Image.t ptr -> unit
+ (** [image_rotate_ccw image] Rotate image counter-clockwise 90deg*)
+ 
+-val image_color_tint : ptr Image.t -> Color.t -> unit
++val image_color_tint : Image.t ptr -> Color.t -> unit
+ (** [image_color_tint image color] Modify image color: tint*)
+ 
+-val image_color_invert : ptr Image.t -> unit
++val image_color_invert : Image.t ptr -> unit
+ (** [image_color_invert image] Modify image color: invert*)
+ 
+-val image_color_grayscale : ptr Image.t -> unit
++val image_color_grayscale : Image.t ptr -> unit
+ (** [image_color_grayscale image] Modify image color: grayscale*)
+ 
+-val image_color_contrast : ptr Image.t -> float -> unit
++val image_color_contrast : Image.t ptr -> float -> unit
+ (** [image_color_contrast image contrast] Modify image color: contrast (-100 to 100)*)
+ 
+-val image_color_brightness : ptr Image.t -> int -> unit
++val image_color_brightness : Image.t ptr -> int -> unit
+ (** [image_color_brightness image brightness] Modify image color: brightness (-255 to 255)*)
+ 
+-val image_color_replace : ptr Image.t -> Color.t -> Color.t -> unit
++val image_color_replace : Image.t ptr -> Color.t -> Color.t -> unit
+ (** [image_color_replace image color replace] Modify image color: replace color*)
+ 
+-val load_image_colors : Image.t -> ptr Color.t
++val load_image_colors : Image.t -> Color.t ptr
+ (** [load_image_colors image] Load color data from image as a Color array (RGBA - 32bit)*)
+ 
+-val load_image_palette : Image.t -> int -> ptr int -> ptr Color.t
++val load_image_palette : Image.t -> int -> int ptr -> Color.t ptr
+ (** [load_image_palette image max_palette_size colors_count] Load colors palette from image as a Color array (RGBA - 32bit)*)
+ 
+-val unload_image_colors : ptr Color.t -> unit
++val unload_image_colors : Color.t ptr -> unit
+ (** [unload_image_colors colors] Unload color data loaded with LoadImageColors()*)
+ 
+-val unload_image_palette : ptr Color.t -> unit
++val unload_image_palette : Color.t ptr -> unit
+ (** [unload_image_palette colors] Unload colors palette loaded with LoadImagePalette()*)
+ 
+ val get_image_alpha_border : Image.t -> float -> Rectangle.t
+ (** [get_image_alpha_border image threshold] Get image alpha border rectangle*)
+ 
+-val image_clear_background : ptr Image.t -> Color.t -> unit
++val image_clear_background : Image.t ptr -> Color.t -> unit
+ (** [image_clear_background dst color] Clear image background with given color*)
+ 
+-val image_draw_pixel : ptr Image.t -> int -> int -> Color.t -> unit
++val image_draw_pixel : Image.t ptr -> int -> int -> Color.t -> unit
+ (** [image_draw_pixel dst pos_x pos_y color] Draw pixel within an image*)
+ 
+-val image_draw_pixel_v : ptr Image.t -> Vector2.t -> Color.t -> unit
++val image_draw_pixel_v : Image.t ptr -> Vector2.t -> Color.t -> unit
+ (** [image_draw_pixel_v dst position color] Draw pixel within an image (Vector version)*)
+ 
+-val image_draw_line : ptr Image.t -> int -> int -> int -> int -> Color.t -> unit
++val image_draw_line : Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
+ (** [image_draw_line dst start_pos_x start_pos_y end_pos_x end_pos_y color] Draw line within an image*)
+ 
+-val image_draw_line_v : ptr Image.t -> Vector2.t -> Vector2.t -> Color.t -> unit
++val image_draw_line_v : Image.t ptr -> Vector2.t -> Vector2.t -> Color.t -> unit
+ (** [image_draw_line_v dst start end color] Draw line within an image (Vector version)*)
+ 
+-val image_draw_circle : ptr Image.t -> int -> int -> int -> Color.t -> unit
++val image_draw_circle : Image.t ptr -> int -> int -> int -> Color.t -> unit
+ (** [image_draw_circle dst center_x center_y radius color] Draw circle within an image*)
+ 
+-val image_draw_circle_v : ptr Image.t -> Vector2.t -> int -> Color.t -> unit
++val image_draw_circle_v : Image.t ptr -> Vector2.t -> int -> Color.t -> unit
+ (** [image_draw_circle_v dst center radius color] Draw circle within an image (Vector version)*)
+ 
+-val image_draw_rectangle : ptr Image.t -> int -> int -> int -> int -> Color.t -> unit
++val image_draw_rectangle : Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
+ (** [image_draw_rectangle dst pos_x pos_y width height color] Draw rectangle within an image*)
+ 
+-val image_draw_rectangle_v : ptr Image.t -> Vector2.t -> Vector2.t -> Color.t -> unit
++val image_draw_rectangle_v : Image.t ptr -> Vector2.t -> Vector2.t -> Color.t -> unit
+ (** [image_draw_rectangle_v dst position size color] Draw rectangle within an image (Vector version)*)
+ 
+-val image_draw_rectangle_rec : ptr Image.t -> Rectangle.t -> Color.t -> unit
++val image_draw_rectangle_rec : Image.t ptr -> Rectangle.t -> Color.t -> unit
+ (** [image_draw_rectangle_rec dst rec color] Draw rectangle within an image*)
+ 
+-val image_draw_rectangle_lines : ptr Image.t -> Rectangle.t -> int -> Color.t -> unit
++val image_draw_rectangle_lines : Image.t ptr -> Rectangle.t -> int -> Color.t -> unit
+ (** [image_draw_rectangle_lines dst rec thick color] Draw rectangle lines within an image*)
+ 
+-val image_draw : ptr Image.t -> Image.t -> Rectangle.t -> Rectangle.t -> Color.t -> unit
++val image_draw : Image.t ptr -> Image.t -> Rectangle.t -> Rectangle.t -> Color.t -> unit
+ (** [image_draw dst src src_rec dst_rec tint] Draw a source image within a destination image (tint applied to source)*)
+ 
+-val image_draw_text : ptr Image.t -> string -> int -> int -> int -> Color.t -> unit
++val image_draw_text : Image.t ptr -> string -> int -> int -> int -> Color.t -> unit
+ (** [image_draw_text dst text pos_x pos_y font_size color] Draw text (using default font) within an image (destination)*)
+ 
+-val image_draw_text_ex : ptr Image.t -> Font.t -> string -> Vector2.t -> float -> float -> Color.t -> unit
++val image_draw_text_ex : Image.t ptr -> Font.t -> string -> Vector2.t -> float -> float -> Color.t -> unit
+ (** [image_draw_text_ex dst font text position font_size spacing tint] Draw text (custom sprite font) within an image (destination)*)
+ 
++(** {3 Texture loading functions} *)
++
+ val load_texture : string -> Texture.t
+ (** [load_texture file_name] Load texture from file into GPU memory (VRAM)*)
+ 
+ val load_texture_from_image : Image.t -> Texture.t
+ (** [load_texture_from_image image] Load texture from image data*)
+ 
+-val load_texture_cubemap : Image.t -> int -> texture_cubemap
++val load_texture_cubemap : Image.t -> int -> Texture.t
+ (** [load_texture_cubemap image layout_type] Load cubemap from image, multiple image cubemap layouts supported*)
+ 
+-val load_render_texture : int -> int -> render_texture2_d
++val load_render_texture : int -> int -> RenderTexture.t
+ (** [load_render_texture width height] Load texture for rendering (framebuffer)*)
+ 
+ val unload_texture : Texture.t -> unit
+ (** [unload_texture texture] Unload texture from GPU memory (VRAM)*)
+ 
+-val unload_render_texture : render_texture2_d -> unit
++val unload_render_texture : RenderTexture.t -> unit
+ (** [unload_render_texture target] Unload render texture from GPU memory (VRAM)*)
+ 
+-val update_texture : Texture.t -> ptr const void -> unit
++val update_texture : Texture.t -> unit ptr -> unit
+ (** [update_texture texture pixels] Update GPU texture with new data*)
+ 
+-val update_texture_rec : Texture.t -> Rectangle.t -> ptr const void -> unit
++val update_texture_rec : Texture.t -> Rectangle.t -> unit ptr -> unit
+ (** [update_texture_rec texture rec pixels] Update GPU texture rectangle with new data*)
+ 
+ val get_texture_data : Texture.t -> Image.t
+@@ -3615,15 +2222,17 @@ val get_texture_data : Texture.t -> Image.t
+ val get_screen_data : unit -> Image.t
+ (** [get_screen_data ()] Get pixel data from screen buffer and return an Image (screenshot)*)
+ 
+-val gen_texture_mipmaps : ptr Texture.t -> unit
++val gen_texture_mipmaps : Texture.t ptr -> unit
+ (** [gen_texture_mipmaps texture] Generate GPU mipmaps for a texture*)
+ 
+-val set_texture_filter : Texture.t -> int -> unit
++val set_texture_filter : Texture.t -> TextureFilterMode.t -> unit
+ (** [set_texture_filter texture filter_mode] Set texture scaling filter mode*)
+ 
+-val set_texture_wrap : Texture.t -> int -> unit
++val set_texture_wrap : Texture.t -> TextureWrapMode.t -> unit
+ (** [set_texture_wrap texture wrap_mode] Set texture wrapping mode*)
+ 
++(** {3 Texture drawing functions} *)
++
+ val draw_texture : Texture.t -> int -> int -> Color.t -> unit
+ (** [draw_texture texture pos_x pos_y tint] Draw a Texture2D*)
+ 
+@@ -3675,37 +2284,41 @@ val color_alpha_blend : Color.t -> Color.t -> Color.t -> Color.t
+ val get_color : int -> Color.t
+ (** [get_color hex_value] Get Color structure from hexadecimal value*)
+ 
+-val get_pixel_color : ptr void -> int -> Color.t
++val get_pixel_color : unit ptr -> PixelFormat.t -> Color.t
+ (** [get_pixel_color src_ptr format] Get Color from a source pixel pointer of certain format*)
+ 
+-val set_pixel_color : ptr void -> Color.t -> int -> unit
++val set_pixel_color : unit ptr -> Color.t -> PixelFormat.t -> unit
+ (** [set_pixel_color dst_ptr color format] Set color formatted into destination pixel pointer*)
+ 
+-val get_pixel_data_size : int -> int -> int -> int
++val get_pixel_data_size : int -> int -> PixelFormat.t -> int
+ (** [get_pixel_data_size width height format] Get pixel data size in bytes for certain format*)
+ 
++(** {2 Font Loading and Text Drawing Functions (Module: text)} *)
++
++(** {3 Font loading/unloading functions} *)
++
+ val get_font_default : unit -> Font.t
+ (** [get_font_default ()] Get the default Font*)
+ 
+ val load_font : string -> Font.t
+ (** [load_font file_name] Load font from file into GPU memory (VRAM)*)
+ 
+-val load_font_ex : string -> int -> ptr int -> int -> Font.t
++val load_font_ex : string -> int -> int ptr -> int -> Font.t
+ (** [load_font_ex file_name font_size font_chars chars_count] Load font from file with extended parameters*)
+ 
+ val load_font_from_image : Image.t -> Color.t -> int -> Font.t
+ (** [load_font_from_image image key first_char] Load font from Image (XNA style)*)
+ 
+-val load_font_from_memory : string -> ptr const uchar -> int -> int -> ptr int -> int -> Font.t
++val load_font_from_memory : string -> Unsigned.uchar ptr -> int -> int -> int ptr -> int -> Font.t
+ (** [load_font_from_memory file_type file_data data_size font_size font_chars chars_count] Load font from memory buffer, fileType refers to extension: i.e. "ttf"*)
+ 
+-val load_font_data : ptr const uchar -> int -> int -> ptr int -> int -> int -> ptr CharInfo.t
++val load_font_data : Unsigned.uchar ptr -> int -> int -> int ptr -> int -> int -> CharInfo.t ptr
+ (** [load_font_data file_data data_size font_size font_chars chars_count type] Load font data for further use*)
+ 
+-val gen_image_font_atlas : ptr const _char_info -> ptr ptr Rectangle.t -> int -> int -> int -> int -> Image.t
++val gen_image_font_atlas : CharInfo.t ptr -> Rectangle.t ptr ptr -> int -> int -> int -> int -> Image.t
+ (** [gen_image_font_atlas chars recs chars_count font_size padding pack_method] Generate image font atlas using chars info*)
+ 
+-val unload_font_data : ptr CharInfo.t -> int -> unit
++val unload_font_data : CharInfo.t ptr -> int -> unit
+ (** [unload_font_data chars chars_count] Unload font chars info data (RAM)*)
+ 
+ val unload_font : Font.t -> unit
+@@ -3723,12 +2336,14 @@ val draw_text_ex : Font.t -> string -> Vector2.t -> float -> float -> Color.t ->
+ val draw_text_rec : Font.t -> string -> Rectangle.t -> float -> float -> bool -> Color.t -> unit
+ (** [draw_text_rec font text rec font_size spacing word_wrap tint] Draw text using font inside rectangle limits*)
+ 
+-val draw_text_rec_ex : Font.t -> string -> Rectangle.t -> float -> float -> bool -> Color.t -> unit
+-(** [draw_text_rec_ex font text rec font_size spacing word_wrap tint] *)
++val draw_text_rec_ex : Font.t -> string -> Rectangle.t -> float -> float -> bool -> Color.t -> int -> int -> Color.t -> Color.t ->unit
++(** [draw_text_rec_ex font text rec font_size spacing word_wrap tint select_start select_length select_tint select_back_tint] *)
+ 
+ val draw_text_codepoint : Font.t -> int -> Vector2.t -> float -> Color.t -> unit
+ (** [draw_text_codepoint font codepoint position font_size tint] Draw one character (codepoint)*)
+ 
++(** {3 Text misc. functions} *)
++
+ val measure_text : string -> int -> int
+ (** [measure_text text font_size] Measure string width for default font*)
+ 
+@@ -3738,39 +2353,15 @@ val measure_text_ex : Font.t -> string -> float -> float -> Vector2.t
+ val get_glyph_index : Font.t -> int -> int
+ (** [get_glyph_index font codepoint] Get index position for a unicode character on font*)
+ 
+-val text_copy : ptr char -> string -> int
++val text_copy : string -> string -> int
+ (** [text_copy dst src] Copy one string to another, returns bytes copied*)
+ 
+ val text_is_equal : string -> string -> bool
+ (** [text_is_equal text1 text2] Check if two text string are equal*)
+ 
+-val text_length : string -> uint
++val text_length : string -> int
+ (** [text_length text] Get text length, checks for ' 0' ending*)
+ 
+-val text_format : string ->  -> string
+-(** [text_format text ] Text formatting with variables (sprintf style)*)
+-
+-val text_subtext : string -> int -> int -> string
+-(** [text_subtext text position length] Get a piece of a text string*)
+-
+-val text_replace : ptr char -> string -> string -> ptr char
+-(** [text_replace text replace by] Replace text string (memory must be freed!)*)
+-
+-val text_insert : string -> string -> int -> ptr char
+-(** [text_insert text insert position] Insert text in a position (memory must be freed!)*)
+-
+-val text_join : ptr ptr const char -> int -> string -> string
+-(** [text_join text_list count delimiter] Join text strings with delimiter*)
+-
+-val text_split : string -> char -> ptr int -> ptr ptr const char
+-(** [text_split text delimiter count] Split text into multiple strings*)
+-
+-val text_append : ptr char -> string -> ptr int -> unit
+-(** [text_append text append position] Append text at specific position and move cursor!*)
+-
+-val text_find_index : string -> string -> int
+-(** [text_find_index text find] Find first text occurrence within a string*)
+-
+ val text_to_upper : string -> string
+ (** [text_to_upper text] Get upper case version of provided string*)
+ 
+@@ -3783,35 +2374,39 @@ val text_to_pascal : string -> string
+ val text_to_integer : string -> int
+ (** [text_to_integer text] Get integer value from text (negative values not supported)*)
+ 
+-val text_to_utf8 : ptr int -> int -> ptr char
++val text_to_utf8 : int ptr -> int -> string
+ (** [text_to_utf8 codepoints length] Encode text codepoint into utf8 text (memory must be freed!)*)
+ 
+-val get_codepoints : string -> ptr int -> ptr int
++val get_codepoints : string -> int ptr -> int ptr
+ (** [get_codepoints text count] Get all codepoints in a string, codepoints count returned by parameters*)
+ 
+ val get_codepoints_count : string -> int
+ (** [get_codepoints_count text] Get total number of characters (codepoints) in a UTF8 encoded string*)
+ 
+-val get_next_codepoint : string -> ptr int -> int
++val get_next_codepoint : string -> int ptr -> int
+ (** [get_next_codepoint text bytes_processed] Returns next codepoint in a UTF8 encoded string; 0x3f('?') is returned on failure*)
+ 
+-val codepoint_to_utf8 : int -> ptr int -> string
++val codepoint_to_utf8 : int -> int ptr -> string
+ (** [codepoint_to_utf8 codepoint byte_length] Encode codepoint into utf8 text (char array length returned as parameter)*)
+ 
+-val draw_line3_d : Vector3.t -> Vector3.t -> Color.t -> unit
+-(** [draw_line3_d start_pos end_pos color] Draw a line in 3D world space*)
++(** {2 Basic 3d Shapes Drawing Functions (Module: models)} *)
+ 
+-val draw_point3_d : Vector3.t -> Color.t -> unit
+-(** [draw_point3_d position color] Draw a point in 3D space, actually a small line*)
++(** {3 Basic geometric 3D shapes drawing functions} *)
+ 
+-val draw_circle3_d : Vector3.t -> float -> Vector3.t -> float -> Color.t -> unit
+-(** [draw_circle3_d center radius rotation_axis rotation_angle color] Draw a circle in 3D world space*)
++val draw_line_3d : Vector3.t -> Vector3.t -> Color.t -> unit
++(** [draw_line_3d start_pos end_pos color] Draw a line in 3D world space*)
+ 
+-val draw_triangle3_d : Vector3.t -> Vector3.t -> Vector3.t -> Color.t -> unit
+-(** [draw_triangle3_d v1 v2 v3 color] Draw a color-filled triangle (vertex in counter-clockwise order!)*)
++val draw_point_3d : Vector3.t -> Color.t -> unit
++(** [draw_point_3d position color] Draw a point in 3D space, actually a small line*)
+ 
+-val draw_triangle_strip3_d : ptr Vector3.t -> int -> Color.t -> unit
+-(** [draw_triangle_strip3_d points points_count color] Draw a triangle strip defined by points*)
++val draw_circle_3d : Vector3.t -> float -> Vector3.t -> float -> Color.t -> unit
++(** [draw_circle_3d center radius rotation_axis rotation_angle color] Draw a circle in 3D world space*)
++
++val draw_triangle_3d : Vector3.t -> Vector3.t -> Vector3.t -> Color.t -> unit
++(** [draw_triangle_3d v1 v2 v3 color] Draw a color-filled triangle (vertex in counter-clockwise order!)*)
++
++val draw_triangle_strip_3d : Vector3.t ptr -> int -> Color.t -> unit
++(** [draw_triangle_strip_3d points points_count color] Draw a triangle strip defined by points*)
+ 
+ val draw_cube : Vector3.t -> float -> float -> float -> Color.t -> unit
+ (** [draw_cube position width height length color] Draw cube*)
+@@ -3855,6 +2450,8 @@ val draw_grid : int -> float -> unit
+ val draw_gizmo : Vector3.t -> unit
+ (** [draw_gizmo position] Draw simple gizmo*)
+ 
++(** {3 Model loading/unloading functions} *)
++
+ val load_model : string -> Model.t
+ (** [load_model file_name] Load model from files (meshes and materials)*)
+ 
+@@ -3867,7 +2464,7 @@ val unload_model : Model.t -> unit
+ val unload_model_keep_meshes : Model.t -> unit
+ (** [unload_model_keep_meshes model] Unload model (but not meshes) from memory (RAM and/or VRAM)*)
+ 
+-val load_meshes : string -> ptr int -> ptr Mesh.t
++val load_meshes : string -> int ptr -> Mesh.t ptr option
+ (** [load_meshes file_name mesh_count] Load meshes from model file*)
+ 
+ val unload_mesh : Mesh.t -> unit
+@@ -3876,7 +2473,7 @@ val unload_mesh : Mesh.t -> unit
+ val export_mesh : Mesh.t -> string -> bool
+ (** [export_mesh mesh file_name] Export mesh data to file, returns true on success*)
+ 
+-val load_materials : string -> ptr int -> ptr Material.t
++val load_materials : string -> int ptr -> Material.t ptr
+ (** [load_materials file_name material_count] Load materials from model file*)
+ 
+ val load_material_default : unit -> Material.t
+@@ -3885,13 +2482,13 @@ val load_material_default : unit -> Material.t
+ val unload_material : Material.t -> unit
+ (** [unload_material material] Unload material from GPU memory (VRAM)*)
+ 
+-val set_material_texture : ptr Material.t -> int -> Texture.t -> unit
++val set_material_texture : Material.t ptr -> MaterialMapType.t -> Texture.t -> unit
+ (** [set_material_texture material map_type texture] Set texture for a material map type (MAP_DIFFUSE, MAP_SPECULAR...)*)
+ 
+-val set_model_mesh_material : ptr Model.t -> int -> int -> unit
++val set_model_mesh_material : Model.t ptr -> int -> int -> unit
+ (** [set_model_mesh_material model mesh_id material_id] Set material for a mesh*)
+ 
+-val load_model_animations : string -> ptr int -> ptr ModelAnimation.t
++val load_model_animations : string -> ModelAnimation.t CArray.t
+ (** [load_model_animations file_name anims_count] Load model animations from file*)
+ 
+ val update_model_animation : Model.t -> ModelAnimation.t -> int -> unit
+@@ -3903,6 +2500,8 @@ val unload_model_animation : ModelAnimation.t -> unit
+ val is_model_animation_valid : Model.t -> ModelAnimation.t -> bool
+ (** [is_model_animation_valid model anim] Check model animation skeleton match*)
+ 
++(** {3 Mesh generation functions} *)
++
+ val gen_mesh_poly : int -> float -> Mesh.t
+ (** [gen_mesh_poly sides radius] Generate polygonal mesh*)
+ 
+@@ -3933,16 +2532,18 @@ val gen_mesh_heightmap : Image.t -> Vector3.t -> Mesh.t
+ val gen_mesh_cubicmap : Image.t -> Vector3.t -> Mesh.t
+ (** [gen_mesh_cubicmap cubicmap cube_size] Generate cubes-based map mesh from image data*)
+ 
++(** {3 Mesh manipulation functions} *)
++
+ val mesh_bounding_box : Mesh.t -> BoundingBox.t
+ (** [mesh_bounding_box mesh] Compute mesh bounding box limits*)
+ 
+-val mesh_tangents : ptr Mesh.t -> unit
++val mesh_tangents : Mesh.t ptr -> unit
+ (** [mesh_tangents mesh] Compute mesh tangents*)
+ 
+-val mesh_binormals : ptr Mesh.t -> unit
++val mesh_binormals : Mesh.t ptr -> unit
+ (** [mesh_binormals mesh] Compute mesh binormals*)
+ 
+-val mesh_normals_smooth : ptr Mesh.t -> unit
++val mesh_normals_smooth : Mesh.t ptr -> unit
+ (** [mesh_normals_smooth mesh] Smooth (average) vertex normals*)
+ 
+ val draw_model : Model.t -> Vector3.t -> float -> Color.t -> unit
+@@ -3960,12 +2561,14 @@ val draw_model_wires_ex : Model.t -> Vector3.t -> Vector3.t -> float -> Vector3.
+ val draw_bounding_box : BoundingBox.t -> Color.t -> unit
+ (** [draw_bounding_box box color] Draw bounding box (wires)*)
+ 
+-val draw_billboard : camera -> Texture.t -> Vector3.t -> float -> Color.t -> unit
++val draw_billboard : Camera3D.t -> Texture.t -> Vector3.t -> float -> Color.t -> unit
+ (** [draw_billboard camera texture center size tint] Draw a billboard texture*)
+ 
+-val draw_billboard_rec : camera -> Texture.t -> Rectangle.t -> Vector3.t -> float -> Color.t -> unit
++val draw_billboard_rec : Camera3D.t -> Texture.t -> Rectangle.t -> Vector3.t -> float -> Color.t -> unit
+ (** [draw_billboard_rec camera texture source center size tint] Draw a billboard texture defined by source*)
+ 
++(** {3 Collision detection functions} *)
++
+ val check_collision_spheres : Vector3.t -> float -> Vector3.t -> float -> bool
+ (** [check_collision_spheres center1 radius1 center2 radius2] Detect collision between two spheres*)
+ 
+@@ -3978,7 +2581,7 @@ val check_collision_box_sphere : BoundingBox.t -> Vector3.t -> float -> bool
+ val check_collision_ray_sphere : Ray.t -> Vector3.t -> float -> bool
+ (** [check_collision_ray_sphere ray center radius] Detect collision between ray and sphere*)
+ 
+-val check_collision_ray_sphere_ex : Ray.t -> Vector3.t -> float -> ptr Vector3.t -> bool
++val check_collision_ray_sphere_ex : Ray.t -> Vector3.t -> float -> Vector3.t ptr -> bool
+ (** [check_collision_ray_sphere_ex ray center radius collision_point] Detect collision between ray and sphere, returns collision point*)
+ 
+ val check_collision_ray_box : Ray.t -> BoundingBox.t -> bool
+@@ -3996,6 +2599,10 @@ val get_collision_ray_triangle : Ray.t -> Vector3.t -> Vector3.t -> Vector3.t ->
+ val get_collision_ray_ground : Ray.t -> float -> RayHitInfo.t
+ (** [get_collision_ray_ground ray ground_height] Get collision info between ray and ground plane (Y-normal plane)*)
+ 
++(** {2 Shaders System Functions (Module: rlgl)} *)
++
++(** {3 Shader loading/unloading functions} *)
++
+ val load_shader : string -> string -> Shader.t
+ (** [load_shader vs_file_name fs_file_name] Load shader from files and bind default locations*)
+ 
+@@ -4020,22 +2627,22 @@ val get_shapes_texture_rec : unit -> Rectangle.t
+ val set_shapes_texture : Texture.t -> Rectangle.t -> unit
+ (** [set_shapes_texture texture source] Define default texture used to draw shapes*)
+ 
+-val get_shader_location : Shader.t -> string -> int
++val get_shader_location : Shader.t -> string -> ShaderLoc.t
+ (** [get_shader_location shader uniform_name] Get shader uniform location*)
+ 
+-val get_shader_location_attrib : Shader.t -> string -> int
++val get_shader_location_attrib : Shader.t -> string -> ShaderLoc.t
+ (** [get_shader_location_attrib shader attrib_name] Get shader attribute location*)
+ 
+-val set_shader_value : Shader.t -> int -> ptr const void -> int -> unit
++val set_shader_value : Shader.t -> ShaderLoc.t -> unit ptr -> ShaderUniformDataType.t -> unit
+ (** [set_shader_value shader uniform_loc value uniform_type] Set shader uniform value*)
+ 
+-val set_shader_value_v : Shader.t -> int -> ptr const void -> int -> int -> unit
++val set_shader_value_v : Shader.t -> ShaderLoc.t -> unit ptr -> ShaderUniformDataType.t -> int -> unit
+ (** [set_shader_value_v shader uniform_loc value uniform_type count] Set shader uniform value vector*)
+ 
+-val set_shader_value_matrix : Shader.t -> int -> Matrix.t -> unit
++val set_shader_value_matrix : Shader.t -> ShaderLoc.t -> Matrix.t -> unit
+ (** [set_shader_value_matrix shader uniform_loc mat] Set shader uniform value (matrix 4x4)*)
+ 
+-val set_shader_value_texture : Shader.t -> int -> Texture.t -> unit
++val set_shader_value_texture : Shader.t -> ShaderLoc.t -> Texture.t -> unit
+ (** [set_shader_value_texture shader uniform_loc texture] Set shader uniform value for texture*)
+ 
+ val set_matrix_projection : Matrix.t -> unit
+@@ -4050,37 +2657,43 @@ val get_matrix_modelview : unit -> Matrix.t
+ val get_matrix_projection : unit -> Matrix.t
+ (** [get_matrix_projection ()] Get internal projection matrix*)
+ 
+-val gen_texture_cubemap : Shader.t -> Texture.t -> int -> int -> texture_cubemap
++(** {3 Texture maps generation (PBR)} *)
++
++val gen_texture_cubemap : Shader.t -> Texture.t -> int -> PixelFormat.t -> Texture.t
+ (** [gen_texture_cubemap shader panorama size format] Generate cubemap texture from 2D panorama texture*)
+ 
+-val gen_texture_irradiance : Shader.t -> texture_cubemap -> int -> texture_cubemap
++val gen_texture_irradiance : Shader.t -> Texture.t -> int -> Texture.t
+ (** [gen_texture_irradiance shader cubemap size] Generate irradiance texture using cubemap data*)
+ 
+-val gen_texture_prefilter : Shader.t -> texture_cubemap -> int -> texture_cubemap
++val gen_texture_prefilter : Shader.t -> Texture.t -> int -> Texture.t
+ (** [gen_texture_prefilter shader cubemap size] Generate prefilter texture using cubemap data*)
+ 
+ val gen_texture_brdf : Shader.t -> int -> Texture.t
+ (** [gen_texture_brdf shader size] Generate BRDF texture*)
+ 
++(** {3 Shading begin/end functions} *)
++
+ val begin_shader_mode : Shader.t -> unit
+ (** [begin_shader_mode shader] Begin custom shader drawing*)
+ 
+ val end_shader_mode : unit -> unit
+ (** [end_shader_mode ()] End custom shader drawing (use default shader)*)
+ 
+-val begin_blend_mode : int -> unit
++val begin_blend_mode : BlendMode.t -> unit
+ (** [begin_blend_mode mode] Begin blending mode (alpha, additive, multiplied)*)
+ 
+ val end_blend_mode : unit -> unit
+ (** [end_blend_mode ()] End blending mode (reset to default: alpha blending)*)
+ 
++(** {3 VR control functions} *)
++
+ val init_vr_simulator : unit -> unit
+ (** [init_vr_simulator ()] Init VR simulator for selected device parameters*)
+ 
+ val close_vr_simulator : unit -> unit
+ (** [close_vr_simulator ()] Close VR simulator for current device*)
+ 
+-val update_vr_tracking : ptr camera -> unit
++val update_vr_tracking : Camera3D.t ptr -> unit
+ (** [update_vr_tracking camera] Update VR tracking (position and orientation) and camera*)
+ 
+ val set_vr_configuration : VrDeviceInfo.t -> Shader.t -> unit
+@@ -4098,6 +2711,10 @@ val begin_vr_drawing : unit -> unit
+ val end_vr_drawing : unit -> unit
+ (** [end_vr_drawing ()] End VR simulator stereo rendering*)
+ 
++(** {2 Audio Loading and Playing Functions (Module: audio)} *)
++
++(** {3 Audio device management functions} *)
++
+ val init_audio_device : unit -> unit
+ (** [init_audio_device ()] Initialize audio device and context*)
+ 
+@@ -4113,7 +2730,7 @@ val set_master_volume : float -> unit
+ val load_wave : string -> Wave.t
+ (** [load_wave file_name] Load wave data from file*)
+ 
+-val load_wave_from_memory : string -> ptr const uchar -> int -> Wave.t
++val load_wave_from_memory : string -> Unsigned.uchar ptr -> int -> Wave.t
+ (** [load_wave_from_memory file_type file_data data_size] Load wave from memory buffer, fileType refers to extension: i.e. "wav"*)
+ 
+ val load_sound : string -> Sound.t
+@@ -4122,7 +2739,7 @@ val load_sound : string -> Sound.t
+ val load_sound_from_wave : Wave.t -> Sound.t
+ (** [load_sound_from_wave wave] Load sound from wave data*)
+ 
+-val update_sound : Sound.t -> ptr const void -> int -> unit
++val update_sound : Sound.t -> unit ptr -> int -> unit
+ (** [update_sound sound data samples_count] Update sound buffer with new data*)
+ 
+ val unload_wave : Wave.t -> unit
+@@ -4137,6 +2754,8 @@ val export_wave : Wave.t -> string -> bool
+ val export_wave_as_code : Wave.t -> string -> bool
+ (** [export_wave_as_code wave file_name] Export wave sample data to code (.h), returns true on success*)
+ 
++(** {3 Wave/Sound management functions} *)
++
+ val play_sound : Sound.t -> unit
+ (** [play_sound sound] Play a sound*)
+ 
+@@ -4167,21 +2786,23 @@ val set_sound_volume : Sound.t -> float -> unit
+ val set_sound_pitch : Sound.t -> float -> unit
+ (** [set_sound_pitch sound pitch] Set pitch for a sound (1.0 is base level)*)
+ 
+-val wave_format : ptr Wave.t -> int -> int -> int -> unit
++val wave_format : Wave.t ptr -> int -> int -> int -> unit
+ (** [wave_format wave sample_rate sample_size channels] Convert wave data to desired format*)
+ 
+ val wave_copy : Wave.t -> Wave.t
+ (** [wave_copy wave] Copy a wave to a new wave*)
+ 
+-val wave_crop : ptr Wave.t -> int -> int -> unit
++val wave_crop : Wave.t ptr -> int -> int -> unit
+ (** [wave_crop wave init_sample final_sample] Crop a wave to defined samples range*)
+ 
+-val load_wave_samples : Wave.t -> ptr float
++val load_wave_samples : Wave.t -> float ptr
+ (** [load_wave_samples wave] Load samples data from wave as a floats array*)
+ 
+-val unload_wave_samples : ptr float -> unit
++val unload_wave_samples : float ptr -> unit
+ (** [unload_wave_samples samples] Unload samples data loaded with LoadWaveSamples()*)
+ 
++(** {3 Music management functions} *)
++
+ val load_music_stream : string -> Music.t
+ (** [load_music_stream file_name] Load music stream from file*)
+ 
+@@ -4218,10 +2839,12 @@ val get_music_time_length : Music.t -> float
+ val get_music_time_played : Music.t -> float
+ (** [get_music_time_played music] Get current music time played (in seconds)*)
+ 
+-val init_audio_stream : uint -> uint -> uint -> AudioStream.t
++(** {3 AudioStream management functions} *)
++
++val init_audio_stream : int -> int -> int -> AudioStream.t
+ (** [init_audio_stream sample_rate sample_size channels] Init audio stream (to stream raw audio pcm data)*)
+ 
+-val update_audio_stream : AudioStream.t -> ptr const void -> int -> unit
++val update_audio_stream : AudioStream.t -> unit ptr -> int -> unit
+ (** [update_audio_stream stream data samples_count] Update audio stream buffers with data*)
+ 
+ val close_audio_stream : AudioStream.t -> unit
