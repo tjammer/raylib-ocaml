@@ -350,7 +350,7 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "GetTouchPosition" (int @-> returning Vector2.t)
 
   let set_gestures_enabled =
-    foreign "SetGesturesEnabled" (uint @-> returning void)
+    foreign "SetGesturesEnabled" (GestureType.t_bitmask @-> returning void)
 
   let is_gesture_detected = foreign "IsGestureDetected" (int @-> returning bool)
 
