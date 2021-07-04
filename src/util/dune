@@ -1,14 +1,4 @@
 (executable
- (name sanitize_mli)
- (modules Sanitize_mli)
- (libraries str))
-
-(executable
- (name names_to_itf)
- (modules Names_to_itf)
- (libraries re))
-
-(executable
  (name raylib_gen)
  (public_name raylib-gen)
  (package raylib-gen)
