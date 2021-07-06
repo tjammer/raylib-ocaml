@@ -6,7 +6,7 @@ let setup () =
       Vector3.(create 1.0 1.0 1.0)
       Vector3.(create 4.0 1.0 4.0)
       Vector3.(create 0.0 1.0 0.0)
-      45.0 CameraType.Perspective
+      45.0 CameraProjection.Perspective
   in
   let cube = gen_mesh_cube 1.0 1.0 1.0 in
   let skybox = load_model_from_mesh cube in
@@ -19,7 +19,7 @@ let setup () =
   let shader = Material.shader material0 in
   set_shader_value shader
     (get_shader_location shader "environmentMap")
-    (void_ptr_of_int MaterialMapType.(to_int Cubemap))
+    (void_ptr_of_int MaterialMapIndex.(to_int Cubemap))
     ShaderUniformDataType.Int;
 
   let shdr_cubemap =
@@ -28,10 +28,13 @@ let setup () =
   in
   let tex_hdr = load_texture "resources/dresden_square.hdr" in
 
-  MaterialMap.set_texture
-    (CArray.get (Material.maps material0) MaterialMapType.(to_int Cubemap))
-    (gen_texture_cubemap shdr_cubemap tex_hdr 512
-       PixelFormat.Uncompressed_r8g8b8a8);
+  (* NOTE: gen_texture_cubemap is not in raylib anymore.
+   * Instead, it can be implemented with rlgl, but we don't have bindings (yet)
+   * This leaves this example broken TODO *)
+  (* MaterialMap.set_texture
+   *   (CArray.get (Material.maps material0) MaterialMapIndex.(to_int Cubemap))
+   *   (gen_texture_cubemap shdr_cubemap tex_hdr 512
+   *      PixelFormat.Uncompressed_r8g8b8a8); *)
 
   unload_texture tex_hdr;
   unload_shader shdr_cubemap;

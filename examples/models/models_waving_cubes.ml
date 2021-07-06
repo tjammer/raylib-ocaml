@@ -12,7 +12,7 @@ let setup () =
       Vector3.(create 30.0 20.0 30.0)
       Vector3.(create 0.0 0.0 0.0)
       Vector3.(create 0.0 1.0 0.0)
-      70.0 CameraType.Perspective
+      70.0 CameraProjection.Perspective
   in
   set_target_fps 60;
   camera

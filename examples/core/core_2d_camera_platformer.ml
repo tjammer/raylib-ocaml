@@ -70,7 +70,7 @@ let vy_of_float y = Raylib.Vector2.create 0.0 y
 (* Game functions *)
 let setup () =
   let open Raylib in
-  set_config_flags [ ConfigFlag.Window_resizable ];
+  set_config_flags [ ConfigFlags.Window_resizable ];
   init_window width height "raylib [core] example - 2d camera";
   let player = { position = half_screen; speed = 0.0; can_jump = false } in
   let env_items =

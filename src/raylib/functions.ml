@@ -20,7 +20,7 @@ let get_directory_files path =
 let get_dropped_files () =
   let count = ptr_of_int 0 in
   let files = _get_dropped_files count in
-  CArray.from_ptr files !@count
+  CArray.from_ptr files !@count |> CArray.to_list
 
 let compress_data in_data =
   let in_count = CArray.length in_data in
@@ -38,3 +38,7 @@ let load_model_animations path =
   let count = ptr_of_int 0 in
   let anims = _load_model_animations path count in
   CArray.from_ptr anims !@count
+
+let unload_model_animations model_animations =
+  let count = CArray.length model_animations in
+  _unload_model_animations (CArray.start model_animations) count
