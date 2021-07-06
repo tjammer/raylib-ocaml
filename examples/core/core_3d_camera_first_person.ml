@@ -22,7 +22,7 @@ let setup () =
       (Vector3.create 4.0 2.0 4.0) (* position *)
       (Vector3.create 0.0 1.8 0.0) (* target *)
       (Vector3.create 0.0 1.0 0.0) (* up *)
-      60.0 (* FOV *) CameraType.Perspective
+      60.0 (* FOV *) CameraProjection.Perspective
   in
   let columns =
     List.init 20 (fun _ ->

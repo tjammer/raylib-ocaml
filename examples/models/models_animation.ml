@@ -12,13 +12,13 @@ let setup () =
       (Vector3.create 10.0 10.0 10.0)
       (Vector3.create 0.0 0.0 0.0)
       (Vector3.create 0.0 1.0 0.0)
-      45.0 CameraType.Perspective
+      45.0 CameraProjection.Perspective
   in
   let model = load_model "resources/guy/guy.iqm" in
   let texture = load_texture "resources/guy/guytex.png" in
   set_material_texture
     (CArray.get (Model.materials model) 0 |> addr)
-    MaterialMapType.Albedo texture;
+    MaterialMapIndex.Albedo texture;
 
   let anims = load_model_animations "resources/guy/guyanim.iqm" in
 

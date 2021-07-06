@@ -13,7 +13,7 @@ let setup () =
   let font_position =
     Vector2.create 40.0 ((Float.of_int height /. 2.0) -. 80.0)
   in
-  set_texture_filter (Font.texture font) TextureFilterMode.Point;
+  set_texture_filter (Font.texture font) TextureFilter.Point;
   set_target_fps 60;
   (font, font_size, font_position)
 
@@ -31,13 +31,13 @@ let rec loop font font_size font_position filter =
       in
       let filter =
         if is_key_pressed Key.One then (
-          set_texture_filter (Font.texture font) TextureFilterMode.Point;
+          set_texture_filter (Font.texture font) TextureFilter.Point;
           `Point)
         else if is_key_pressed Key.Two then (
-          set_texture_filter (Font.texture font) TextureFilterMode.Bilinear;
+          set_texture_filter (Font.texture font) TextureFilter.Bilinear;
           `Bilinear)
         else if is_key_pressed Key.Three then (
-          set_texture_filter (Font.texture font) TextureFilterMode.Trilinear;
+          set_texture_filter (Font.texture font) TextureFilter.Trilinear;
           `Trilinear)
         else filter
       in
@@ -49,17 +49,15 @@ let rec loop font font_size font_position filter =
         Vector2.(set_x font_position (x font_position +. 10.0)));
 
       let font =
-        if is_file_dropped () then
-          let files = get_dropped_files () in
+        if is_file_dropped () then (
           (* NOTE: We only support first ttf file dropped *)
-          if is_file_extension (CArray.get files 0) ".ttf" then (
-            unload_font font;
-            let font =
-              load_font_ex (CArray.get files 0) font_size (ptr_of_int 0) 0
-            in
-            clear_dropped_files ();
-            font)
-          else font
+          match get_dropped_files () with
+          | [] -> font
+          | file :: _ ->
+              unload_font font;
+              let font = load_font_ex file font_size (ptr_of_int 0) 0 in
+              clear_dropped_files ();
+              font)
         else font
       in
 

@@ -33,8 +33,7 @@ let rec loop dropped_files =
   if window_should_close () then close_window ()
   else
     let dropped_files =
-      if is_file_dropped () then Ctypes.CArray.to_list (get_dropped_files ())
-      else dropped_files
+      if is_file_dropped () then get_dropped_files () else dropped_files
     in
     draw dropped_files;
     loop dropped_files

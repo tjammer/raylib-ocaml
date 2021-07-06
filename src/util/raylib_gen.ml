@@ -27,8 +27,9 @@ module Enum = struct
   let value_of_cname enum_name cname =
     let name =
       match enum_name with
-      | "PixelFormat" -> def cname
-      | "GamepadAxis" | "GamepadButton" | "MouseCursor" ->
+      | "GamepadAxis" | "GamepadButton" | "MouseCursor" | "MaterialMapIndex"
+      | "ShaderLocationIndex" | "ShaderUniformDataType" | "TextureFilter"
+      | "TextureWrap" | "CubemapLayout" ->
           strip_2nd cname |> def
       | "MouseButton" -> strip_1st cname |> rstrip_1st |> def
       | "NPatchType" ->
@@ -42,7 +43,7 @@ module Enum = struct
 
   let name_of_cname cname =
     let bitmask =
-      match cname with "ConfigFlag" | "GestureType" -> true | _ -> false
+      match cname with "ConfigFlags" | "Gestures" -> true | _ -> false
     in
     let name = match cname with "KeyboardKey" -> "Key" | _ -> cname in
     ({ name; cname }, bitmask)
@@ -158,7 +159,7 @@ module Typing = struct
       | [] -> convert acc
     in
     match (arr, aux "" @@ String.split_on_char ' ' cname) with
-    | Some count, C typ -> Array (count, typ)
+    | Some count, C typ | Some count, Ray typ -> Array (count, typ)
     | None, ret -> ret
     | Some _, _ -> failwith "Array with wrong type"
 
@@ -522,7 +523,7 @@ module Function = struct
 end
 
 let () =
-  let api = Yojson.Basic.from_file "raylib_api.json" in
+  let api = Yojson.Basic.from_file "src/util/raylib_api.json" in
   let open Yojson.Basic.Util in
   let enums =
     api |> member "enums" |> to_list |> List.filter_map Enum.of_json
@@ -535,8 +536,8 @@ let () =
     ^ "let max_shader_locations = [%c constant \"MAX_SHADER_LOCATIONS\" \
        camlint]"
   in
-  (* print_string stubs; *)
-  ignore stubs;
+  print_string stubs;
+  (* ignore stubs; *)
   let itf =
     "(** {1 Constants} *)\n\n"
     ^ (enums |> List.map Enum.itf |> String.concat "")
@@ -566,6 +567,6 @@ let () =
   (* print_string stubs; *)
   ignore stubs;
   let itf = funcs |> List.map Function.itf |> String.concat "\n" in
-  print_string itf;
-  (* ignore itf; *)
+  (* print_string itf; *)
+  ignore itf;
   ()

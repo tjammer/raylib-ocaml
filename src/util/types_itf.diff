@@ -1,17 +1,17 @@
 diff --git a/src/raylib/raylib.mli b/src/raylib/raylib.mli
-index 454098c..c0e5f51 100644
+index 2013345..56ef087 100644
 --- a/src/raylib/raylib.mli
 +++ b/src/raylib/raylib.mli
-@@ -455,7 +455,7 @@ val max_shader_locations : int
- (** {1 Types} *)
+@@ -444,7 +444,7 @@ val max_shader_locations : int
  
+ (** {1 Types} *)
  module Vector2 : sig
 -  type t'
 +  type t' = Raylib_generated_types.Vector2.t
  
    type t = t' ctyp
  
-@@ -469,9 +469,49 @@ module Vector2 : sig
+@@ -458,9 +458,49 @@ module Vector2 : sig
    val set_x : t -> float -> unit
  
    val set_y : t -> float -> unit
@@ -62,7 +62,7 @@ index 454098c..c0e5f51 100644
    type t'
  
    type t = t' ctyp
-@@ -490,9 +530,61 @@ module Vector3 : sig
+@@ -479,9 +519,61 @@ module Vector3 : sig
    val set_y : t -> float -> unit
  
    val set_z : t -> float -> unit
@@ -125,7 +125,7 @@ index 454098c..c0e5f51 100644
    type t'
  
    type t = t' ctyp
-@@ -515,9 +607,53 @@ module Vector4 : sig
+@@ -504,9 +596,53 @@ module Vector4 : sig
    val set_z : t -> float -> unit
  
    val set_w : t -> float -> unit
@@ -180,7 +180,7 @@ index 454098c..c0e5f51 100644
    type t'
  
    type t = t' ctyp
-@@ -588,32 +724,117 @@ module Matrix : sig
+@@ -577,32 +713,117 @@ module Matrix : sig
    val set_m14 : t -> float -> unit
  
    val set_m15 : t -> float -> unit
@@ -247,28 +247,28 @@ index 454098c..c0e5f51 100644
 +  val gray : t
 +
 +  val darkgray : t
- 
--  val g : t -> uchar
++
 +  val yellow : t
  
--  val b : t -> uchar
+-  val g : t -> uchar
 +  val gold : t
  
--  val a : t -> uchar
+-  val b : t -> uchar
 +  val orange : t
  
--  val set_r : t -> uchar -> unit
+-  val a : t -> uchar
 +  val pink : t
  
--  val set_g : t -> uchar -> unit
+-  val set_r : t -> uchar -> unit
 +  val red : t
  
--  val set_b : t -> uchar -> unit
+-  val set_g : t -> uchar -> unit
 +  val maroon : t
  
--  val set_a : t -> uchar -> unit
+-  val set_b : t -> uchar -> unit
 +  val green : t
-+
+ 
+-  val set_a : t -> uchar -> unit
 +  val lime : t
 +
 +  val darkgreen : t
@@ -304,11 +304,11 @@ index 454098c..c0e5f51 100644
  
  module Rectangle : sig
 -  type t'
-+  type t' = Raylib_functions.Types.Rectangle.t
++  type t' = Raylib_generated_types.Rectangle.t
  
    type t = t' ctyp
  
-@@ -651,26 +872,15 @@ module Image : sig
+@@ -640,26 +861,15 @@ module Image : sig
    val mipmaps : t -> int
    (** Mipmap levels, 1 by default *)
  
@@ -337,12 +337,9 @@ index 454098c..c0e5f51 100644
    val width : t -> int
    (** Texture base width *)
  
-@@ -680,36 +890,23 @@ module Texture : sig
-   val mipmaps : t -> int
-   (** Mipmap levels, 1 by default *)
+@@ -671,34 +881,21 @@ module Texture : sig
  
--  val format : t -> int
-+  val format : t ->  PixelFormat.t
+   val format : t -> int
    (** Data format (PixelFormat type) *)
 -
 -  val set_id : t -> uint -> unit
@@ -364,7 +361,7 @@ index 454098c..c0e5f51 100644
    type t = t' ctyp
  
 -  val id : t -> uint
--  (** OpenGL Framebuffer Object (FBO) id *)
+-  (** OpenGL framebuffer object id *)
 -
    val texture : t -> Texture.t
    (** Color buffer attachment texture *)
@@ -377,34 +374,34 @@ index 454098c..c0e5f51 100644
    val set_texture : t -> Texture.t -> unit
  
    val set_depth : t -> Texture.t -> unit
-@@ -720,7 +917,7 @@ module NPatchInfo : sig
+@@ -709,7 +906,7 @@ module NPatchInfo : sig
  
    type t = t' ctyp
  
 -  val create : Rectangle.t -> int -> int -> int -> int -> int -> t
-+  val create : Rectangle.t -> int -> int -> int -> int -> NPatchType.t -> t
-   (** [create source left top right bottom typ] *)
++  val create : Rectangle.t -> int -> int -> int -> int -> NPatchLayout.t-> t
+   (** [create source left top right bottom layout] *)
  
    val source : t -> Rectangle.t
-@@ -738,7 +935,7 @@ module NPatchInfo : sig
+@@ -727,7 +924,7 @@ module NPatchInfo : sig
    val bottom : t -> int
-   (** bottom border offset *)
+   (** Bottom border offset *)
  
--  val typ : t -> int
-+  val typ : t -> NPatchType.t
-   (** layout of the n-patch: 3x3, 1x3 or 3x1 *)
+-  val layout : t -> int
++  val layout : t -> NPatchLayout.t
+   (** Layout of the n-patch: 3x3, 1x3 or 3x1 *)
  
    val set_source : t -> Rectangle.t -> unit
-@@ -751,7 +948,7 @@ module NPatchInfo : sig
+@@ -740,7 +937,7 @@ module NPatchInfo : sig
  
    val set_bottom : t -> int -> unit
  
--  val set_typ : t -> int -> unit
-+  val set_typ : t -> NPatchType.t -> unit
+-  val set_layout : t -> int -> unit
++  val set_layout : t -> NPatchLayout.t -> unit
  end
  
  module CharInfo : sig
-@@ -789,7 +986,7 @@ module CharInfo : sig
+@@ -778,7 +975,7 @@ module CharInfo : sig
  end
  
  module Font : sig
@@ -413,30 +410,30 @@ index 454098c..c0e5f51 100644
  
    type t = t' ctyp
  
-@@ -824,7 +1021,7 @@ module Camera3D : sig
+@@ -813,7 +1010,7 @@ module Camera3D : sig
  
    type t = t' ctyp
  
 -  val create : Vector3.t -> Vector3.t -> Vector3.t -> float -> int -> t
-+  val create : Vector3.t -> Vector3.t -> Vector3.t -> float -> CameraType.t -> t
-   (** [create position target up fovy typ] *)
++  val create : Vector3.t -> Vector3.t -> Vector3.t -> float -> CameraProjection.t -> t
+   (** [create position target up fovy projection] *)
  
    val position : t -> Vector3.t
-@@ -839,7 +1036,7 @@ module Camera3D : sig
+@@ -828,7 +1025,7 @@ module Camera3D : sig
    val fovy : t -> float
    (** Camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic *)
  
--  val typ : t -> int
-+  val typ : t -> CameraType.t
-   (** Camera type, defines projection type: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC *)
+-  val projection : t -> int
++  val projection : t -> CameraProjection.t
+   (** Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC *)
  
    val set_position : t -> Vector3.t -> unit
-@@ -850,9 +1047,11 @@ module Camera3D : sig
+@@ -839,9 +1036,11 @@ module Camera3D : sig
  
    val set_fovy : t -> float -> unit
  
--  val set_typ : t -> int -> unit
-+  val set_typ : t -> CameraType.t -> unit
+-  val set_projection : t -> int -> unit
++  val set_projection : t -> CameraProjection.t -> unit
  end
  
 +module Camera = Camera3D
@@ -444,7 +441,7 @@ index 454098c..c0e5f51 100644
  module Camera2D : sig
    type t'
  
-@@ -886,11 +1085,10 @@ module Mesh : sig
+@@ -875,11 +1074,10 @@ module Mesh : sig
    type t'
  
    type t = t' ctyp
@@ -459,7 +456,7 @@ index 454098c..c0e5f51 100644
  end
  
  module Shader : sig
-@@ -898,10 +1096,11 @@ module Shader : sig
+@@ -887,10 +1085,11 @@ module Shader : sig
  
    type t = t' ctyp
  
@@ -474,7 +471,7 @@ index 454098c..c0e5f51 100644
  end
  
  module MaterialMap : sig
-@@ -936,12 +1135,12 @@ module Material : sig
+@@ -925,7 +1124,7 @@ module Material : sig
    val shader : t -> Shader.t
    (** Material shader *)
  
@@ -482,14 +479,17 @@ index 454098c..c0e5f51 100644
 +  val maps : t -> MaterialMap.t CArray.t
    (** Material maps array (MAX_MATERIAL_MAPS) *)
  
+   val params : t -> float Ctypes_static.carray
+@@ -933,7 +1132,7 @@ module Material : sig
+ 
    val set_shader : t -> Shader.t -> unit
  
 -  val set_maps : t -> MaterialMap.t ptr -> unit
 +  val set_maps : t -> MaterialMap.t CArray.t -> unit
- end
  
- module Transform : sig
-@@ -1018,12 +1217,12 @@ module ModelAnimation : sig
+   val set_params : t -> float -> float -> float -> float -> unit
+ end
+@@ -1012,12 +1211,12 @@ module ModelAnimation : sig
    val bones : t -> BoneInfo.t CArray.t
    (** Bones information (skeleton) *)
  
@@ -505,7 +505,7 @@ index 454098c..c0e5f51 100644
  end
  
  module Ray : sig
-@@ -1061,14 +1260,6 @@ module RayHitInfo : sig
+@@ -1055,14 +1254,6 @@ module RayHitInfo : sig
  
    val normal : t -> Vector3.t
    (** Surface normal of hit *)
@@ -520,7 +520,7 @@ index 454098c..c0e5f51 100644
  end
  
  module BoundingBox : sig
-@@ -1094,42 +1285,12 @@ module Wave : sig
+@@ -1088,42 +1279,12 @@ module Wave : sig
    type t'
  
    type t = t' ctyp
@@ -563,12 +563,37 @@ index 454098c..c0e5f51 100644
  end
  
  module Sound : sig
-@@ -1169,6 +1330,8 @@ module VrDeviceInfo : sig
+@@ -1163,6 +1324,8 @@ module VrDeviceInfo : sig
  
    type t = t' ctyp
  
 +  val create : unit -> t
 +
    val h_resolution : t -> int
-   (** HMD horizontal resolution in pixels *)
+   (** Horizontal resolution in pixels *)
+ 
+@@ -1219,10 +1382,10 @@ module VrStereoConfig : sig
+ 
+   type t = t' ctyp
+ 
+-  val projection : t -> Matrix Ctypes_static.carray
++  val projection : t -> Matrix.t Ctypes_static.carray
+   (** VR projection matrices (per eye) *)
+ 
+-  val view_offset : t -> Matrix Ctypes_static.carray
++  val view_offset : t -> Matrix.t Ctypes_static.carray
+   (** VR view offset matrices (per eye) *)
+ 
+   val left_lens_center : t -> float Ctypes_static.carray
+@@ -1243,9 +1406,9 @@ module VrStereoConfig : sig
+   val scale_in : t -> float Ctypes_static.carray
+   (** VR distortion scale in *)
+ 
+-  val set_projection : t -> Matrix -> Matrix -> unit
++  val set_projection : t -> Matrix.t -> Matrix.t -> unit
+ 
+-  val set_view_offset : t -> Matrix -> Matrix -> unit
++  val set_view_offset : t -> Matrix.t -> Matrix.t -> unit
+ 
+   val set_left_lens_center : t -> float -> float -> unit
  

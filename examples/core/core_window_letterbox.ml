@@ -15,7 +15,7 @@ let init_colors () =
 
 let setup () =
   let open Raylib in
-  set_config_flags [ ConfigFlag.Window_resizable; ConfigFlag.Vsync_hint ];
+  set_config_flags [ ConfigFlags.Window_resizable; ConfigFlags.Vsync_hint ];
 
   init_window 800 450 "raylib [core] example - window scale letterbox";
   set_window_min_size 320 240;
@@ -23,7 +23,7 @@ let setup () =
   let target =
     load_render_texture (Int.of_float game_width) (Int.of_float game_height)
   in
-  set_texture_filter (RenderTexture.texture target) TextureFilterMode.Bilinear;
+  set_texture_filter (RenderTexture.texture target) TextureFilter.Bilinear;
 
   set_target_fps 60;
 

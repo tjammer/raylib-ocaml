@@ -77,7 +77,7 @@ module NPatchInfo = struct
     top : int;
     right : int;
     bottom : int;
-    typ : int; [@cname "type"]
+    layout : int;
   }
   [@@cname "NPatchInfo"]
 end
@@ -111,7 +111,7 @@ module Camera3D = struct
     target : Vector3.t;
     up : Vector3.t;
     fovy : float;
-    typ : int; [@cname "type"]
+    projection : int;
   }
   [@@cname "Camera3D"]
 end
@@ -157,7 +157,13 @@ module MaterialMap = struct
 end
 
 module Material = struct
-  type%c t = { shader : Shader.t; maps : MaterialMap.t ptr; params : float ptr }
+  let%c float_array_4 = array 4 float
+
+  type%c t = {
+    shader : Shader.t;
+    maps : MaterialMap.t ptr;
+    params : float_array_4;
+  }
   [@@cname "Material"]
 end
 
@@ -277,4 +283,22 @@ module VrDeviceInfo = struct
     chroma_ab_correction : float_array_4; [@cname "chromaAbCorrection"]
   }
   [@@cname "VrDeviceInfo"]
+end
+
+module VrStereoConfig = struct
+  let%c matrix_array_2 = array 2 Matrix.t
+
+  let%c float_array_2 = array 2 float
+
+  type%c t = {
+    projection : matrix_array_2;
+    view_offset : matrix_array_2; [@cname "viewOffset"]
+    left_lens_center : float_array_2; [@cname "leftLensCenter"]
+    right_lens_center : float_array_2; [@cname "rightLensCenter"]
+    left_screen_center : float_array_2; [@cname "leftScreenCenter"]
+    right_screen_center : float_array_2; [@cname "rightScreenCenter"]
+    scale : float_array_2;
+    scale_in : float_array_2; [@cname "scaleIn"]
+  }
+  [@@cname "VrStereoConfig"]
 end
