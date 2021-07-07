@@ -2,7 +2,9 @@
 
 # raylib-ocaml
 
-OCaml bindings for <a href="https://www.raylib.com/" target="_blank">raylib</a> (v3.5.0), a simple and easy-to-use library to enjoy videogames programming.
+OCaml bindings for <a href="https://www.raylib.com/" target="_blank">raylib</a> (v3.7.0), a simple and easy-to-use library to enjoy videogames programming.
+
+The documentation can be viewed [online](https://tjammer.github.io/raylib-ocaml/raylib/Raylib/index.html).
 
 The bindings are pretty faithful to the original C code, the biggest difference is the conversion of all function names from CamelCase to snake_case.
 Wherever possible, integer arguments are changed to their own variant types, eg. `int key` to `Key.t`.
@@ -58,8 +60,10 @@ inside this repo. The binaries can then be found in `_build/default/examples`.
 
 ## Raygui
 In addition to raylib, there are bindings to <a href="https://github.com/raysan5/raygui" target="_blank">raygui</a>, an immediate mode gui library which complements raylib.
+The documentation of the raygui bindings can be viewed [online](https://tjammer.github.io/raylib-ocaml/raygui/Raygui/index.html) as well.
 As with the raylib bindings, the bindings stick close to the C source.
-An exception to this are the `*_style` functions, which take a polymorphic variant. An example can be found in `examples/gui`.
+An exception to this are the `*_style` functions, which take a polymorphic variant.
+An example can be found in `examples/gui`.
 
 ![gui_example](images/raygui.gif)
 
