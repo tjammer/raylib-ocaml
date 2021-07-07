@@ -35,7 +35,6 @@ let setup () =
    *   (CArray.get (Material.maps material0) MaterialMapIndex.(to_int Cubemap))
    *   (gen_texture_cubemap shdr_cubemap tex_hdr 512
    *      PixelFormat.Uncompressed_r8g8b8a8); *)
-
   unload_texture tex_hdr;
   unload_shader shdr_cubemap;
 

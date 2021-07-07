@@ -1440,6 +1440,7 @@ module VrStereoConfig : sig
 
   val set_scale_in : t -> float -> float -> unit
 end
+
 val init_window : int -> int -> string -> unit
 (** [init_window width height title] Initialize window and OpenGL context*)
 
@@ -1648,10 +1649,12 @@ val get_shader_location : Shader.t -> string -> ShaderLoc.t
 val get_shader_location_attrib : Shader.t -> string -> ShaderLoc.t
 (** [get_shader_location_attrib shader attrib_name] Get shader attribute location*)
 
-val set_shader_value : Shader.t -> ShaderLoc.t -> unit ptr -> ShaderUniformDataType.t -> unit
+val set_shader_value :
+  Shader.t -> ShaderLoc.t -> unit ptr -> ShaderUniformDataType.t -> unit
 (** [set_shader_value shader loc_index value uniform_type] Set shader uniform value*)
 
-val set_shader_value_v : Shader.t -> ShaderLoc.t -> unit ptr -> ShaderUniformDataType.t -> int -> unit
+val set_shader_value_v :
+  Shader.t -> ShaderLoc.t -> unit ptr -> ShaderUniformDataType.t -> int -> unit
 (** [set_shader_value_v shader loc_index value uniform_type count] Set shader uniform value vector*)
 
 val set_shader_value_matrix : Shader.t -> ShaderLoc.t -> Matrix.t -> unit
@@ -1941,7 +1944,8 @@ val set_camera_alt_control : Key.t -> unit
 val set_camera_smooth_zoom_control : Key.t -> unit
 (** [set_camera_smooth_zoom_control key_smooth_zoom] Set camera smooth zoom key to combine with mouse (free camera)*)
 
-val set_camera_move_controls : Key.t -> Key.t -> Key.t -> Key.t -> Key.t -> Key.t -> unit
+val set_camera_move_controls :
+  Key.t -> Key.t -> Key.t -> Key.t -> Key.t -> Key.t -> unit
 (** [set_camera_move_controls key_front key_back key_right key_left key_up key_down] Set camera move controls (1st person and 3rd person cameras)*)
 
 val set_shapes_texture : Texture.t -> Rectangle.t -> unit
@@ -1965,7 +1969,8 @@ val draw_line_ex : Vector2.t -> Vector2.t -> float -> Color.t -> unit
 val draw_line_bezier : Vector2.t -> Vector2.t -> float -> Color.t -> unit
 (** [draw_line_bezier start_pos end_pos thick color] Draw a line using cubic-bezier curves in-out*)
 
-val draw_line_bezier_quad : Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
+val draw_line_bezier_quad :
+  Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
 (** [draw_line_bezier_quad start_pos end_pos control_pos thick color] raw line using quadratic bezier curves with a control point*)
 
 val draw_line_strip : Vector2.t ptr -> int -> Color.t -> unit
@@ -1974,10 +1979,12 @@ val draw_line_strip : Vector2.t ptr -> int -> Color.t -> unit
 val draw_circle : int -> int -> float -> Color.t -> unit
 (** [draw_circle center_x center_y radius color] Draw a color-filled circle*)
 
-val draw_circle_sector : Vector2.t -> float -> float -> float -> int -> Color.t -> unit
+val draw_circle_sector :
+  Vector2.t -> float -> float -> float -> int -> Color.t -> unit
 (** [draw_circle_sector center radius start_angle end_angle segments color] Draw a piece of a circle*)
 
-val draw_circle_sector_lines : Vector2.t -> float -> float -> float -> int -> Color.t -> unit
+val draw_circle_sector_lines :
+  Vector2.t -> float -> float -> float -> int -> Color.t -> unit
 (** [draw_circle_sector_lines center radius start_angle end_angle segments color] Draw circle sector outline*)
 
 val draw_circle_gradient : int -> int -> float -> Color.t -> Color.t -> unit
@@ -1995,10 +2002,12 @@ val draw_ellipse : int -> int -> float -> float -> Color.t -> unit
 val draw_ellipse_lines : int -> int -> float -> float -> Color.t -> unit
 (** [draw_ellipse_lines center_x center_y radius_h radius_v color] Draw ellipse outline*)
 
-val draw_ring : Vector2.t -> float -> float -> float -> float -> int -> Color.t -> unit
+val draw_ring :
+  Vector2.t -> float -> float -> float -> float -> int -> Color.t -> unit
 (** [draw_ring center inner_radius outer_radius start_angle end_angle segments color] Draw ring*)
 
-val draw_ring_lines : Vector2.t -> float -> float -> float -> float -> int -> Color.t -> unit
+val draw_ring_lines :
+  Vector2.t -> float -> float -> float -> float -> int -> Color.t -> unit
 (** [draw_ring_lines center inner_radius outer_radius start_angle end_angle segments color] Draw ring outline*)
 
 val draw_rectangle : int -> int -> int -> int -> Color.t -> unit
@@ -2013,13 +2022,16 @@ val draw_rectangle_rec : Rectangle.t -> Color.t -> unit
 val draw_rectangle_pro : Rectangle.t -> Vector2.t -> float -> Color.t -> unit
 (** [draw_rectangle_pro rec origin rotation color] Draw a color-filled rectangle with pro parameters*)
 
-val draw_rectangle_gradient_v : int -> int -> int -> int -> Color.t -> Color.t -> unit
+val draw_rectangle_gradient_v :
+  int -> int -> int -> int -> Color.t -> Color.t -> unit
 (** [draw_rectangle_gradient_v pos_x pos_y width height color1 color2] Draw a vertical-gradient-filled rectangle*)
 
-val draw_rectangle_gradient_h : int -> int -> int -> int -> Color.t -> Color.t -> unit
+val draw_rectangle_gradient_h :
+  int -> int -> int -> int -> Color.t -> Color.t -> unit
 (** [draw_rectangle_gradient_h pos_x pos_y width height color1 color2] Draw a horizontal-gradient-filled rectangle*)
 
-val draw_rectangle_gradient_ex : Rectangle.t -> Color.t -> Color.t -> Color.t -> Color.t -> unit
+val draw_rectangle_gradient_ex :
+  Rectangle.t -> Color.t -> Color.t -> Color.t -> Color.t -> unit
 (** [draw_rectangle_gradient_ex rec col1 col2 col3 col4] Draw a gradient-filled rectangle with custom vertex colors*)
 
 val draw_rectangle_lines : int -> int -> int -> int -> Color.t -> unit
@@ -2031,7 +2043,8 @@ val draw_rectangle_lines_ex : Rectangle.t -> int -> Color.t -> unit
 val draw_rectangle_rounded : Rectangle.t -> float -> int -> Color.t -> unit
 (** [draw_rectangle_rounded rec roundness segments color] Draw rectangle with rounded edges*)
 
-val draw_rectangle_rounded_lines : Rectangle.t -> float -> int -> int -> Color.t -> unit
+val draw_rectangle_rounded_lines :
+  Rectangle.t -> float -> int -> int -> Color.t -> unit
 (** [draw_rectangle_rounded_lines rec roundness segments line_thick color] Draw rectangle with rounded edges outline*)
 
 val draw_triangle : Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
@@ -2069,10 +2082,12 @@ val check_collision_point_rec : Vector2.t -> Rectangle.t -> bool
 val check_collision_point_circle : Vector2.t -> Vector2.t -> float -> bool
 (** [check_collision_point_circle point center radius] Check if point is inside circle*)
 
-val check_collision_point_triangle : Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> bool
+val check_collision_point_triangle :
+  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> bool
 (** [check_collision_point_triangle point p1 p2 p3] Check if point is inside a triangle*)
 
-val check_collision_lines : Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t ptr -> bool
+val check_collision_lines :
+  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t ptr -> bool
 (** [check_collision_lines start_pos1 end_pos1 start_pos2 end_pos2 collision_point] Check the collision between two lines defined by two points each, returns collision point by reference*)
 
 val get_collision_rec : Rectangle.t -> Rectangle.t -> Rectangle.t
@@ -2108,10 +2123,12 @@ val gen_image_gradient_v : int -> int -> Color.t -> Color.t -> Image.t
 val gen_image_gradient_h : int -> int -> Color.t -> Color.t -> Image.t
 (** [gen_image_gradient_h width height left right] Generate image: horizontal gradient*)
 
-val gen_image_gradient_radial : int -> int -> float -> Color.t -> Color.t -> Image.t
+val gen_image_gradient_radial :
+  int -> int -> float -> Color.t -> Color.t -> Image.t
 (** [gen_image_gradient_radial width height density inner outer] Generate image: radial gradient*)
 
-val gen_image_checked : int -> int -> int -> int -> Color.t -> Color.t -> Image.t
+val gen_image_checked :
+  int -> int -> int -> int -> Color.t -> Color.t -> Image.t
 (** [gen_image_checked width height checks_x checks_y col1 col2] Generate image: checked*)
 
 val gen_image_white_noise : int -> int -> float -> Image.t
@@ -2164,7 +2181,8 @@ val image_resize : Image.t ptr -> int -> int -> unit
 val image_resize_nn : Image.t ptr -> int -> int -> unit
 (** [image_resize_nn image new_width new_height] Resize image (Nearest-Neighbor scaling algorithm)*)
 
-val image_resize_canvas : Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
+val image_resize_canvas :
+  Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
 (** [image_resize_canvas image new_width new_height offset_x offset_y fill] Resize canvas and fill with color*)
 
 val image_mipmaps : Image.t ptr -> unit
@@ -2239,25 +2257,38 @@ val image_draw_circle : Image.t ptr -> int -> int -> int -> Color.t -> unit
 val image_draw_circle_v : Image.t ptr -> Vector2.t -> int -> Color.t -> unit
 (** [image_draw_circle_v dst center radius color] Draw circle within an image (Vector version)*)
 
-val image_draw_rectangle : Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
+val image_draw_rectangle :
+  Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
 (** [image_draw_rectangle dst pos_x pos_y width height color] Draw rectangle within an image*)
 
-val image_draw_rectangle_v : Image.t ptr -> Vector2.t -> Vector2.t -> Color.t -> unit
+val image_draw_rectangle_v :
+  Image.t ptr -> Vector2.t -> Vector2.t -> Color.t -> unit
 (** [image_draw_rectangle_v dst position size color] Draw rectangle within an image (Vector version)*)
 
 val image_draw_rectangle_rec : Image.t ptr -> Rectangle.t -> Color.t -> unit
 (** [image_draw_rectangle_rec dst rec color] Draw rectangle within an image*)
 
-val image_draw_rectangle_lines : Image.t ptr -> Rectangle.t -> int -> Color.t -> unit
+val image_draw_rectangle_lines :
+  Image.t ptr -> Rectangle.t -> int -> Color.t -> unit
 (** [image_draw_rectangle_lines dst rec thick color] Draw rectangle lines within an image*)
 
-val image_draw : Image.t ptr -> Image.t -> Rectangle.t -> Rectangle.t -> Color.t -> unit
+val image_draw :
+  Image.t ptr -> Image.t -> Rectangle.t -> Rectangle.t -> Color.t -> unit
 (** [image_draw dst src src_rec dst_rec tint] Draw a source image within a destination image (tint applied to source)*)
 
-val image_draw_text : Image.t ptr -> string -> int -> int -> int -> Color.t -> unit
+val image_draw_text :
+  Image.t ptr -> string -> int -> int -> int -> Color.t -> unit
 (** [image_draw_text dst text pos_x pos_y font_size color] Draw text (using default font) within an image (destination)*)
 
-val image_draw_text_ex : Image.t ptr -> Font.t -> string -> Vector2.t -> float -> float -> Color.t -> unit
+val image_draw_text_ex :
+  Image.t ptr ->
+  Font.t ->
+  string ->
+  Vector2.t ->
+  float ->
+  float ->
+  Color.t ->
+  unit
 (** [image_draw_text_ex dst font text position font_size spacing tint] Draw text (custom sprite font) within an image (destination)*)
 
 (** {3 Texture loading functions} *)
@@ -2307,25 +2338,56 @@ val draw_texture : Texture.t -> int -> int -> Color.t -> unit
 val draw_texture_v : Texture.t -> Vector2.t -> Color.t -> unit
 (** [draw_texture_v texture position tint] Draw a Texture2D with position defined as Vector2*)
 
-val draw_texture_ex : Texture.t -> Vector2.t -> float -> float -> Color.t -> unit
+val draw_texture_ex :
+  Texture.t -> Vector2.t -> float -> float -> Color.t -> unit
 (** [draw_texture_ex texture position rotation scale tint] Draw a Texture2D with extended parameters*)
 
 val draw_texture_rec : Texture.t -> Rectangle.t -> Vector2.t -> Color.t -> unit
 (** [draw_texture_rec texture source position tint] Draw a part of a texture defined by a rectangle*)
 
-val draw_texture_quad : Texture.t -> Vector2.t -> Vector2.t -> Rectangle.t -> Color.t -> unit
+val draw_texture_quad :
+  Texture.t -> Vector2.t -> Vector2.t -> Rectangle.t -> Color.t -> unit
 (** [draw_texture_quad texture tiling offset quad tint] Draw texture quad with tiling and offset parameters*)
 
-val draw_texture_tiled : Texture.t -> Rectangle.t -> Rectangle.t -> Vector2.t -> float -> float -> Color.t -> unit
+val draw_texture_tiled :
+  Texture.t ->
+  Rectangle.t ->
+  Rectangle.t ->
+  Vector2.t ->
+  float ->
+  float ->
+  Color.t ->
+  unit
 (** [draw_texture_tiled texture source dest origin rotation scale tint] Draw part of a texture (defined by a rectangle) with rotation and scale tiled into dest.*)
 
-val draw_texture_pro : Texture.t -> Rectangle.t -> Rectangle.t -> Vector2.t -> float -> Color.t -> unit
+val draw_texture_pro :
+  Texture.t ->
+  Rectangle.t ->
+  Rectangle.t ->
+  Vector2.t ->
+  float ->
+  Color.t ->
+  unit
 (** [draw_texture_pro texture source dest origin rotation tint] Draw a part of a texture defined by a rectangle with 'pro' parameters*)
 
-val draw_texture_npatch : Texture.t -> NPatchInfo.t -> Rectangle.t -> Vector2.t -> float -> Color.t -> unit
+val draw_texture_npatch :
+  Texture.t ->
+  NPatchInfo.t ->
+  Rectangle.t ->
+  Vector2.t ->
+  float ->
+  Color.t ->
+  unit
 (** [draw_texture_npatch texture n_patch_info dest origin rotation tint] Draws a texture (or part of it) that stretches or shrinks nicely*)
 
-val draw_texture_poly : Texture.t -> Vector2.t -> Vector2.t ptr -> Vector2.t ptr -> int -> Color.t -> unit
+val draw_texture_poly :
+  Texture.t ->
+  Vector2.t ->
+  Vector2.t ptr ->
+  Vector2.t ptr ->
+  int ->
+  Color.t ->
+  unit
 (** [draw_texture_poly texture center points texcoords points_count tint] Draw a textured polygon*)
 
 val fade : Color.t -> float -> Color.t
@@ -2380,13 +2442,16 @@ val load_font_ex : string -> int -> int ptr -> int -> Font.t
 val load_font_from_image : Image.t -> Color.t -> int -> Font.t
 (** [load_font_from_image image key first_char] Load font from Image (XNA style)*)
 
-val load_font_from_memory : string -> Unsigned.uchar ptr -> int -> int -> int ptr -> int -> Font.t
+val load_font_from_memory :
+  string -> Unsigned.uchar ptr -> int -> int -> int ptr -> int -> Font.t
 (** [load_font_from_memory file_type file_data data_size font_size font_chars chars_count] Load font from memory buffer, fileType refers to extension: i.e. ".ttf"*)
 
-val load_font_data : Unsigned.uchar ptr -> int -> int -> int ptr -> int -> int -> CharInfo.t ptr
+val load_font_data :
+  Unsigned.uchar ptr -> int -> int -> int ptr -> int -> int -> CharInfo.t ptr
 (** [load_font_data file_data data_size font_size font_chars chars_count type] Load font data for further use*)
 
-val gen_image_font_atlas : CharInfo.t ptr -> Rectangle.t ptr ptr -> int -> int -> int -> int -> Image.t
+val gen_image_font_atlas :
+  CharInfo.t ptr -> Rectangle.t ptr ptr -> int -> int -> int -> int -> Image.t
 (** [gen_image_font_atlas chars recs chars_count font_size padding pack_method] Generate image font atlas using chars info*)
 
 val unload_font_data : CharInfo.t ptr -> int -> unit
@@ -2401,13 +2466,27 @@ val draw_fps : int -> int -> unit
 val draw_text : string -> int -> int -> int -> Color.t -> unit
 (** [draw_text text pos_x pos_y font_size color] Draw text (using default font)*)
 
-val draw_text_ex : Font.t -> string -> Vector2.t -> float -> float -> Color.t -> unit
+val draw_text_ex :
+  Font.t -> string -> Vector2.t -> float -> float -> Color.t -> unit
 (** [draw_text_ex font text position font_size spacing tint] Draw text using font and additional parameters*)
 
-val draw_text_rec : Font.t -> string -> Rectangle.t -> float -> float -> bool -> Color.t -> unit
+val draw_text_rec :
+  Font.t -> string -> Rectangle.t -> float -> float -> bool -> Color.t -> unit
 (** [draw_text_rec font text rec font_size spacing word_wrap tint] Draw text using font inside rectangle limits*)
 
-val draw_text_rec_ex : Font.t -> string -> Rectangle.t -> float -> float -> bool -> Color.t -> int -> int -> Color.t -> Color.t ->unit
+val draw_text_rec_ex :
+  Font.t ->
+  string ->
+  Rectangle.t ->
+  float ->
+  float ->
+  bool ->
+  Color.t ->
+  int ->
+  int ->
+  Color.t ->
+  Color.t ->
+  unit
 (** [draw_text_rec_ex font text rec font_size spacing word_wrap tint select_start select_length select_tint select_back_tint] *)
 
 val draw_text_codepoint : Font.t -> int -> Vector2.t -> float -> Color.t -> unit
@@ -2491,7 +2570,8 @@ val draw_cube_wires : Vector3.t -> float -> float -> float -> Color.t -> unit
 val draw_cube_wires_v : Vector3.t -> Vector3.t -> Color.t -> unit
 (** [draw_cube_wires_v position size color] Draw cube wires (Vector version)*)
 
-val draw_cube_texture : Texture.t -> Vector3.t -> float -> float -> float -> Color.t -> unit
+val draw_cube_texture :
+  Texture.t -> Vector3.t -> float -> float -> float -> Color.t -> unit
 (** [draw_cube_texture texture position width height length color] Draw cube textured*)
 
 val draw_sphere : Vector3.t -> float -> Color.t -> unit
@@ -2503,10 +2583,12 @@ val draw_sphere_ex : Vector3.t -> float -> int -> int -> Color.t -> unit
 val draw_sphere_wires : Vector3.t -> float -> int -> int -> Color.t -> unit
 (** [draw_sphere_wires center_pos radius rings slices color] Draw sphere wires*)
 
-val draw_cylinder : Vector3.t -> float -> float -> float -> int -> Color.t -> unit
+val draw_cylinder :
+  Vector3.t -> float -> float -> float -> int -> Color.t -> unit
 (** [draw_cylinder position radius_top radius_bottom height slices color] Draw a cylinder/cone*)
 
-val draw_cylinder_wires : Vector3.t -> float -> float -> float -> int -> Color.t -> unit
+val draw_cylinder_wires :
+  Vector3.t -> float -> float -> float -> int -> Color.t -> unit
 (** [draw_cylinder_wires position radius_top radius_bottom height slices color] Draw a cylinder/cone wires*)
 
 val draw_plane : Vector3.t -> Vector2.t -> Color.t -> unit
@@ -2559,7 +2641,8 @@ val load_material_default : unit -> Material.t
 val unload_material : Material.t -> unit
 (** [unload_material material] Unload material from GPU memory (VRAM)*)
 
-val set_material_texture : Material.t ptr -> MaterialMapIndex.t -> Texture.t -> unit
+val set_material_texture :
+  Material.t ptr -> MaterialMapIndex.t -> Texture.t -> unit
 (** [set_material_texture material map_type texture] Set texture for a material map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...)*)
 
 val set_model_mesh_material : Model.t ptr -> int -> int -> unit
@@ -2626,22 +2709,32 @@ val mesh_binormals : Mesh.t ptr -> unit
 val draw_model : Model.t -> Vector3.t -> float -> Color.t -> unit
 (** [draw_model model position scale tint] Draw a model (with texture if set)*)
 
-val draw_model_ex : Model.t -> Vector3.t -> Vector3.t -> float -> Vector3.t -> Color.t -> unit
+val draw_model_ex :
+  Model.t -> Vector3.t -> Vector3.t -> float -> Vector3.t -> Color.t -> unit
 (** [draw_model_ex model position rotation_axis rotation_angle scale tint] Draw a model with extended parameters*)
 
 val draw_model_wires : Model.t -> Vector3.t -> float -> Color.t -> unit
 (** [draw_model_wires model position scale tint] Draw a model wires (with texture if set)*)
 
-val draw_model_wires_ex : Model.t -> Vector3.t -> Vector3.t -> float -> Vector3.t -> Color.t -> unit
+val draw_model_wires_ex :
+  Model.t -> Vector3.t -> Vector3.t -> float -> Vector3.t -> Color.t -> unit
 (** [draw_model_wires_ex model position rotation_axis rotation_angle scale tint] Draw a model wires (with texture if set) with extended parameters*)
 
 val draw_bounding_box : BoundingBox.t -> Color.t -> unit
 (** [draw_bounding_box box color] Draw bounding box (wires)*)
 
-val draw_billboard : Camera3D.t -> Texture.t -> Vector3.t -> float -> Color.t -> unit
+val draw_billboard :
+  Camera3D.t -> Texture.t -> Vector3.t -> float -> Color.t -> unit
 (** [draw_billboard camera texture center size tint] Draw a billboard texture*)
 
-val draw_billboard_rec : Camera3D.t -> Texture.t -> Rectangle.t -> Vector3.t -> float -> Color.t -> unit
+val draw_billboard_rec :
+  Camera3D.t ->
+  Texture.t ->
+  Rectangle.t ->
+  Vector3.t ->
+  float ->
+  Color.t ->
+  unit
 (** [draw_billboard_rec camera texture source center size tint] Draw a billboard texture defined by source*)
 
 (** {3 Collision detection functions} *)
@@ -2658,7 +2751,8 @@ val check_collision_box_sphere : BoundingBox.t -> Vector3.t -> float -> bool
 val check_collision_ray_sphere : Ray.t -> Vector3.t -> float -> bool
 (** [check_collision_ray_sphere ray center radius] Detect collision between ray and sphere*)
 
-val check_collision_ray_sphere_ex : Ray.t -> Vector3.t -> float -> Vector3.t ptr -> bool
+val check_collision_ray_sphere_ex :
+  Ray.t -> Vector3.t -> float -> Vector3.t ptr -> bool
 (** [check_collision_ray_sphere_ex ray center radius collision_point] Detect collision between ray and sphere, returns collision point*)
 
 val check_collision_ray_box : Ray.t -> BoundingBox.t -> bool
@@ -2670,7 +2764,8 @@ val get_collision_ray_mesh : Ray.t -> Mesh.t -> Matrix.t -> RayHitInfo.t
 val get_collision_ray_model : Ray.t -> Model.t -> RayHitInfo.t
 (** [get_collision_ray_model ray model] Get collision info between ray and model*)
 
-val get_collision_ray_triangle : Ray.t -> Vector3.t -> Vector3.t -> Vector3.t -> RayHitInfo.t
+val get_collision_ray_triangle :
+  Ray.t -> Vector3.t -> Vector3.t -> Vector3.t -> RayHitInfo.t
 (** [get_collision_ray_triangle ray p1 p2 p3] Get collision info between ray and triangle*)
 
 val get_collision_ray_ground : Ray.t -> float -> RayHitInfo.t
@@ -2771,7 +2866,8 @@ val unload_wave_samples : float ptr -> unit
 val load_music_stream : string -> Music.t
 (** [load_music_stream file_name] Load music stream from file*)
 
-val load_music_stream_from_memory : string -> Unsigned.uchar ptr-> int -> Music.t
+val load_music_stream_from_memory :
+  string -> Unsigned.uchar ptr -> int -> Music.t
 (** [load_music_stream_from_memory file_type data data_size] Load music stream from data*)
 
 val unload_music_stream : Music.t -> unit

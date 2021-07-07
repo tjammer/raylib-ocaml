@@ -17,7 +17,9 @@ let setup () =
   let position = Vector3.create 2.5 2.5 3.0 in
   let target = Vector3.create 0.0 0.0 0.7 in
   let up = Vector3.create 0.0 1.0 0.0 in
-  let camera = Camera.create position target up 65.0 CameraProjection.Perspective in
+  let camera =
+    Camera.create position target up 65.0 CameraProjection.Perspective
+  in
 
   set_camera_mode camera CameraMode.Free;
 
