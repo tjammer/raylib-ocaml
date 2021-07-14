@@ -955,9 +955,9 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let load_font = foreign "LoadFont" (string @-> returning Font.t)
 
-  let load_font_ex =
+  let _load_font_ex =
     foreign "LoadFontEx"
-      (string @-> int @-> ptr int @-> int @-> returning Font.t)
+      (string @-> int @-> ptr_opt int @-> int @-> returning Font.t)
 
   let load_font_from_image =
     foreign "LoadFontFromImage"

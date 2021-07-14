@@ -2436,7 +2436,7 @@ val get_font_default : unit -> Font.t
 val load_font : string -> Font.t
 (** [load_font file_name] Load font from file into GPU memory (VRAM)*)
 
-val load_font_ex : string -> int -> int ptr -> int -> Font.t
+val load_font_ex : string -> int -> int CArray.t option -> Font.t
 (** [load_font_ex file_name font_size font_chars chars_count] Load font from file with extended parameters*)
 
 val load_font_from_image : Image.t -> Color.t -> int -> Font.t

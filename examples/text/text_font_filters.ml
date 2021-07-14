@@ -7,7 +7,7 @@ let msg = "Loaded Font"
 let setup () =
   let open Raylib in
   init_window 800 450 "raylib [text] example - font filters";
-  let font = load_font_ex "resources/KAISG.ttf" 96 (ptr_of_int 0) 0 in
+  let font = load_font_ex "resources/KAISG.ttf" 96 None in
   gen_texture_mipmaps (addr (Font.texture font));
   let font_size = Font.base_size font in
   let font_position =
@@ -55,7 +55,7 @@ let rec loop font font_size font_position filter =
           | [] -> font
           | file :: _ ->
               unload_font font;
-              let font = load_font_ex file font_size (ptr_of_int 0) 0 in
+              let font = load_font_ex file font_size None in
               clear_dropped_files ();
               font)
         else font
@@ -68,7 +68,8 @@ let rec loop font font_size font_position filter =
       draw_text "Use Key.Right and Key.Left to move text" 20 40 10 Color.gray;
       draw_text "Use 1, 2, 3 to change texture filter" 20 60 10 Color.gray;
 
-      (* draw_text "Drop a new TTF font for dynamic loading" 20 80 10 Color.darkgray ; *)
+      draw_text "Drop a new TTF font for dynamic loading" 20 80 10
+        Color.darkgray;
       draw_text_ex font msg font_position (Float.of_int font_size) 0.0
         Color.black;
 

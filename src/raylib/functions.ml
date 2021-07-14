@@ -42,3 +42,8 @@ let load_model_animations path =
 let unload_model_animations model_animations =
   let count = CArray.length model_animations in
   _unload_model_animations (CArray.start model_animations) count
+
+let load_font_ex filename size = function
+  | None -> _load_font_ex filename size None 0
+  | Some arr ->
+      _load_font_ex filename size (Some (CArray.start arr)) (CArray.length arr)
