@@ -44,7 +44,7 @@ let rec loop bunnies bunnies_count tex_bunny =
                             (get_random_value 80 240) (get_random_value 100 240)
                             255;
                       })
-                     :: bunnies)
+                    :: bunnies)
                     (bunnies_count + 1) (i - 1)
                 else (bunnies, bunnies_count)
           in
