@@ -2102,7 +2102,7 @@ val load_image_raw : string -> int -> int -> PixelFormat.t -> int -> Image.t
 val load_image_anim : string -> int ptr -> Image.t
 (** [load_image_anim file_name frames] Load image sequence from file (frames appended to image.data)*)
 
-val load_image_from_memory : string -> Unsigned.uchar ptr -> int -> Image.t
+val load_image_from_memory : string -> string -> int -> Image.t
 (** [load_image_from_memory file_type file_data data_size] Load image from memory buffer, fileType refers to extension: i.e. ".png"*)
 
 val unload_image : Image.t -> unit
@@ -2443,11 +2443,11 @@ val load_font_from_image : Image.t -> Color.t -> int -> Font.t
 (** [load_font_from_image image key first_char] Load font from Image (XNA style)*)
 
 val load_font_from_memory :
-  string -> Unsigned.uchar ptr -> int -> int -> int ptr -> int -> Font.t
+  string -> string -> int -> int -> int ptr -> int -> Font.t
 (** [load_font_from_memory file_type file_data data_size font_size font_chars chars_count] Load font from memory buffer, fileType refers to extension: i.e. ".ttf"*)
 
 val load_font_data :
-  Unsigned.uchar ptr -> int -> int -> int ptr -> int -> int -> CharInfo.t ptr
+  string -> int -> int -> int ptr -> int -> int -> CharInfo.t ptr
 (** [load_font_data file_data data_size font_size font_chars chars_count type] Load font data for further use*)
 
 val gen_image_font_atlas :
@@ -2790,7 +2790,7 @@ val set_master_volume : float -> unit
 val load_wave : string -> Wave.t
 (** [load_wave file_name] Load wave data from file*)
 
-val load_wave_from_memory : string -> Unsigned.uchar ptr -> int -> Wave.t
+val load_wave_from_memory : string -> string -> int -> Wave.t
 (** [load_wave_from_memory file_type file_data data_size] Load wave from memory buffer, fileType refers to extension: i.e. ".wav"*)
 
 val load_sound : string -> Sound.t
@@ -2867,7 +2867,7 @@ val load_music_stream : string -> Music.t
 (** [load_music_stream file_name] Load music stream from file*)
 
 val load_music_stream_from_memory :
-  string -> Unsigned.uchar ptr -> int -> Music.t
+  string -> string -> int -> Music.t
 (** [load_music_stream_from_memory file_type data data_size] Load music stream from data*)
 
 val unload_music_stream : Music.t -> unit

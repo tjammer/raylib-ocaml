@@ -642,7 +642,7 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let load_image_from_memory =
     foreign "LoadImageFromMemory"
-      (string @-> ptr uchar @-> int @-> returning Image.t)
+      (string @-> string @-> int @-> returning Image.t)
 
   let unload_image = foreign "UnloadImage" (Image.t @-> returning void)
 
@@ -965,12 +965,12 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let load_font_from_memory =
     foreign "LoadFontFromMemory"
-      (string @-> ptr uchar @-> int @-> int @-> ptr int @-> int
+      (string @-> string @-> int @-> int @-> ptr int @-> int
      @-> returning Font.t)
 
   let load_font_data =
     foreign "LoadFontData"
-      (ptr uchar @-> int @-> int @-> ptr int @-> int @-> int
+      (string @-> int @-> int @-> ptr int @-> int @-> int
       @-> returning (ptr CharInfo.t))
 
   let gen_image_font_atlas =
@@ -1318,7 +1318,7 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let load_wave_from_memory =
     foreign "LoadWaveFromMemory"
-      (string @-> ptr uchar @-> int @-> returning Wave.t)
+      (string @-> string @-> int @-> returning Wave.t)
 
   let load_sound = foreign "LoadSound" (string @-> returning Sound.t)
 
@@ -1378,7 +1378,7 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let load_music_stream_from_memory =
     foreign "LoadMusicStreamFromMemory"
-      (string @-> ptr uchar @-> int @-> returning Music.t)
+      (string @-> string @-> int @-> returning Music.t)
 
   let unload_music_stream =
     foreign "UnloadMusicStream" (Music.t @-> returning void)
