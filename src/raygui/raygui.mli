@@ -153,20 +153,6 @@ val set_style : Control.t -> int -> unit
 val get_style : Control.t -> int
 (** [get_style control] Get one style property *)
 
-(** {1 Tooltips set functions } *)
-
-val enable_tooltip : unit -> unit
-(** [enable_tooltip ()] Enable gui tooltips *)
-
-val disable_tooltip : unit -> unit
-(** [disable_tooltip ()] Disable gui tooltips *)
-
-val set_tooltip : string -> unit
-(** [set_tooltip tooltip] Set current tooltip for display *)
-
-val clear_tooltip : unit -> unit
-(** [clear_tooltip ()] Clear any tooltip registered *)
-
 (** {1 Container/separator controls, useful for controls organization } *)
 
 val window_box : Raylib.Rectangle.t -> string -> bool

@@ -46,19 +46,6 @@ module Description (F : Ctypes.FOREIGN) = struct
   let _get_style =
     foreign "GuiGetStyle" (Constants.Wrapped_Control.t @-> int @-> returning int)
 
-  (* Tooltips set functions *)
-  (*  Enable gui tooltips *)
-  let enable_tooltip = foreign "GuiEnableTooltip" (void @-> returning void)
-
-  (*  Disable gui tooltips *)
-  let disable_tooltip = foreign "GuiDisableTooltip" (void @-> returning void)
-
-  (*  Set current tooltip for display *)
-  let set_tooltip = foreign "GuiSetTooltip" (string @-> returning void)
-
-  (*  Clear any tooltip registered *)
-  let clear_tooltip = foreign "GuiClearTooltip" (void @-> returning void)
-
   (* Container/separator controls, useful for controls organization *)
   (*  Window Box control, shows a window that can be closed *)
   let _window_box =

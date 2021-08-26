@@ -120,12 +120,10 @@ let rec loop s =
 
       Raygui.(set_style (TextBox `Text_alignment) TextAlignment.(to_int Center));
 
-      Raygui.set_tooltip "Save current file.";
       let rect = Rectangle.create 25.0 255.0 125.0 30.0 in
       let show_text_input_box =
         if Raygui.button rect "Save File" then true else s.show_text_input_box
       in
-      Raygui.clear_tooltip ();
 
       Raygui.group_box (Rectangle.create 25.0 310.0 125.0 150.0) "STATES";
       Raygui.lock ();
