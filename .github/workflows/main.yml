@@ -15,10 +15,10 @@ jobs:
           - macos-latest
           - ubuntu-latest
           - windows-latest
-        ocaml-version:
+        ocaml:
           - 4.12.0
         include:
-          - ocaml-version: 4.06.0
+          - ocaml: 4.06.0
             os: ubuntu-latest
 
     runs-on: ${{ matrix.os }}
@@ -29,18 +29,16 @@ jobs:
         with:
           submodules: true
 
-      - name: Use OCaml ${{ matrix.ocaml-version }}
-        uses: avsm/setup-ocaml@v1
-        with:
-          ocaml-version: ${{ matrix.ocaml-version }}
-
-      - run: opam pin -n .
-
       - name: Re-synchronize the package index files on Ubuntu
         if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get update
 
-      - run: opam depext raylib
+      - name: Use OCaml ${{ matrix.ocaml-version }}
+        uses: ocaml/setup-ocaml@v2
+        with:
+          ocaml-version: ${{ matrix.ocaml-version }}
+
+      - run: opam pin -n .
 
       - run: opam install . --deps-only
 
