@@ -59,7 +59,7 @@ let rec loop camera collision ray =
       | true, false ->
           let r = get_mouse_ray (get_mouse_position ()) camera in
           let collision =
-            check_collision_ray_box r
+            get_ray_collision_box r
               (BoundingBox.create
                  Vector3.(
                    create
@@ -72,7 +72,7 @@ let rec loop camera collision ray =
                      (y cube_pos +. 1.0)
                      (z cube_pos +. 1.0)))
           in
-          (collision, Some r)
+          (RayCollision.hit collision, Some r)
       | false, _ -> (collision, ray)
     in
     draw_all camera collision ray;

@@ -395,7 +395,7 @@ module BlendMode : sig
   val of_int : int -> t
 end
 
-module Gestures : sig
+module Gesture : sig
   type t =
     | None
     | Tap
@@ -957,7 +957,7 @@ module NPatchInfo : sig
   val set_layout : t -> NPatchLayout.t -> unit
 end
 
-module CharInfo : sig
+module GlyphInfo : sig
   type t'
 
   type t = t' ctyp
@@ -1008,7 +1008,7 @@ module Font : sig
   val recs : t -> Rectangle.t ptr
   (** Characters rectangles in texture *)
 
-  val chars : t -> CharInfo.t CArray.t
+  val chars : t -> GlyphInfo.t CArray.t
   (** Characters info data *)
 
   val set_base_size : t -> int -> unit
@@ -1019,7 +1019,7 @@ module Font : sig
 
   val set_recs : t -> Rectangle.t ptr -> unit
 
-  val set_chars : t -> CharInfo.t CArray.t -> unit
+  val set_chars : t -> GlyphInfo.t CArray.t -> unit
 end
 
 module Camera3D : sig
@@ -1256,7 +1256,7 @@ module Ray : sig
   val set_direction : t -> Vector3.t -> unit
 end
 
-module RayHitInfo : sig
+module RayCollision : sig
   type t'
 
   type t = t' ctyp
@@ -1267,7 +1267,7 @@ module RayHitInfo : sig
   val distance : t -> float
   (** Distance to nearest hit *)
 
-  val position : t -> Vector3.t
+  val point : t -> Vector3.t
   (** Position of nearest hit *)
 
   val normal : t -> Vector3.t
@@ -1902,13 +1902,13 @@ val get_touch_y : unit -> int
 val get_touch_position : int -> Vector2.t
 (** [get_touch_position index] Returns touch position XY for a touch point index (relative to screen size)*)
 
-val set_gestures_enabled : Gestures.t list -> unit
+val set_gestures_enabled : Gesture.t list -> unit
 (** [set_gestures_enabled flags] Enable a set of gestures using flags*)
 
-val is_gesture_detected : Gestures.t -> bool
+val is_gesture_detected : Gesture.t -> bool
 (** [is_gesture_detected gesture] Check if a gesture have been detected*)
 
-val get_gesture_detected : unit -> Gestures.t
+val get_gesture_detected : unit -> Gesture.t
 (** [get_gesture_detected ()] Get latest detected gesture*)
 
 val get_touch_points_count : unit -> int
@@ -2317,11 +2317,11 @@ val update_texture : Texture.t -> unit ptr -> unit
 val update_texture_rec : Texture.t -> Rectangle.t -> unit ptr -> unit
 (** [update_texture_rec texture rec pixels] Update GPU texture rectangle with new data*)
 
-val get_texture_data : Texture.t -> Image.t
-(** [get_texture_data texture] Get pixel data from GPU texture and return an Image*)
+val load_image_from_texture : Texture.t -> Image.t
+(** [load_image_from_texture texture] Load image from GPU texture data*)
 
-val get_screen_data : unit -> Image.t
-(** [get_screen_data ()] Get pixel data from screen buffer and return an Image (screenshot)*)
+val load_image_from_screen : unit -> Image.t
+(** [load_image_from_screen ()] Load image from screen buffer and (screenshot)*)
 
 val gen_texture_mipmaps : Texture.t ptr -> unit
 (** [gen_texture_mipmaps texture] Generate GPU mipmaps for a texture*)
@@ -2447,14 +2447,14 @@ val load_font_from_memory :
 (** [load_font_from_memory file_type file_data data_size font_size font_chars chars_count] Load font from memory buffer, fileType refers to extension: i.e. ".ttf"*)
 
 val load_font_data :
-  string -> int -> int -> int ptr -> int -> int -> CharInfo.t ptr
+  string -> int -> int -> int ptr -> int -> int -> GlyphInfo.t ptr
 (** [load_font_data file_data data_size font_size font_chars chars_count type] Load font data for further use*)
 
 val gen_image_font_atlas :
-  CharInfo.t ptr -> Rectangle.t ptr ptr -> int -> int -> int -> int -> Image.t
+  GlyphInfo.t ptr -> Rectangle.t ptr ptr -> int -> int -> int -> int -> Image.t
 (** [gen_image_font_atlas chars recs chars_count font_size padding pack_method] Generate image font atlas using chars info*)
 
-val unload_font_data : CharInfo.t ptr -> int -> unit
+val unload_font_data : GlyphInfo.t ptr -> int -> unit
 (** [unload_font_data chars chars_count] Unload font chars info data (RAM)*)
 
 val unload_font : Font.t -> unit
@@ -2469,25 +2469,6 @@ val draw_text : string -> int -> int -> int -> Color.t -> unit
 val draw_text_ex :
   Font.t -> string -> Vector2.t -> float -> float -> Color.t -> unit
 (** [draw_text_ex font text position font_size spacing tint] Draw text using font and additional parameters*)
-
-val draw_text_rec :
-  Font.t -> string -> Rectangle.t -> float -> float -> bool -> Color.t -> unit
-(** [draw_text_rec font text rec font_size spacing word_wrap tint] Draw text using font inside rectangle limits*)
-
-val draw_text_rec_ex :
-  Font.t ->
-  string ->
-  Rectangle.t ->
-  float ->
-  float ->
-  bool ->
-  Color.t ->
-  int ->
-  int ->
-  Color.t ->
-  Color.t ->
-  unit
-(** [draw_text_rec_ex font text rec font_size spacing word_wrap tint select_start select_length select_tint select_back_tint] *)
 
 val draw_text_codepoint : Font.t -> int -> Vector2.t -> float -> Color.t -> unit
 (** [draw_text_codepoint font codepoint position font_size tint] Draw one character (codepoint)*)
@@ -2524,17 +2505,26 @@ val text_to_pascal : string -> string
 val text_to_integer : string -> int
 (** [text_to_integer text] Get integer value from text (negative values not supported)*)
 
-val text_to_utf8 : int ptr -> int -> string
-(** [text_to_utf8 codepoints length] Encode text codepoint into utf8 text (memory must be freed!)*)
+val text_codepoints_to_utf8 : int ptr -> int -> string
+(** [text_codepoints_to_utf8 codepoints length] Encode text codepoint into utf8 text (memory must be freed!)*)
 
-val get_codepoints : string -> int ptr -> int ptr
-(** [get_codepoints text count] Get all codepoints in a string, codepoints count returned by parameters*)
+val get_glyph_info : Font.t -> int -> GlyphInfo.t
+(** [get_glyph_info font codepoint] Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found*)
+
+val get_glyph_atlas_rec : Font.t -> int -> Rectangle.t
+(** [get_glyph_atlas_rec font codepoint] Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found*)
+
+val load_codepoints : string -> int ptr -> int ptr
+(** [load_codepoints text count] Load all codepoints from a UTF-8 text string, codepoints count returned by parameter*)
+
+val unload_codepoints : int ptr -> unit
+(** [unload_codepoints codepoints] Unload codepoints data from memory*)
 
 val get_codepoints_count : string -> int
 (** [get_codepoints_count text] Get total number of characters (codepoints) in a UTF8 encoded string*)
 
-val get_next_codepoint : string -> int ptr -> int
-(** [get_next_codepoint text bytes_processed] Returns next codepoint in a UTF8 encoded string; 0x3f('?') is returned on failure*)
+val get_codepoint : string -> int ptr -> int
+(** [get_codepoint text bytes_processed] Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure*)
 
 val codepoint_to_utf8 : int -> int ptr -> string
 (** [codepoint_to_utf8 codepoint byte_length] Encode codepoint into utf8 text (char array length returned as parameter)*)
@@ -2697,14 +2687,14 @@ val gen_mesh_cubicmap : Image.t -> Vector3.t -> Mesh.t
 
 (** {3 Mesh manipulation functions} *)
 
-val mesh_bounding_box : Mesh.t -> BoundingBox.t
-(** [mesh_bounding_box mesh] Compute mesh bounding box limits*)
+val get_mesh_bounding_box : Mesh.t -> BoundingBox.t
+(** [get_mesh_bounding_box mesh] Compute mesh bounding box limits*)
 
-val mesh_tangents : Mesh.t ptr -> unit
-(** [mesh_tangents mesh] Compute mesh tangents*)
+val gen_mesh_tangents : Mesh.t ptr -> unit
+(** [gen_mesh_tangents mesh] Compute mesh tangents*)
 
-val mesh_binormals : Mesh.t ptr -> unit
-(** [mesh_binormals mesh] Compute mesh binormals*)
+val gen_mesh_binormals : Mesh.t ptr -> unit
+(** [gen_mesh_binormals mesh] Compute mesh binormals*)
 
 val draw_model : Model.t -> Vector3.t -> float -> Color.t -> unit
 (** [draw_model model position scale tint] Draw a model (with texture if set)*)
@@ -2725,17 +2715,29 @@ val draw_bounding_box : BoundingBox.t -> Color.t -> unit
 
 val draw_billboard :
   Camera3D.t -> Texture.t -> Vector3.t -> float -> Color.t -> unit
-(** [draw_billboard camera texture center size tint] Draw a billboard texture*)
+(** [draw_billboard camera texture position size tint] Draw a billboard texture*)
 
 val draw_billboard_rec :
   Camera3D.t ->
   Texture.t ->
   Rectangle.t ->
   Vector3.t ->
+  Vector2.t ->
+  Color.t ->
+  unit
+(** [draw_billboard_rec camera texture source position size tint] Draw a billboard texture defined by source*)
+
+val draw_billboard_pro :
+  Camera3D.t ->
+  Texture.t ->
+  Rectangle.t ->
+  Vector3.t ->
+  Vector2.t ->
+  Vector2.t ->
   float ->
   Color.t ->
   unit
-(** [draw_billboard_rec camera texture source center size tint] Draw a billboard texture defined by source*)
+(** [draw_billboard_pro camera texture source position size origin rotation tint] Draw a billboard texture defined by source and rotation*)
 
 (** {3 Collision detection functions} *)
 
@@ -2748,28 +2750,23 @@ val check_collision_boxes : BoundingBox.t -> BoundingBox.t -> bool
 val check_collision_box_sphere : BoundingBox.t -> Vector3.t -> float -> bool
 (** [check_collision_box_sphere box center radius] Detect collision between box and sphere*)
 
-val check_collision_ray_sphere : Ray.t -> Vector3.t -> float -> bool
-(** [check_collision_ray_sphere ray center radius] Detect collision between ray and sphere*)
+val get_ray_collision_sphere : Ray.t -> Vector3.t -> float -> RayCollision.t
+(** [get_ray_collision_sphere ray center radius] Get collision info between ray and sphere*)
 
-val check_collision_ray_sphere_ex :
-  Ray.t -> Vector3.t -> float -> Vector3.t ptr -> bool
-(** [check_collision_ray_sphere_ex ray center radius collision_point] Detect collision between ray and sphere, returns collision point*)
+val get_ray_collision_box : Ray.t -> BoundingBox.t -> RayCollision.t
+(** [get_ray_collision_box ray box] Detect collision between ray and box*)
 
-val check_collision_ray_box : Ray.t -> BoundingBox.t -> bool
-(** [check_collision_ray_box ray box] Detect collision between ray and box*)
+val get_ray_collision_mesh : Ray.t -> Mesh.t -> Matrix.t -> RayCollision.t
+(** [get_ray_collision_mesh ray mesh transform] Get collision info between ray and mesh*)
 
-val get_collision_ray_mesh : Ray.t -> Mesh.t -> Matrix.t -> RayHitInfo.t
-(** [get_collision_ray_mesh ray mesh transform] Get collision info between ray and mesh*)
+val get_ray_collision_model : Ray.t -> Model.t -> RayCollision.t
+(** [get_ray_collision_model ray model] Get collision info between ray and model*)
 
-val get_collision_ray_model : Ray.t -> Model.t -> RayHitInfo.t
-(** [get_collision_ray_model ray model] Get collision info between ray and model*)
+val get_ray_collision_triangle : Ray.t -> Vector3.t -> Vector3.t -> Vector3.t -> RayCollision.t
+(** [get_ray_collision_triangle ray p1 p2 p3] Get collision info between ray and triangle*)
 
-val get_collision_ray_triangle :
-  Ray.t -> Vector3.t -> Vector3.t -> Vector3.t -> RayHitInfo.t
-(** [get_collision_ray_triangle ray p1 p2 p3] Get collision info between ray and triangle*)
-
-val get_collision_ray_ground : Ray.t -> float -> RayHitInfo.t
-(** [get_collision_ray_ground ray ground_height] Get collision info between ray and ground plane (Y-normal plane)*)
+val get_ray_collision_quad : Ray.t -> Vector3.t -> Vector3.t -> Vector3.t -> Vector3.t -> RayCollision.t
+(** [get_ray_collision_quad ray ground_height] Get collision info between ray and quad*)
 
 (** {2 Audio Loading and Playing Functions (Module: audio)} *)
 
@@ -2876,8 +2873,8 @@ val unload_music_stream : Music.t -> unit
 val play_music_stream : Music.t -> unit
 (** [play_music_stream music] Start music playing*)
 
-val is_music_playing : Music.t -> bool
-(** [is_music_playing music] Check if music is playing*)
+val is_music_stream_playing : Music.t -> bool
+(** [is_music_stream_playing music] Check if music is playing*)
 
 val update_music_stream : Music.t -> unit
 (** [update_music_stream music] Updates buffers for music streaming*)
@@ -2905,14 +2902,14 @@ val get_music_time_played : Music.t -> float
 
 (** {3 AudioStream management functions} *)
 
-val init_audio_stream : int -> int -> int -> AudioStream.t
-(** [init_audio_stream sample_rate sample_size channels] Init audio stream (to stream raw audio pcm data)*)
+val load_audio_stream : int -> int -> int -> AudioStream.t
+(** [load_audio_stream sample_rate sample_size channels] Init audio stream (to stream raw audio pcm data)*)
 
 val update_audio_stream : AudioStream.t -> unit ptr -> int -> unit
 (** [update_audio_stream stream data samples_count] Update audio stream buffers with data*)
 
-val close_audio_stream : AudioStream.t -> unit
-(** [close_audio_stream stream] Close audio stream and free memory*)
+val unload_audio_stream : AudioStream.t -> unit
+(** [unload_audio_stream stream] Close audio stream and free memory*)
 
 val is_audio_stream_processed : AudioStream.t -> bool
 (** [is_audio_stream_processed stream] Check if any audio stream buffers requires refill*)

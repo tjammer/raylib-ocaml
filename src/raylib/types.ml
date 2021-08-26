@@ -371,43 +371,43 @@ module NPatchInfo = struct
     setf npatchinfo Types.NPatchInfo.layout (NPatchLayout.to_int layout)
 end
 
-module CharInfo = struct
-  type t' = Types.CharInfo.t
+module GlyphInfo = struct
+  type t' = Types.GlyphInfo.t
 
   type t = t' ctyp
 
   let create value offset_x offset_y advance_x image =
-    let t = Types.CharInfo.t in
-    let charinfo = make t in
-    setf charinfo Types.CharInfo.value value;
-    setf charinfo Types.CharInfo.offset_x offset_x;
-    setf charinfo Types.CharInfo.offset_y offset_y;
-    setf charinfo Types.CharInfo.advance_x advance_x;
-    setf charinfo Types.CharInfo.image image;
-    charinfo
+    let t = Types.GlyphInfo.t in
+    let glyphinfo = make t in
+    setf glyphinfo Types.GlyphInfo.value value;
+    setf glyphinfo Types.GlyphInfo.offset_x offset_x;
+    setf glyphinfo Types.GlyphInfo.offset_y offset_y;
+    setf glyphinfo Types.GlyphInfo.advance_x advance_x;
+    setf glyphinfo Types.GlyphInfo.image image;
+    glyphinfo
 
-  let value charinfo = getf charinfo Types.CharInfo.value
+  let value glyphinfo = getf glyphinfo Types.GlyphInfo.value
 
-  let offset_x charinfo = getf charinfo Types.CharInfo.offset_x
+  let offset_x glyphinfo = getf glyphinfo Types.GlyphInfo.offset_x
 
-  let offset_y charinfo = getf charinfo Types.CharInfo.offset_y
+  let offset_y glyphinfo = getf glyphinfo Types.GlyphInfo.offset_y
 
-  let advance_x charinfo = getf charinfo Types.CharInfo.advance_x
+  let advance_x glyphinfo = getf glyphinfo Types.GlyphInfo.advance_x
 
-  let image charinfo = getf charinfo Types.CharInfo.image
+  let image glyphinfo = getf glyphinfo Types.GlyphInfo.image
 
-  let set_value charinfo value = setf charinfo Types.CharInfo.value value
+  let set_value glyphinfo value = setf glyphinfo Types.GlyphInfo.value value
 
-  let set_offset_x charinfo offset_x =
-    setf charinfo Types.CharInfo.offset_x offset_x
+  let set_offset_x glyphinfo offset_x =
+    setf glyphinfo Types.GlyphInfo.offset_x offset_x
 
-  let set_offset_y charinfo offset_y =
-    setf charinfo Types.CharInfo.offset_y offset_y
+  let set_offset_y glyphinfo offset_y =
+    setf glyphinfo Types.GlyphInfo.offset_y offset_y
 
-  let set_advance_x charinfo advance_x =
-    setf charinfo Types.CharInfo.advance_x advance_x
+  let set_advance_x glyphinfo advance_x =
+    setf glyphinfo Types.GlyphInfo.advance_x advance_x
 
-  let set_image charinfo image = setf charinfo Types.CharInfo.image image
+  let set_image glyphinfo image = setf glyphinfo Types.GlyphInfo.image image
 end
 
 module Font = struct
@@ -708,18 +708,18 @@ module Ray = struct
   let set_direction ray direction = setf ray Types.Ray.direction direction
 end
 
-module RayHitInfo = struct
-  type t' = Types.RayHitInfo.t
+module RayCollision = struct
+  type t' = Types.RayCollision.t
 
   type t = t' ctyp
 
-  let hit rayhitinfo = getf rayhitinfo Types.RayHitInfo.hit
+  let hit raycollision = getf raycollision Types.RayCollision.hit
 
-  let distance rayhitinfo = getf rayhitinfo Types.RayHitInfo.distance
+  let distance raycollision = getf raycollision Types.RayCollision.distance
 
-  let position rayhitinfo = getf rayhitinfo Types.RayHitInfo.position
+  let point raycollision = getf raycollision Types.RayCollision.point
 
-  let normal rayhitinfo = getf rayhitinfo Types.RayHitInfo.normal
+  let normal raycollision = getf raycollision Types.RayCollision.normal
 end
 
 module BoundingBox = struct
