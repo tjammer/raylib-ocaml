@@ -82,7 +82,7 @@ module NPatchInfo = struct
   [@@cname "NPatchInfo"]
 end
 
-module CharInfo = struct
+module GlyphInfo = struct
   type%c t = {
     value : int;
     offset_x : int; [@cname "offsetX"]
@@ -90,7 +90,7 @@ module CharInfo = struct
     advance_x : int; [@cname "advanceX"]
     image : Image.t;
   }
-  [@@cname "CharInfo"]
+  [@@cname "GlyphInfo"]
 end
 
 module Font = struct
@@ -100,7 +100,7 @@ module Font = struct
     chars_padding : int; [@cname "charsPadding"]
     texture : Texture.t;
     recs : Rectangle.t ptr;
-    chars : CharInfo.t ptr;
+    chars : GlyphInfo.t ptr;
   }
   [@@cname "Font"]
 end
@@ -211,14 +211,14 @@ module Ray = struct
   type%c t = { position : Vector3.t; direction : Vector3.t } [@@cname "Ray"]
 end
 
-module RayHitInfo = struct
+module RayCollision = struct
   type%c t = {
     hit : bool;
     distance : float;
-    position : Vector3.t;
+    point : Vector3.t;
     normal : Vector3.t;
   }
-  [@@cname "RayHitInfo"]
+  [@@cname "RayCollision"]
 end
 
 module BoundingBox = struct
@@ -227,7 +227,7 @@ end
 
 module Wave = struct
   type%c t = {
-    sample_count : uint; [@cname "sampleCount"]
+    frame_count : uint; [@cname "frameCount"]
     sample_rate : uint; [@cname "sampleRate"]
     sample_size : uint; [@cname "sampleSize"]
     channels : uint;
@@ -251,7 +251,7 @@ end
 module Sound = struct
   type%c t = {
     stream : AudioStream.t;
-    sample_count : uint; [@cname "sampleCount"]
+    frame_count : uint; [@cname "frameCount"]
   }
   [@@cname "Sound"]
 end
@@ -259,7 +259,7 @@ end
 module Music = struct
   type%c t = {
     stream : AudioStream.t;
-    sample_count : uint; [@cname "sampleCount"]
+    frame_count : uint; [@cname "frameCount"]
     looping : bool;
     ctx_type : int; [@cname "ctxType"]
     ctx_data : void ptr; [@cname "ctxData"]

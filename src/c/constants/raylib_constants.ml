@@ -1,4 +1,4 @@
-let%c () = header "#include <raylib.h>\n#include <rlgl.h>"
+let%c () = header "#include <raylib.h>\n#include <config.h>"
 
 module ConfigFlags = struct
   type%c t =
@@ -406,7 +406,7 @@ module BlendMode = struct
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
-module Gestures = struct
+module Gesture = struct
   type%c t =
     | None [@cname "GESTURE_NONE"]
     | Tap [@cname "GESTURE_TAP"]
@@ -419,7 +419,7 @@ module Gestures = struct
     | Swipe_down [@cname "GESTURE_SWIPE_DOWN"]
     | Pinch_in [@cname "GESTURE_PINCH_IN"]
     | Pinch_out [@cname "GESTURE_PINCH_OUT"]
-  [@@cname "Gestures"] [@@typedef] [@@with_bitmask]
+  [@@cname "Gesture"] [@@typedef] [@@with_bitmask]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
 
@@ -465,4 +465,4 @@ end
 
 let max_material_maps = [%c constant "MAX_MATERIAL_MAPS" camlint]
 
-let max_shader_locations = [%c constant "MAX_SHADER_LOCATIONS" camlint]
+let max_shader_locations = [%c constant "RL_MAX_SHADER_LOCATIONS" camlint]
