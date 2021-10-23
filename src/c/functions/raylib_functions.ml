@@ -838,8 +838,7 @@ module Description (F : Ctypes.FOREIGN) = struct
       (ptr Image.t @-> Font.t @-> string @-> Vector2.t @-> float @-> float
      @-> Color.t @-> returning void)
 
-  let load_texture =
-    foreign "LoadTexture" (string @-> returning Texture.t)
+  let load_texture = foreign "LoadTexture" (string @-> returning Texture.t)
 
   let load_texture_from_image =
     foreign "LoadTextureFromImage" (Image.t @-> returning Texture.t)
@@ -850,8 +849,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   let load_render_texture =
     foreign "LoadRenderTexture" (int @-> int @-> returning RenderTexture.t)
 
-  let unload_texture =
-    foreign "UnloadTexture" (Texture.t @-> returning void)
+  let unload_texture = foreign "UnloadTexture" (Texture.t @-> returning void)
 
   let unload_render_texture =
     foreign "UnloadRenderTexture" (RenderTexture.t @-> returning void)
@@ -1050,17 +1048,19 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let text_to_integer = foreign "TextToInteger" (string @-> returning int)
 
-  let text_codepoints_to_utf8 = foreign "TextCodepointsToUTF8" (ptr int @-> int @-> returning string)
+  let text_codepoints_to_utf8 =
+    foreign "TextCodepointsToUTF8" (ptr int @-> int @-> returning string)
 
-  let get_glyph_info = foreign  "GetGlyphInfo" (Font.t @-> int @-> returning GlyphInfo.t)
+  let get_glyph_info =
+    foreign "GetGlyphInfo" (Font.t @-> int @-> returning GlyphInfo.t)
 
-  let get_glyph_atlas_rec = foreign  "GetGlyphAtlasRec" (Font.t @-> int @-> returning Rectangle.t)
+  let get_glyph_atlas_rec =
+    foreign "GetGlyphAtlasRec" (Font.t @-> int @-> returning Rectangle.t)
 
   let load_codepoints =
     foreign "LoadCodepoints" (string @-> ptr int @-> returning (ptr int))
 
-  let unload_codepoints =
-    foreign "UnloadCodepoints" (ptr int @-> returning void)
+  let unload_codepoints = foreign "UnloadCodepoints" (ptr int @-> returning void)
 
   let get_codepoints_count =
     foreign "GetCodepointsCount" (string @-> returning int)
@@ -1287,28 +1287,34 @@ module Description (F : Ctypes.FOREIGN) = struct
       (BoundingBox.t @-> Vector3.t @-> float @-> returning bool)
 
   let get_ray_collision_sphere =
-    foreign "GetRayCollisionSphere" (Ray.t @-> Vector3.t @-> float @-> returning RayCollision.t)
+    foreign "GetRayCollisionSphere"
+      (Ray.t @-> Vector3.t @-> float @-> returning RayCollision.t)
 
   let get_ray_collision_box =
-    foreign "GetRayCollisionBox" (Ray.t @-> BoundingBox.t @-> returning RayCollision.t)
+    foreign "GetRayCollisionBox"
+      (Ray.t @-> BoundingBox.t @-> returning RayCollision.t)
 
   let get_ray_collision_model =
-    foreign "GetRayCollisionModel" (Ray.t @-> Model.t @-> returning RayCollision.t)
+    foreign "GetRayCollisionModel"
+      (Ray.t @-> Model.t @-> returning RayCollision.t)
 
   let get_ray_collision_mesh =
-    foreign "GetRayCollisionMesh" (Ray.t @-> Mesh.t @-> Matrix.t @-> returning RayCollision.t)
+    foreign "GetRayCollisionMesh"
+      (Ray.t @-> Mesh.t @-> Matrix.t @-> returning RayCollision.t)
 
   let get_ray_collision_triangle =
-    foreign "GetRayCollisionTriangle" (Ray.t @-> Vector3.t @-> Vector3.t @-> Vector3.t @-> returning RayCollision.t)
+    foreign "GetRayCollisionTriangle"
+      (Ray.t @-> Vector3.t @-> Vector3.t @-> Vector3.t
+     @-> returning RayCollision.t)
 
   let get_ray_collision_quad =
-    foreign "GetRayCollisionQuad" (Ray.t @-> Vector3.t @-> Vector3.t @-> Vector3.t @-> Vector3.t @-> returning RayCollision.t)
+    foreign "GetRayCollisionQuad"
+      (Ray.t @-> Vector3.t @-> Vector3.t @-> Vector3.t @-> Vector3.t
+     @-> returning RayCollision.t)
 
-  let init_audio_device =
-    foreign "InitAudioDevice" (void @-> returning void)
+  let init_audio_device = foreign "InitAudioDevice" (void @-> returning void)
 
-  let close_audio_device =
-    foreign "CloseAudioDevice" (void @-> returning void)
+  let close_audio_device = foreign "CloseAudioDevice" (void @-> returning void)
 
   let is_audio_device_ready =
     foreign "IsAudioDeviceReady" (void @-> returning bool)
@@ -1318,8 +1324,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   let load_wave = foreign "LoadWave" (string @-> returning Wave.t)
 
   let load_wave_from_memory =
-    foreign "LoadWaveFromMemory"
-      (string @-> string @-> int @-> returning Wave.t)
+    foreign "LoadWaveFromMemory" (string @-> string @-> int @-> returning Wave.t)
 
   let load_sound = foreign "LoadSound" (string @-> returning Sound.t)
 
@@ -1384,8 +1389,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   let unload_music_stream =
     foreign "UnloadMusicStream" (Music.t @-> returning void)
 
-  let play_music_stream =
-    foreign "PlayMusicStream" (Music.t @-> returning void)
+  let play_music_stream = foreign "PlayMusicStream" (Music.t @-> returning void)
 
   let is_music_stream_playing =
     foreign "IsMusicStreamPlaying" (Music.t @-> returning bool)
@@ -1393,8 +1397,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   let update_music_stream =
     foreign "UpdateMusicStream" (Music.t @-> returning void)
 
-  let stop_music_stream =
-    foreign "StopMusicStream" (Music.t @-> returning void)
+  let stop_music_stream = foreign "StopMusicStream" (Music.t @-> returning void)
 
   let pause_music_stream =
     foreign "PauseMusicStream" (Music.t @-> returning void)
