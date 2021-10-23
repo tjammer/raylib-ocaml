@@ -516,6 +516,61 @@ module Mesh = struct
   type t' = Types.Mesh.t
 
   type t = t' ctyp
+
+  let vertices mesh =
+    CArray.from_ptr
+      (getf mesh Types.Mesh.vertices)
+      (getf mesh Types.Mesh.vertex_count * 3)
+
+  let texcoords mesh =
+    CArray.from_ptr
+      (getf mesh Types.Mesh.texcoords)
+      (getf mesh Types.Mesh.vertex_count * 2)
+
+  let texcoords2 mesh =
+    CArray.from_ptr
+      (getf mesh Types.Mesh.texcoords2)
+      (getf mesh Types.Mesh.vertex_count * 2)
+
+  let normals mesh =
+    CArray.from_ptr
+      (getf mesh Types.Mesh.normals)
+      (getf mesh Types.Mesh.vertex_count * 3)
+
+  let tangents mesh =
+    CArray.from_ptr
+      (getf mesh Types.Mesh.tangents)
+      (getf mesh Types.Mesh.vertex_count * 4)
+
+  let colors mesh =
+    CArray.from_ptr
+      (getf mesh Types.Mesh.colors)
+      (getf mesh Types.Mesh.vertex_count * 4)
+
+  let indices mesh =
+    CArray.from_ptr
+      (getf mesh Types.Mesh.indices)
+      (getf mesh Types.Mesh.vertex_count * 3)
+
+  let set_vertices mesh vertices =
+    setf mesh Types.Mesh.vertices (CArray.start vertices)
+
+  let set_texcoords mesh texcoords =
+    setf mesh Types.Mesh.texcoords (CArray.start texcoords)
+
+  let set_texcoords2 mesh texcoords2 =
+    setf mesh Types.Mesh.texcoords2 (CArray.start texcoords2)
+
+  let set_normals mesh normals =
+    setf mesh Types.Mesh.normals (CArray.start normals)
+
+  let set_tangents mesh tangents =
+    setf mesh Types.Mesh.tangents (CArray.start tangents)
+
+  let set_colors mesh colors = setf mesh Types.Mesh.colors (CArray.start colors)
+
+  let set_indices mesh indices =
+    setf mesh Types.Mesh.indices (CArray.start indices)
 end
 
 module ShaderLoc = struct

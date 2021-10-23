@@ -1092,6 +1092,34 @@ module Mesh : sig
   type t'
 
   type t = t' ctyp
+
+  val vertices : t -> float Ctypes_static.carray
+
+  val texcoords : t -> float Ctypes_static.carray
+
+  val texcoords2 : t -> float Ctypes_static.carray
+
+  val normals : t -> float Ctypes_static.carray
+
+  val tangents : t -> float Ctypes_static.carray
+
+  val colors : t -> Unsigned.uchar Ctypes_static.carray
+
+  val indices : t -> Unsigned.ushort Ctypes_static.carray
+
+  val set_vertices : t -> float Ctypes_static.carray -> unit
+
+  val set_texcoords : t -> float Ctypes_static.carray -> unit
+
+  val set_texcoords2 : t -> float Ctypes_static.carray -> unit
+
+  val set_normals : t -> float Ctypes_static.carray -> unit
+
+  val set_tangents : t -> float Ctypes_static.carray -> unit
+
+  val set_colors : t -> Unsigned.uchar Ctypes_static.carray -> unit
+
+  val set_indices : t -> Unsigned.ushort Ctypes_static.carray -> unit
 end
 
 module ShaderLoc : sig
@@ -2762,10 +2790,12 @@ val get_ray_collision_mesh : Ray.t -> Mesh.t -> Matrix.t -> RayCollision.t
 val get_ray_collision_model : Ray.t -> Model.t -> RayCollision.t
 (** [get_ray_collision_model ray model] Get collision info between ray and model*)
 
-val get_ray_collision_triangle : Ray.t -> Vector3.t -> Vector3.t -> Vector3.t -> RayCollision.t
+val get_ray_collision_triangle :
+  Ray.t -> Vector3.t -> Vector3.t -> Vector3.t -> RayCollision.t
 (** [get_ray_collision_triangle ray p1 p2 p3] Get collision info between ray and triangle*)
 
-val get_ray_collision_quad : Ray.t -> Vector3.t -> Vector3.t -> Vector3.t -> Vector3.t -> RayCollision.t
+val get_ray_collision_quad :
+  Ray.t -> Vector3.t -> Vector3.t -> Vector3.t -> Vector3.t -> RayCollision.t
 (** [get_ray_collision_quad ray ground_height] Get collision info between ray and quad*)
 
 (** {2 Audio Loading and Playing Functions (Module: audio)} *)
@@ -2863,8 +2893,7 @@ val unload_wave_samples : float ptr -> unit
 val load_music_stream : string -> Music.t
 (** [load_music_stream file_name] Load music stream from file*)
 
-val load_music_stream_from_memory :
-  string -> string -> int -> Music.t
+val load_music_stream_from_memory : string -> string -> int -> Music.t
 (** [load_music_stream_from_memory file_type data data_size] Load music stream from data*)
 
 val unload_music_stream : Music.t -> unit
