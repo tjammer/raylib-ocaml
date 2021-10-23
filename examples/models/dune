@@ -12,3 +12,8 @@
  (name models_animation)
  (modules Models_animation)
  (libraries raylib))
+
+(executable
+ (name models_mesh_generation)
+ (modules Models_mesh_generation)
+ (libraries raylib))

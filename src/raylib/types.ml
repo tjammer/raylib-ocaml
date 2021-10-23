@@ -517,6 +517,14 @@ module Mesh = struct
 
   type t = t' ctyp
 
+  let create () =
+    let t = Types.Mesh.t in
+    make t
+
+  let vertex_count mesh = getf mesh Types.Mesh.vertex_count
+
+  let triangle_count mesh = getf mesh Types.Mesh.triangle_count
+
   let vertices mesh =
     CArray.from_ptr
       (getf mesh Types.Mesh.vertices)
@@ -551,6 +559,12 @@ module Mesh = struct
     CArray.from_ptr
       (getf mesh Types.Mesh.indices)
       (getf mesh Types.Mesh.vertex_count * 3)
+
+  let set_vertex_count mesh vertex_count =
+    setf mesh Types.Mesh.vertex_count vertex_count
+
+  let set_triangle_count mesh triangle_count =
+    setf mesh Types.Mesh.triangle_count triangle_count
 
   let set_vertices mesh vertices =
     setf mesh Types.Mesh.vertices (CArray.start vertices)

@@ -1093,6 +1093,12 @@ module Mesh : sig
 
   type t = t' ctyp
 
+  val create : unit -> t
+
+  val vertex_count : t -> int
+
+  val triangle_count : t -> int
+
   val vertices : t -> float Ctypes_static.carray
 
   val texcoords : t -> float Ctypes_static.carray
@@ -1106,6 +1112,10 @@ module Mesh : sig
   val colors : t -> Unsigned.uchar Ctypes_static.carray
 
   val indices : t -> Unsigned.ushort Ctypes_static.carray
+
+  val set_vertex_count : t -> int -> unit
+
+  val set_triangle_count : t -> int -> unit
 
   val set_vertices : t -> float Ctypes_static.carray -> unit
 
