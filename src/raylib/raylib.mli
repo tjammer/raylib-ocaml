@@ -1096,22 +1096,43 @@ module Mesh : sig
   val create : unit -> t
 
   val vertex_count : t -> int
+  (** Number of vertices stored in arrays *)
 
   val triangle_count : t -> int
+  (** Number of triangles stored (indexed or not) *)
 
   val vertices : t -> float Ctypes_static.carray
+  (** Vertex position (XYZ - 3 components per vertex) (shader-location = 0) *)
 
   val texcoords : t -> float Ctypes_static.carray
+  (** Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1) *)
 
   val texcoords2 : t -> float Ctypes_static.carray
+  (** Vertex second texture coordinates (useful for lightmaps) (shader-location = 5) *)
 
   val normals : t -> float Ctypes_static.carray
+  (** Vertex normals (XYZ - 3 components per vertex) (shader-location = 2) *)
 
   val tangents : t -> float Ctypes_static.carray
+  (** Vertex tangents (XYZW - 4 components per vertex) (shader-location = 4) *)
 
   val colors : t -> Unsigned.uchar Ctypes_static.carray
+  (** Vertex colors (RGBA - 4 components per vertex) (shader-location = 3) *)
 
   val indices : t -> Unsigned.ushort Ctypes_static.carray
+  (** Vertex indices (in case vertex data comes indexed) *)
+
+  val anim_vertices : t -> float Ctypes_static.carray
+  (** Animated vertex positions (after bones transformations) *)
+
+  val anim_normals : t -> float Ctypes_static.carray
+  (** Animated normals (after bones transformations) *)
+
+  val bone_ids : t -> int Ctypes_static.carray
+  (** Vertex bone ids, up to 4 bones influence by vertex (skinning) *)
+
+  val bone_weights : t -> float Ctypes_static.carray
+  (** Vertex bone weight, up to 4 bones influence by vertex (skinning) *)
 
   val set_vertex_count : t -> int -> unit
 
@@ -1130,6 +1151,14 @@ module Mesh : sig
   val set_colors : t -> Unsigned.uchar Ctypes_static.carray -> unit
 
   val set_indices : t -> Unsigned.ushort Ctypes_static.carray -> unit
+
+  val set_anim_vertices : t -> float Ctypes_static.carray -> unit
+
+  val set_anim_normals : t -> float Ctypes_static.carray -> unit
+
+  val set_bone_ids : t -> int Ctypes_static.carray -> unit
+
+  val set_bone_weights : t -> float Ctypes_static.carray -> unit
 end
 
 module ShaderLoc : sig

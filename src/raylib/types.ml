@@ -560,6 +560,26 @@ module Mesh = struct
       (getf mesh Types.Mesh.indices)
       (getf mesh Types.Mesh.vertex_count * 3)
 
+  let anim_vertices mesh =
+    CArray.from_ptr
+      (getf mesh Types.Mesh.anim_vertices)
+      (getf mesh Types.Mesh.vertex_count * 3)
+
+  let anim_normals mesh =
+    CArray.from_ptr
+      (getf mesh Types.Mesh.anim_normals)
+      (getf mesh Types.Mesh.vertex_count * 3)
+
+  let bone_ids mesh =
+    CArray.from_ptr
+      (getf mesh Types.Mesh.bone_ids)
+      (getf mesh Types.Mesh.vertex_count * 4)
+
+  let bone_weights mesh =
+    CArray.from_ptr
+      (getf mesh Types.Mesh.bone_weights)
+      (getf mesh Types.Mesh.vertex_count * 4)
+
   let set_vertex_count mesh vertex_count =
     setf mesh Types.Mesh.vertex_count vertex_count
 
@@ -585,6 +605,18 @@ module Mesh = struct
 
   let set_indices mesh indices =
     setf mesh Types.Mesh.indices (CArray.start indices)
+
+  let set_anim_vertices mesh anim_vertices =
+    setf mesh Types.Mesh.anim_vertices (CArray.start anim_vertices)
+
+  let set_anim_normals mesh anim_normals =
+    setf mesh Types.Mesh.anim_normals (CArray.start anim_normals)
+
+  let set_bone_ids mesh bone_ids =
+    setf mesh Types.Mesh.bone_ids (CArray.start bone_ids)
+
+  let set_bone_weights mesh bone_weights =
+    setf mesh Types.Mesh.bone_weights (CArray.start bone_weights)
 end
 
 module ShaderLoc = struct
