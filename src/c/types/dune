@@ -1,5 +1,5 @@
 (library
- (package raylib)
+ (public_name raylib.types)
  (name raylib_generated_types)
  (modules raylib_generated_types)
  (preprocess

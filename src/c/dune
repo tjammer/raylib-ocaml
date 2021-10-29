@@ -1,6 +1,6 @@
 (library
  (name raylib_c)
- (package raylib)
+ (public_name raylib.c)
  (modules Raylib_c_generated_functions Raylib_c_generated_math)
  (foreign_archives raylib)
  (foreign_stubs
