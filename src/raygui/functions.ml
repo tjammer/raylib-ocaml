@@ -29,11 +29,6 @@ let button bx = _button @@ to_struct bx
 
 let label_button bx = _label_button @@ to_struct bx
 
-let image_button a b c = _image_button (to_struct a) b (to_struct c)
-
-let image_button_ex a b c d =
-  _image_button_ex (to_struct a) b (to_struct c) (to_struct d)
-
 let toggle rct = _toggle @@ to_struct rct
 
 let toggle_group rct = _toggle_group @@ to_struct rct
