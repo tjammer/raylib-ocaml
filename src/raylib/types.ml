@@ -417,26 +417,26 @@ module Font = struct
 
   let base_size font = getf font Types.Font.base_size
 
-  let chars_padding font = getf font Types.Font.chars_padding
+  let glyph_padding font = getf font Types.Font.glyph_padding
 
   let texture font = getf font Types.Font.texture
 
   let recs font = getf font Types.Font.recs
 
-  let chars font =
-    let count = getf font Types.Font.chars_count in
-    CArray.from_ptr (getf font Types.Font.chars) count
+  let glyphs font =
+    let count = getf font Types.Font.glyph_count in
+    CArray.from_ptr (getf font Types.Font.glyphs) count
 
   let set_base_size font base_size = setf font Types.Font.base_size base_size
 
-  let set_chars_padding font chars_padding =
-    setf font Types.Font.chars_padding chars_padding
+  let set_glyph_padding font glyph_padding =
+    setf font Types.Font.glyph_padding glyph_padding
 
   let set_texture font texture = setf font Types.Font.texture texture
 
   let set_recs font recs = setf font Types.Font.recs recs
 
-  let set_chars font chars = setf font Types.Font.chars (CArray.start chars)
+  let set_glyphs font glyphs = setf font Types.Font.glyphs (CArray.start glyphs)
 end
 
 module Camera3D = struct

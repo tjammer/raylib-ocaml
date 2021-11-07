@@ -247,7 +247,7 @@ module MaterialMapIndex : sig
     | Occlusion
     | Emission
     | Height
-    | Brdg
+    | Brdf
     | Cubemap
     | Irradiance
     | Prefilter
@@ -999,27 +999,27 @@ module Font : sig
   val base_size : t -> int
   (** Base size (default chars height) *)
 
-  val chars_padding : t -> int
-  (** Padding around the chars *)
+  val glyph_padding : t -> int
+  (** Padding around the glyphs *)
 
   val texture : t -> Texture.t
-  (** Characters texture atlas *)
+  (** Glyph texture atlas *)
 
   val recs : t -> Rectangle.t ptr
-  (** Characters rectangles in texture *)
+  (** Glyph rectangles in texture *)
 
-  val chars : t -> GlyphInfo.t CArray.t
-  (** Characters info data *)
+  val glyphs : t -> GlyphInfo.t CArray.t
+  (** Glyph info data *)
 
   val set_base_size : t -> int -> unit
 
-  val set_chars_padding : t -> int -> unit
+  val set_glyph_padding : t -> int -> unit
 
   val set_texture : t -> Texture.t -> unit
 
   val set_recs : t -> Rectangle.t ptr -> unit
 
-  val set_chars : t -> GlyphInfo.t CArray.t -> unit
+  val set_glyphs : t -> GlyphInfo.t CArray.t -> unit
 end
 
 module Camera3D : sig
@@ -1897,9 +1897,6 @@ val get_char_pressed : unit -> char
 val is_gamepad_available : int -> bool
 (** [is_gamepad_available gamepad] Detect if a gamepad is available*)
 
-val is_gamepad_name : int -> string -> bool
-(** [is_gamepad_name gamepad name] Check gamepad name (if available)*)
-
 val get_gamepad_name : int -> string
 (** [get_gamepad_name gamepad] Return gamepad internal name id*)
 
@@ -1978,8 +1975,8 @@ val is_gesture_detected : Gesture.t -> bool
 val get_gesture_detected : unit -> Gesture.t
 (** [get_gesture_detected ()] Get latest detected gesture*)
 
-val get_touch_points_count : unit -> int
-(** [get_touch_points_count ()] Get touch points count*)
+val get_touch_point_count : unit -> int
+(** [get_touch_point_count ()] Get touch point count*)
 
 val get_gesture_hold_duration : unit -> float
 (** [get_gesture_hold_duration ()] Get gesture hold time in milliseconds*)
@@ -2200,9 +2197,6 @@ val gen_image_checked :
 
 val gen_image_white_noise : int -> int -> float -> Image.t
 (** [gen_image_white_noise width height factor] Generate image: white noise*)
-
-val gen_image_perlin_noise : int -> int -> int -> int -> float -> Image.t
-(** [gen_image_perlin_noise width height offset_x offset_y scale] Generate image: perlin noise*)
 
 val gen_image_cellular : int -> int -> int -> Image.t
 (** [gen_image_cellular width height tile_size] Generate image: cellular algorithm. Bigger tileSize means bigger cells*)
@@ -2587,8 +2581,8 @@ val load_codepoints : string -> int ptr -> int ptr
 val unload_codepoints : int ptr -> unit
 (** [unload_codepoints codepoints] Unload codepoints data from memory*)
 
-val get_codepoints_count : string -> int
-(** [get_codepoints_count text] Get total number of characters (codepoints) in a UTF8 encoded string*)
+val get_codepoint_count : string -> int
+(** [get_codepoint_count text] Get total number of characters (codepoints) in a UTF8 encoded string*)
 
 val get_codepoint : string -> int ptr -> int
 (** [get_codepoint text bytes_processed] Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure*)
@@ -2798,6 +2792,7 @@ val draw_billboard_pro :
   Camera3D.t ->
   Texture.t ->
   Rectangle.t ->
+  Vector3.t ->
   Vector3.t ->
   Vector2.t ->
   Vector2.t ->
