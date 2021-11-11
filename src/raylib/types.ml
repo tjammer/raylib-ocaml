@@ -93,6 +93,8 @@ module Matrix = struct
 
   type t = t' ctyp
 
+  let t = Types.Matrix.t
+
   let create m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 m10 m11 m12 m13 m14 m15 =
     let t = Types.Matrix.t in
     let matrix = make t in
@@ -185,6 +187,11 @@ module Color = struct
   type t' = Types.Color.t
 
   type t = t' ctyp
+
+  let r t = getf t Types.Color.r |> Unsigned.UChar.to_int
+  let g t = getf t Types.Color.g |> Unsigned.UChar.to_int
+  let b t = getf t Types.Color.b |> Unsigned.UChar.to_int
+  let a t = getf t Types.Color.a |> Unsigned.UChar.to_int
 
   let create r g b a =
     let t = Types.Color.t in
@@ -627,6 +634,14 @@ module Shader = struct
   type t' = Types.Shader.t
 
   type t = t' ctyp
+
+  let shader id locs =
+    let shader = Ctypes.make Types.Shader.t in
+    Ctypes.setf shader Types.Shader.id id;
+    Ctypes.setf shader Types.Shader.locs (Ctypes.CArray.start locs);
+    shader
+
+  let id shader = getf shader Types.Shader.id
 
   let locs shader =
     CArray.from_ptr (getf shader Types.Shader.locs) max_shader_locations

@@ -647,6 +647,8 @@ and Matrix : sig
 
   type t = t' ctyp
 
+  val t : t Ctypes.typ
+
   val create :
     float ->
     float ->
@@ -782,6 +784,11 @@ module Color : sig
   type t' = Raylib_generated_types.Color.t
 
   type t = t' ctyp
+
+  val r : t -> int
+  val g : t -> int
+  val b : t -> int
+  val a : t -> int
 
   val create : int -> int -> int -> int -> t
   (** [create red green blue alpha] creates a 24bit+8bit alpha color. *)
@@ -1162,13 +1169,17 @@ module Mesh : sig
 end
 
 module ShaderLoc : sig
-  type t
+  type t = int
 end
 
 module Shader : sig
   type t'
 
   type t = t' ctyp
+
+  val shader : Unsigned.UInt.t -> ShaderLoc.t CArray.t -> t
+
+  val id : t -> Unsigned.UInt.t
 
   val locs : t -> ShaderLoc.t CArray.t
 
