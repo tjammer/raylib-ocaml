@@ -2810,7 +2810,7 @@ val draw_billboard_pro :
   float ->
   Color.t ->
   unit
-(** [draw_billboard_pro camera texture source position size origin rotation tint] Draw a billboard texture defined by source and rotation*)
+(** [draw_billboard_pro camera texture source position up size origin rotation tint] Draw a billboard texture defined by source and rotation*)
 
 (** {3 Collision detection functions} *)
 
