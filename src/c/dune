@@ -66,7 +66,7 @@
     (copy vendor/raylib/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/raylib/libraylib.so.3.8.1 dllraylib.so)))))
+    (copy vendor/raylib/libraylib.so.4.0.0 dllraylib.so)))))
 
 (rule
  (alias build-raylib)
@@ -82,7 +82,7 @@
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/raylib/src/libraylib.3.8.1.dylib dllraylib.so)))))
+    (copy vendor/raylib/src/libraylib.4.0.0.dylib dllraylib.so)))))
 
 (rule
  (alias build-raylib)
@@ -130,7 +130,7 @@
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run gmake -C vendor/raylib/src clean)
     (run gmake -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/raylib/src/libraylib.3.8.1.so dllraylib.so)))))
+    (copy vendor/raylib/src/libraylib.4.0.0.so dllraylib.so)))))
 
 (library
  (name raygui_c)

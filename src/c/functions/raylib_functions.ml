@@ -339,9 +339,6 @@ module Description (F : Ctypes.FOREIGN) = struct
   let is_gamepad_available =
     foreign "IsGamepadAvailable" (int @-> returning bool)
 
-  let is_gamepad_name =
-    foreign "IsGamepadName" (int @-> string @-> returning bool)
-
   let get_gamepad_name = foreign "GetGamepadName" (int @-> returning string)
 
   let is_gamepad_button_pressed =
@@ -419,8 +416,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   let get_gesture_detected =
     foreign "GetGestureDetected" (void @-> returning Gesture.t)
 
-  let get_touch_points_count =
-    foreign "GetTouchPointsCount" (void @-> returning int)
+  let get_touch_point_count =
+    foreign "GetTouchPointCount" (void @-> returning int)
 
   let get_gesture_hold_duration =
     foreign "GetGestureHoldDuration" (void @-> returning float)
@@ -673,10 +670,6 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let gen_image_white_noise =
     foreign "GenImageWhiteNoise" (int @-> int @-> float @-> returning Image.t)
-
-  let gen_image_perlin_noise =
-    foreign "GenImagePerlinNoise"
-      (int @-> int @-> int @-> int @-> float @-> returning Image.t)
 
   let gen_image_cellular =
     foreign "GenImageCellular" (int @-> int @-> int @-> returning Image.t)
@@ -1062,8 +1055,8 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let unload_codepoints = foreign "UnloadCodepoints" (ptr int @-> returning void)
 
-  let get_codepoints_count =
-    foreign "GetCodepointsCount" (string @-> returning int)
+  let get_codepoint_count =
+    foreign "GetCodepointCount" (string @-> returning int)
 
   let get_codepoint =
     foreign "GetCodepoint" (string @-> ptr int @-> returning int)
@@ -1271,7 +1264,7 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let draw_billboard_pro =
     foreign "DrawBillboardPro"
-      (Camera3D.t @-> Texture.t @-> Rectangle.t @-> Vector3.t @-> Vector2.t
+      (Camera3D.t @-> Texture.t @-> Rectangle.t @-> Vector3.t @-> Vector3.t @-> Vector2.t
      @-> Vector2.t @-> float @-> Color.t @-> returning void)
 
   let check_collision_spheres =

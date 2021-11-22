@@ -185,13 +185,6 @@ val button : Raylib.Rectangle.t -> string -> bool
 val label_button : Raylib.Rectangle.t -> string -> bool
 (** [label_button bounds text] Label button control, show true when clicked *)
 
-val image_button : Raylib.Rectangle.t -> string -> Raylib.Texture.t -> bool
-(** [image_button bounds text texture] Image button control, returns true when clicked *)
-
-val image_button_ex :
-  Raylib.Rectangle.t -> string -> Raylib.Texture.t -> Raylib.Rectangle.t -> bool
-(** [image_button_ex bounds text texture tex_source] Image button extended control, returns true when clicked *)
-
 val toggle : Raylib.Rectangle.t -> string -> bool -> bool
 (** [toggle bounds text active] Toggle Button control, returns true when active *)
 

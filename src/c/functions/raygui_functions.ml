@@ -80,17 +80,6 @@ module Description (F : Ctypes.FOREIGN) = struct
   let _label_button =
     foreign "GuiLabelButton" (Types.Rectangle.t @-> string @-> returning bool)
 
-  (*  Image button control, returns true when clicked *)
-  let _image_button =
-    foreign "GuiImageButton"
-      (Types.Rectangle.t @-> string @-> Types.Texture.t @-> returning bool)
-
-  (*  Image button extended control, returns true when clicked *)
-  let _image_button_ex =
-    foreign "GuiImageButtonEx"
-      (Types.Rectangle.t @-> string @-> Types.Texture.t @-> Types.Rectangle.t
-     @-> returning bool)
-
   (*  Toggle Button control, returns true when active *)
   let _toggle =
     foreign "GuiToggle"

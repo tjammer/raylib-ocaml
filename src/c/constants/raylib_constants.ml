@@ -242,7 +242,7 @@ module MaterialMapIndex = struct
     | Occlusion [@cname "MATERIAL_MAP_OCCLUSION"]
     | Emission [@cname "MATERIAL_MAP_EMISSION"]
     | Height [@cname "MATERIAL_MAP_HEIGHT"]
-    | Brdg [@cname "MATERIAL_MAP_BRDG"]
+    | Brdf [@cname "MATERIAL_MAP_BRDF"]
     | Cubemap [@cname "MATERIAL_MAP_CUBEMAP"]
     | Irradiance [@cname "MATERIAL_MAP_IRRADIANCE"]
     | Prefilter [@cname "MATERIAL_MAP_PREFILTER"]

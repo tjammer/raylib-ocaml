@@ -96,11 +96,11 @@ end
 module Font = struct
   type%c t = {
     base_size : int; [@cname "baseSize"]
-    chars_count : int; [@cname "charsCount"]
-    chars_padding : int; [@cname "charsPadding"]
+    glyph_count : int; [@cname "glyphCount"]
+    glyph_padding : int; [@cname "glyphPadding"]
     texture : Texture.t;
     recs : Rectangle.t ptr;
-    chars : GlyphInfo.t ptr;
+    glyphs : GlyphInfo.t ptr;
   }
   [@@cname "Font"]
 end

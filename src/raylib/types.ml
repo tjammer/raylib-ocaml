@@ -93,6 +93,8 @@ module Matrix = struct
 
   type t = t' ctyp
 
+  let t = Types.Matrix.t
+
   let create m0 m1 m2 m3 m4 m5 m6 m7 m8 m9 m10 m11 m12 m13 m14 m15 =
     let t = Types.Matrix.t in
     let matrix = make t in
@@ -185,6 +187,11 @@ module Color = struct
   type t' = Types.Color.t
 
   type t = t' ctyp
+
+  let r t = getf t Types.Color.r |> Unsigned.UChar.to_int
+  let g t = getf t Types.Color.g |> Unsigned.UChar.to_int
+  let b t = getf t Types.Color.b |> Unsigned.UChar.to_int
+  let a t = getf t Types.Color.a |> Unsigned.UChar.to_int
 
   let create r g b a =
     let t = Types.Color.t in
@@ -417,26 +424,26 @@ module Font = struct
 
   let base_size font = getf font Types.Font.base_size
 
-  let chars_padding font = getf font Types.Font.chars_padding
+  let glyph_padding font = getf font Types.Font.glyph_padding
 
   let texture font = getf font Types.Font.texture
 
   let recs font = getf font Types.Font.recs
 
-  let chars font =
-    let count = getf font Types.Font.chars_count in
-    CArray.from_ptr (getf font Types.Font.chars) count
+  let glyphs font =
+    let count = getf font Types.Font.glyph_count in
+    CArray.from_ptr (getf font Types.Font.glyphs) count
 
   let set_base_size font base_size = setf font Types.Font.base_size base_size
 
-  let set_chars_padding font chars_padding =
-    setf font Types.Font.chars_padding chars_padding
+  let set_glyph_padding font glyph_padding =
+    setf font Types.Font.glyph_padding glyph_padding
 
   let set_texture font texture = setf font Types.Font.texture texture
 
   let set_recs font recs = setf font Types.Font.recs recs
 
-  let set_chars font chars = setf font Types.Font.chars (CArray.start chars)
+  let set_glyphs font glyphs = setf font Types.Font.glyphs (CArray.start glyphs)
 end
 
 module Camera3D = struct
@@ -627,6 +634,14 @@ module Shader = struct
   type t' = Types.Shader.t
 
   type t = t' ctyp
+
+  let shader id locs =
+    let shader = Ctypes.make Types.Shader.t in
+    Ctypes.setf shader Types.Shader.id id;
+    Ctypes.setf shader Types.Shader.locs (Ctypes.CArray.start locs);
+    shader
+
+  let id shader = getf shader Types.Shader.id
 
   let locs shader =
     CArray.from_ptr (getf shader Types.Shader.locs) max_shader_locations
