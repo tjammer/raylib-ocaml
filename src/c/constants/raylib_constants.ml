@@ -1,4 +1,4 @@
-let%c () = header "#include <raylib.h>\n#include <config.h>"
+let%c () = header "#include <raylib.h>\n#include <rlgl.h>\n#include <config.h>"
 
 module ConfigFlags = struct
   type%c t =
