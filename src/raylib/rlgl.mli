@@ -12,7 +12,7 @@ val rotatef : float -> float -> float -> float -> unit
 
 val scalef : float -> float -> float -> unit
 
-val mult_matrixf : float Ctypes_static.ptr -> unit
+val mult_matrixf : float Ctypes.ptr -> unit
 
 val frustum : float -> float -> float -> float -> float -> float -> unit
 
@@ -34,8 +34,7 @@ val tex_coord2f : float -> float -> unit
 
 val normal3f : float -> float -> float -> unit
 
-val color4ub :
-  Unsigned.uchar -> Unsigned.uchar -> Unsigned.uchar -> Unsigned.uchar -> unit
+val color4ub : Unsigned.uchar -> Unsigned.uchar -> Unsigned.uchar -> Unsigned.uchar -> unit
 
 val color3f : float -> float -> float -> unit
 
@@ -113,8 +112,7 @@ val disable_stereo_render : unit -> unit
 
 val is_stereo_render_enabled : unit -> bool
 
-val clear_color :
-  Unsigned.uchar -> Unsigned.uchar -> Unsigned.uchar -> Unsigned.uchar -> unit
+val clear_color : Unsigned.uchar -> Unsigned.uchar -> Unsigned.uchar -> Unsigned.uchar -> unit
 
 val clear_screen_buffers : unit -> unit
 
@@ -128,7 +126,7 @@ val rlgl_init : int -> int -> unit
 
 val rlgl_close : unit -> unit
 
-val load_extensions : unit Ctypes_static.ptr -> unit
+val load_extensions : unit Ctypes.ptr -> unit
 
 val get_version : unit -> int
 
@@ -140,24 +138,13 @@ val get_texture_id_default : unit -> Unsigned.uint
 
 val get_shader_id_default : unit -> Unsigned.uint
 
-val load_render_batch :
-  int ->
-  int ->
-  Raylib_generated_types__.Rlgl_generated_types.RlRenderBatch.t Ctypes.structure
+val load_render_batch : int -> int -> Rlgl_types.RlRenderBatch.t
 
-val unload_render_batch :
-  Raylib_generated_types__.Rlgl_generated_types.RlRenderBatch.t Ctypes.structure ->
-  unit
+val unload_render_batch : Rlgl_types.RlRenderBatch.t -> unit
 
-val draw_render_batch :
-  Raylib_generated_types__.Rlgl_generated_types.RlRenderBatch.t Ctypes.structure
-  Ctypes_static.ptr ->
-  unit
+val draw_render_batch : Rlgl_types.RlRenderBatch.t Ctypes.ptr -> unit
 
-val set_render_batch_active :
-  Raylib_generated_types__.Rlgl_generated_types.RlRenderBatch.t Ctypes.structure
-  Ctypes_static.ptr ->
-  unit
+val set_render_batch_active : Rlgl_types.RlRenderBatch.t Ctypes.ptr -> unit
 
 val draw_render_batch_active : unit -> unit
 
@@ -167,77 +154,60 @@ val set_texture : Unsigned.uint -> unit
 
 val load_vertex_array : unit -> Unsigned.uint
 
-val load_vertex_buffer :
-  unit Ctypes_static.ptr -> int -> bool -> Unsigned.uint
+val load_vertex_buffer : unit Ctypes.ptr -> int -> bool -> Unsigned.uint
 
-val load_vertex_buffer_element :
-  unit Ctypes_static.ptr -> int -> bool -> Unsigned.uint
+val load_vertex_buffer_element : unit Ctypes.ptr -> int -> bool -> Unsigned.uint
 
-val update_vertex_buffer :
-  int -> unit Ctypes_static.ptr -> int -> int -> unit
+val update_vertex_buffer : int -> unit Ctypes.ptr -> int -> int -> unit
 
 val unload_vertex_array : Unsigned.uint -> unit
 
 val unload_vertex_buffer : Unsigned.uint -> unit
 
 val set_vertex_attribute :
-  Unsigned.uint -> int -> int -> bool -> int -> unit Ctypes_static.ptr -> unit
+  Unsigned.uint -> int -> int -> bool -> int -> unit Ctypes.ptr -> unit
 
 val set_vertex_attribute_divisor : Unsigned.uint -> int -> unit
 
-val set_vertex_attribute_default :
-  int -> unit Ctypes_static.ptr -> int -> int -> unit
+val set_vertex_attribute_default : int -> unit Ctypes.ptr -> int -> int -> unit
 
 val draw_vertex_array : int -> int -> unit
 
-val draw_vertex_array_elements : int -> int -> unit Ctypes_static.ptr -> unit
+val draw_vertex_array_elements : int -> int -> unit Ctypes.ptr -> unit
 
 val draw_vertex_array_instanced : int -> int -> int -> unit
 
-val draw_vertex_array_elements_instanced :
-  int -> int -> unit Ctypes_static.ptr -> int -> unit
+val draw_vertex_array_elements_instanced : int -> int -> unit Ctypes.ptr -> int -> unit
 
-val load_texture :
-  unit Ctypes_static.ptr -> int -> int -> int -> int -> Unsigned.uint
+val load_texture : unit Ctypes.ptr -> int -> int -> int -> int -> Unsigned.uint
 
 val load_texture_depth : int -> int -> bool -> Unsigned.uint
 
-val load_texture_cubemap :
-  unit Ctypes_static.ptr -> int -> int -> Unsigned.uint
+val load_texture_cubemap : unit Ctypes.ptr -> int -> int -> Unsigned.uint
 
 val update_texture :
-  Unsigned.uint ->
-  int ->
-  int ->
-  int ->
-  int ->
-  int ->
-  unit Ctypes_static.ptr ->
-  unit
+  Unsigned.uint -> int -> int -> int -> int -> int -> unit Ctypes.ptr -> unit
 
 val get_gl_texture_formats :
   int ->
-  Unsigned.uint Ctypes_static.ptr ->
-  Unsigned.uint Ctypes_static.ptr ->
-  Unsigned.uint Ctypes_static.ptr ->
+  Unsigned.uint Ctypes.ptr ->
+  Unsigned.uint Ctypes.ptr ->
+  Unsigned.uint Ctypes.ptr ->
   unit
 
 val get_pixel_format_name : Unsigned.uint -> string
 
 val unload_texture : Unsigned.uint -> unit
 
-val gen_texture_mipmaps :
-  Unsigned.uint -> int -> int -> int -> int Ctypes_static.ptr -> unit
+val gen_texture_mipmaps : Unsigned.uint -> int -> int -> int -> int Ctypes.ptr -> unit
 
-val read_texture_pixels :
-  Unsigned.uint -> int -> int -> int -> unit Ctypes_static.ptr
+val read_texture_pixels : Unsigned.uint -> int -> int -> int -> unit Ctypes.ptr
 
-val read_screen_pixels : int -> int -> Unsigned.uchar Ctypes_static.ptr
+val read_screen_pixels : int -> int -> Unsigned.uchar Ctypes.ptr
 
 val load_framebuffer : int -> int -> Unsigned.uint
 
-val framebuffer_attach :
-  Unsigned.uint -> Unsigned.uint -> int -> int -> int -> unit
+val framebuffer_attach : Unsigned.uint -> Unsigned.uint -> int -> int -> int -> unit
 
 val framebuffer_complete : Unsigned.uint -> bool
 
@@ -255,45 +225,31 @@ val get_location_uniform : Unsigned.uint -> string -> int
 
 val get_location_attrib : Unsigned.uint -> string -> int
 
-val set_uniform : int -> unit Ctypes_static.ptr -> int -> int -> unit
+val set_uniform : int -> unit Ctypes.ptr -> int -> int -> unit
 
-val set_uniform_matrix :
-  int -> Raylib_generated_types.Matrix.t Ctypes.structure -> unit
+val set_uniform_matrix : int -> Raylib_types.Matrix.t -> unit
 
 val set_uniform_sampler : int -> Unsigned.uint -> unit
 
-val set_shader : Unsigned.uint -> int Ctypes_static.ptr -> unit
+val set_shader : Unsigned.uint -> int Ctypes.ptr -> unit
 
-val get_matrix_modelview :
-  unit -> Raylib_generated_types.Matrix.t Ctypes.structure
+val get_matrix_modelview : unit -> Raylib_types.Matrix.t
 
-val get_matrix_projection :
-  unit -> Raylib_generated_types.Matrix.t Ctypes.structure
+val get_matrix_projection : unit -> Raylib_types.Matrix.t
 
-val get_matrix_transform :
-  unit -> Raylib_generated_types.Matrix.t Ctypes.structure
+val get_matrix_transform : unit -> Raylib_types.Matrix.t
 
-val get_matrix_projection_stereo :
-  int -> Raylib_generated_types.Matrix.t Ctypes.structure
+val get_matrix_projection_stereo : int -> Raylib_types.Matrix.t
 
-val get_matrix_view_offset_stereo :
-  int -> Raylib_generated_types.Matrix.t Ctypes.structure
+val get_matrix_view_offset_stereo : int -> Raylib_types.Matrix.t
 
-val set_matrix_projection :
-  Raylib_generated_types.Matrix.t Ctypes.structure -> unit
+val set_matrix_projection : Raylib_types.Matrix.t -> unit
 
-val set_matrix_modelview :
-  Raylib_generated_types.Matrix.t Ctypes.structure -> unit
+val set_matrix_modelview : Raylib_types.Matrix.t -> unit
 
-val set_matrix_projection_stereo :
-  Raylib_generated_types.Matrix.t Ctypes.structure ->
-  Raylib_generated_types.Matrix.t Ctypes.structure ->
-  unit
+val set_matrix_projection_stereo : Raylib_types.Matrix.t -> Raylib_types.Matrix.t -> unit
 
-val set_matrix_view_offset_stereo :
-  Raylib_generated_types.Matrix.t Ctypes.structure ->
-  Raylib_generated_types.Matrix.t Ctypes.structure ->
-  unit
+val set_matrix_view_offset_stereo : Raylib_types.Matrix.t -> Raylib_types.Matrix.t -> unit
 
 val load_draw_cube : unit -> unit
 

@@ -28,4 +28,4 @@
  (modules Raylib_rlgl)
  (flags
   (:standard -w -9-27))
- (libraries ctypes.stubs raylib_generated_constants raylib_generated_types))
+ (libraries ctypes.stubs raylib_generated_constants raylib_generated_types rlgl_generated_types))

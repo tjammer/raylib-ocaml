@@ -1,5 +1,5 @@
 include Ctypes_reexports
 include Constants
-include Types
+include Raylib_types
 include Functions
-module Rl = Rlgl
+module Rlgl = Rlgl

@@ -1,7 +1,15 @@
 (library
  (package raylib)
  (name raylib_generated_types)
- (modules raylib_generated_types rlgl_generated_types)
+ (modules raylib_generated_types)
+ (preprocess
+  (pps ppx_cstubs.merlin))
+ (libraries ctypes ppx_cstubs))
+
+(library
+ (package raylib)
+ (name rlgl_generated_types)
+ (modules rlgl_generated_types)
  (preprocess
   (pps ppx_cstubs.merlin))
  (libraries ctypes ppx_cstubs))

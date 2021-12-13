@@ -6,7 +6,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   open F
 
   open Raylib_generated_types
-  open Raylib_generated_types__.Rlgl_generated_types
+  open Rlgl_generated_types
 
 (*------------------------------------------------------------------------------------*)
 (* Functions Declaration - Matrix operations*)
