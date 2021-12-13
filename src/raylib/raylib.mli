@@ -3011,3 +3011,5 @@ val set_audio_stream_pitch : AudioStream.t -> float -> unit
 
 val set_audio_stream_buffer_size_default : int -> unit
 (** [set_audio_stream_buffer_size_default size] Default size for new audio streams*)
+
+module Rlgl = Rlgl
