@@ -863,12 +863,47 @@ module Wave = struct
   type t' = Types.Wave.t
 
   type t = t' ctyp
+
+  let frame_count sound = getf sound Types.Wave.frame_count
+
+  let sample_rate stream = getf stream Types.Wave.sample_rate
+
+  let sample_size stream = getf stream Types.Wave.sample_size
+
+  let channels stream = getf stream Types.Wave.channels
+
+  let set_frame_count sound frame_count =
+    setf sound Types.Wave.frame_count frame_count
+
+  let set_sample_rate stream sample_rate =
+    setf stream Types.Wave.sample_rate sample_rate
+
+  let set_sample_size stream sample_size =
+    setf stream Types.Wave.sample_size sample_size
+
+  let set_channels stream channels =
+    setf stream Types.Wave.channels channels
 end
 
 module AudioStream = struct
   type t' = Types.AudioStream.t
 
   type t = t' ctyp
+
+  let sample_rate stream = getf stream Types.AudioStream.sample_rate
+
+  let sample_size stream = getf stream Types.AudioStream.sample_size
+
+  let channels stream = getf stream Types.AudioStream.channels
+
+  let set_sample_rate stream sample_rate =
+    setf stream Types.AudioStream.sample_rate sample_rate
+
+  let set_sample_size stream sample_size =
+    setf stream Types.AudioStream.sample_size sample_size
+
+  let set_channels stream channels =
+    setf stream Types.AudioStream.channels channels
 end
 
 module Sound = struct
@@ -878,7 +913,11 @@ module Sound = struct
 
   let stream sound = getf sound Types.Sound.stream
 
+  let frame_count sound = getf sound Types.Sound.frame_count
+
   let set_stream sound stream = setf sound Types.Sound.stream stream
+
+  let set_frame_count sound frame_count = setf sound Types.Sound.frame_count frame_count
 end
 
 module Music = struct
@@ -888,11 +927,15 @@ module Music = struct
 
   let stream music = getf music Types.Music.stream
 
+  let frame_count music = getf music Types.Music.frame_count
+
   let looping music = getf music Types.Music.looping
 
   let ctx_type music = getf music Types.Music.ctx_type
 
   let set_stream music stream = setf music Types.Music.stream stream
+
+  let set_frame_count music frame_count = setf music Types.Music.frame_count frame_count
 
   let set_looping music looping = setf music Types.Music.looping looping
 
