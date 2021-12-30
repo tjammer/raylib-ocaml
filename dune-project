@@ -18,6 +18,7 @@
   dune
   dune-configurator
   (ctypes (>= 0.14))
+  (integers (>= 0.5))
   (ppx_cstubs (>= 0.6))))
 
 (package

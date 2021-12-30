@@ -1375,12 +1375,47 @@ module Wave : sig
   type t'
 
   type t = t' ctyp
+
+  val frame_count : t -> Unsigned.uint
+  (** Total number of frames (considering channels) *)
+
+  val sample_rate : t -> Unsigned.uint
+  (** Frequency (samples per second) *)
+
+  val sample_size : t -> Unsigned.uint
+  (** Bit depth (bits per sample): 8, 16, 32 (24 not supported) *)
+
+  val channels : t -> Unsigned.uint
+  (** Number of channels (1-mono, 2-stereo, ...) *)
+
+  val set_frame_count : t -> Unsigned.uint -> unit
+
+  val set_sample_rate : t -> Unsigned.uint -> unit
+
+  val set_sample_size : t -> Unsigned.uint -> unit
+
+  val set_channels : t -> Unsigned.uint -> unit
 end
 
 module AudioStream : sig
   type t'
 
   type t = t' ctyp
+
+  val sample_rate : t -> Unsigned.uint
+  (** Frequency (samples per second) *)
+
+  val sample_size : t -> Unsigned.uint
+  (** Bit depth (bits per sample): 8, 16, 32 (24 not supported) *)
+
+  val channels : t -> Unsigned.uint
+  (** Number of channels (1-mono, 2-stereo, ...) *)
+
+  val set_sample_rate : t -> Unsigned.uint -> unit
+
+  val set_sample_size : t -> Unsigned.uint -> unit
+
+  val set_channels : t -> Unsigned.uint -> unit
 end
 
 module Sound : sig
@@ -1391,7 +1426,12 @@ module Sound : sig
   val stream : t -> AudioStream.t
   (** Audio stream *)
 
+  val frame_count : t -> Unsigned.uint
+  (** Frame count *)
+
   val set_stream : t -> AudioStream.t -> unit
+
+  val set_frame_count : t -> Unsigned.uint -> unit
 end
 
 module Music : sig
@@ -1402,6 +1442,9 @@ module Music : sig
   val stream : t -> AudioStream.t
   (** Audio stream *)
 
+  val frame_count : t -> Unsigned.uint
+  (** Frame count *)
+
   val looping : t -> bool
   (** Music looping enable *)
 
@@ -1409,6 +1452,8 @@ module Music : sig
   (** Type of music context (audio filetype) *)
 
   val set_stream : t -> AudioStream.t -> unit
+
+  val set_frame_count : t -> Unsigned.uint -> unit
 
   val set_looping : t -> bool -> unit
 
