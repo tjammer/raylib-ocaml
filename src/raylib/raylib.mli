@@ -1377,12 +1377,16 @@ module Wave : sig
   type t = t' ctyp
 
   val frame_count : t -> Unsigned.uint
+  (** Total number of frames (considering channels) *)
 
   val sample_rate : t -> Unsigned.uint
+  (** Frequency (samples per second) *)
 
   val sample_size : t -> Unsigned.uint
+  (** Bit depth (bits per sample): 8, 16, 32 (24 not supported) *)
 
   val channels : t -> Unsigned.uint
+  (** Number of channels (1-mono, 2-stereo, ...) *)
 
   val set_frame_count : t -> Unsigned.uint -> unit
 
@@ -1399,10 +1403,13 @@ module AudioStream : sig
   type t = t' ctyp
 
   val sample_rate : t -> Unsigned.uint
+  (** Frequency (samples per second) *)
 
   val sample_size : t -> Unsigned.uint
+  (** Bit depth (bits per sample): 8, 16, 32 (24 not supported) *)
 
   val channels : t -> Unsigned.uint
+  (** Number of channels (1-mono, 2-stereo, ...) *)
 
   val set_sample_rate : t -> Unsigned.uint -> unit
 
