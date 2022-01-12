@@ -29,9 +29,8 @@ module Enum = struct
       match enum_name with
       | "GamepadAxis" | "GamepadButton" | "MouseCursor" | "MaterialMapIndex"
       | "ShaderLocationIndex" | "ShaderUniformDataType" | "TextureFilter"
-      | "TextureWrap" | "CubemapLayout" ->
+      | "TextureWrap" | "CubemapLayout" | "MouseButton" | "ShaderAttributeDataType" ->
           strip_2nd cname |> def
-      | "MouseButton" -> strip_1st cname |> rstrip_1st |> def
       | "NPatchType" ->
           strip_1st cname |> def
           |> String.replace ~sub:"3" ~by:"Three_"
@@ -319,7 +318,8 @@ module Type = struct
 
   let itf typ =
     Printf.sprintf "module %s : sig\n" typ.name.name
-    ^ "  type t'\n\n" ^ "  type t = t' ctyp\n\n" ^ ctor_itf typ
+    ^ "  type t'\n\n" ^ "  type t = t' ctyp\n\n  val t : t Ctypes.typ\n\n" ^
+    ctor_itf typ
     (* getters *)
     ^ (List.filter_map (getter_itf @@ has_count typ.fields) typ.fields
       |> String.concat "\n")
@@ -336,7 +336,6 @@ module Type = struct
     | Some names ->
         let typ_nm = String.lowercase_ascii typ.name.cname in
         "  let create " ^ String.concat " " names ^ " =\n"
-        ^ "    let t = Types." ^ typ.name.name ^ ".t in\n"
         ^ Printf.sprintf "    let %s = make t in\n" typ_nm
         ^ (List.map
              (fun name ->
@@ -413,6 +412,7 @@ module Type = struct
     let nm = typ.name.name in
     Printf.sprintf "module %s = struct\n" nm
     ^ "  type t' = Types." ^ nm ^ ".t\n\n" ^ "  type t = t' ctyp\n\n"
+    ^ Printf.sprintf "  let t = Types.%s.t\n\n" nm
     ^ ctor_impl typ
     (* getters *)
     ^ (List.filter_map (getter_impl typ @@ has_count typ.fields) typ.fields
@@ -529,15 +529,14 @@ let () =
     api |> member "enums" |> to_list |> List.filter_map Enum.of_json
   in
   let stubs =
-    (* TODO split rlgl off *)
-    "let%c () = header \"#include <raylib.h>\\n#include <rlgl.h>\"\n\n"
+    "let%c () = header \"#include <raylib.h>\\n#include <config.h>\"\n\n"
     ^ (enums |> List.map Enum.stubs |> String.concat "")
     ^ "let max_material_maps = [%c constant \"MAX_MATERIAL_MAPS\" camlint]\n\n"
     ^ "let max_shader_locations = [%c constant \"MAX_SHADER_LOCATIONS\" \
        camlint]"
   in
-  print_string stubs;
-  (* ignore stubs; *)
+  (* print_string stubs; *)
+  ignore stubs;
   let itf =
     "(** {1 Constants} *)\n\n"
     ^ (enums |> List.map Enum.itf |> String.concat "")
@@ -564,8 +563,8 @@ let () =
     api |> member "functions" |> to_list |> List.map Function.of_json
   in
   let stubs = funcs |> List.map Function.stub |> String.concat "" in
-  (* print_string stubs; *)
-  ignore stubs;
+  print_string stubs;
+  (* ignore stubs; *)
   let itf = funcs |> List.map Function.itf |> String.concat "\n" in
   (* print_string itf; *)
   ignore itf;

@@ -1,15 +1,30 @@
 let%c () = header "#include <raylib.h>"
 
 module Vector2 = struct
-  type%c t = { x : float; y : float } [@@cname "Vector2"]
+  type%c t = {
+    x : float;
+    y : float;
+  }
+  [@@cname "Vector2"]
 end
 
 module Vector3 = struct
-  type%c t = { x : float; y : float; z : float } [@@cname "Vector3"]
+  type%c t = {
+    x : float;
+    y : float;
+    z : float;
+  }
+  [@@cname "Vector3"]
 end
 
 module Vector4 = struct
-  type%c t = { x : float; y : float; z : float; w : float } [@@cname "Vector4"]
+  type%c t = {
+    x : float;
+    y : float;
+    z : float;
+    w : float;
+  }
+  [@@cname "Vector4"]
 end
 
 module Matrix = struct
@@ -35,11 +50,22 @@ module Matrix = struct
 end
 
 module Color = struct
-  type%c t = { r : uchar; g : uchar; b : uchar; a : uchar } [@@cname "Color"]
+  type%c t = {
+    r : uchar;
+    g : uchar;
+    b : uchar;
+    a : uchar;
+  }
+  [@@cname "Color"]
 end
 
 module Rectangle = struct
-  type%c t = { x : float; y : float; width : float; height : float }
+  type%c t = {
+    x : float;
+    y : float;
+    width : float;
+    height : float;
+  }
   [@@cname "Rectangle"]
 end
 
@@ -66,7 +92,11 @@ module Texture = struct
 end
 
 module RenderTexture = struct
-  type%c t = { id : uint; texture : Texture.t; depth : Texture.t }
+  type%c t = {
+    id : uint;
+    texture : Texture.t;
+    depth : Texture.t;
+  }
   [@@cname "RenderTexture"]
 end
 
@@ -148,11 +178,19 @@ module Mesh = struct
 end
 
 module Shader = struct
-  type%c t = { id : uint; locs : int ptr } [@@cname "Shader"]
+  type%c t = {
+    id : uint;
+    locs : int ptr;
+  }
+  [@@cname "Shader"]
 end
 
 module MaterialMap = struct
-  type%c t = { texture : Texture.t; color : Color.t; value : float }
+  type%c t = {
+    texture : Texture.t;
+    color : Color.t;
+    value : float;
+  }
   [@@cname "MaterialMap"]
 end
 
@@ -179,7 +217,11 @@ end
 module BoneInfo = struct
   let%c char_array_32 = array 32 char
 
-  type%c t = { name : char_array_32; parent : int } [@@cname "BoneInfo"]
+  type%c t = {
+    name : char_array_32;
+    parent : int;
+  }
+  [@@cname "BoneInfo"]
 end
 
 module Model = struct
@@ -208,7 +250,11 @@ module ModelAnimation = struct
 end
 
 module Ray = struct
-  type%c t = { position : Vector3.t; direction : Vector3.t } [@@cname "Ray"]
+  type%c t = {
+    position : Vector3.t;
+    direction : Vector3.t;
+  }
+  [@@cname "Ray"]
 end
 
 module RayCollision = struct
@@ -222,7 +268,11 @@ module RayCollision = struct
 end
 
 module BoundingBox = struct
-  type%c t = { min : Vector3.t; max : Vector3.t } [@@cname "BoundingBox"]
+  type%c t = {
+    min : Vector3.t;
+    max : Vector3.t;
+  }
+  [@@cname "BoundingBox"]
 end
 
 module Wave = struct

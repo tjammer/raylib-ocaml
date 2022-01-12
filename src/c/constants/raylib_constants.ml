@@ -86,6 +86,10 @@ module Key = struct
     | X [@cname "KEY_X"]
     | Y [@cname "KEY_Y"]
     | Z [@cname "KEY_Z"]
+    | Left_bracket [@cname "KEY_LEFT_BRACKET"]
+    | Backslash [@cname "KEY_BACKSLASH"]
+    | Right_bracket [@cname "KEY_RIGHT_BRACKET"]
+    | Grave [@cname "KEY_GRAVE"]
     | Space [@cname "KEY_SPACE"]
     | Escape [@cname "KEY_ESCAPE"]
     | Enter [@cname "KEY_ENTER"]
@@ -127,10 +131,6 @@ module Key = struct
     | Right_alt [@cname "KEY_RIGHT_ALT"]
     | Right_super [@cname "KEY_RIGHT_SUPER"]
     | Kb_menu [@cname "KEY_KB_MENU"]
-    | Left_bracket [@cname "KEY_LEFT_BRACKET"]
-    | Backslash [@cname "KEY_BACKSLASH"]
-    | Right_bracket [@cname "KEY_RIGHT_BRACKET"]
-    | Grave [@cname "KEY_GRAVE"]
     | Kp_0 [@cname "KEY_KP_0"]
     | Kp_1 [@cname "KEY_KP_1"]
     | Kp_2 [@cname "KEY_KP_2"]
@@ -161,9 +161,13 @@ end
 
 module MouseButton = struct
   type%c t =
-    | Left [@cname "MOUSE_LEFT_BUTTON"]
-    | Right [@cname "MOUSE_RIGHT_BUTTON"]
-    | Middle [@cname "MOUSE_MIDDLE_BUTTON"]
+    | Left [@cname "MOUSE_BUTTON_LEFT"]
+    | Right [@cname "MOUSE_BUTTON_RIGHT"]
+    | Middle [@cname "MOUSE_BUTTON_MIDDLE"]
+    | Side [@cname "MOUSE_BUTTON_SIDE"]
+    | Extra [@cname "MOUSE_BUTTON_EXTRA"]
+    | Forward [@cname "MOUSE_BUTTON_FORWARD"]
+    | Back [@cname "MOUSE_BUTTON_BACK"]
   [@@cname "MouseButton"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
@@ -242,10 +246,10 @@ module MaterialMapIndex = struct
     | Occlusion [@cname "MATERIAL_MAP_OCCLUSION"]
     | Emission [@cname "MATERIAL_MAP_EMISSION"]
     | Height [@cname "MATERIAL_MAP_HEIGHT"]
-    | Brdf [@cname "MATERIAL_MAP_BRDF"]
     | Cubemap [@cname "MATERIAL_MAP_CUBEMAP"]
     | Irradiance [@cname "MATERIAL_MAP_IRRADIANCE"]
     | Prefilter [@cname "MATERIAL_MAP_PREFILTER"]
+    | Brdf [@cname "MATERIAL_MAP_BRDF"]
   [@@cname "MaterialMapIndex"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
@@ -300,6 +304,19 @@ module ShaderUniformDataType = struct
     | Ivec4 [@cname "SHADER_UNIFORM_IVEC4"]
     | Sampler2d [@cname "SHADER_UNIFORM_SAMPLER2D"]
   [@@cname "ShaderUniformDataType"] [@@typedef]
+
+  let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
+
+  let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
+end
+
+module ShaderAttributeDataType = struct
+  type%c t =
+    | Float [@cname "SHADER_ATTRIB_FLOAT"]
+    | Vec2 [@cname "SHADER_ATTRIB_VEC2"]
+    | Vec3 [@cname "SHADER_ATTRIB_VEC3"]
+    | Vec4 [@cname "SHADER_ATTRIB_VEC4"]
+  [@@cname "ShaderAttributeDataType"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
 
