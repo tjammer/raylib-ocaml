@@ -1,9 +1,6 @@
 let width = 800
-
 let height = 450
-
 let max_bunnies = 50000
-
 let max_batch_elements = 8192
 
 type bunny = {

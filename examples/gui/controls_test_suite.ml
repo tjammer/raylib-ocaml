@@ -1,5 +1,4 @@
 let width = 690
-
 let height = 560
 
 type state = {

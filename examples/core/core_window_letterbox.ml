@@ -2,9 +2,7 @@ let clamp_value (x, y) (mi_x, mi_y) (ma_x, ma_y) =
   Float.(max mi_x (min ma_x x), max mi_y (min ma_y y))
 
 let game_width = 640.0
-
 let game_height = 480.0
-
 let origin = Raylib.Vector2.create 0.0 0.0
 
 let init_colors () =

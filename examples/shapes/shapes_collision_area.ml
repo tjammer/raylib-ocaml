@@ -1,7 +1,5 @@
 let width = 800
-
 let height = 450
-
 let screen_upper_limit = 40.0
 
 let setup () =

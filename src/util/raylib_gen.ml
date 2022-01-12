@@ -29,7 +29,8 @@ module Enum = struct
       match enum_name with
       | "GamepadAxis" | "GamepadButton" | "MouseCursor" | "MaterialMapIndex"
       | "ShaderLocationIndex" | "ShaderUniformDataType" | "TextureFilter"
-      | "TextureWrap" | "CubemapLayout" | "MouseButton" | "ShaderAttributeDataType" ->
+      | "TextureWrap" | "CubemapLayout" | "MouseButton"
+      | "ShaderAttributeDataType" ->
           strip_2nd cname |> def
       | "NPatchType" ->
           strip_1st cname |> def
@@ -181,7 +182,6 @@ end
 
 module Type = struct
   type field = { name : name; typ : Typing.t; desc : string option }
-
   type t = { name : name; fields : field list }
 
   let strip_array name =
@@ -318,8 +318,8 @@ module Type = struct
 
   let itf typ =
     Printf.sprintf "module %s : sig\n" typ.name.name
-    ^ "  type t'\n\n" ^ "  type t = t' ctyp\n\n  val t : t Ctypes.typ\n\n" ^
-    ctor_itf typ
+    ^ "  type t'\n\n" ^ "  type t = t' ctyp\n\n  val t : t Ctypes.typ\n\n"
+    ^ ctor_itf typ
     (* getters *)
     ^ (List.filter_map (getter_itf @@ has_count typ.fields) typ.fields
       |> String.concat "\n")

@@ -1,5 +1,4 @@
 let width = 800
-
 let height = 450
 
 let setup () =

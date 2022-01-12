@@ -9,7 +9,6 @@ module ControlState = struct
   [@@cname "GuiControlState"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -21,7 +20,6 @@ module TextAlignment = struct
   [@@cname "GuiTextAlignment"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -46,7 +44,6 @@ module Wrapped_Control = struct
   [@@cname "GuiControl"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -71,7 +68,6 @@ module ControlProperty = struct
   [@@cname "GuiControlProperty"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -84,7 +80,6 @@ module DefaultProperty = struct
   [@@cname "GuiDefaultProperty"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -93,7 +88,6 @@ module ToggleProperty = struct
   [@@cname "GuiToggleProperty"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -102,7 +96,6 @@ module SliderProperty = struct
   [@@cname "GuiSliderProperty"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -111,7 +104,6 @@ module ProgressBarProperty = struct
   [@@cname "GuiProgressBarProperty"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -120,7 +112,6 @@ module CheckBoxProperty = struct
   [@@cname "GuiCheckBoxProperty"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -131,7 +122,6 @@ module ComboBoxProperty = struct
   [@@cname "GuiComboBoxProperty"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -142,7 +132,6 @@ module DropdownBoxProperty = struct
   [@@cname "GuiDropdownBoxProperty"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -155,7 +144,6 @@ module TextBoxProperty = struct
   [@@cname "GuiTextBoxProperty"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -166,7 +154,6 @@ module SpinnerProperty = struct
   [@@cname "GuiSpinnerProperty"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -181,7 +168,6 @@ module ScrollBarProperty = struct
   [@@cname "GuiScrollBarProperty"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -192,7 +178,6 @@ module ScrollBarSide = struct
   [@@cname "GuiScrollBarSide"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -205,7 +190,6 @@ module ListViewProperty = struct
   [@@cname "GuiListViewProperty"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -219,7 +203,6 @@ module ColorPickerProperty = struct
   [@@cname "GuiColorPickerProperty"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 

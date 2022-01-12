@@ -1,9 +1,6 @@
 let width = 800
-
 let height = 450
-
 let position = Raylib.Vector3.create 0.0 0.0 0.0
-
 let max_circles = 64
 
 type circle_wave = {

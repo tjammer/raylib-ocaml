@@ -19,7 +19,6 @@ module ConfigFlags = struct
   [@@cname "ConfigFlags"] [@@typedef] [@@with_bitmask]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -36,7 +35,6 @@ module TraceLogLevel = struct
   [@@cname "TraceLogLevel"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -155,7 +153,6 @@ module Key = struct
   [@@cname "KeyboardKey"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -171,7 +168,6 @@ module MouseButton = struct
   [@@cname "MouseButton"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -191,7 +187,6 @@ module MouseCursor = struct
   [@@cname "MouseCursor"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -218,7 +213,6 @@ module GamepadButton = struct
   [@@cname "GamepadButton"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -233,7 +227,6 @@ module GamepadAxis = struct
   [@@cname "GamepadAxis"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -253,7 +246,6 @@ module MaterialMapIndex = struct
   [@@cname "MaterialMapIndex"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -288,7 +280,6 @@ module ShaderLocationIndex = struct
   [@@cname "ShaderLocationIndex"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -306,7 +297,6 @@ module ShaderUniformDataType = struct
   [@@cname "ShaderUniformDataType"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -319,7 +309,6 @@ module ShaderAttributeDataType = struct
   [@@cname "ShaderAttributeDataType"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -349,7 +338,6 @@ module PixelFormat = struct
   [@@cname "PixelFormat"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -364,7 +352,6 @@ module TextureFilter = struct
   [@@cname "TextureFilter"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -377,7 +364,6 @@ module TextureWrap = struct
   [@@cname "TextureWrap"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -392,7 +378,6 @@ module CubemapLayout = struct
   [@@cname "CubemapLayout"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -404,7 +389,6 @@ module FontType = struct
   [@@cname "FontType"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -419,7 +403,6 @@ module BlendMode = struct
   [@@cname "BlendMode"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -439,7 +422,6 @@ module Gesture = struct
   [@@cname "Gesture"] [@@typedef] [@@with_bitmask]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -453,7 +435,6 @@ module CameraMode = struct
   [@@cname "CameraMode"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -464,7 +445,6 @@ module CameraProjection = struct
   [@@cname "CameraProjection"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
@@ -476,10 +456,8 @@ module NPatchLayout = struct
   [@@cname "NPatchLayout"] [@@typedef]
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
 
 let max_material_maps = [%c constant "MAX_MATERIAL_MAPS" camlint]
-
 let max_shader_locations = [%c constant "RL_MAX_SHADER_LOCATIONS" camlint]

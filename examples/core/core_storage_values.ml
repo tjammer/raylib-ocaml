@@ -1,9 +1,6 @@
 let width = 800
-
 let height = 450
-
 let storage_position_score = 0
-
 let storage_position_hiscore = 1
 
 let setup () =

@@ -33,7 +33,7 @@ module RlRenderBatch = struct
     vertex_buffer : RlVertexBuffer.t ptr; [@cname "vertexBuffer"]
     draws : RlDrawCall.t ptr;
     draw_counter : int; [@cname "drawCounter"]
-    current_depth : float [@cname "currentDepth"]
+    current_depth : float; [@cname "currentDepth"]
   }
   [@@cname "rlRenderBatch"]
 end

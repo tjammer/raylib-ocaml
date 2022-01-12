@@ -1,7 +1,10 @@
 (library
  (name raylib_c)
  (package raylib)
- (modules Raylib_c_generated_functions Raylib_c_generated_math Raylib_c_generated_rlgl)
+ (modules
+  Raylib_c_generated_functions
+  Raylib_c_generated_math
+  Raylib_c_generated_rlgl)
  (foreign_archives raylib)
  (foreign_stubs
   (language c)

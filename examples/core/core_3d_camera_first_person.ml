@@ -5,7 +5,6 @@
  *
  *)
 let width = 800
-
 let height = 450
 
 type column_t = {

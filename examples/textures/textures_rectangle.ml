@@ -1,9 +1,6 @@
 let width = 800
-
 let height = 450
-
 let position = Raylib.Vector2.create 350.0 280.0
-
 let max_frame_speed = 14
 
 let setup () =

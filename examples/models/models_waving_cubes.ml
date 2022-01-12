@@ -1,7 +1,5 @@
 let width = 800
-
 let height = 450
-
 let num_blocks = 15
 
 let setup () =

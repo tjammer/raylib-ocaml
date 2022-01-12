@@ -12,7 +12,9 @@ let main () =
   let position = Vector3.create 125.0 125.0 125.0 in
   let target = Vector3.create 0.0 0.0 0.0 in
   let up = Vector3.create 0.0 1.0 0.0 in
-  let camera = Camera.create position target up 45.0 CameraProjection.Perspective in
+  let camera =
+    Camera.create position target up 45.0 CameraProjection.Perspective
+  in
 
   set_camera_mode camera CameraMode.Free;
 
@@ -21,18 +23,23 @@ let main () =
   let cube = gen_mesh_cube 1.0 1.0 1.0 in
 
   let rand_float lower upper = get_random_value lower upper |> float_of_int in
-  let matrix_translation _ = Matrix.translate (rand_float (-50) 50) (rand_float (-50) 50) (rand_float (-50) 50) in
+  let matrix_translation _ =
+    Matrix.translate (rand_float (-50) 50) (rand_float (-50) 50)
+      (rand_float (-50) 50)
+  in
   let matrix_rotation _ =
     let axis =
       Vector3.create (rand_float 0 360) (rand_float 0 360) (rand_float 0 360)
       |> Vector3.normalize
     in
-    let angle = (rand_float 0 50) *. Float.pi /. 180.0 /. 1000.0 in
+    let angle = rand_float 0 50 *. Float.pi /. 180.0 /. 1000.0 in
     Matrix.rotate axis angle
   in
 
   (* draw_mesh_instanced takes a ptr. CArrays can be instantly cast to/from ptrs *)
-  let translations = CArray.from_ptr (Ctypes.allocate_n Matrix.t ~count) count in
+  let translations =
+    CArray.from_ptr (Ctypes.allocate_n Matrix.t ~count) count
+  in
   let rotations_inc = Array.init count matrix_rotation in
   let rotations = CArray.from_ptr (Ctypes.allocate_n Matrix.t ~count) count in
   for i = 0 to count - 1 do
@@ -40,9 +47,11 @@ let main () =
     CArray.set rotations i (matrix_rotation i)
   done;
 
-  let shader = load_shader "resources/base_lighting_instanced.vs" "resources/lighting.fs" in
-  if Shader.id shader = Unsigned.UInt.zero
-  then failwith "Shader failed to compile";
+  let shader =
+    load_shader "resources/base_lighting_instanced.vs" "resources/lighting.fs"
+  in
+  if Shader.id shader = Unsigned.UInt.zero then
+    failwith "Shader failed to compile";
 
   let mvp = get_shader_location shader "mvp" in
   let view_pos = get_shader_location shader "viewPos" in
@@ -57,26 +66,33 @@ let main () =
   CArray.set locs ShaderLocationIndex.(Matrix_model |> to_int) instance;
 
   let ambient_vec = Vector4.create 0.2 0.2 0.2 1.0 in
-  set_shader_value shader ambient (to_voidp (addr ambient_vec)) ShaderUniformDataType.Vec4;
+  set_shader_value shader ambient
+    (to_voidp (addr ambient_vec))
+    ShaderUniformDataType.Vec4;
 
-  create_light Directional (Vector3.create 50.0 50.0 0.0) (Vector3.zero ()) Color.white shader
-|> ignore;
+  create_light Directional
+    (Vector3.create 50.0 50.0 0.0)
+    (Vector3.zero ()) Color.white shader
+  |> ignore;
 
   let material = load_material_default () in
   Material.set_shader material shader;
   MaterialMap.set_color (CArray.get (Material.maps material) 0) Color.red;
 
-  while not (Raylib.window_should_close ())
-  do
+  while not (Raylib.window_should_close ()) do
     update_camera (addr camera);
 
     let cpos = Camera3D.position camera in
     let pos = Vector3.(create (x cpos) (y cpos) (z cpos)) in
-    set_shader_value (Material.shader material) view_pos (pos |> addr |> to_voidp) ShaderUniformDataType.Vec3;
+    set_shader_value (Material.shader material) view_pos
+      (pos |> addr |> to_voidp)
+      ShaderUniformDataType.Vec3;
 
     for i = 0 to count - 1 do
-      CArray.set rotations i Matrix.(multiply (CArray.get rotations i) (rotations_inc.(i)));
-      CArray.set translations i Matrix.(multiply (CArray.get rotations i) (CArray.get translations i));
+      CArray.set rotations i
+        Matrix.(multiply (CArray.get rotations i) rotations_inc.(i));
+      CArray.set translations i
+        Matrix.(multiply (CArray.get rotations i) (CArray.get translations i))
     done;
 
     begin_drawing ();
@@ -89,14 +105,14 @@ let main () =
 
     end_mode_3d ();
 
-    draw_text "A CUBE OF DANCING CUBES!"
-      490 10 20 Color.maroon;
+    draw_text "A CUBE OF DANCING CUBES!" 490 10 20 Color.maroon;
 
     draw_fps 10 10;
     end_drawing ()
-
   done;
   Raylib.close_window ();
-  print_endline "Execute from the examples/shaders directory. The shaders are accessed via relative paths."
+  print_endline
+    "Execute from the examples/shaders directory. The shaders are accessed via \
+     relative paths."
 
 let () = main ()

@@ -1,7 +1,6 @@
 open Raylib
 
 let get f i a = Raylib.CArray.get (f a) i
-
 let ( %. ) = Fun.flip
 
 let make_mesh () =

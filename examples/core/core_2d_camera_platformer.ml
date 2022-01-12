@@ -18,26 +18,18 @@ type state_t = player_t * env_item_t List.t * Raylib.Camera2D.t * camera_mode_t
 
 (* Constants *)
 let width = 800
-
 let height = 450
 
 let half_screen =
   Raylib.Vector2.create (Float.of_int width /. 2.) (Float.of_int height /. 2.)
 
 let player_hor_speed = 200.
-
 let player_jump_speed = 350.
-
 let gravity = 400.
-
 let smooth_min_speed = 30.0
-
 let smooth_min_length = 10.0
-
 let smooth_fraction = 0.8
-
 let evening_speed = 700.0
-
 let bbox_x, bbox_y = (0.2, 0.2)
 
 (* Helpers *)
@@ -64,7 +56,6 @@ let camera_description = function
   | PlayerBoundsPush -> "Player push camera on getting too close to screen edge"
 
 let clamp_zoom z = if z > 3.0 then 3.0 else if z < 0.25 then 0.25 else z
-
 let vy_of_float y = Raylib.Vector2.create 0.0 y
 
 (* Game functions *)

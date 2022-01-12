@@ -6,4 +6,4 @@
 (executable
  (name shaders_mesh_instanced)
  (modules Shaders_mesh_instanced Rlights)
-  (libraries raylib))
+ (libraries raylib))

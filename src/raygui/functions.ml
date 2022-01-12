@@ -9,32 +9,21 @@ let to_struct_ptr a = Ctypes.( !@ ) a |> to_struct |> Ctypes.addr
  *   (a : 'a Raylib.ctyp Raylib.ptr :> 'a Ctypes.structure Raylib.ptr) *)
 
 let set_font fnt = _set_font @@ to_struct fnt
-
 let get_font () = Raylib.to_ctyp @@ _get_font ()
-
 let window_box bx = _window_box @@ to_struct bx
-
 let group_box bx = _group_box @@ to_struct bx
-
 let line bx = _line @@ to_struct bx
-
 let panel bx = _panel @@ to_struct bx
 
 let scroll_panel a b c =
   _scroll_panel (to_struct a) (to_struct b) (to_struct_ptr c) |> Raylib.to_ctyp
 
 let label bx = _label @@ to_struct bx
-
 let button bx = _button @@ to_struct bx
-
 let label_button bx = _label_button @@ to_struct bx
-
 let toggle rct = _toggle @@ to_struct rct
-
 let toggle_group rct = _toggle_group @@ to_struct rct
-
 let check_box rct = _check_box @@ to_struct rct
-
 let combo_box rct = _combo_box @@ to_struct rct
 
 let dropdown_box rct labels vl edit =
@@ -82,11 +71,8 @@ let progress_bar rct label txt value ~min ~max =
   _progress_bar (to_struct rct) label txt value min max
 
 let status_bar rct = _status_bar @@ to_struct rct
-
 let dummy_rec rct = _dummy_rec @@ to_struct rct
-
 let scroll_bar rct value ~min ~max = _scroll_bar (to_struct rct) value min max
-
 let grid rct b c = _grid (to_struct rct) b c |> Raylib.to_ctyp
 
 let list_view rct label index active =
@@ -122,5 +108,4 @@ let color_panel rct col =
   _color_panel (to_struct rct) (to_struct col) |> Raylib.to_ctyp
 
 let color_bar_alpha rct = _color_bar_alpha @@ to_struct rct
-
 let color_bar_hue rct = _color_bar_hue @@ to_struct rct

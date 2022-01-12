@@ -1,7 +1,5 @@
 let width = 800
-
 let height = 450
-
 let color = Raylib.Color.create 239 122 8 255
 
 let setup () =
