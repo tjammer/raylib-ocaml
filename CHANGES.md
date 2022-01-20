@@ -1,15 +1,24 @@
+0.5.0 (2022-01-20)
+------------------
+
+* Expose ctypes type value
+* Expose audio-related fields
+* Add rlgl bindings (module Raylib.Rlgl)
+* Upgrade raylib to 4.0
+
+
 0.4.0 (2021-07-07)
------------------
+------------------
 
 * Upgrade raylib to 3.7.0
 
 0.3.2 (2021-06-01)
------------------
+------------------
 
 * Fix Makefile patch for windows
 
 0.3.1 (2021-05-12)
------------------
+------------------
 
 * Use conf packages instead of depexts for raylib
 * Fix raygui version

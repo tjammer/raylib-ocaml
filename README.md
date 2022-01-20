@@ -2,7 +2,7 @@
 
 # raylib-ocaml
 
-OCaml bindings for <a href="https://www.raylib.com/" target="_blank">raylib</a> (v3.7.0), a simple and easy-to-use library to enjoy videogames programming.
+OCaml bindings for <a href="https://www.raylib.com/" target="_blank">raylib</a> (4.0.0), a simple and easy-to-use library to enjoy videogames programming.
 
 The documentation can be viewed [online](https://tjammer.github.io/raylib-ocaml/raylib/Raylib/index.html).
 
