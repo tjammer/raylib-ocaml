@@ -8,7 +8,7 @@ let () =
   C.main ~name:"raylib" (fun c ->
       let library_flags =
         match C.ocaml_config_var c "system" with
-        | Some ("linux" | "linux_elf") ->
+        | Some ("linux" | "linux_elf" | "elf") ->
             link [ "GL"; "m"; "pthread"; "dl"; "rt"; "X11" ]
         | Some "macosx" ->
             link ~flag:"-framework"

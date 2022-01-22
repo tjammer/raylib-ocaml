@@ -65,7 +65,8 @@
  (enabled_if
   (or
    (= %{system} linux)
-   (= %{system} linux_elf)))
+   (= %{system} linux_elf)
+   (= %{system} elf)))
  (deps
   (source_tree vendor/raylib)
   linux.patch)
