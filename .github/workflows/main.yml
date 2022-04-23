@@ -15,8 +15,8 @@ jobs:
           - macos-latest
           - ubuntu-latest
           - windows-latest
-        ocaml:
-          - 4.12.0
+        ocaml-compiler:
+          - 4.14.0
         include:
           - ocaml: 4.06.0
             os: ubuntu-latest
@@ -33,17 +33,17 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get update
 
-      - name: Use OCaml ${{ matrix.ocaml-version }}
+      - name: Use OCaml ${{ matrix.ocaml-compiler }}
         uses: ocaml/setup-ocaml@v2
         with:
-          ocaml-version: ${{ matrix.ocaml-version }}
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
 
       - run: opam pin -n .
 
       - run: opam install . --deps-only
 
       - run: opam exec -- dune build
-        if: matrix.ocaml-version != '4.06.0'
+        if: matrix.ocaml-compiler != '4.06.0'
 
       - run: opam install raylib raygui
-        if: matrix.ocaml-version == '4.06.0'
+        if: matrix.ocaml-compiler == '4.06.0'
