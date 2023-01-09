@@ -1,4 +1,5 @@
-include Raygui_types.Types (Raygui_c_generated_types)
+module Types = Raygui_types.Types (Raygui_c_generated_types)
+open Types
 
 external identity : 'a -> 'a = "%identity"
 
@@ -141,3 +142,5 @@ module ColorPickerProperty = struct
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
+
+module StyleProp = StyleProp

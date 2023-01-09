@@ -1,4 +1,5 @@
-include Raylib_types.Types (Raylib_c_generated_types)
+module Types = Raylib_types.Types (Raylib_c_generated_types)
+open Types
 
 external identity : 'a -> 'a = "%identity"
 
@@ -171,3 +172,38 @@ module NPatchLayout = struct
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
 end
+
+module Vector2 = Vector2
+module Vector3 = Vector3
+module Vector4 = Vector4
+module Matrix = Matrix
+module Color = Color
+module Rectangle = Rectangle
+module Image = Image
+module Texture = Texture
+module RenderTexture = RenderTexture
+module NPatchInfo = NPatchInfo
+module GlyphInfo = GlyphInfo
+module Font = Font
+module Camera3D = Camera3D
+module Camera2D = Camera2D
+module Mesh = Mesh
+module Shader = Shader
+module MaterialMap = MaterialMap
+module Material = Material
+module Transform = Transform
+module BoneInfo = BoneInfo
+module Model = Model
+module ModelAnimation = ModelAnimation
+module Ray = Ray
+module RayCollision = RayCollision
+module BoundingBox = BoundingBox
+module Wave = Wave
+module AudioStream = AudioStream
+module Sound = Sound
+module Music = Music
+module VrDeviceInfo = VrDeviceInfo
+module VrStereoConfig = VrStereoConfig
+
+let max_material_maps = max_material_maps
+let max_shader_locations = max_shader_locations

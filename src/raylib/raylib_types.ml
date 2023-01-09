@@ -1,7 +1,28 @@
-include Raylib_fixed_types
+open Raylib_fixed_types
 module Math = Raylib_math.Description (Raylib_c.Raylib_c_generated_math)
 open Ctypes_reexports
 open Ctypes
+module ConfigFlags = ConfigFlags
+module TraceLogLevel = TraceLogLevel
+module Key = Key
+module MouseButton = MouseButton
+module MouseCursor = MouseCursor
+module GamepadButton = GamepadButton
+module GamepadAxis = GamepadAxis
+module MaterialMapIndex = MaterialMapIndex
+module ShaderLocationIndex = ShaderLocationIndex
+module ShaderUniformDataType = ShaderUniformDataType
+module ShaderAttributeDataType = ShaderAttributeDataType
+module PixelFormat = PixelFormat
+module TextureFilter = TextureFilter
+module TextureWrap = TextureWrap
+module CubemapLayout = CubemapLayout
+module FontType = FontType
+module BlendMode = BlendMode
+module Gesture = Gesture
+module CameraMode = CameraMode
+module CameraProjection = CameraProjection
+module NPatchLayout = NPatchLayout
 
 module Vector2 = struct
   type t' = Vector2.t
@@ -909,3 +930,6 @@ module VrStereoConfig = struct
     CArray.set arr 0 v0;
     CArray.set arr 1 v1
 end
+
+let max_material_maps = max_material_maps
+let max_shader_locations = max_shader_locations
