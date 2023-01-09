@@ -1,8 +1,7 @@
 module Description (F : Ctypes.FOREIGN) = struct
   open Ctypes
   open F
-  open Raylib_generated_types
-  open Raylib_generated_constants
+  open Raylib_fixed_types
 
   let init_window =
     foreign "InitWindow" (int @-> int @-> string @-> returning void)

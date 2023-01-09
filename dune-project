@@ -18,8 +18,7 @@
   dune
   dune-configurator
   (ctypes (>= 0.14))
-  (integers (>= 0.5))
-  (ppx_cstubs (>= 0.6))))
+  (integers (>= 0.5))))
 
 (package
  (name raygui)
@@ -30,7 +29,6 @@
   dune
   dune-configurator
   (ctypes (>= 0.14))
-  (ppx_cstubs (>= 0.6))
   (raylib (>= 0.3))))
 
 (package

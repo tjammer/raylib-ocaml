@@ -1,4 +1,4 @@
-module Types = Raylib_generated_types
+module Types = Raylib_fixed_types
 
 module Description (F : Ctypes.FOREIGN) = struct
   open Ctypes

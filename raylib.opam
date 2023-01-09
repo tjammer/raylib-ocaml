@@ -13,7 +13,6 @@ depends: [
   "dune-configurator"
   "ctypes" {>= "0.14"}
   "integers" {>= "0.5"}
-  "ppx_cstubs" {>= "0.6"}
   "conf-mesa" {os = "linux" | os-family = "bsd"}
   "conf-libxcursor" {os = "linux" | os-family = "bsd"}
   "conf-libxi" {os = "linux" | os-family = "bsd"}

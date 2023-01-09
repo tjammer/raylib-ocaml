@@ -1,4 +1,4 @@
-include Raygui_generated_constants
+include Raygui_fixed_types
 include Raygui_functions.Description (Raygui_c.C_generated_gui)
 
 let to_struct a = (a : 'a Raylib.ctyp :> 'a Ctypes.structure)

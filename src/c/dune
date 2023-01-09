@@ -10,13 +10,7 @@
   (language c)
   (names c_generated_functions c_generated_math c_generated_rlgl)
   (include_dirs %{project_root}/src/c/vendor/raylib/src))
- (libraries
-  ctypes.stubs
-  raylib_functions
-  raylib_math
-  raylib_generated_constants
-  raylib_generated_types
-  raylib_rlgl)
+ (libraries ctypes.stubs raylib_functions raylib_math raylib_rlgl)
  (library_flags
   (:include library_flags.sexp)))
 
@@ -31,6 +25,19 @@
  (with-stdout-to
   c_generated_functions.c
   (run stubgen/generate_c_functions.exe raylib_stub)))
+
+(rule
+ (targets generate_types_step_2.exe)
+ (deps
+  (:c c_generated_types.c))
+ (action
+  (bash
+   "%{cc} %{c} -I '%{lib:ctypes:.}' -I %{ocaml_where} -I vendor/raylib/src -o %{targets}")))
+
+(rule
+ (with-stdout-to
+  c_generated_types.c
+  (run stubgen/generate_c_raylib_types.exe raylib_stub)))
 
 (rule
  (with-stdout-to
@@ -158,7 +165,7 @@
   (include_dirs
    %{project_root}/src/c/vendor/raygui/src
    %{project_root}/src/c/vendor/raylib/src))
- (libraries ctypes.stubs raygui_functions raygui_generated_constants)
+ (libraries ctypes.stubs raygui_functions raygui_fixed_types)
  (library_flags
   (:include library_flags.sexp)))
 
@@ -171,3 +178,29 @@
  (with-stdout-to
   c_generated_gui.ml
   (run stubgen/generate_ml_gui.exe raygui_stub)))
+
+(rule
+ (targets generate_raygui_types_step_2.exe)
+ (deps
+  (:c raygui_c_generated_types.c))
+ (action
+  (bash
+   "%{cc} %{c} -I '%{lib:ctypes:.}' -I %{ocaml_where} -I vendor/raylib/src -I vendor/raygui/src -o %{targets}")))
+
+(rule
+ (with-stdout-to
+  raygui_c_generated_types.c
+  (run stubgen/generate_c_raygui_types.exe raygui_stub)))
+
+(rule
+ (targets generate_rlgl_types_step_2.exe)
+ (deps
+  (:c rlgl_c_generated_types.c))
+ (action
+  (bash
+   "%{cc} %{c} -I '%{lib:ctypes:.}' -I %{ocaml_where} -I vendor/raylib/src -o %{targets}")))
+
+(rule
+ (with-stdout-to
+  rlgl_c_generated_types.c
+  (run stubgen/generate_c_rlgl_types.exe raylib_stub)))

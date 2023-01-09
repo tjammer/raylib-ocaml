@@ -40,3 +40,18 @@
  (name generate_ml_rlgl)
  (modules Generate_ml_rlgl)
  (libraries ctypes.stubs raylib_rlgl))
+
+(executable
+ (name generate_c_raylib_types)
+ (modules Generate_c_raylib_types)
+ (libraries ctypes.stubs raylib_types))
+
+(executable
+ (name generate_c_raygui_types)
+ (modules Generate_c_raygui_types)
+ (libraries ctypes.stubs raygui_types))
+
+(executable
+ (name generate_c_rlgl_types)
+ (modules Generate_c_rlgl_types)
+ (libraries ctypes.stubs rlgl_types))

@@ -424,7 +424,7 @@ val max_shader_locations : int
 
 (** {1 Types} *)
 module Vector2 : sig
-  type t' = Raylib_generated_types.Vector2.t
+  type t' = Raylib_fixed_types.Vector2.t
   type t = t' ctyp
 
   val t : t Ctypes.typ
@@ -650,7 +650,7 @@ and Matrix : sig
 end
 
 module Color : sig
-  type t' = Raylib_generated_types.Color.t
+  type t' = Raylib_fixed_types.Color.t
   type t = t' ctyp
 
   val t : t Ctypes.typ
@@ -691,7 +691,7 @@ module Color : sig
 end
 
 module Rectangle : sig
-  type t' = Raylib_generated_types.Rectangle.t
+  type t' = Raylib_fixed_types.Rectangle.t
   type t = t' ctyp
 
   val t : t Ctypes.typ
@@ -737,7 +737,7 @@ module Image : sig
 end
 
 module Texture : sig
-  type t' = Raylib_generated_types.Texture.t
+  type t' = Raylib_fixed_types.Texture.t
   type t = t' ctyp
 
   val t : t Ctypes.typ
@@ -846,7 +846,7 @@ module GlyphInfo : sig
 end
 
 module Font : sig
-  type t' = Raylib_generated_types.Font.t
+  type t' = Raylib_fixed_types.Font.t
   type t = t' ctyp
 
   val t : t Ctypes.typ

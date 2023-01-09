@@ -43,7 +43,7 @@ module Enum = struct
 
   let name_of_cname cname =
     let bitmask =
-      match cname with "ConfigFlags" | "Gestures" -> true | _ -> false
+      match cname with "ConfigFlags" | "Gesture" -> true | _ -> false
     in
     let name = match cname with "KeyboardKey" -> "Key" | _ -> cname in
     ({ name; cname }, bitmask)
@@ -60,21 +60,42 @@ module Enum = struct
 
   let stubs enum =
     let lower =
-      "  let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)\n\n"
-      ^ "  let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))\n\
-         end\n\n"
+      (* "  let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)\n" *)
+      (* ^ "  let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))\n\ *)
+         (*    end\n\n" *)
+      "  end\n\n"
     in
 
     Printf.sprintf "module %s = struct\n" enum.name.name
-    ^ "  type%c t =\n"
+    ^ "  type t =\n"
     ^ (List.map
-         (fun (value : name) ->
-           Printf.sprintf "    | %s [@cname \"%s\"]\n" value.name value.cname)
+         (fun (value : name) -> Printf.sprintf "    | %s\n" value.name)
          enum.values
       |> String.concat "")
-    ^ Printf.sprintf "  [@@cname \"%s\"] [@@typedef]%s" enum.name.cname
-        (if enum.bitmask then " [@@with_bitmask]\n\n" else "\n\n")
+    ^ "\n  let vals =\n    [\n"
+    ^ (List.map
+         (fun (value : name) ->
+           Printf.sprintf "      (%s, constant \"%s\" int64_t);\n" value.name
+             value.cname)
+         enum.values
+      |> String.concat "")
+    ^ "    ]\n\n"
+    ^ Printf.sprintf "  let t = enum \"%s\" ~typedef:true vals\n\n"
+        enum.name.cname
     ^ lower
+
+  let impl enum =
+    let nm = enum.name.name in
+    Printf.sprintf "module %s = struct\n  include %s\n\n" nm nm
+    ^ (if enum.bitmask then
+       Printf.sprintf
+         "  let t_bitmask = build_enum_bitmask \"%s\" Ctypes.int64_t \
+          ~typedef:true vals\n\n"
+         nm
+      else "")
+    ^ "  let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)\n"
+    ^ "  let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))\n\
+       end\n\n"
 
   let itf enum =
     let lower =
@@ -172,12 +193,12 @@ module Typing = struct
     | Ptr typ -> name_type ~ptr:(" ptr" ^ ptr) typ
 
   let rec name_type_ctypes ?(acc = "") = function
-    | C "const char" when String.(acc = "ptr ") -> "string"
+    | C "const char" when String.(acc = "(ptr ") -> "string)"
     | C name -> acc ^ name
     | Ray name -> acc ^ name ^ ".t"
     | Forw_decl name -> acc ^ name.name
     | Array (size, name) -> acc ^ Printf.sprintf "%s_array_%i" name size
-    | Ptr typ -> name_type_ctypes ~acc:(acc ^ "ptr ") typ
+    | Ptr typ -> name_type_ctypes ~acc:(acc ^ "(ptr ") typ ^ ")"
 end
 
 module Type = struct
@@ -234,11 +255,8 @@ module Type = struct
         { name; fields }
 
   let stub_of_field { name; typ; desc = _ } =
-    "    " ^ name.name ^ " : " ^ Typing.name_type typ ^ ";"
-    ^
-    if String.(name.name <> name.cname) then
-      Printf.sprintf " [@cname \"%s\"]\n" name.cname
-    else "\n"
+    Printf.sprintf "  let %s = field t \"%s\" %s\n" name.name name.cname
+      (Typing.name_type_ctypes typ)
 
   let ctor_fields typ f =
     if
@@ -436,7 +454,7 @@ module Type = struct
       |> List.fold_left
            (fun acc (size, typ) ->
              acc
-             ^ Printf.sprintf "  let%%c %s_array_%i = array %i %s\n\n" typ size
+             ^ Printf.sprintf "  let %s_array_%i = array %i %s\n\n" typ size
                  size typ)
            "")
     (* forward decls *)
@@ -448,14 +466,12 @@ module Type = struct
          typ.fields
       |> List.fold_left
            (fun acc { name; cname } ->
-             acc
-             ^ Printf.sprintf "  let%%c %s = structure \"%s\"\n\n" name cname)
+             acc ^ Printf.sprintf "  let %s = structure \"%s\"\n\n" name cname)
            "")
-    ^ "  type%c t = {\n"
+    ^ "  type t\n  let t : t Ctypes.structure typ = structure \""
+    ^ typ.name.cname ^ "\"\n"
     ^ (List.map stub_of_field typ.fields |> String.concat "")
-    ^ "  }\n"
-    ^ ("  [@@cname \"" ^ typ.name.cname ^ "\"]\n")
-    ^ "end\n\n"
+    ^ "  let () = seal t\n" ^ "end\n\n"
 end
 
 module Function = struct
@@ -528,15 +544,20 @@ let () =
   let enums =
     api |> member "enums" |> to_list |> List.filter_map Enum.of_json
   in
+  (* TODO type and constants in one functor *)
   let stubs =
-    "let%c () = header \"#include <raylib.h>\\n#include <config.h>\"\n\n"
+    "module Types (F : Ctypes.TYPE) = struct\nopen F\n"
     ^ (enums |> List.map Enum.stubs |> String.concat "")
+    ^ "end\n"
     ^ "let max_material_maps = [%c constant \"MAX_MATERIAL_MAPS\" camlint]\n\n"
     ^ "let max_shader_locations = [%c constant \"MAX_SHADER_LOCATIONS\" \
        camlint]"
   in
   (* print_string stubs; *)
   ignore stubs;
+  let impl = enums |> List.map Enum.impl |> String.concat "" in
+  (* print_string impl; *)
+  ignore impl;
   let itf =
     "(** {1 Constants} *)\n\n"
     ^ (enums |> List.map Enum.itf |> String.concat "")
@@ -546,11 +567,8 @@ let () =
   ignore itf;
 
   let types = api |> member "structs" |> to_list |> List.map Type.of_json in
-  let stubs =
-    "let%c () = header \"#include <raylib.h>\"\n\n"
-    ^ (types |> List.map Type.stub |> String.concat "")
-  in
-  (* print_string stubs; *)
+  let stubs = types |> List.map Type.stub |> String.concat "" in
+  print_string stubs;
   ignore stubs;
   let itf = types |> List.map Type.itf |> String.concat "" in
   (* print_string itf; *)
@@ -563,8 +581,8 @@ let () =
     api |> member "functions" |> to_list |> List.map Function.of_json
   in
   let stubs = funcs |> List.map Function.stub |> String.concat "" in
-  print_string stubs;
-  (* ignore stubs; *)
+  (* print_string stubs; *)
+  ignore stubs;
   let itf = funcs |> List.map Function.itf |> String.concat "\n" in
   (* print_string itf; *)
   ignore itf;

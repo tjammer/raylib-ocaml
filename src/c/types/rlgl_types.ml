@@ -1,44 +1,49 @@
-let%c () = header "#include <raylib.h>\n\n#include <rlgl.h>"
+module Types (F : Ctypes.TYPE) = struct
+  open F
 
-module RlVertexBuffer = struct
-  let%c uint_array_4 = array 4 uint
+  module RlVertexBuffer = struct
+    let uint_array_4 = array 4 uint
 
-  type%c t = {
-    element_count : int; [@cname "elementCount"]
-    vertices : float ptr;
-    texcoords : float ptr;
-    colors : uchar ptr;
+    type t
+
+    let t : t Ctypes.structure typ = structure "rlVertexBuffer"
+    let element_count = field t "elementCount" int
+    let vertices = field t "vertices" (ptr float)
+    let texcoords = field t "texcoords" (ptr float)
+    let colors = field t "colors" (ptr uchar)
+
     (* TODO assume opengl 11, for es2 this would be indices : short ptr *)
-    indices : uint ptr;
-    vao_id : uint; [@cname "vaoId"]
-    vbo_id : uint_array_4; [@cname "vboId"]
-  }
-  [@@cname "rlVertexBuffer"]
-end
+    let indices = field t "indices" (ptr uint)
+    let vao_id = field t "vaoId" uint
+    let vbo_id = field t "vboId" uint_array_4
+    let () = seal t
+  end
 
-module RlDrawCall = struct
-  type%c t = {
-    mode : int;
-    vertex_count : int; [@cname "vertexCount"]
-    vertex_alignment : int; [@cname "vertexAlignment"]
-    texture_id : uint; [@cname "textureId"]
-  }
-  [@@cname "rlDrawCall"]
-end
+  module RlDrawCall = struct
+    type t
 
-module RlRenderBatch = struct
-  type%c t = {
-    buffer_count : int; [@cname "bufferCount"]
-    current_buffer : int; [@cname "currentBuffer"]
-    vertex_buffer : RlVertexBuffer.t ptr; [@cname "vertexBuffer"]
-    draws : RlDrawCall.t ptr;
-    draw_counter : int; [@cname "drawCounter"]
-    current_depth : float; [@cname "currentDepth"]
-  }
-  [@@cname "rlRenderBatch"]
-end
+    let t : t Ctypes.structure typ = structure "rlDrawCall"
+    let mode = field t "mode" int
+    let vertex_count = field t "vertexCount" int
+    let vertex_alignment = field t "vertexAlignment" int
+    let texture_id = field t "textureId" uint
+    let () = seal t
+  end
 
-(* TODO unnecessary
+  module RlRenderBatch = struct
+    type t
+
+    let t : t Ctypes.structure typ = structure "rlRenderBatch"
+    let buffer_count = field t "bufferCount" int
+    let current_buffer = field t "currentBuffer" int
+    let vertex_buffer = field t "vertexBuffer" (ptr RlVertexBuffer.t)
+    let draws = field t "draws" (ptr RlDrawCall.t)
+    let draw_counter = field t "drawCounter" int
+    let current_depth = field t "currentDepth" float
+    let () = seal t
+  end
+
+  (* TODO unnecessary
 module RlglData = struct
   type%c t = {
     current_batch : RlRenderBatch ptr;
@@ -104,4 +109,5 @@ end
     } ExtSupported;     // Extensions supported flags
 } rlglData;
 
- * *)
+   * *)
+end

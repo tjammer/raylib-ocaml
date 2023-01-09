@@ -1,47 +1,58 @@
 (library
+ (name raylib_types)
  (package raylib)
- (name raylib_generated_types)
- (modules raylib_generated_types)
- (preprocess
-  (pps ppx_cstubs.merlin))
- (libraries ctypes ppx_cstubs))
+ (modules Raylib_types)
+ (flags
+  (:standard -w -9-27))
+ (libraries ctypes.stubs))
 
 (library
+ (name raylib_fixed_types)
  (package raylib)
+ (modules Raylib_fixed_types Raylib_c_generated_types)
+ (libraries ctypes raylib_types))
+
+(rule
+ (with-stdout-to
+  raylib_c_generated_types.ml
+  (run ../generate_types_step_2.exe)))
+
+(library
+ (name raygui_types)
+ (package raygui)
+ (modules Raygui_types)
+ (flags
+  (:standard -w -9-27))
+ (libraries ctypes.stubs))
+
+(library
+ (name raygui_fixed_types)
+ (package raygui)
+ (modules Raygui_fixed_types Raygui_c_generated_types)
+ (libraries ctypes raygui_types))
+
+(rule
+ (with-stdout-to
+  raygui_c_generated_types.ml
+  (run ../generate_raygui_types_step_2.exe)))
+
+(library
+ (name rlgl_types)
+ (package raylib)
+ (modules Rlgl_types)
+ (flags
+  (:standard -w -9-27))
+ (libraries ctypes.stubs))
+
+(rule
+ (with-stdout-to
+  rlgl_c_generated_types.ml
+  (run ../generate_rlgl_types_step_2.exe)))
+
+(library
  (name rlgl_generated_types)
- (modules rlgl_generated_types)
- (preprocess
-  (pps ppx_cstubs.merlin))
- (libraries ctypes ppx_cstubs))
-
-(rule
- (targets raylib_generated_types.ml)
- (deps
-  (:first-dep raylib_types.ml)
-  (alias %{project_root}/src/c/build-raylib))
- (action
-  (chdir
-   %{project_root}
-   (run
-    %{bin:ppx_cstubs}
-    %{first-dep}
-    -o
-    %{targets}
-    -I
-    %{project_root}/src/c/vendor/raylib/src))))
-
-(rule
- (targets rlgl_generated_types.ml)
- (deps
-  (:first-dep rlgl_types.ml)
-  (alias %{project_root}/src/c/build-raylib))
- (action
-  (chdir
-   %{project_root}
-   (run
-    %{bin:ppx_cstubs}
-    %{first-dep}
-    -o
-    %{targets}
-    -I
-    %{project_root}/src/c/vendor/raylib/src))))
+ (package raylib)
+ (modules Rlgl_generated_types Rlgl_c_generated_types)
+ (flags
+  (:standard -w -9-27))
+ (libraries ctypes.stubs rlgl_types))
