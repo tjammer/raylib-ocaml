@@ -11,7 +11,7 @@
 
 (package
  (name raylib)
- (version 0.5.1)
+ (version 0.6.0)
  (description "OCaml bindings for raylib")
  (synopsis "OCaml bindings for raylib")
  (depends
@@ -22,14 +22,14 @@
 
 (package
  (name raygui)
- (version 0.1.0)
+ (version 0.2.0)
  (description "OCaml bindings for raygui")
  (synopsis "OCaml bindings for raygui")
  (depends
   dune
   dune-configurator
   (ctypes (>= 0.14))
-  (raylib (>= 0.3))))
+  (raylib (>= 0.6))))
 
 (package
  (name raylib-gen)

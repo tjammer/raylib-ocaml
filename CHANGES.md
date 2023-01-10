@@ -1,3 +1,9 @@
+0.6.0 (2023-01-10)
+------------------
+
+* Support OCaml 5
+* Upgrade raylib to 4.2.0
+
 0.5.1 (2022-01-22)
 ------------------
 
@@ -10,7 +16,6 @@
 * Expose audio-related fields
 * Add rlgl bindings (module Raylib.Rlgl)
 * Upgrade raylib to 4.0
-
 
 0.4.0 (2021-07-07)
 ------------------

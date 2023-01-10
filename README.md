@@ -2,14 +2,14 @@
 
 # raylib-ocaml
 
-OCaml bindings for <a href="https://www.raylib.com/" target="_blank">raylib</a> (4.0.0), a simple and easy-to-use library to enjoy videogames programming.
+OCaml bindings for <a href="https://www.raylib.com/" target="_blank">raylib</a> (4.2.0), a simple and easy-to-use library to enjoy videogames programming.
 
 The documentation can be viewed [online](https://tjammer.github.io/raylib-ocaml/raylib/Raylib/index.html).
 
 The bindings are pretty faithful to the original C code, the biggest difference is the conversion of all function names from CamelCase to snake_case.
 Wherever possible, integer arguments are changed to their own variant types, eg. `int key` to `Key.t`.
 
-Bindings exist for (nearly) all functions and types, but only a subset are tested thus far (see examples folder). Rough edges are to be expected.
+Bindings exist for (nearly) all functions and types, but only a subset are tested thus far (see examples folder). Contributions are welcome.
 
 ## Example
 
@@ -19,16 +19,15 @@ let setup () =
   Raylib.set_target_fps 60
 
 let rec loop () =
-  match Raylib.window_should_close () with
-  | true -> Raylib.close_window ()
-  | false ->
-      let open Raylib in
-      begin_drawing ();
-      clear_background Color.raywhite;
-      draw_text "Congrats! You created your first window!" 190 200 20
-        Color.lightgray;
-      end_drawing ();
-      loop ()
+  if Raylib.window_should_close () then Raylib.close_window ()
+  else
+    let open Raylib in
+    begin_drawing ();
+    clear_background Color.raywhite;
+    draw_text "Congrats! You created your first window!" 190 200 20
+      Color.lightgray;
+    end_drawing ();
+    loop ()
 
 let () = setup () |> loop
 ```
