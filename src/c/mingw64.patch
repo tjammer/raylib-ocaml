@@ -3,10 +3,10 @@ deleted file mode 100644
 index 193e3eb5..11412e60 100644
 --- a/vendor/raylib/src/Makefile
 +++ /b/vendor/raylib/src/Makefile
-@@ -225,8 +225,8 @@ ifeq ($(PLATFORM),PLATFORM_ANDROID)
- endif
+@@ -251,8 +251,8 @@ endif
  
- # Define default C compiler and archiver to pack library
+ # Define default C compiler and archiver to pack library: CC, AR
+ #------------------------------------------------------------------------------------------------
 -CC = gcc
 -AR = ar
 +CC = x86_64-w64-mingw32-gcc
@@ -14,28 +14,12 @@ index 193e3eb5..11412e60 100644
  
  ifeq ($(PLATFORM),PLATFORM_DESKTOP)
      ifeq ($(PLATFORM_OS),OSX)
-@@ -495,7 +495,7 @@ else
+@@ -581,7 +581,7 @@ else
          ifeq ($(PLATFORM),PLATFORM_DESKTOP)
              ifeq ($(PLATFORM_OS),WINDOWS)
                  # NOTE: Linking with provided resource file
--				$(CC) -shared -o $(RAYLIB_RELEASE_PATH)/$(RAYLIB_LIB_NAME).dll $(OBJS) $(RAYLIB_RES_FILE) $(LDFLAGS) -static-libgcc -lopengl32 -lgdi32 -lwinmm -Wl,--out-implib,$(RAYLIB_RELEASE_PATH)/lib$(RAYLIB_LIB_NAME)dll.a
-+				$(CC) -shared -o $(RAYLIB_RELEASE_PATH)/$(RAYLIB_LIB_NAME).dll $(OBJS) $(LDFLAGS) -static-libgcc -lopengl32 -lgdi32 -lwinmm -Wl,--out-implib,$(RAYLIB_RELEASE_PATH)/lib$(RAYLIB_LIB_NAME)dll.a
+-				$(CC) -shared -o $(RAYLIB_RELEASE_PATH)/$(RAYLIB_LIB_NAME).dll $(OBJS) $(RAYLIB_RES_FILE) $(LDFLAGS) $(LDLIBS)
++				$(CC) -shared -o $(RAYLIB_RELEASE_PATH)/$(RAYLIB_LIB_NAME).dll $(OBJS) $(LDFLAGS) $(LDLIBS)
  				@echo "raylib dynamic library ($(RAYLIB_LIB_NAME).dll) and import library (lib$(RAYLIB_LIB_NAME)dll.a) generated!"
              endif
              ifeq ($(PLATFORM_OS),LINUX)
-@@ -690,11 +690,11 @@ endif
- # Clean everything
- clean:
- ifeq ($(PLATFORM_OS),WINDOWS)
--	del *.o /s
-+	rm -fv *.o
- 	cd $(RAYLIB_RELEASE_PATH)
--	del lib$(RAYLIB_LIB_NAME).a /s
--	del lib$(RAYLIB_LIB_NAME)dll.a /s
--	del $(RAYLIB_LIB_NAME).dll /s
-+	rm -fv lib$(RAYLIB_LIB_NAME).a
-+	rm -fv lib$(RAYLIB_LIB_NAME)dll.a
-+	rm -fv $(RAYLIB_LIB_NAME).dll
- else
- 	rm -fv *.o $(RAYLIB_RELEASE_PATH)/lib$(RAYLIB_LIB_NAME).a $(RAYLIB_RELEASE_PATH)/lib$(RAYLIB_LIB_NAME).bc $(RAYLIB_RELEASE_PATH)/lib$(RAYLIB_LIB_NAME).so*
- endif

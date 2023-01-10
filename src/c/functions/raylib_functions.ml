@@ -44,12 +44,15 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "SetWindowMinSize" (int @-> int @-> returning void)
 
   let set_window_size = foreign "SetWindowSize" (int @-> int @-> returning void)
+  let set_window_opacity = foreign "SetWindowOpacity" (float @-> returning void)
 
   let get_window_handle =
     foreign "GetWindowHandle" (void @-> returning (ptr_opt void))
 
   let get_screen_width = foreign "GetScreenWidth" (void @-> returning int)
   let get_screen_height = foreign "GetScreenHeight" (void @-> returning int)
+  let get_render_width = foreign "GetRenderWidth" (void @-> returning int)
+  let get_render_height = foreign "GetRenderHeight" (void @-> returning int)
   let get_monitor_count = foreign "GetMonitorCount" (void @-> returning int)
   let get_current_monitor = foreign "GetCurrentMonitor" (void @-> returning int)
 
@@ -79,6 +82,12 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let get_clipboard_text =
     foreign "GetClipboardText" (void @-> returning string_opt)
+
+  let enable_event_waiting =
+    foreign "EnableEventWaiting" (void @-> returning void)
+
+  let disable_event_waiting =
+    foreign "DisableEventWaiting" (void @-> returning void)
 
   let swap_screen_buffer = foreign "SwapScreenBuffer" (void @-> returning void)
   let poll_input_events = foreign "PollInputEvents" (void @-> returning void)
@@ -169,16 +178,16 @@ module Description (F : Ctypes.FOREIGN) = struct
   let get_world_to_screen =
     foreign "GetWorldToScreen" (Vector3.t @-> Camera3D.t @-> returning Vector2.t)
 
+  let get_screen_to_world_2d =
+    foreign "GetScreenToWorld2D"
+      (Vector2.t @-> Camera2D.t @-> returning Vector2.t)
+
   let get_world_to_screen_ex =
     foreign "GetWorldToScreenEx"
       (Vector3.t @-> Camera3D.t @-> int @-> int @-> returning Vector2.t)
 
   let get_world_to_screen_2d =
     foreign "GetWorldToScreen2D"
-      (Vector2.t @-> Camera2D.t @-> returning Vector2.t)
-
-  let get_screen_to_world_2d =
-    foreign "GetScreenToWorld2D"
       (Vector2.t @-> Camera2D.t @-> returning Vector2.t)
 
   let set_target_fps = foreign "SetTargetFPS" (int @-> returning void)
@@ -203,21 +212,22 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "MemRealloc" (ptr void @-> int @-> returning (ptr void))
 
   let mem_free = foreign "MemFree" (ptr void @-> returning void)
+  let open_url = foreign "OpenURL" (string @-> returning void)
 
-  (* let set_trace_log_callback =
-   *   foreign "SetTraceLogCallback" (trace_log_callback @-> returning void)
-   *
-   * let set_load_file_data_callback =
-   *   foreign "SetLoadFileDataCallback" (load_file_data_callback @-> returning void)
-   *
-   * let set_save_file_data_callback =
-   *   foreign "SetSaveFileDataCallback" (save_file_data_callback @-> returning void)
-   *
-   * let set_load_file_text_callback =
-   *   foreign "SetLoadFileTextCallback" (load_file_text_callback @-> returning void)
-   *
-   * let set_save_file_text_callback =
-   *   foreign "SetSaveFileTextCallback" (save_file_text_callback @-> returning void) *)
+  (* let set_trace_log_callback = *)
+  (*   foreign "SetTraceLogCallback" (trace_log_callback @-> returning void) *)
+
+  (* let set_load_file_data_callback = *)
+  (*   foreign "SetLoadFileDataCallback" (load_file_data_callback @-> returning void) *)
+
+  (* let set_save_file_data_callback = *)
+  (*   foreign "SetSaveFileDataCallback" (save_file_data_callback @-> returning void) *)
+
+  (* let set_load_file_text_callback = *)
+  (*   foreign "SetLoadFileTextCallback" (load_file_text_callback @-> returning void) *)
+
+  (* let set_save_file_text_callback = *)
+  (*   foreign "SetSaveFileTextCallback" (save_file_text_callback @-> returning void) *)
 
   let _load_file_data =
     foreign "LoadFileData" (string @-> ptr uint @-> returning (ptr uchar))
@@ -226,6 +236,9 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let _save_file_data =
     foreign "SaveFileData" (string @-> ptr void @-> int @-> returning bool)
+
+  let _export_data_as_code =
+    foreign "ExportDataAsCode" (string @-> int @-> string @-> returning bool)
 
   let load_file_text = foreign "LoadFileText" (string @-> returning string)
   let unload_file_text = foreign "UnloadFileText" (string @-> returning void)
@@ -238,6 +251,8 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let is_file_extension =
     foreign "IsFileExtension" (string @-> string @-> returning bool)
+
+  let get_file_length = foreign "GetFileLength" (string @-> returning int)
 
   let get_file_extension =
     foreign "GetFileExtension" (string @-> returning string)
@@ -256,19 +271,30 @@ module Description (F : Ctypes.FOREIGN) = struct
   let get_working_directory =
     foreign "GetWorkingDirectory" (void @-> returning string)
 
-  let _get_directory_files =
-    foreign "GetDirectoryFiles" (string @-> ptr int @-> returning (ptr string))
-
-  let clear_directory_files =
-    foreign "ClearDirectoryFiles" (void @-> returning void)
+  let get_application_directory =
+    foreign "GetApplicationDirectory" (void @-> returning string)
 
   let change_directory = foreign "ChangeDirectory" (string @-> returning bool)
+  let is_path_file = foreign "IsPathFile" (string @-> returning bool)
+
+  let load_directory_files =
+    foreign "LoadDirectoryFiles" (string @-> returning FilePathList.t)
+
+  let load_directory_files_ex =
+    foreign "LoadDirectoryFilesEx"
+      (string @-> string @-> bool @-> returning FilePathList.t)
+
+  let unload_directory_files =
+    foreign "UnloadDirectoryFiles" (FilePathList.t @-> returning void)
+
   let is_file_dropped = foreign "IsFileDropped" (void @-> returning bool)
 
-  let _get_dropped_files =
-    foreign "GetDroppedFiles" (ptr int @-> returning (ptr string))
+  let load_dropped_files =
+    foreign "LoadDroppedFiles" (void @-> returning FilePathList.t)
 
-  let clear_dropped_files = foreign "ClearDroppedFiles" (void @-> returning void)
+  let unload_dropped_files =
+    foreign "UnloadDroppedFiles" (FilePathList.t @-> returning void)
+
   let get_file_mod_time = foreign "GetFileModTime" (string @-> returning long)
 
   let _compress_data =
@@ -279,17 +305,13 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "DecompressData"
       (ptr uchar @-> int @-> ptr int @-> returning (ptr uchar))
 
-  (* let encode_data_base64 =
-   *   foreign "EncodeDataBase64" (ptr const uchar @-> int @-> ptr int @-> returning ptr char)
-   *
-   * let decode_data_base64 =
-   *   foreign "DecodeDataBase64" (ptr uchar @-> ptr int @-> returning ptr uchar) *)
+  (* let encode_data_base64 = *)
+  (*   foreign "EncodeDataBase64" *)
+  (*     (ptr uchar @-> int @-> ptr int @-> returning (ptr char)) *)
 
-  let save_storage_value =
-    foreign "SaveStorageValue" (int @-> int @-> returning bool)
+  (* let decode_data_base64 = *)
+  (*   foreign "DecodeDataBase64" (ptr uchar @-> ptr int @-> returning (ptr uchar)) *)
 
-  let load_storage_value = foreign "LoadStorageValue" (int @-> returning int)
-  let open_url = foreign "OpenURL" (string @-> returning void)
   let is_key_pressed = foreign "IsKeyPressed" (Key.t @-> returning bool)
   let is_key_down = foreign "IsKeyDown" (Key.t @-> returning bool)
   let is_key_released = foreign "IsKeyReleased" (Key.t @-> returning bool)
@@ -359,6 +381,9 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let get_mouse_wheel_move =
     foreign "GetMouseWheelMove" (void @-> returning float)
+
+  let get_mouse_wheel_move_v =
+    foreign "GetMouseWheelMoveV" (void @-> returning Vector2.t)
 
   let set_mouse_cursor =
     foreign "SetMouseCursor" (MouseCursor.t @-> returning void)
@@ -956,6 +981,10 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "UnloadFontData" (ptr GlyphInfo.t @-> int @-> returning void)
 
   let unload_font = foreign "UnloadFont" (Font.t @-> returning void)
+
+  let export_font_as_code =
+    foreign "ExportFontAsCode" (Font.t @-> string @-> returning bool)
+
   let draw_fps = foreign "DrawFPS" (int @-> int @-> returning void)
 
   let draw_text =
@@ -975,6 +1004,11 @@ module Description (F : Ctypes.FOREIGN) = struct
   let draw_text_codepoint =
     foreign "DrawTextCodepoint"
       (Font.t @-> int @-> Vector2.t @-> float @-> Color.t @-> returning void)
+
+  let _draw_text_codepoints =
+    foreign "DrawTextCodepoints"
+      (Font.t @-> ptr int @-> int @-> Vector2.t @-> float @-> float @-> Color.t
+     @-> returning void)
 
   let measure_text = foreign "MeasureText" (string @-> int @-> returning int)
 
@@ -1015,8 +1049,8 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let text_length = foreign "TextLength" (string @-> returning int)
 
-  (* let text_format =
-   *   foreign "TextFormat" (string @->  @-> returning string) *)
+  (* let text_format = *)
+  (*   foreign "TextFormat" (string @-> ... @-> returning string) *)
 
   let text_subtext =
     foreign "TextSubtext" (string @-> int @-> int @-> returning string)
@@ -1027,11 +1061,11 @@ module Description (F : Ctypes.FOREIGN) = struct
   let text_insert =
     foreign "TextInsert" (string @-> string @-> int @-> returning string)
 
-  (* let text_join =
-   *   foreign "TextJoin" (ptr ptr const char @-> int @-> string @-> returning string)
-   *
-   * let text_split =
-   *   foreign "TextSplit" (string @-> char @-> ptr int @-> returning ptr ptr const char) *)
+  (* let text_join = *)
+  (*   foreign "TextJoin" (string) @-> int @-> string @-> returning string) *)
+
+  (* let text_split = *)
+  (*   foreign "TextSplit" (string @-> char @-> (ptr int) @-> returning string)) *)
 
   let text_append =
     foreign "TextAppend" (string @-> string @-> ptr int @-> returning void)
@@ -1196,9 +1230,6 @@ module Description (F : Ctypes.FOREIGN) = struct
   let gen_mesh_tangents =
     foreign "GenMeshTangents" (ptr Mesh.t @-> returning void)
 
-  let gen_mesh_binormals =
-    foreign "GenMeshBinormals" (ptr Mesh.t @-> returning void)
-
   let gen_mesh_poly = foreign "GenMeshPoly" (int @-> float @-> returning Mesh.t)
 
   let gen_mesh_plane =
@@ -1286,10 +1317,6 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "GetRayCollisionBox"
       (Ray.t @-> BoundingBox.t @-> returning RayCollision.t)
 
-  let get_ray_collision_model =
-    foreign "GetRayCollisionModel"
-      (Ray.t @-> Model.t @-> returning RayCollision.t)
-
   let get_ray_collision_mesh =
     foreign "GetRayCollisionMesh"
       (Ray.t @-> Mesh.t @-> Matrix.t @-> returning RayCollision.t)
@@ -1346,13 +1373,16 @@ module Description (F : Ctypes.FOREIGN) = struct
   let set_sound_pitch =
     foreign "SetSoundPitch" (Sound.t @-> float @-> returning void)
 
-  let wave_format =
-    foreign "WaveFormat" (ptr Wave.t @-> int @-> int @-> int @-> returning void)
+  let set_sound_pan =
+    foreign "SetSoundPan" (Sound.t @-> float @-> returning void)
 
   let wave_copy = foreign "WaveCopy" (Wave.t @-> returning Wave.t)
 
   let wave_crop =
     foreign "WaveCrop" (ptr Wave.t @-> int @-> int @-> returning void)
+
+  let wave_format =
+    foreign "WaveFormat" (ptr Wave.t @-> int @-> int @-> int @-> returning void)
 
   let load_wave_samples =
     foreign "LoadWaveSamples" (Wave.t @-> returning (ptr float))
@@ -1395,6 +1425,9 @@ module Description (F : Ctypes.FOREIGN) = struct
   let set_music_pitch =
     foreign "SetMusicPitch" (Music.t @-> float @-> returning void)
 
+  let set_music_pan =
+    foreign "SetMusicPan" (Music.t @-> float @-> returning void)
+
   let get_music_time_length =
     foreign "GetMusicTimeLength" (Music.t @-> returning float)
 
@@ -1404,12 +1437,12 @@ module Description (F : Ctypes.FOREIGN) = struct
   let load_audio_stream =
     foreign "LoadAudioStream" (int @-> int @-> int @-> returning AudioStream.t)
 
+  let unload_audio_stream =
+    foreign "UnloadAudioStream" (AudioStream.t @-> returning void)
+
   let update_audio_stream =
     foreign "UpdateAudioStream"
       (AudioStream.t @-> ptr void @-> int @-> returning void)
-
-  let unload_audio_stream =
-    foreign "UnloadAudioStream" (AudioStream.t @-> returning void)
 
   let is_audio_stream_processed =
     foreign "IsAudioStreamProcessed" (AudioStream.t @-> returning bool)
@@ -1435,6 +1468,18 @@ module Description (F : Ctypes.FOREIGN) = struct
   let set_audio_stream_pitch =
     foreign "SetAudioStreamPitch" (AudioStream.t @-> float @-> returning void)
 
+  let set_audio_stream_pan =
+    foreign "SetAudioStreamPan" (AudioStream.t @-> float @-> returning void)
+
   let set_audio_stream_buffer_size_default =
     foreign "SetAudioStreamBufferSizeDefault" (int @-> returning void)
+
+  (* let set_audio_stream_callback = *)
+  (*   foreign "SetAudioStreamCallback" (AudioStream.t @-> audio_callback @-> returning void) *)
+
+  (* let attach_audio_stream_processor = *)
+  (*   foreign "AttachAudioStreamProcessor" (AudioStream.t @-> audio_callback @-> returning void) *)
+
+  (* let detach_audio_stream_processor = *)
+  (*   foreign "DetachAudioStreamProcessor" (AudioStream.t @-> audio_callback @-> returning void) *)
 end

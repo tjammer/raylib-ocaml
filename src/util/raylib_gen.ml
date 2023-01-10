@@ -193,7 +193,8 @@ module Typing = struct
     | Ptr typ -> name_type ~ptr:(" ptr" ^ ptr) typ
 
   let rec name_type_ctypes ?(acc = "") = function
-    | C "const char" when String.(acc = "(ptr ") -> "string)"
+    | Ptr (C "const char") -> "string"
+    | C "const char" when String.(acc = "(ptr ") -> "string"
     | C name -> acc ^ name
     | Ray name -> acc ^ name ^ ".t"
     | Forw_decl name -> acc ^ name.name
@@ -217,11 +218,11 @@ module Type = struct
 
   let field_of_json field =
     let open Yojson.Basic.Util in
-    let cname, arr = member "name" field |> to_string |> strip_array in
+    let cname = member "name" field |> to_string in
     let name = Naming.to_snake_case cname |> special_names in
 
     (* field *)
-    let ctyp = member "type" field |> to_string in
+    let ctyp, arr = member "type" field |> to_string |> strip_array in
     let typ = Typing.of_cname ctyp arr in
     let name = { name; cname } in
 
@@ -502,10 +503,15 @@ module Function = struct
       Typing.of_cname cname None
     in
     let params =
-      json |> member "params"
-      |> (function
-           | `Null -> [] | `Assoc l -> l | _ -> failwith "Expected Assoc")
-      |> List.map (fun (key, value) -> to_param key @@ to_string value)
+      ( (json |> member "params" |> function
+         | `Null -> []
+         | `List l -> l
+         | _ -> failwith "Expected list")
+      |> fun l -> (filter_member "name" l, filter_member "type" l) )
+      |> fun (a, b) ->
+      List.combine a b
+      |> List.map (fun (cname, typ) ->
+             to_param (to_string cname) (to_string typ))
     in
     { name; desc; return; params }
 
@@ -568,7 +574,7 @@ let () =
 
   let types = api |> member "structs" |> to_list |> List.map Type.of_json in
   let stubs = types |> List.map Type.stub |> String.concat "" in
-  print_string stubs;
+  (* print_string stubs; *)
   ignore stubs;
   let itf = types |> List.map Type.itf |> String.concat "" in
   (* print_string itf; *)
@@ -581,7 +587,7 @@ let () =
     api |> member "functions" |> to_list |> List.map Function.of_json
   in
   let stubs = funcs |> List.map Function.stub |> String.concat "" in
-  (* print_string stubs; *)
+  print_string stubs;
   ignore stubs;
   let itf = funcs |> List.map Function.itf |> String.concat "\n" in
   (* print_string itf; *)

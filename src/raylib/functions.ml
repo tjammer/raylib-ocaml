@@ -12,15 +12,8 @@ let save_file_data path data =
   let count = CArray.length data in
   _save_file_data path (to_voidp (CArray.start data)) count
 
-let get_directory_files path =
-  let count = ptr_of_int 0 in
-  let files = _get_directory_files path count in
-  CArray.from_ptr files !@count
-
-let get_dropped_files () =
-  let count = ptr_of_int 0 in
-  let files = _get_dropped_files count in
-  CArray.from_ptr files !@count |> CArray.to_list
+let export_data_as_code data filename =
+  _export_data_as_code data (String.length data) filename
 
 let compress_data in_data =
   let in_count = CArray.length in_data in
@@ -47,3 +40,8 @@ let load_font_ex filename size = function
   | None -> _load_font_ex filename size None 0
   | Some arr ->
       _load_font_ex filename size (Some (CArray.start arr)) (CArray.length arr)
+
+let draw_text_codepoints font codepoints pos size spacing tint =
+  let count = CArray.length codepoints in
+  _draw_text_codepoints font (CArray.start codepoints) count pos size spacing
+    tint

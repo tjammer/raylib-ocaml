@@ -253,10 +253,6 @@ module Description (F : Ctypes.FOREIGN) = struct
     let invert =
       foreign "MatrixInvert" (Types.Matrix.t @-> returning Types.Matrix.t)
 
-    (* Normalize provided matrix *)
-    let normalize =
-      foreign "MatrixNormalize" (Types.Matrix.t @-> returning Types.Matrix.t)
-
     (* Returns identity matrix *)
     let identity = foreign "MatrixIdentity" (void @-> returning Types.Matrix.t)
 

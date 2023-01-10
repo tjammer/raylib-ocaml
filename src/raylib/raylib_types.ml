@@ -931,5 +931,17 @@ module VrStereoConfig = struct
     CArray.set arr 1 v1
 end
 
+module FilePathList = struct
+  type t' = FilePathList.t
+  type t = t' ctyp
+
+  let t = FilePathList.t
+
+  let files filepathlist =
+    let count = getf filepathlist FilePathList.count in
+    CArray.from_ptr (getf filepathlist FilePathList.paths) count
+    |> CArray.to_list
+end
+
 let max_material_maps = max_material_maps
 let max_shader_locations = max_shader_locations

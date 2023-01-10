@@ -19,7 +19,6 @@ let rec loop font font_size font_position filter =
   match Raylib.window_should_close () with
   | true ->
       let open Raylib in
-      clear_dropped_files ();
       unload_font font;
       close_window ()
   | false ->
@@ -49,12 +48,13 @@ let rec loop font font_size font_position filter =
       let font =
         if is_file_dropped () then (
           (* NOTE: We only support first ttf file dropped *)
-          match get_dropped_files () with
+          let dropped = load_dropped_files () in
+          match FilePathList.files dropped with
           | [] -> font
           | file :: _ ->
               unload_font font;
               let font = load_font_ex file font_size None in
-              clear_dropped_files ();
+              unload_dropped_files dropped;
               font)
         else font
       in

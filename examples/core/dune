@@ -64,11 +64,6 @@
  (libraries raylib))
 
 (executable
- (name core_storage_values)
- (modules Core_storage_values)
- (libraries raylib))
-
-(executable
  (name core_vr_simulator)
  (modules Core_vr_simulator)
  (libraries raylib))

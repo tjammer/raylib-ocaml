@@ -15,6 +15,7 @@ module Types (F : Ctypes.TYPE) = struct
       | Window_always_run
       | Window_transparent
       | Window_highdpi
+      | Window_mouse_passthrough
       | Msaa_4x_hint
       | Interlaced_hint
 
@@ -32,6 +33,8 @@ module Types (F : Ctypes.TYPE) = struct
         (Window_always_run, constant "FLAG_WINDOW_ALWAYS_RUN" int64_t);
         (Window_transparent, constant "FLAG_WINDOW_TRANSPARENT" int64_t);
         (Window_highdpi, constant "FLAG_WINDOW_HIGHDPI" int64_t);
+        ( Window_mouse_passthrough,
+          constant "FLAG_WINDOW_MOUSE_PASSTHROUGH" int64_t );
         (Msaa_4x_hint, constant "FLAG_MSAA_4X_HINT" int64_t);
         (Interlaced_hint, constant "FLAG_INTERLACED_HINT" int64_t);
       ]
@@ -686,6 +689,7 @@ module Types (F : Ctypes.TYPE) = struct
       | Multiplied
       | Add_colors
       | Subtract_colors
+      | Alpha_premultiply
       | Custom
 
     let vals =
@@ -695,6 +699,7 @@ module Types (F : Ctypes.TYPE) = struct
         (Multiplied, constant "BLEND_MULTIPLIED" int64_t);
         (Add_colors, constant "BLEND_ADD_COLORS" int64_t);
         (Subtract_colors, constant "BLEND_SUBTRACT_COLORS" int64_t);
+        (Alpha_premultiply, constant "BLEND_ALPHA_PREMULTIPLY" int64_t);
         (Custom, constant "BLEND_CUSTOM" int64_t);
       ]
 
@@ -1093,10 +1098,14 @@ module Types (F : Ctypes.TYPE) = struct
     let r_audio_buffer : [ `R_audio_buffer ] Ctypes.structure typ =
       structure "rAudioBuffer"
 
+    let r_audio_processor : [ `R_audio_processor ] Ctypes.structure typ =
+      structure "rAudioProcessor"
+
     type t
 
     let t : t Ctypes.structure typ = structure "AudioStream"
     let buffer = field t "buffer" (ptr r_audio_buffer)
+    let processor = field t "processor" (ptr r_audio_processor)
     let sample_rate = field t "sampleRate" uint
     let sample_size = field t "sampleSize" uint
     let channels = field t "channels" uint
@@ -1158,6 +1167,16 @@ module Types (F : Ctypes.TYPE) = struct
     let right_screen_center = field t "rightScreenCenter" float_array_2
     let scale = field t "scale" float_array_2
     let scale_in = field t "scaleIn" float_array_2
+    let () = seal t
+  end
+
+  module FilePathList = struct
+    type t
+
+    let t : t Ctypes.structure typ = structure "FilePathList"
+    let capacity = field t "capacity" int
+    let count = field t "count" int
+    let paths = field t "paths" (ptr string)
     let () = seal t
   end
 end

@@ -37,6 +37,7 @@ module ConfigFlags : sig
     | Window_always_run
     | Window_transparent
     | Window_highdpi
+    | Window_mouse_passthrough
     | Msaa_4x_hint
     | Interlaced_hint
 
@@ -374,6 +375,7 @@ module BlendMode : sig
     | Multiplied
     | Add_colors
     | Subtract_colors
+    | Alpha_premultiply
     | Custom
 
   val to_int : t -> int
@@ -622,7 +624,6 @@ and Matrix : sig
   val trace : t -> float
   val transpose : t -> t
   val invert : t -> t
-  val normalize : t -> t
   val identity : unit -> t
   val add : t -> t -> t
   val subtract : t -> t -> t
@@ -1369,6 +1370,14 @@ module VrStereoConfig : sig
   val set_scale_in : t -> float -> float -> unit
 end
 
+module FilePathList : sig
+  type t'
+  type t = t' ctyp
+
+  val t : t Ctypes.typ
+  val files : t -> string list
+end
+
 (** {1 Functions}*)
 
 val init_window : int -> int -> string -> unit
@@ -1440,6 +1449,9 @@ val set_window_min_size : int -> int -> unit
 val set_window_size : int -> int -> unit
 (** [set_window_size width height] Set window dimensions*)
 
+val set_window_opacity : float -> unit
+(** [set_window_opacity 0.0..1.0] Set window opacity*)
+
 val get_window_handle : unit -> unit ptr option
 (** [get_window_handle ()] Get native window handle*)
 
@@ -1448,6 +1460,12 @@ val get_screen_width : unit -> int
 
 val get_screen_height : unit -> int
 (** [get_screen_height ()] Get current screen height*)
+
+val get_render_width : unit -> int
+(** [get_render_width ()] Get current render width (it considers HiDPI)*)
+
+val get_render_height : unit -> int
+(** [get_render_height ()] Get current render height (it considers HiDPI)*)
 
 val get_monitor_count : unit -> int
 (** [get_monitor_count ()] Get number of connected monitors*)
@@ -1487,6 +1505,12 @@ val set_clipboard_text : string -> unit
 
 val get_clipboard_text : unit -> string option
 (** [get_clipboard_text ()] Get clipboard text content*)
+
+val enable_event_waiting : unit -> unit
+(** [enable_event_waiting ()] Enable waiting for events on EndDrawing(), no automatic event polling*)
+
+val disable_event_waiting : unit -> unit
+(** [disable_event_waiting ()] Disable waiting for events on EndDrawing(), automatic events polling*)
 
 val swap_screen_buffer : unit -> unit
 (** [swap_screen_buffer ()] Swap back buffer with front buffer (screen drawing)*)
@@ -1622,11 +1646,11 @@ val get_world_to_screen : Vector3.t -> Camera3D.t -> Vector2.t
 val get_world_to_screen_ex : Vector3.t -> Camera3D.t -> int -> int -> Vector2.t
 (** [get_world_to_screen_ex position camera width height] Get size position for a 3d world space position*)
 
-val get_world_to_screen_2d : Vector2.t -> Camera2D.t -> Vector2.t
-(** [get_world_to_screen_2d position camera] Returns the screen space position for a 2d camera world space position*)
-
 val get_screen_to_world_2d : Vector2.t -> Camera2D.t -> Vector2.t
 (** [get_screen_to_world_2d position camera] Returns the world space position for a 2d camera screen space position*)
+
+val get_world_to_screen_2d : Vector2.t -> Camera2D.t -> Vector2.t
+(** [get_world_to_screen_2d position camera] Returns the screen space position for a 2d camera world space position*)
 
 val set_target_fps : int -> unit
 (** [set_target_fps fps] Set target FPS (maximum)*)
@@ -1667,6 +1691,9 @@ val mem_realloc : unit ptr -> int -> unit ptr
 val mem_free : unit ptr -> unit
 (** [mem_free ptr] Internal memory free*)
 
+val open_url : string -> unit
+(** [open_url url] Open URL with default system browser (if available)*)
+
 val load_file_data : string -> Unsigned.uchar CArray.t
 (** [load_file_data file_name bytes_read] Load file data as byte array (read)*)
 
@@ -1675,6 +1702,9 @@ val unload_file_data : string -> unit
 
 val save_file_data : string -> 'a CArray.t -> bool
 (** [save_file_data file_name data bytes_to_write] Save data to file from byte array (write), returns true on success*)
+
+val export_data_as_code : string -> string -> bool
+(** [export_data_as_code data filename] Export data to code (.h), returns true on success*)
 
 val load_file_text : string -> string
 (** [load_file_text file_name] Load text data from file (read), returns a ' 0' terminated string*)
@@ -1694,6 +1724,9 @@ val directory_exists : string -> bool
 val is_file_extension : string -> string -> bool
 (** [is_file_extension file_name ext] Check file extension (including point: .png, .wav)*)
 
+val get_file_length : string -> int
+(** [get_file_length filename] Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)*)
+
 val get_file_extension : string -> string
 (** [get_file_extension file_name] Get pointer to extension for a filename string (includes dot: '.png')*)
 
@@ -1712,23 +1745,32 @@ val get_prev_directory_path : string -> string
 val get_working_directory : unit -> string
 (** [get_working_directory ()] Get current working directory (uses static string)*)
 
-val get_directory_files : string -> string CArray.t
-(** [get_directory_files dir_path] Get filenames in a directory path (memory should be freed)*)
-
-val clear_directory_files : unit -> unit
-(** [clear_directory_files ()] Clear directory files paths buffers (free memory)*)
+val get_application_directory : unit -> string
+(** [get_application_directory ()] Get the directory if the running application (uses static string)*)
 
 val change_directory : string -> bool
 (** [change_directory dir] Change working directory, return true on success*)
 
+val is_path_file : string -> bool
+(** [is_path_file path] Check if a given path is a file or a directory*)
+
+val load_directory_files : string -> FilePathList.t
+(** [load_directory_files dirpath] Load directory filepaths*)
+
+val load_directory_files_ex : string -> string -> bool -> FilePathList.t
+(** [load_directory_files_ex basepath filter scansubdirs] Load directory filepaths with extension filtering and recursive directory scan*)
+
+val unload_directory_files : FilePathList.t -> unit
+(** [unload_directory_files files] Unload filepaths*)
+
 val is_file_dropped : unit -> bool
 (** [is_file_dropped ()] Check if a file has been dropped into window*)
 
-val get_dropped_files : unit -> string list
-(** [get_dropped_files count] Get dropped files names (memory should be freed)*)
+val load_dropped_files : unit -> FilePathList.t
+(** [load_dropped_files count] Load dropped filepaths*)
 
-val clear_dropped_files : unit -> unit
-(** [clear_dropped_files ()] Clear dropped files paths buffer (free memory)*)
+val unload_dropped_files : FilePathList.t -> unit
+(** [unload_dropped_files files] Unload dropped filepaths*)
 
 val get_file_mod_time : string -> Signed.Long.t
 (** [get_file_mod_time file_name] Get file modification time (last write time)*)
@@ -1738,15 +1780,6 @@ val compress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
 
 val decompress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
 (** [decompress_data comp_data comp_data_length data_length] Decompress data (DEFLATE algorithm)*)
-
-val save_storage_value : int -> int -> bool
-(** [save_storage_value position value] Save integer value to storage file (to defined position), returns true on success*)
-
-val load_storage_value : int -> int
-(** [load_storage_value position] Load integer value from storage file (from defined position)*)
-
-val open_url : string -> unit
-(** [open_url url] Open URL with default system browser (if available)*)
 
 val is_key_pressed : Key.t -> bool
 (** [is_key_pressed key] Detect if a key has been pressed once*)
@@ -1833,7 +1866,10 @@ val set_mouse_scale : float -> float -> unit
 (** [set_mouse_scale scale_x scale_y] Set mouse scaling*)
 
 val get_mouse_wheel_move : unit -> float
-(** [get_mouse_wheel_move ()] Get mouse wheel movement Y*)
+(** [get_mouse_wheel_move ()] Get mouse wheel movement for X or Y, whichever is larger*)
+
+val get_mouse_wheel_move_v : unit -> Vector2.t
+(** [get_mouse_wheel_move_v ()] Get mouse wheel movement for both X and Y*)
 
 val set_mouse_cursor : MouseCursor.t -> unit
 (** [set_mouse_cursor cursor] Set mouse cursor*)
@@ -2420,6 +2456,9 @@ val unload_font_data : GlyphInfo.t ptr -> int -> unit
 val unload_font : Font.t -> unit
 (** [unload_font font] Unload Font from GPU memory (VRAM)*)
 
+val export_font_as_code : Font.t -> string -> bool
+(** [export_font_as_code font filename] Export font as code file, returns true on success*)
+
 val draw_fps : int -> int -> unit
 (** [draw_fps pos_x pos_y] Draw current FPS*)
 
@@ -2444,6 +2483,10 @@ val draw_text_pro :
 
 val draw_text_codepoint : Font.t -> int -> Vector2.t -> float -> Color.t -> unit
 (** [draw_text_codepoint font codepoint position font_size tint] Draw one character (codepoint)*)
+
+val draw_text_codepoints :
+  Font.t -> int CArray.t -> Vector2.t -> float -> float -> Color.t -> unit
+(** [draw_text_codepoints font codepoints position fontsize spacing tint] Draw multiple character (codepoint)*)
 
 (** {3 Text misc. functions} *)
 
@@ -2683,9 +2726,6 @@ val get_mesh_bounding_box : Mesh.t -> BoundingBox.t
 val gen_mesh_tangents : Mesh.t ptr -> unit
 (** [gen_mesh_tangents mesh] Compute mesh tangents*)
 
-val gen_mesh_binormals : Mesh.t ptr -> unit
-(** [gen_mesh_binormals mesh] Compute mesh binormals*)
-
 val gen_mesh_poly : int -> float -> Mesh.t
 (** [gen_mesh_poly sides radius] Generate polygonal mesh*)
 
@@ -2766,9 +2806,6 @@ val get_ray_collision_sphere : Ray.t -> Vector3.t -> float -> RayCollision.t
 
 val get_ray_collision_box : Ray.t -> BoundingBox.t -> RayCollision.t
 (** [get_ray_collision_box ray box] Get collision info between ray and box*)
-
-val get_ray_collision_model : Ray.t -> Model.t -> RayCollision.t
-(** [get_ray_collision_model ray model] Get collision info between ray and model*)
 
 val get_ray_collision_mesh : Ray.t -> Mesh.t -> Matrix.t -> RayCollision.t
 (** [get_ray_collision_mesh ray mesh transform] Get collision info between ray and mesh*)
@@ -2855,14 +2892,17 @@ val set_sound_volume : Sound.t -> float -> unit
 val set_sound_pitch : Sound.t -> float -> unit
 (** [set_sound_pitch sound pitch] Set pitch for a sound (1.0 is base level)*)
 
-val wave_format : Wave.t ptr -> int -> int -> int -> unit
-(** [wave_format wave sample_rate sample_size channels] Convert wave data to desired format*)
+val set_sound_pan : Sound.t -> float -> unit
+(** [set_sound_pan sound pan] Set pan for a sound (0.5 is center)*)
 
 val wave_copy : Wave.t -> Wave.t
 (** [wave_copy wave] Copy a wave to a new wave*)
 
 val wave_crop : Wave.t ptr -> int -> int -> unit
 (** [wave_crop wave init_sample final_sample] Crop a wave to defined samples range*)
+
+val wave_format : Wave.t ptr -> int -> int -> int -> unit
+(** [wave_format wave sample_rate sample_size channels] Convert wave data to desired format*)
 
 val load_wave_samples : Wave.t -> float ptr
 (** [load_wave_samples wave] Load samples data from wave as a floats array*)
@@ -2908,6 +2948,9 @@ val set_music_volume : Music.t -> float -> unit
 val set_music_pitch : Music.t -> float -> unit
 (** [set_music_pitch music pitch] Set pitch for a music (1.0 is base level)*)
 
+val set_music_pan : Music.t -> float -> unit
+(** [set_music_pan music pan] Set pan for a music (0.5 is center)*)
+
 val get_music_time_length : Music.t -> float
 (** [get_music_time_length music] Get music time length (in seconds)*)
 
@@ -2948,6 +2991,9 @@ val set_audio_stream_volume : AudioStream.t -> float -> unit
 
 val set_audio_stream_pitch : AudioStream.t -> float -> unit
 (** [set_audio_stream_pitch stream pitch] Set pitch for audio stream (1.0 is base level)*)
+
+val set_audio_stream_pan : AudioStream.t -> float -> unit
+(** [set_audio_stream_pan steam pan] Set pan for audio stream (0.5 is centered)*)
 
 val set_audio_stream_buffer_size_default : int -> unit
 (** [set_audio_stream_buffer_size_default size] Default size for new audio streams*)
