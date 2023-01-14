@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* Copyright (c) 2016 The odoc contributors. All rights reserved.
    Distributed under the ISC license, see terms at the end of the file.
-   odoc 2.0.2 */
+   odoc 2.2.0 */
 
 /* Fonts */
 @import url('https://fonts.googleapis.com/css?family=Fira+Mono:400,500');
@@ -124,7 +124,6 @@
 /* Reset a few things. */
 
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-  margin: 0;
   padding: 0;
   border: 0;
   font: inherit;
@@ -153,7 +152,7 @@ body {
 }
 
 body {
-  max-width: 90ex;
+  max-width: 100ex;
   margin-left: calc(10vw + 20ex);
   margin-right: 4ex;
   margin-top: 20px;
@@ -202,15 +201,6 @@ sup, sub {
   margin-left: 0.2ex;
 }
 
-pre {
-  margin-top: 0.8em;
-  margin-bottom: 1.2em;
-}
-
-p, ul, ol {
-  margin-top: 0.5em;
-  margin-bottom: 1em;
-}
 ul, ol {
   list-style-position: outside
 }
@@ -306,7 +296,6 @@ a.anchor {
 h1, h2, h3, h4, h5, h6, .h7, .h8, .h9, .h10 {
   font-family: "Fira Sans", Helvetica, Arial, sans-serif;
   font-weight: 400;
-  margin: 0.5em 0 0.5em 0;
   padding-top: 0.1em;
   line-height: 1.2;
   overflow-wrap: break-word;
@@ -315,7 +304,6 @@ h1, h2, h3, h4, h5, h6, .h7, .h8, .h9, .h10 {
 h1 {
   font-weight: 500;
   font-size: 2.441em;
-  margin-top: 1.214em;
 }
 
 h1 {
@@ -403,6 +391,10 @@ p a > code {
   color: var(--link-color);
 }
 
+code {
+  white-space: pre-wrap;
+}
+
 /* Code blocks (e.g. Examples) */
 
 pre code {
@@ -427,34 +419,50 @@ pre code {
   padding: 0.35em 0.5em;
 }
 
-div.spec, .def-doc {
-  margin-bottom: 20px;
+li:not(:last-child) > .def-doc {
+  margin-bottom: 15px;
 }
 
-.spec.type .variant {
+/* Spacing between items */
+div.odoc-spec,.odoc-include {
+  margin-bottom: 2em;
+}
+
+.spec.type .variant p, .spec.type .record p {
+  margin: 5px;
+}
+
+.spec.type .variant, .spec.type .record {
   margin-left: 2ch;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 4px;
 }
-.spec.type .variant p {
-  margin: 0;
-  font-style: italic;
+
+.spec.type .record > code, .spec.type .variant > code {
+  min-width: 40%;
 }
-.spec.type .record {
-  margin-left: 2ch;
+
+.spec.type > ol {
+  margin-top: 0;
+  margin-bottom: 0;
 }
-.spec.type .record p {
-  margin: 0;
-  font-style: italic;
+
+.spec.type .record > .def-doc, .spec.type .variant > .def-doc {
+  min-width:50%;
+  padding: 0.25em 0.5em;
+  margin-left: 10%;
+  border-radius: 3px;
+  flex-grow:1;
+  background: var(--main-background);
+  box-shadow: 2px 2px 4px lightgrey;
 }
 
 div.def {
   margin-top: 0;
   text-indent: -2ex;
   padding-left: 2ex;
-}
-
-div.def+div.def-doc {
-  margin-left: 1ex;
-  margin-top: 2.5px
 }
 
 div.def-doc>*:first-child {
@@ -465,6 +473,10 @@ div.def-doc>*:first-child {
 
 .odoc-include details {
   position: relative;
+}
+
+.odoc-include.shadowed-include {
+  display: none;
 }
 
 .odoc-include details:after {
@@ -483,7 +495,7 @@ div.def-doc>*:first-child {
 
 .odoc-include summary {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 1em;
   cursor: pointer;
   outline: none;
 }
@@ -665,9 +677,8 @@ td.def-doc *:first-child {
 /* Mobile adjustements. */
 
 @media only screen and (max-width: 95ex) {
-  .odoc-content {
-    margin: auto;
-    padding: 2em;
+  body.odoc {
+    margin: 2em;
   }
   .odoc-toc {
     position: static;
@@ -677,6 +688,7 @@ td.def-doc *:first-child {
     border: none;
     padding: 0.2em 1em;
     border-radius: 5px;
+    margin-bottom: 2em;
   }
 }
 
