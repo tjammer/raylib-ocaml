@@ -38,7 +38,6 @@ let setup () =
   unload_texture tex_hdr;
   unload_shader shdr_cubemap;
 
-  set_camera_mode camera CameraMode.First_person;
   set_target_fps 60;
   (camera, skybox)
 
@@ -47,7 +46,7 @@ let rec loop camera skybox =
   | true -> Raylib.close_window ()
   | false ->
       let open Raylib in
-      update_camera (addr camera);
+      update_camera (addr camera) CameraMode.First_person;
 
       begin_drawing ();
       clear_background Color.raywhite;

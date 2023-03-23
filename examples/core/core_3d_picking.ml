@@ -19,7 +19,7 @@ let setup () =
       (Vector3.create 0.0 1.0 0.0) (* up *)
       45.0 (* FOV *) CameraProjection.Perspective
   in
-  set_camera_mode camera CameraMode.Free;
+
   set_target_fps 60;
   camera
 
@@ -51,7 +51,7 @@ let rec loop camera collision ray =
   let open Raylib in
   if window_should_close () then close_window ()
   else (
-    update_camera (addr camera);
+    update_camera (addr camera) CameraMode.Free;
     let collision, ray =
       match (is_mouse_button_pressed MouseButton.Left, collision) with
       | true, true -> (false, None)

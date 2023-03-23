@@ -20,7 +20,7 @@ let setup () =
 
   let anims = load_model_animations "resources/guy/guyanim.iqm" in
 
-  set_camera_mode camera CameraMode.Free;
+  disable_cursor ();
   set_target_fps 60;
   (camera, model, anims)
 
@@ -33,7 +33,7 @@ let rec loop camera model anims frame_counter =
       close_window ()
   | false ->
       let open Raylib in
-      update_camera (addr camera);
+      update_camera (addr camera) CameraMode.First_person;
       let frame_counter =
         if is_key_down Key.Space then (
           let frame_counter = succ frame_counter in

@@ -20,8 +20,6 @@ let setup () =
     Camera.create position target up 65.0 CameraProjection.Perspective
   in
 
-  set_camera_mode camera CameraMode.Free;
-
   let shader = load_shader "" "resources/raymarching.fs" in
 
   let locations =
@@ -38,6 +36,7 @@ let setup () =
     (to_voidp (addr resolution))
     ShaderUniformDataType.Vec2;
 
+  disable_cursor ();
   set_target_fps 60;
 
   (shader, locations, camera)
@@ -63,7 +62,7 @@ let rec loop width height shader locations camera runtime =
         else (width, height)
       in
 
-      update_camera (addr camera);
+      update_camera (addr camera) CameraMode.First_person;
 
       let delta_time = get_frame_time () in
       let runtime = runtime +. delta_time in

@@ -19,7 +19,7 @@ let setup () =
       (Vector3.create 0.0 1.0 0.0) (* up *)
       45.0 (* FOV *) CameraProjection.Perspective
   in
-  set_camera_mode camera CameraMode.Free;
+
   set_target_fps 60;
   camera
 

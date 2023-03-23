@@ -16,8 +16,6 @@ let main () =
     Camera.create position target up 45.0 CameraProjection.Perspective
   in
 
-  set_camera_mode camera CameraMode.Free;
-
   set_target_fps 60;
 
   let cube = gen_mesh_cube 1.0 1.0 1.0 in
@@ -80,7 +78,7 @@ let main () =
   MaterialMap.set_color (CArray.get (Material.maps material) 0) Color.red;
 
   while not (Raylib.window_should_close ()) do
-    update_camera (addr camera);
+    update_camera (addr camera) CameraMode.Free;
 
     let cpos = Camera3D.position camera in
     let pos = Vector3.(create (x cpos) (y cpos) (z cpos)) in

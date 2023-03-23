@@ -691,6 +691,7 @@ module Types (F : Ctypes.TYPE) = struct
       | Subtract_colors
       | Alpha_premultiply
       | Custom
+      | Custom_separate
 
     let vals =
       [
@@ -701,6 +702,7 @@ module Types (F : Ctypes.TYPE) = struct
         (Subtract_colors, constant "BLEND_SUBTRACT_COLORS" int64_t);
         (Alpha_premultiply, constant "BLEND_ALPHA_PREMULTIPLY" int64_t);
         (Custom, constant "BLEND_CUSTOM" int64_t);
+        (Custom_separate, constant "BLEND_CUSTOM_SEPARATE" int64_t);
       ]
 
     let t = enum "BlendMode" ~typedef:true vals

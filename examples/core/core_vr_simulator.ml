@@ -52,7 +52,7 @@ let setup () =
 
   let target = load_render_texture width height in
 
-  set_camera_mode camera CameraMode.First_person;
+  disable_cursor ();
   set_target_fps 90;
 
   (distortion, cube_position, camera, config, target)
@@ -66,7 +66,7 @@ let rec loop (distortion, cube_position, camera, config, target) =
       close_window ()
   | false ->
       let open Raylib in
-      update_camera (addr camera);
+      update_camera (addr camera) CameraMode.First_person;
 
       begin_texture_mode target;
 

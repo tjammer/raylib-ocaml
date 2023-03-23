@@ -377,6 +377,7 @@ module BlendMode : sig
     | Subtract_colors
     | Alpha_premultiply
     | Custom
+    | Custom_separate
 
   val to_int : t -> int
   val of_int : int -> t
@@ -425,6 +426,7 @@ val max_material_maps : int
 val max_shader_locations : int
 
 (** {1 Types} *)
+
 module Vector2 : sig
   type t' = Raylib_fixed_types.Vector2.t
   type t = t' ctyp
@@ -894,7 +896,7 @@ module Camera3D : sig
   (** Camera up vector (rotation over its axis) *)
 
   val fovy : t -> float
-  (** Camera field-of-view apperture in Y (degrees) in perspective, used as near plane width in orthographic *)
+  (** Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthographic *)
 
   val projection : t -> CameraProjection.t
   (** Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC *)
@@ -1164,10 +1166,10 @@ module RayCollision : sig
   (** Did the ray hit something? *)
 
   val distance : t -> float
-  (** Distance to nearest hit *)
+  (** Distance to the nearest hit *)
 
   val point : t -> Vector3.t
-  (** Point of nearest hit *)
+  (** Point of the nearest hit *)
 
   val normal : t -> Vector3.t
   (** Surface normal of hit *)
@@ -1432,7 +1434,10 @@ val restore_window : unit -> unit
 (** [restore_window ()] Set window state: not minimized/maximized (only PLATFORM_DESKTOP)*)
 
 val set_window_icon : Image.t -> unit
-(** [set_window_icon image] Set icon for window (only PLATFORM_DESKTOP)*)
+(** [set_window_icon image] Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)*)
+
+val set_window_icons : Image.t ptr -> int -> unit
+(** [set_window_icons images count] Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)*)
 
 val set_window_title : string -> unit
 (** [set_window_title title] Set title for window (only PLATFORM_DESKTOP)*)
@@ -1450,7 +1455,7 @@ val set_window_size : int -> int -> unit
 (** [set_window_size width height] Set window dimensions*)
 
 val set_window_opacity : float -> unit
-(** [set_window_opacity 0.0..1.0] Set window opacity*)
+(** [set_window_opacity opacity] Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)*)
 
 val get_window_handle : unit -> unit ptr option
 (** [get_window_handle ()] Get native window handle*)
@@ -1477,10 +1482,10 @@ val get_monitor_position : int -> Vector2.t
 (** [get_monitor_position monitor] Get specified monitor position*)
 
 val get_monitor_width : int -> int
-(** [get_monitor_width monitor] Get specified monitor width (max available by monitor)*)
+(** [get_monitor_width monitor] Get specified monitor width (current video mode used by monitor)*)
 
 val get_monitor_height : int -> int
-(** [get_monitor_height monitor] Get specified monitor height (max available by monitor)*)
+(** [get_monitor_height monitor] Get specified monitor height (current video mode used by monitor)*)
 
 val get_monitor_physical_width : int -> int
 (** [get_monitor_physical_width monitor] Get specified monitor physical width in millimetres*)
@@ -1519,7 +1524,7 @@ val poll_input_events : unit -> unit
 (** [poll_input_events ()] Register all input events*)
 
 val wait_time : float -> unit
-(** [wait_time ms] Wait for some milliseconds (halt program execution)*)
+(** [wait_time seconds] Wait for some time (halt program execution)*)
 
 (** {3 Cursor-related functions} *)
 
@@ -1539,9 +1544,7 @@ val disable_cursor : unit -> unit
 (** [disable_cursor ()] Disables cursor (lock cursor)*)
 
 val is_cursor_on_screen : unit -> bool
-(** [is_cursor_on_screen ()] Check if cursor is on the current screen.*)
-
-(** {3 Drawing-related functions} *)
+(** [is_cursor_on_screen ()] Check if cursor is on the screen*)
 
 val clear_background : Color.t -> unit
 (** [clear_background color] Set background color (framebuffer clear color)*)
@@ -1553,13 +1556,13 @@ val end_drawing : unit -> unit
 (** [end_drawing ()] End canvas drawing and swap buffers (double buffering)*)
 
 val begin_mode_2d : Camera2D.t -> unit
-(** [begin_mode_2d camera] Initialize 2D mode with custom camera (2D)*)
+(** [begin_mode_2d camera] Begin 2D mode with custom camera (2D)*)
 
 val end_mode_2d : unit -> unit
 (** [end_mode_2d ()] Ends 2D mode with custom camera*)
 
 val begin_mode_3d : Camera3D.t -> unit
-(** [begin_mode_3d camera] Initializes 3D mode with custom camera (3D)*)
+(** [begin_mode_3d camera] Begin 3D mode with custom camera (3D)*)
 
 val end_mode_3d : unit -> unit
 (** [end_mode_3d ()] Ends 3D mode and returns to default 2D orthographic mode*)
@@ -1577,7 +1580,7 @@ val end_shader_mode : unit -> unit
 (** [end_shader_mode ()] End custom shader drawing (use default shader)*)
 
 val begin_blend_mode : BlendMode.t -> unit
-(** [begin_blend_mode mode] Begin blending mode (alpha, additive, multiplied)*)
+(** [begin_blend_mode mode] Begin blending mode (alpha, additive, multiplied, subtract, custom)*)
 
 val end_blend_mode : unit -> unit
 (** [end_blend_mode ()] End blending mode (reset to default: alpha blending)*)
@@ -1605,6 +1608,9 @@ val load_shader : string -> string -> Shader.t
 
 val load_shader_from_memory : string -> string -> Shader.t
 (** [load_shader_from_memory vs_code fs_code] Load shader from code strings and bind default locations*)
+
+val is_shader_ready : Shader.t -> bool
+(** [is_shader_ready shader] Check if a shader is ready*)
 
 val get_shader_location : Shader.t -> string -> ShaderLoc.t
 (** [get_shader_location shader uniform_name] Get shader uniform location*)
@@ -1638,19 +1644,19 @@ val get_camera_matrix : Camera3D.t -> Matrix.t
 (** [get_camera_matrix camera] Get camera transform matrix (view matrix)*)
 
 val get_camera_matrix_2d : Camera2D.t -> Matrix.t
-(** [get_camera_matrix_2d camera] Returns camera 2d transform matrix*)
+(** [get_camera_matrix_2d camera] Get camera 2d transform matrix*)
 
 val get_world_to_screen : Vector3.t -> Camera3D.t -> Vector2.t
 (** [get_world_to_screen position camera] Get the screen space position for a 3d world space position*)
 
+val get_screen_to_world_2d : Vector2.t -> Camera2D.t -> Vector2.t
+(** [get_screen_to_world_2d position camera] Get the world space position for a 2d camera screen space position*)
+
 val get_world_to_screen_ex : Vector3.t -> Camera3D.t -> int -> int -> Vector2.t
 (** [get_world_to_screen_ex position camera width height] Get size position for a 3d world space position*)
 
-val get_screen_to_world_2d : Vector2.t -> Camera2D.t -> Vector2.t
-(** [get_screen_to_world_2d position camera] Returns the world space position for a 2d camera screen space position*)
-
 val get_world_to_screen_2d : Vector2.t -> Camera2D.t -> Vector2.t
-(** [get_world_to_screen_2d position camera] Returns the screen space position for a 2d camera world space position*)
+(** [get_world_to_screen_2d position camera] Get the screen space position for a 2d camera world space position*)
 
 val set_target_fps : int -> unit
 (** [set_target_fps fps] Set target FPS (maximum)*)
@@ -1662,7 +1668,7 @@ val get_frame_time : unit -> float
 (** [get_frame_time ()] Get time in seconds for last frame drawn (delta time)*)
 
 val get_time : unit -> float
-(** [get_time ()] Returns elapsed time in seconds since InitWindow()*)
+(** [get_time ()] Get elapsed time in seconds since InitWindow()*)
 
 val get_random_value : int -> int -> int
 (** [get_random_value min max] Get a random value between min and max (both included)*)
@@ -1707,7 +1713,7 @@ val export_data_as_code : string -> string -> bool
 (** [export_data_as_code data filename] Export data to code (.h), returns true on success*)
 
 val load_file_text : string -> string
-(** [load_file_text file_name] Load text data from file (read), returns a ' 0' terminated string*)
+(** [load_file_text file_name] Load text data from file (read), returns a '\0' terminated string*)
 
 val unload_file_text : string -> unit
 (** [unload_file_text text] Unload file text data allocated by LoadFileText()*)
@@ -1725,7 +1731,7 @@ val is_file_extension : string -> string -> bool
 (** [is_file_extension file_name ext] Check file extension (including point: .png, .wav)*)
 
 val get_file_length : string -> int
-(** [get_file_length filename] Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)*)
+(** [get_file_length file_name] Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)*)
 
 val get_file_extension : string -> string
 (** [get_file_extension file_name] Get pointer to extension for a filename string (includes dot: '.png')*)
@@ -1755,10 +1761,10 @@ val is_path_file : string -> bool
 (** [is_path_file path] Check if a given path is a file or a directory*)
 
 val load_directory_files : string -> FilePathList.t
-(** [load_directory_files dirpath] Load directory filepaths*)
+(** [load_directory_files dir_path] Load directory filepaths*)
 
 val load_directory_files_ex : string -> string -> bool -> FilePathList.t
-(** [load_directory_files_ex basepath filter scansubdirs] Load directory filepaths with extension filtering and recursive directory scan*)
+(** [load_directory_files_ex base_path filter scan_subdirs] Load directory filepaths with extension filtering and recursive directory scan*)
 
 val unload_directory_files : FilePathList.t -> unit
 (** [unload_directory_files files] Unload filepaths*)
@@ -1767,7 +1773,7 @@ val is_file_dropped : unit -> bool
 (** [is_file_dropped ()] Check if a file has been dropped into window*)
 
 val load_dropped_files : unit -> FilePathList.t
-(** [load_dropped_files count] Load dropped filepaths*)
+(** [load_dropped_files ()] Load dropped filepaths*)
 
 val unload_dropped_files : FilePathList.t -> unit
 (** [unload_dropped_files files] Unload dropped filepaths*)
@@ -1782,25 +1788,25 @@ val decompress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
 (** [decompress_data comp_data comp_data_length data_length] Decompress data (DEFLATE algorithm)*)
 
 val is_key_pressed : Key.t -> bool
-(** [is_key_pressed key] Detect if a key has been pressed once*)
+(** [is_key_pressed key] Check if a key has been pressed once*)
 
 val is_key_down : Key.t -> bool
-(** [is_key_down key] Detect if a key is being pressed*)
+(** [is_key_down key] Check if a key is being pressed*)
 
 val is_key_released : Key.t -> bool
-(** [is_key_released key] Detect if a key has been released once*)
+(** [is_key_released key] Check if a key has been released once*)
 
 val is_key_up : Key.t -> bool
-(** [is_key_up key] Detect if a key is NOT being pressed*)
+(** [is_key_up key] Check if a key is NOT being pressed*)
 
 val set_exit_key : Key.t -> unit
 (** [set_exit_key key] Set a custom key to exit program (default is ESC)*)
 
 val get_key_pressed : unit -> Key.t
-(** [get_key_pressed ()] Get key pressed (keycode), call it multiple times for keys queued*)
+(** [get_key_pressed ()] Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty*)
 
-val get_char_pressed : unit -> char
-(** [get_char_pressed ()] Get char pressed (unicode), call it multiple times for chars queued*)
+val get_char_pressed : unit -> Key.t
+(** [get_char_pressed ()] Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty*)
 
 val is_gamepad_available : int -> bool
 (** [is_gamepad_available gamepad] Check if a gamepad is available*)
@@ -1809,16 +1815,16 @@ val get_gamepad_name : int -> string
 (** [get_gamepad_name gamepad] Get gamepad internal name id*)
 
 val is_gamepad_button_pressed : int -> GamepadButton.t -> bool
-(** [is_gamepad_button_pressed gamepad button] Detect if a gamepad button has been pressed once*)
+(** [is_gamepad_button_pressed gamepad button] Check if a gamepad button has been pressed once*)
 
 val is_gamepad_button_down : int -> GamepadButton.t -> bool
-(** [is_gamepad_button_down gamepad button] Detect if a gamepad button is being pressed*)
+(** [is_gamepad_button_down gamepad button] Check if a gamepad button is being pressed*)
 
 val is_gamepad_button_released : int -> GamepadButton.t -> bool
-(** [is_gamepad_button_released gamepad button] Detect if a gamepad button has been released once*)
+(** [is_gamepad_button_released gamepad button] Check if a gamepad button has been released once*)
 
 val is_gamepad_button_up : int -> GamepadButton.t -> bool
-(** [is_gamepad_button_up gamepad button] Detect if a gamepad button is NOT being pressed*)
+(** [is_gamepad_button_up gamepad button] Check if a gamepad button is NOT being pressed*)
 
 val get_gamepad_button_pressed : unit -> GamepadButton.t
 (** [get_gamepad_button_pressed ()] Get the last gamepad button pressed*)
@@ -1913,24 +1919,12 @@ val get_gesture_pinch_vector : unit -> Vector2.t
 val get_gesture_pinch_angle : unit -> float
 (** [get_gesture_pinch_angle ()] Get gesture pinch angle*)
 
-val set_camera_mode : Camera3D.t -> CameraMode.t -> unit
-(** [set_camera_mode camera mode] Set camera mode (multiple camera modes available)*)
+val update_camera : Camera3D.t ptr -> CameraMode.t -> unit
+(** [update_camera camera mode] Update camera position for selected mode*)
 
-val update_camera : Camera3D.t ptr -> unit
-(** [update_camera camera] Update camera position for selected mode*)
-
-val set_camera_pan_control : Key.t -> unit
-(** [set_camera_pan_control key_pan] Set camera pan key to combine with mouse movement (free camera)*)
-
-val set_camera_alt_control : Key.t -> unit
-(** [set_camera_alt_control key_alt] Set camera alt key to combine with mouse movement (free camera)*)
-
-val set_camera_smooth_zoom_control : Key.t -> unit
-(** [set_camera_smooth_zoom_control key_smooth_zoom] Set camera smooth zoom key to combine with mouse (free camera)*)
-
-val set_camera_move_controls :
-  Key.t -> Key.t -> Key.t -> Key.t -> Key.t -> Key.t -> unit
-(** [set_camera_move_controls key_front key_back key_right key_left key_up key_down] Set camera move controls (1st person and 3rd person cameras)*)
+val update_camera_pro :
+  Camera3D.t ptr -> Vector3.t -> Vector3.t -> float -> unit
+(** [update_camera_pro camera movement rotation zoom] Update camera movement/rotation*)
 
 val set_shapes_texture : Texture.t -> Rectangle.t -> unit
 (** [set_shapes_texture texture source] Set texture and rectangle to be used on shapes drawing*)
@@ -2078,6 +2072,9 @@ val check_collision_point_triangle :
   Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> bool
 (** [check_collision_point_triangle point p1 p2 p3] Check if point is inside a triangle*)
 
+val check_collision_point_poly : Vector2.t -> Vector2.t ptr -> int -> bool
+(** [check_collision_point_poly point points point_count] Check if point is within a polygon described by array of vertices*)
+
 val check_collision_lines :
   Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t ptr -> bool
 (** [check_collision_lines start_pos1 end_pos1 start_pos2 end_pos2 collision_point] Check the collision between two lines defined by two points each, returns collision point by reference*)
@@ -2106,6 +2103,9 @@ val load_image_from_texture : Texture.t -> Image.t
 
 val load_image_from_screen : unit -> Image.t
 (** [load_image_from_screen ()] Load image from screen buffer and (screenshot)*)
+
+val is_image_ready : Image.t -> bool
+(** [is_image_ready image] Check if an image is ready*)
 
 val unload_image : Image.t -> unit
 (** [unload_image image] Unload image from CPU memory (RAM)*)
@@ -2136,8 +2136,14 @@ val gen_image_checked :
 val gen_image_white_noise : int -> int -> float -> Image.t
 (** [gen_image_white_noise width height factor] Generate image: white noise*)
 
+val gen_image_perlin_noise : int -> int -> int -> int -> float -> Image.t
+(** [gen_image_perlin_noise width height offset_x offset_y scale] Generate image: perlin noise*)
+
 val gen_image_cellular : int -> int -> int -> Image.t
 (** [gen_image_cellular width height tile_size] Generate image: cellular algorithm, bigger tileSize means bigger cells*)
+
+val gen_image_text : int -> int -> string -> Image.t
+(** [gen_image_text width height text] Generate image: grayscale image from text data*)
 
 (** {3 Image manipulation functions} *)
 
@@ -2173,6 +2179,9 @@ val image_alpha_mask : Image.t ptr -> Image.t -> unit
 
 val image_alpha_premultiply : Image.t ptr -> unit
 (** [image_alpha_premultiply image] Premultiply alpha channel*)
+
+val image_blur_gaussian : Image.t ptr -> int -> unit
+(** [image_blur_gaussian image blur_size] Apply Gaussian blur using a box blur approximation*)
 
 val image_resize : Image.t ptr -> int -> int -> unit
 (** [image_resize image new_width new_height] Resize image (Bicubic scaling algorithm)*)
@@ -2254,10 +2263,18 @@ val image_draw_line_v : Image.t ptr -> Vector2.t -> Vector2.t -> Color.t -> unit
 (** [image_draw_line_v dst start end color] Draw line within an image (Vector version)*)
 
 val image_draw_circle : Image.t ptr -> int -> int -> int -> Color.t -> unit
-(** [image_draw_circle dst center_x center_y radius color] Draw circle within an image*)
+(** [image_draw_circle dst center_x center_y radius color] Draw a filled circle within an image*)
 
 val image_draw_circle_v : Image.t ptr -> Vector2.t -> int -> Color.t -> unit
-(** [image_draw_circle_v dst center radius color] Draw circle within an image (Vector version)*)
+(** [image_draw_circle_v dst center radius color] Draw a filled circle within an image (Vector version)*)
+
+val image_draw_circle_lines :
+  Image.t ptr -> int -> int -> int -> Color.t -> unit
+(** [image_draw_circle_lines dst center_x center_y radius color] Draw circle outline within an image*)
+
+val image_draw_circle_lines_v :
+  Image.t ptr -> Vector2.t -> int -> Color.t -> unit
+(** [image_draw_circle_lines_v dst center radius color] Draw circle outline within an image (Vector version)*)
 
 val image_draw_rectangle :
   Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
@@ -2307,8 +2324,14 @@ val load_texture_cubemap : Image.t -> int -> Texture.t
 val load_render_texture : int -> int -> RenderTexture.t
 (** [load_render_texture width height] Load texture for rendering (framebuffer)*)
 
+val is_texture_ready : Texture.t -> bool
+(** [is_texture_ready texture] Check if a texture is ready*)
+
 val unload_texture : Texture.t -> unit
 (** [unload_texture texture] Unload texture from GPU memory (VRAM)*)
+
+val is_render_texture_ready : RenderTexture.t -> bool
+(** [is_render_texture_ready target] Check if a render texture is ready*)
 
 val unload_render_texture : RenderTexture.t -> unit
 (** [unload_render_texture target] Unload render texture from GPU memory (VRAM)*)
@@ -2341,21 +2364,6 @@ val draw_texture_ex :
 val draw_texture_rec : Texture.t -> Rectangle.t -> Vector2.t -> Color.t -> unit
 (** [draw_texture_rec texture source position tint] Draw a part of a texture defined by a rectangle*)
 
-val draw_texture_quad :
-  Texture.t -> Vector2.t -> Vector2.t -> Rectangle.t -> Color.t -> unit
-(** [draw_texture_quad texture tiling offset quad tint] Draw texture quad with tiling and offset parameters*)
-
-val draw_texture_tiled :
-  Texture.t ->
-  Rectangle.t ->
-  Rectangle.t ->
-  Vector2.t ->
-  float ->
-  float ->
-  Color.t ->
-  unit
-(** [draw_texture_tiled texture source dest origin rotation scale tint] Draw part of a texture (defined by a rectangle) with rotation and scale tiled into dest.*)
-
 val draw_texture_pro :
   Texture.t ->
   Rectangle.t ->
@@ -2376,16 +2384,6 @@ val draw_texture_npatch :
   unit
 (** [draw_texture_npatch texture n_patch_info dest origin rotation tint] Draws a texture (or part of it) that stretches or shrinks nicely*)
 
-val draw_texture_poly :
-  Texture.t ->
-  Vector2.t ->
-  Vector2.t ptr ->
-  Vector2.t ptr ->
-  int ->
-  Color.t ->
-  unit
-(** [draw_texture_poly texture center points texcoords point_count tint] Draw a textured polygon*)
-
 val fade : Color.t -> float -> Color.t
 (** [fade color alpha] Get color with alpha applied, alpha goes from 0.0f to 1.0f*)
 
@@ -2403,6 +2401,15 @@ val color_to_hsv : Color.t -> Vector3.t
 
 val color_from_hsv : float -> float -> float -> Color.t
 (** [color_from_hsv hue saturation value] Get a Color from HSV values, hue [0..360], saturation/value [0..1]*)
+
+val color_tint : Color.t -> Color.t -> Color.t
+(** [color_tint color tint] Get color multiplied with another color*)
+
+val color_brightness : Color.t -> float -> Color.t
+(** [color_brightness color factor] Get color with brightness correction, brightness factor goes from -1.0f to 1.0f*)
+
+val color_contrast : Color.t -> float -> Color.t
+(** [color_contrast color contrast] Get color with contrast correction, contrast values between -1.0f and 1.0f*)
 
 val color_alpha : Color.t -> float -> Color.t
 (** [color_alpha color alpha] Get color with alpha applied, alpha goes from 0.0f to 1.0f*)
@@ -2440,24 +2447,27 @@ val load_font_from_image : Image.t -> Color.t -> int -> Font.t
 
 val load_font_from_memory :
   string -> string -> int -> int -> int ptr -> int -> Font.t
-(** [load_font_from_memory file_type file_data data_size font_size font_chars chars_count] Load font from memory buffer, fileType refers to extension: i.e. ".ttf"*)
+(** [load_font_from_memory file_type file_data data_size font_size font_chars glyph_count] Load font from memory buffer, fileType refers to extension: i.e. '.ttf'*)
+
+val is_font_ready : Font.t -> bool
+(** [is_font_ready font] Check if a font is ready*)
 
 val load_font_data :
   string -> int -> int -> int ptr -> int -> int -> GlyphInfo.t ptr
-(** [load_font_data file_data data_size font_size font_chars chars_count type] Load font data for further use*)
+(** [load_font_data file_data data_size font_size font_chars glyph_count type] Load font data for further use*)
 
 val gen_image_font_atlas :
   GlyphInfo.t ptr -> Rectangle.t ptr ptr -> int -> int -> int -> int -> Image.t
-(** [gen_image_font_atlas chars recs chars_count font_size padding pack_method] Generate image font atlas using chars info*)
+(** [gen_image_font_atlas chars recs glyph_count font_size padding pack_method] Generate image font atlas using chars info*)
 
 val unload_font_data : GlyphInfo.t ptr -> int -> unit
 (** [unload_font_data chars glyph_count] Unload font chars info data (RAM)*)
 
 val unload_font : Font.t -> unit
-(** [unload_font font] Unload Font from GPU memory (VRAM)*)
+(** [unload_font font] Unload font from GPU memory (VRAM)*)
 
 val export_font_as_code : Font.t -> string -> bool
-(** [export_font_as_code font filename] Export font as code file, returns true on success*)
+(** [export_font_as_code font file_name] Export font as code file, returns true on success*)
 
 val draw_fps : int -> int -> unit
 (** [draw_fps pos_x pos_y] Draw current FPS*)
@@ -2486,7 +2496,7 @@ val draw_text_codepoint : Font.t -> int -> Vector2.t -> float -> Color.t -> unit
 
 val draw_text_codepoints :
   Font.t -> int CArray.t -> Vector2.t -> float -> float -> Color.t -> unit
-(** [draw_text_codepoints font codepoints position fontsize spacing tint] Draw multiple character (codepoint)*)
+(** [draw_text_codepoints font codepoints position font_size spacing tint] Draw multiple character (codepoint)*)
 
 (** {3 Text misc. functions} *)
 
@@ -2505,6 +2515,12 @@ val get_glyph_info : Font.t -> int -> GlyphInfo.t
 val get_glyph_atlas_rec : Font.t -> int -> Rectangle.t
 (** [get_glyph_atlas_rec font codepoint] Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found*)
 
+val load_utf8 : int ptr -> int -> char ptr
+(** [load_utf8 codepoints length] Load UTF-8 text encoded from codepoints array*)
+
+val unload_utf8 : char ptr -> unit
+(** [unload_utf8 text] Unload UTF-8 text encoded from codepoints array*)
+
 val load_codepoints : string -> int ptr -> int ptr
 (** [load_codepoints text count] Load all codepoints from a UTF-8 text string, codepoints count returned by parameter*)
 
@@ -2515,13 +2531,16 @@ val get_codepoint_count : string -> int
 (** [get_codepoint_count text] Get total number of codepoints in a UTF-8 encoded string*)
 
 val get_codepoint : string -> int ptr -> int
-(** [get_codepoint text bytes_processed] Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure*)
+(** [get_codepoint text codepoint_size] Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure*)
+
+val get_codepoint_next : string -> int ptr -> int
+(** [get_codepoint_next text codepoint_size] Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure*)
+
+val get_codepoint_previous : string -> int ptr -> int
+(** [get_codepoint_previous text codepoint_size] Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure*)
 
 val codepoint_to_utf8 : int -> int ptr -> string
-(** [codepoint_to_utf8 codepoint byte_size] Encode one codepoint into UTF-8 byte array (array length returned as parameter)*)
-
-val text_codepoints_to_utf8 : int ptr -> int -> string
-(** [text_codepoints_to_utf8 codepoints length] Encode text as codepoints array into UTF-8 text string (WARNING: memory must be freed!)*)
+(** [codepoint_to_utf8 codepoint utf8_size] Encode one codepoint into UTF-8 byte array (array length returned as parameter)*)
 
 val text_copy : string -> string -> int
 (** [text_copy dst src] Copy one string to another, returns bytes copied*)
@@ -2530,7 +2549,7 @@ val text_is_equal : string -> string -> bool
 (** [text_is_equal text1 text2] Check if two text string are equal*)
 
 val text_length : string -> int
-(** [text_length text] Get text length, checks for ' 0' ending*)
+(** [text_length text] Get text length, checks for '\0' ending*)
 
 val text_subtext : string -> int -> int -> string
 (** [text_subtext text position length] Get a piece of a text string*)
@@ -2590,21 +2609,6 @@ val draw_cube_wires : Vector3.t -> float -> float -> float -> Color.t -> unit
 val draw_cube_wires_v : Vector3.t -> Vector3.t -> Color.t -> unit
 (** [draw_cube_wires_v position size color] Draw cube wires (Vector version)*)
 
-val draw_cube_texture :
-  Texture.t -> Vector3.t -> float -> float -> float -> Color.t -> unit
-(** [draw_cube_texture texture position width height length color] Draw cube textured*)
-
-val draw_cube_texture_rec :
-  Texture.t ->
-  Rectangle.t ->
-  Vector3.t ->
-  float ->
-  float ->
-  float ->
-  Color.t ->
-  unit
-(** [draw_cube_texture_rec texture source position width height length color] Draw cube with a region of a texture*)
-
 val draw_sphere : Vector3.t -> float -> Color.t -> unit
 (** [draw_sphere center_pos radius color] Draw sphere*)
 
@@ -2630,6 +2634,14 @@ val draw_cylinder_wires_ex :
   Vector3.t -> Vector3.t -> float -> float -> int -> Color.t -> unit
 (** [draw_cylinder_wires_ex start_pos end_pos start_radius end_radius sides color] Draw a cylinder wires with base at startPos and top at endPos*)
 
+val draw_capsule :
+  Vector3.t -> Vector3.t -> float -> int -> int -> Color.t -> unit
+(** [draw_capsule start_pos end_pos radius slices rings color] Draw a capsule with the center of its sphere caps at startPos and endPos*)
+
+val draw_capsule_wires :
+  Vector3.t -> Vector3.t -> float -> int -> int -> Color.t -> unit
+(** [draw_capsule_wires start_pos end_pos radius slices rings color] Draw capsule wireframe with the center of its sphere caps at startPos and endPos*)
+
 val draw_plane : Vector3.t -> Vector2.t -> Color.t -> unit
 (** [draw_plane center_pos size color] Draw a plane XZ*)
 
@@ -2647,11 +2659,11 @@ val load_model : string -> Model.t
 val load_model_from_mesh : Mesh.t -> Model.t
 (** [load_model_from_mesh mesh] Load model from generated mesh (default material)*)
 
+val is_model_ready : Model.t -> bool
+(** [is_model_ready model] Check if a model is ready*)
+
 val unload_model : Model.t -> unit
 (** [unload_model model] Unload model (including meshes) from memory (RAM and/or VRAM)*)
-
-val unload_model_keep_meshes : Model.t -> unit
-(** [unload_model_keep_meshes model] Unload model (but not meshes) from memory (RAM and/or VRAM)*)
 
 val get_model_bounding_box : Model.t -> BoundingBox.t
 (** [get_model_bounding_box model] Compute model bounding box limits (considers all meshes)*)
@@ -2765,6 +2777,9 @@ val load_materials : string -> int ptr -> Material.t ptr
 val load_material_default : unit -> Material.t
 (** [load_material_default ()] Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)*)
 
+val is_material_ready : Material.t -> bool
+(** [is_material_ready material] Check if a material is ready*)
+
 val unload_material : Material.t -> unit
 (** [unload_material material] Unload material from GPU memory (VRAM)*)
 
@@ -2837,13 +2852,19 @@ val load_wave : string -> Wave.t
 (** [load_wave file_name] Load wave data from file*)
 
 val load_wave_from_memory : string -> string -> int -> Wave.t
-(** [load_wave_from_memory file_type file_data data_size] Load wave from memory buffer, fileType refers to extension: i.e. ".wav"*)
+(** [load_wave_from_memory file_type file_data data_size] Load wave from memory buffer, fileType refers to extension: i.e. '.wav'*)
+
+val is_wave_ready : Wave.t -> bool
+(** [is_wave_ready wave] Checks if wave data is ready*)
 
 val load_sound : string -> Sound.t
 (** [load_sound file_name] Load sound from file*)
 
 val load_sound_from_wave : Wave.t -> Sound.t
 (** [load_sound_from_wave wave] Load sound from wave data*)
+
+val is_sound_ready : Sound.t -> bool
+(** [is_sound_ready sound] Checks if a sound is ready*)
 
 val update_sound : Sound.t -> unit ptr -> int -> unit
 (** [update_sound sound data sample_count] Update sound buffer with new data*)
@@ -2874,15 +2895,6 @@ val pause_sound : Sound.t -> unit
 val resume_sound : Sound.t -> unit
 (** [resume_sound sound] Resume a paused sound*)
 
-val play_sound_multi : Sound.t -> unit
-(** [play_sound_multi sound] Play a sound (using multichannel buffer pool)*)
-
-val stop_sound_multi : unit -> unit
-(** [stop_sound_multi ()] Stop any sound playing (using multichannel buffer pool)*)
-
-val get_sounds_playing : unit -> int
-(** [get_sounds_playing ()] Get number of sounds playing in the multichannel*)
-
 val is_sound_playing : Sound.t -> bool
 (** [is_sound_playing sound] Check if a sound is currently playing*)
 
@@ -2905,7 +2917,7 @@ val wave_format : Wave.t ptr -> int -> int -> int -> unit
 (** [wave_format wave sample_rate sample_size channels] Convert wave data to desired format*)
 
 val load_wave_samples : Wave.t -> float ptr
-(** [load_wave_samples wave] Load samples data from wave as a floats array*)
+(** [load_wave_samples wave] Load samples data from wave as a 32bit float data array*)
 
 val unload_wave_samples : float ptr -> unit
 (** [unload_wave_samples samples] Unload samples data loaded with LoadWaveSamples()*)
@@ -2917,6 +2929,9 @@ val load_music_stream : string -> Music.t
 
 val load_music_stream_from_memory : string -> string -> int -> Music.t
 (** [load_music_stream_from_memory file_type data data_size] Load music stream from data*)
+
+val is_music_ready : Music.t -> bool
+(** [is_music_ready music] Checks if a music stream is ready*)
 
 val unload_music_stream : Music.t -> unit
 (** [unload_music_stream music] Unload music stream*)
@@ -2962,6 +2977,9 @@ val load_audio_stream : int -> int -> int -> AudioStream.t
 
 (** {3 AudioStream management functions} *)
 
+val is_audio_stream_ready : AudioStream.t -> bool
+(** [is_audio_stream_ready stream] Checks if an audio stream is ready*)
+
 val unload_audio_stream : AudioStream.t -> unit
 (** [unload_audio_stream stream] Unload audio stream and free memory*)
 
@@ -2993,7 +3011,7 @@ val set_audio_stream_pitch : AudioStream.t -> float -> unit
 (** [set_audio_stream_pitch stream pitch] Set pitch for audio stream (1.0 is base level)*)
 
 val set_audio_stream_pan : AudioStream.t -> float -> unit
-(** [set_audio_stream_pan steam pan] Set pan for audio stream (0.5 is centered)*)
+(** [set_audio_stream_pan stream pan] Set pan for audio stream (0.5 is centered)*)
 
 val set_audio_stream_buffer_size_default : int -> unit
 (** [set_audio_stream_buffer_size_default size] Default size for new audio streams*)

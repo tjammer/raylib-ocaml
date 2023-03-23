@@ -38,7 +38,7 @@ let setup () =
               255;
         })
   in
-  set_camera_mode camera CameraMode.First_person;
+
   set_target_fps 60;
   (camera, columns)
 
@@ -64,7 +64,7 @@ let draw_all camera columns =
 let rec loop (camera, columns) =
   let open Raylib in
   if window_should_close () then close_window ()
-  else update_camera (addr camera);
+  else update_camera (addr camera) CameraMode.First_person;
   draw_all camera columns;
   loop (camera, columns)
 
