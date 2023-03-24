@@ -38,6 +38,7 @@ let setup () =
   unload_texture tex_hdr;
   unload_shader shdr_cubemap;
 
+  disable_cursor ();
   set_target_fps 60;
   (camera, skybox)
 
