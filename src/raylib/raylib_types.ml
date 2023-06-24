@@ -242,6 +242,16 @@ module Texture = struct
   type t = t' ctyp
 
   let t = Texture.t
+
+  let create id width height mipmaps format =
+    let texture = make t in
+    setf texture Texture.id id;
+    setf texture Texture.width width;
+    setf texture Texture.height height;
+    setf texture Texture.mipmaps mipmaps;
+    setf texture Texture.format (PixelFormat.to_int format);
+    texture
+
   let id texture = getf texture Texture.id
   let width texture = getf texture Texture.width
   let height texture = getf texture Texture.height

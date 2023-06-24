@@ -745,6 +745,9 @@ module Texture : sig
 
   val t : t Ctypes.typ
 
+  val create : Unsigned.uint -> int -> int -> int -> PixelFormat.t -> t
+  (** [create id width height mipmaps format] *)
+
   val id : t -> Unsigned.uint
   (** OpenGL texture id *)
 
