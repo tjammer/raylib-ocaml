@@ -1808,7 +1808,7 @@ val set_exit_key : Key.t -> unit
 val get_key_pressed : unit -> Key.t
 (** [get_key_pressed ()] Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty*)
 
-val get_char_pressed : unit -> Key.t
+val get_char_pressed : unit -> Uchar.t
 (** [get_char_pressed ()] Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty*)
 
 val is_gamepad_available : int -> bool

@@ -324,7 +324,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   let is_key_up = foreign "IsKeyUp" (Key.t @-> returning bool)
   let set_exit_key = foreign "SetExitKey" (Key.t @-> returning void)
   let get_key_pressed = foreign "GetKeyPressed" (void @-> returning Key.t)
-  let get_char_pressed = foreign "GetCharPressed" (void @-> returning Key.t)
+  let _get_char_pressed = foreign "GetCharPressed" (void @-> returning int)
 
   let is_gamepad_available =
     foreign "IsGamepadAvailable" (int @-> returning bool)

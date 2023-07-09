@@ -45,3 +45,5 @@ let draw_text_codepoints font codepoints pos size spacing tint =
   let count = CArray.length codepoints in
   _draw_text_codepoints font (CArray.start codepoints) count pos size spacing
     tint
+
+let get_char_pressed () = _get_char_pressed () |> Uchar.of_int
