@@ -1,3 +1,9 @@
+1.1.0 (2023-07-16)
+------------------
+
+* Add ctor for Texture struct
+* Fix return type of get_char_pressed
+
 1.0.0 (2023-03-24) 
 ------------------
 
