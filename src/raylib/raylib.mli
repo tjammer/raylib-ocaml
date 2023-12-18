@@ -2,14 +2,10 @@
 
   Basic types and utility functions shared by the following modules *)
 
-(* Normally the ctypes show up as
- * ('a, ['Struct]) Ctypes_static.structured.
- * To shorten this a bit we make it private. Ideally it would be
- * a completely abstract type but the gui bindings need to be able to
- * handle this as well.
- * If anyone reading this has an idea an how to improve this,
- * I'd be happy *)
-type 'a ctyp = private 'a Ctypes.structure
+(* Ideally, the ctypes types would be completely abstract but both the gui
+   bindings and the rlgl module need to be able to access them directly. If
+   anyone reading this has an idea an how to improve this, I'd be happy *)
+type 'a ctyp = 'a Ctypes.structure
 type 'a ptr = 'a Ctypes.ptr
 
 val to_ctyp : 'a Ctypes.structure -> 'a ctyp
@@ -565,7 +561,7 @@ and Vector4 : sig
 end
 
 and Matrix : sig
-  type t'
+  type t' = Raylib_fixed_types.Matrix.t
   type t = t' ctyp
 
   val t : t Ctypes.typ
