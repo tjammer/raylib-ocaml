@@ -1,3 +1,9 @@
+1.2.0 (2024-01-11)
+------------------
+
+* Upgrade raylib to 5.0.0
+* Make Raylib.Matrix.t usable with Rlgl
+
 1.1.0 (2023-07-16)
 ------------------
 
