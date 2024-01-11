@@ -34,6 +34,7 @@ module ConfigFlags : sig
     | Window_transparent
     | Window_highdpi
     | Window_mouse_passthrough
+    | Borderless_windowed_mode
     | Msaa_4x_hint
     | Interlaced_hint
 
@@ -308,6 +309,9 @@ module PixelFormat : sig
     | Uncompressed_r32
     | Uncompressed_r32g32b32
     | Uncompressed_r32g32b32a32
+    | Uncompressed_r16
+    | Uncompressed_r16g16b16
+    | Uncompressed_r16g16b16a16
     | Compressed_dxt1_rgb
     | Compressed_dxt1_rgba
     | Compressed_dxt3_rgba
@@ -1204,9 +1208,6 @@ module Wave : sig
 
   val t : t Ctypes.typ
 
-  val frame_count : t -> Unsigned.uint
-  (** Total number of frames (considering channels) *)
-
   val sample_rate : t -> Unsigned.uint
   (** Frequency (samples per second) *)
 
@@ -1216,7 +1217,6 @@ module Wave : sig
   val channels : t -> Unsigned.uint
   (** Number of channels (1-mono, 2-stereo, ...) *)
 
-  val set_frame_count : t -> Unsigned.uint -> unit
   val set_sample_rate : t -> Unsigned.uint -> unit
   val set_sample_size : t -> Unsigned.uint -> unit
   val set_channels : t -> Unsigned.uint -> unit
@@ -1251,11 +1251,7 @@ module Sound : sig
   val stream : t -> AudioStream.t
   (** Audio stream *)
 
-  val frame_count : t -> Unsigned.uint
-  (** Frame count *)
-
   val set_stream : t -> AudioStream.t -> unit
-  val set_frame_count : t -> Unsigned.uint -> unit
 end
 
 module Music : sig
@@ -1267,9 +1263,6 @@ module Music : sig
   val stream : t -> AudioStream.t
   (** Audio stream *)
 
-  val frame_count : t -> Unsigned.uint
-  (** Frame count *)
-
   val looping : t -> bool
   (** Music looping enable *)
 
@@ -1277,7 +1270,6 @@ module Music : sig
   (** Type of music context (audio filetype) *)
 
   val set_stream : t -> AudioStream.t -> unit
-  val set_frame_count : t -> Unsigned.uint -> unit
   val set_looping : t -> bool -> unit
   val set_ctx_type : t -> int -> unit
 end
@@ -1379,16 +1371,30 @@ module FilePathList : sig
   val files : t -> string list
 end
 
+module AutomationEvent : sig
+  type t'
+  type t = t' ctyp
+
+  val t : t Ctypes.typ
+end
+
+module AutomationEventList : sig
+  type t'
+  type t = t' ctyp
+
+  val t : t Ctypes.typ
+end
+
 (** {1 Functions}*)
 
 val init_window : int -> int -> string -> unit
 (** [init_window width height title] Initialize window and OpenGL context*)
 
-val window_should_close : unit -> bool
-(** [window_should_close ()] Check if KEY_ESCAPE pressed or Close icon pressed*)
-
 val close_window : unit -> unit
 (** [close_window ()] Close window and unload OpenGL context*)
+
+val window_should_close : unit -> bool
+(** [window_should_close ()] Check if application should close (KEY_ESCAPE pressed or windows close icon clicked)*)
 
 val is_window_ready : unit -> bool
 (** [is_window_ready ()] Check if window has been initialized successfully*)
@@ -1415,13 +1421,16 @@ val is_window_state : ConfigFlags.t -> bool
 (** [is_window_state flag] Check if one specific window flag is enabled*)
 
 val set_window_state : ConfigFlags.t list -> unit
-(** [set_window_state flags] Set window configuration state using flags*)
+(** [set_window_state flags] Set window configuration state using flags (only PLATFORM_DESKTOP)*)
 
 val clear_window_state : ConfigFlags.t list -> unit
 (** [clear_window_state flags] Clear window configuration state flags*)
 
 val toggle_fullscreen : unit -> unit
 (** [toggle_fullscreen ()] Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)*)
+
+val toggle_borderless_windowed : unit -> unit
+(** [toggle_borderless_windowed ()] Toggle window state: borderless windowed (only PLATFORM_DESKTOP)*)
 
 val maximize_window : unit -> unit
 (** [maximize_window ()] Set window state: maximized, if resizable (only PLATFORM_DESKTOP)*)
@@ -1439,22 +1448,28 @@ val set_window_icons : Image.t ptr -> int -> unit
 (** [set_window_icons images count] Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)*)
 
 val set_window_title : string -> unit
-(** [set_window_title title] Set title for window (only PLATFORM_DESKTOP)*)
+(** [set_window_title title] Set title for window (only PLATFORM_DESKTOP and PLATFORM_WEB)*)
 
 val set_window_position : int -> int -> unit
 (** [set_window_position x y] Set window position on screen (only PLATFORM_DESKTOP)*)
 
 val set_window_monitor : int -> unit
-(** [set_window_monitor monitor] Set monitor for the current window (fullscreen mode)*)
+(** [set_window_monitor monitor] Set monitor for the current window*)
 
 val set_window_min_size : int -> int -> unit
 (** [set_window_min_size width height] Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)*)
+
+val set_window_max_size : int -> int -> unit
+(** [set_window_max_size width height] Set window maximum dimensions (for FLAG_WINDOW_RESIZABLE)*)
 
 val set_window_size : int -> int -> unit
 (** [set_window_size width height] Set window dimensions*)
 
 val set_window_opacity : float -> unit
 (** [set_window_opacity opacity] Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)*)
+
+val set_window_focused : unit -> unit
+(** [set_window_focused ()] Set window focused (only PLATFORM_DESKTOP)*)
 
 val get_window_handle : unit -> unit ptr option
 (** [get_window_handle ()] Get native window handle*)
@@ -1502,7 +1517,7 @@ val get_window_scale_dpi : unit -> Vector2.t
 (** [get_window_scale_dpi ()] Get window scale DPI factor*)
 
 val get_monitor_name : int -> string
-(** [get_monitor_name monitor] Get the human-readable, UTF-8 encoded name of the primary monitor*)
+(** [get_monitor_name monitor] Get the human-readable, UTF-8 encoded name of the specified monitor*)
 
 val set_clipboard_text : string -> unit
 (** [set_clipboard_text text] Set clipboard text content*)
@@ -1515,15 +1530,6 @@ val enable_event_waiting : unit -> unit
 
 val disable_event_waiting : unit -> unit
 (** [disable_event_waiting ()] Disable waiting for events on EndDrawing(), automatic events polling*)
-
-val swap_screen_buffer : unit -> unit
-(** [swap_screen_buffer ()] Swap back buffer with front buffer (screen drawing)*)
-
-val poll_input_events : unit -> unit
-(** [poll_input_events ()] Register all input events*)
-
-val wait_time : float -> unit
-(** [wait_time seconds] Wait for some time (halt program execution)*)
 
 (** {3 Cursor-related functions} *)
 
@@ -1660,20 +1666,29 @@ val get_world_to_screen_2d : Vector2.t -> Camera2D.t -> Vector2.t
 val set_target_fps : int -> unit
 (** [set_target_fps fps] Set target FPS (maximum)*)
 
-val get_fps : unit -> int
-(** [get_fps ()] Get current FPS*)
-
 val get_frame_time : unit -> float
 (** [get_frame_time ()] Get time in seconds for last frame drawn (delta time)*)
 
 val get_time : unit -> float
 (** [get_time ()] Get elapsed time in seconds since InitWindow()*)
 
-val get_random_value : int -> int -> int
-(** [get_random_value min max] Get a random value between min and max (both included)*)
+val get_fps : unit -> int
+(** [get_fps ()] Get current FPS*)
+
+val swap_screen_buffer : unit -> unit
+(** [swap_screen_buffer ()] Swap back buffer with front buffer (screen drawing)*)
+
+val poll_input_events : unit -> unit
+(** [poll_input_events ()] Register all input events*)
+
+val wait_time : float -> unit
+(** [wait_time seconds] Wait for some time (halt program execution)*)
 
 val set_random_seed : Unsigned.uint -> unit
 (** [set_random_seed seed] Set the seed for the random number generator*)
+
+val get_random_value : int -> int -> int
+(** [get_random_value min max] Get a random value between min and max (both included)*)
 
 val take_screenshot : string -> unit
 (** [take_screenshot file_name] Takes a screenshot of current screen (filename extension defines format)*)
@@ -1681,8 +1696,11 @@ val take_screenshot : string -> unit
 val set_config_flags : ConfigFlags.t list -> unit
 (** [set_config_flags flags] Setup init configuration flags (view FLAGS)*)
 
+val open_url : string -> unit
+(** [open_url url] Open URL with default system browser (if available)*)
+
 val trace_log : int -> string -> unit
-(** [trace_log log_level text ] Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR)*)
+(** [trace_log log_level text args] Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)*)
 
 val set_trace_log_level : TraceLogLevel.t -> unit
 (** [set_trace_log_level log_level] Set the current threshold (minimum) log level*)
@@ -1696,11 +1714,8 @@ val mem_realloc : unit ptr -> int -> unit ptr
 val mem_free : unit ptr -> unit
 (** [mem_free ptr] Internal memory free*)
 
-val open_url : string -> unit
-(** [open_url url] Open URL with default system browser (if available)*)
-
 val load_file_data : string -> Unsigned.uchar CArray.t
-(** [load_file_data file_name bytes_read] Load file data as byte array (read)*)
+(** [load_file_data file_name data_size] Load file data as byte array (read)*)
 
 val unload_file_data : string -> unit
 (** [unload_file_data data] Unload file data allocated by LoadFileData()*)
@@ -1751,7 +1766,7 @@ val get_working_directory : unit -> string
 (** [get_working_directory ()] Get current working directory (uses static string)*)
 
 val get_application_directory : unit -> string
-(** [get_application_directory ()] Get the directory if the running application (uses static string)*)
+(** [get_application_directory ()] Get the directory of the running application (uses static string)*)
 
 val change_directory : string -> bool
 (** [change_directory dir] Change working directory, return true on success*)
@@ -1786,8 +1801,35 @@ val compress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
 val decompress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
 (** [decompress_data comp_data comp_data_length data_length] Decompress data (DEFLATE algorithm)*)
 
+val load_automation_event_list : string -> AutomationEventList.t
+(** [load_automation_event_list file_name] Load automation events list from file, NULL for empty list, capacity = MAX_AUTOMATION_EVENTS*)
+
+val unload_automation_event_list : AutomationEventList.t ptr -> unit
+(** [unload_automation_event_list list] Unload automation events list from file*)
+
+val export_automation_event_list : AutomationEventList.t -> string -> bool
+(** [export_automation_event_list list file_name] Export automation events list as text file*)
+
+val set_automation_event_list : AutomationEventList.t ptr -> unit
+(** [set_automation_event_list list] Set automation event list to record to*)
+
+val set_automation_event_base_frame : int -> unit
+(** [set_automation_event_base_frame frame] Set automation event internal base frame to start recording*)
+
+val start_automation_event_recording : unit -> unit
+(** [start_automation_event_recording ()] Start recording automation events (AutomationEventList must be set)*)
+
+val stop_automation_event_recording : unit -> unit
+(** [stop_automation_event_recording ()] Stop recording automation events*)
+
+val play_automation_event : AutomationEvent.t -> unit
+(** [play_automation_event event] Play a recorded automation event*)
+
 val is_key_pressed : Key.t -> bool
 (** [is_key_pressed key] Check if a key has been pressed once*)
+
+val is_key_pressed_repeat : Key.t -> bool
+(** [is_key_pressed_repeat key] Check if a key has been pressed again (Only PLATFORM_DESKTOP)*)
 
 val is_key_down : Key.t -> bool
 (** [is_key_down key] Check if a key is being pressed*)
@@ -1798,14 +1840,14 @@ val is_key_released : Key.t -> bool
 val is_key_up : Key.t -> bool
 (** [is_key_up key] Check if a key is NOT being pressed*)
 
-val set_exit_key : Key.t -> unit
-(** [set_exit_key key] Set a custom key to exit program (default is ESC)*)
-
 val get_key_pressed : unit -> Key.t
 (** [get_key_pressed ()] Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty*)
 
 val get_char_pressed : unit -> Uchar.t
 (** [get_char_pressed ()] Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty*)
+
+val set_exit_key : Key.t -> unit
+(** [set_exit_key key] Set a custom key to exit program (default is ESC)*)
 
 val is_gamepad_available : int -> bool
 (** [is_gamepad_available gamepad] Check if a gamepad is available*)
@@ -1941,21 +1983,13 @@ val draw_line_v : Vector2.t -> Vector2.t -> Color.t -> unit
 (** [draw_line_v start_pos end_pos color] Draw a line (Vector version)*)
 
 val draw_line_ex : Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_line_ex start_pos end_pos thick color] Draw a line defining thickness*)
-
-val draw_line_bezier : Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_line_bezier start_pos end_pos thick color] Draw a line using cubic-bezier curves in-out*)
-
-val draw_line_bezier_quad :
-  Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_line_bezier_quad start_pos end_pos control_pos thick color] Draw line using quadratic bezier curves with a control point*)
-
-val draw_line_bezier_cubic :
-  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_line_bezier_cubic start_pos end_pos start_control_pos end_control_pos thick color] Draw line using cubic bezier curves with 2 control points*)
+(** [draw_line_ex start_pos end_pos thick color] Draw a line (using triangles/quads)*)
 
 val draw_line_strip : Vector2.t ptr -> int -> Color.t -> unit
-(** [draw_line_strip points point_count color] Draw lines sequence*)
+(** [draw_line_strip points point_count color] Draw lines sequence (using gl lines)*)
+
+val draw_line_bezier : Vector2.t -> Vector2.t -> float -> Color.t -> unit
+(** [draw_line_bezier start_pos end_pos thick color] Draw line segment cubic-bezier in-out interpolation*)
 
 val draw_circle : int -> int -> float -> Color.t -> unit
 (** [draw_circle center_x center_y radius color] Draw a color-filled circle*)
@@ -1976,6 +2010,9 @@ val draw_circle_v : Vector2.t -> float -> Color.t -> unit
 
 val draw_circle_lines : int -> int -> float -> Color.t -> unit
 (** [draw_circle_lines center_x center_y radius color] Draw circle outline*)
+
+val draw_circle_lines_v : Vector2.t -> float -> Color.t -> unit
+(** [draw_circle_lines_v center radius color] Draw circle outline (Vector version)*)
 
 val draw_ellipse : int -> int -> float -> float -> Color.t -> unit
 (** [draw_ellipse center_x center_y radius_h radius_v color] Draw ellipse*)
@@ -2050,6 +2087,61 @@ val draw_poly_lines_ex :
   Vector2.t -> int -> float -> float -> float -> Color.t -> unit
 (** [draw_poly_lines_ex center sides radius rotation line_thick color] Draw a polygon outline of n sides with extended parameters*)
 
+val draw_spline_linear : Vector2.t ptr -> int -> float -> Color.t -> unit
+(** [draw_spline_linear points point_count thick color] Draw spline: Linear, minimum 2 points*)
+
+val draw_spline_basis : Vector2.t ptr -> int -> float -> Color.t -> unit
+(** [draw_spline_basis points point_count thick color] Draw spline: B-Spline, minimum 4 points*)
+
+val draw_spline_catmull_rom : Vector2.t ptr -> int -> float -> Color.t -> unit
+(** [draw_spline_catmull_rom points point_count thick color] Draw spline: Catmull-Rom, minimum 4 points*)
+
+val draw_spline_bezier_quadratic :
+  Vector2.t ptr -> int -> float -> Color.t -> unit
+(** [draw_spline_bezier_quadratic points point_count thick color] Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]*)
+
+val draw_spline_bezier_cubic : Vector2.t ptr -> int -> float -> Color.t -> unit
+(** [draw_spline_bezier_cubic points point_count thick color] Draw spline: Cubic Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]*)
+
+val draw_spline_segment_linear :
+  Vector2.t -> Vector2.t -> float -> Color.t -> unit
+(** [draw_spline_segment_linear p1 p2 thick color] Draw spline segment: Linear, 2 points*)
+
+val draw_spline_segment_basis :
+  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
+(** [draw_spline_segment_basis p1 p2 p3 p4 thick color] Draw spline segment: B-Spline, 4 points*)
+
+val draw_spline_segment_catmull_rom :
+  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
+(** [draw_spline_segment_catmull_rom p1 p2 p3 p4 thick color] Draw spline segment: Catmull-Rom, 4 points*)
+
+val draw_spline_segment_bezier_quadratic :
+  Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
+(** [draw_spline_segment_bezier_quadratic p1 c2 p3 thick color] Draw spline segment: Quadratic Bezier, 2 points, 1 control point*)
+
+val draw_spline_segment_bezier_cubic :
+  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
+(** [draw_spline_segment_bezier_cubic p1 c2 c3 p4 thick color] Draw spline segment: Cubic Bezier, 2 points, 2 control points*)
+
+val get_spline_point_linear : Vector2.t -> Vector2.t -> float -> Vector2.t
+(** [get_spline_point_linear start_pos end_pos t] Get (evaluate) spline point: Linear*)
+
+val get_spline_point_basis :
+  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Vector2.t
+(** [get_spline_point_basis p1 p2 p3 p4 t] Get (evaluate) spline point: B-Spline*)
+
+val get_spline_point_catmull_rom :
+  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Vector2.t
+(** [get_spline_point_catmull_rom p1 p2 p3 p4 t] Get (evaluate) spline point: Catmull-Rom*)
+
+val get_spline_point_bezier_quad :
+  Vector2.t -> Vector2.t -> Vector2.t -> float -> Vector2.t
+(** [get_spline_point_bezier_quad p1 c2 p3 t] Get (evaluate) spline point: Quadratic Bezier*)
+
+val get_spline_point_bezier_cubic :
+  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Vector2.t
+(** [get_spline_point_bezier_cubic p1 c2 c3 p4 t] Get (evaluate) spline point: Cubic Bezier*)
+
 (** {3 Basic shapes collision detection functions} *)
 
 val check_collision_recs : Rectangle.t -> Rectangle.t -> bool
@@ -2091,6 +2183,9 @@ val load_image : string -> Image.t
 val load_image_raw : string -> int -> int -> PixelFormat.t -> int -> Image.t
 (** [load_image_raw file_name width height format header_size] Load image from RAW file data*)
 
+val load_image_svg : string -> int -> int -> Image.t
+(** [load_image_svg file_name_or_string width height] Load image from SVG file data or string with specified size*)
+
 val load_image_anim : string -> int ptr -> Image.t
 (** [load_image_anim file_name frames] Load image sequence from file (frames appended to image.data)*)
 
@@ -2112,21 +2207,26 @@ val unload_image : Image.t -> unit
 val export_image : Image.t -> string -> bool
 (** [export_image image file_name] Export image data to file, returns true on success*)
 
+val export_image_to_memory : Image.t -> string -> int ptr -> string
+(** [export_image_to_memory image file_type file_size] Export image to memory buffer*)
+
 val export_image_as_code : Image.t -> string -> bool
 (** [export_image_as_code image file_name] Export image as code file defining an array of bytes, returns true on success*)
 
 val gen_image_color : int -> int -> Color.t -> Image.t
 (** [gen_image_color width height color] Generate image: plain color*)
 
-val gen_image_gradient_v : int -> int -> Color.t -> Color.t -> Image.t
-(** [gen_image_gradient_v width height top bottom] Generate image: vertical gradient*)
-
-val gen_image_gradient_h : int -> int -> Color.t -> Color.t -> Image.t
-(** [gen_image_gradient_h width height left right] Generate image: horizontal gradient*)
+val gen_image_gradient_linear :
+  int -> int -> int -> Color.t -> Color.t -> Image.t
+(** [gen_image_gradient_linear width height direction start end] Generate image: linear gradient, direction in degrees [0..360], 0=Vertical gradient*)
 
 val gen_image_gradient_radial :
   int -> int -> float -> Color.t -> Color.t -> Image.t
 (** [gen_image_gradient_radial width height density inner outer] Generate image: radial gradient*)
+
+val gen_image_gradient_square :
+  int -> int -> float -> Color.t -> Color.t -> Image.t
+(** [gen_image_gradient_square width height density inner outer] Generate image: square gradient*)
 
 val gen_image_checked :
   int -> int -> int -> int -> Color.t -> Color.t -> Image.t
@@ -2203,6 +2303,9 @@ val image_flip_vertical : Image.t ptr -> unit
 
 val image_flip_horizontal : Image.t ptr -> unit
 (** [image_flip_horizontal image] Flip image horizontally*)
+
+val image_rotate : Image.t ptr -> int -> unit
+(** [image_rotate image degrees] Rotate image by input angle in degrees (-359 to 359)*)
 
 val image_rotate_cw : Image.t ptr -> unit
 (** [image_rotate_cw image] Rotate image clockwise 90deg*)
@@ -2439,21 +2542,21 @@ val load_font : string -> Font.t
 (** [load_font file_name] Load font from file into GPU memory (VRAM)*)
 
 val load_font_ex : string -> int -> int CArray.t option -> Font.t
-(** [load_font_ex file_name font_size font_chars glyph_count] Load font from file with extended parameters*)
+(** [load_font_ex file_name font_size codepoints codepoint_count] Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character setFont*)
 
 val load_font_from_image : Image.t -> Color.t -> int -> Font.t
 (** [load_font_from_image image key first_char] Load font from Image (XNA style)*)
 
 val load_font_from_memory :
   string -> string -> int -> int -> int ptr -> int -> Font.t
-(** [load_font_from_memory file_type file_data data_size font_size font_chars glyph_count] Load font from memory buffer, fileType refers to extension: i.e. '.ttf'*)
+(** [load_font_from_memory file_type file_data data_size font_size codepoints codepoint_count] Load font from memory buffer, fileType refers to extension: i.e. '.ttf'*)
 
 val is_font_ready : Font.t -> bool
 (** [is_font_ready font] Check if a font is ready*)
 
 val load_font_data :
   string -> int -> int -> int ptr -> int -> int -> GlyphInfo.t ptr
-(** [load_font_data file_data data_size font_size font_chars glyph_count type] Load font data for further use*)
+(** [load_font_data file_data data_size font_size codepoints codepoint_count type] Load font data for further use*)
 
 val gen_image_font_atlas :
   GlyphInfo.t ptr -> Rectangle.t ptr ptr -> int -> int -> int -> int -> Image.t
@@ -2496,6 +2599,9 @@ val draw_text_codepoint : Font.t -> int -> Vector2.t -> float -> Color.t -> unit
 val draw_text_codepoints :
   Font.t -> int CArray.t -> Vector2.t -> float -> float -> Color.t -> unit
 (** [draw_text_codepoints font codepoints position font_size spacing tint] Draw multiple character (codepoint)*)
+
+val set_text_line_spacing : int -> unit
+(** [set_text_line_spacing spacing] Set vertical line spacing when drawing with line-breaks*)
 
 (** {3 Text misc. functions} *)
 
@@ -2799,7 +2905,7 @@ val unload_model_animation : ModelAnimation.t -> unit
 (** [unload_model_animation anim] Unload animation data*)
 
 val unload_model_animations : ModelAnimation.t CArray.t -> unit
-(** [unload_model_animations animations count] Unload animation array data*)
+(** [unload_model_animations animations anim_count] Unload animation array data*)
 
 val is_model_animation_valid : Model.t -> ModelAnimation.t -> bool
 (** [is_model_animation_valid model anim] Check model animation skeleton match*)
@@ -2847,6 +2953,9 @@ val is_audio_device_ready : unit -> bool
 val set_master_volume : float -> unit
 (** [set_master_volume volume] Set master volume (listener)*)
 
+val get_master_volume : unit -> float
+(** [get_master_volume ()] Get master volume (listener)*)
+
 val load_wave : string -> Wave.t
 (** [load_wave file_name] Load wave data from file*)
 
@@ -2862,6 +2971,9 @@ val load_sound : string -> Sound.t
 val load_sound_from_wave : Wave.t -> Sound.t
 (** [load_sound_from_wave wave] Load sound from wave data*)
 
+val load_sound_alias : Sound.t -> Sound.t
+(** [load_sound_alias source] Create a new sound that shares the same sample data as the source sound, does not own the sound data*)
+
 val is_sound_ready : Sound.t -> bool
 (** [is_sound_ready sound] Checks if a sound is ready*)
 
@@ -2873,6 +2985,9 @@ val unload_wave : Wave.t -> unit
 
 val unload_sound : Sound.t -> unit
 (** [unload_sound sound] Unload sound*)
+
+val unload_sound_alias : Sound.t -> unit
+(** [unload_sound_alias alias] Unload a sound alias (does not deallocate sample data)*)
 
 val export_wave : Wave.t -> string -> bool
 (** [export_wave wave file_name] Export wave data to file, returns true on success*)
@@ -2920,8 +3035,6 @@ val load_wave_samples : Wave.t -> float ptr
 
 val unload_wave_samples : float ptr -> unit
 (** [unload_wave_samples samples] Unload samples data loaded with LoadWaveSamples()*)
-
-(** {3 Music management functions} *)
 
 val load_music_stream : string -> Music.t
 (** [load_music_stream file_name] Load music stream from file*)

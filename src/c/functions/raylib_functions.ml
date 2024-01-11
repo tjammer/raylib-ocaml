@@ -6,8 +6,8 @@ module Description (F : Ctypes.FOREIGN) = struct
   let init_window =
     foreign "InitWindow" (int @-> int @-> string @-> returning void)
 
-  let window_should_close = foreign "WindowShouldClose" (void @-> returning bool)
   let close_window = foreign "CloseWindow" (void @-> returning void)
+  let window_should_close = foreign "WindowShouldClose" (void @-> returning bool)
   let is_window_ready = foreign "IsWindowReady" (void @-> returning bool)
 
   let is_window_fullscreen =
@@ -29,6 +29,10 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "ClearWindowState" (ConfigFlags.t_bitmask @-> returning void)
 
   let toggle_fullscreen = foreign "ToggleFullscreen" (void @-> returning void)
+
+  let toggle_borderless_windowed =
+    foreign "ToggleBorderlessWindowed" (void @-> returning void)
+
   let maximize_window = foreign "MaximizeWindow" (void @-> returning void)
   let minimize_window = foreign "MinimizeWindow" (void @-> returning void)
   let restore_window = foreign "RestoreWindow" (void @-> returning void)
@@ -47,8 +51,12 @@ module Description (F : Ctypes.FOREIGN) = struct
   let set_window_min_size =
     foreign "SetWindowMinSize" (int @-> int @-> returning void)
 
+  let set_window_max_size =
+    foreign "SetWindowMaxSize" (int @-> int @-> returning void)
+
   let set_window_size = foreign "SetWindowSize" (int @-> int @-> returning void)
   let set_window_opacity = foreign "SetWindowOpacity" (float @-> returning void)
+  let set_window_focused = foreign "SetWindowFocused" (void @-> returning void)
 
   let get_window_handle =
     foreign "GetWindowHandle" (void @-> returning (ptr_opt void))
@@ -93,9 +101,6 @@ module Description (F : Ctypes.FOREIGN) = struct
   let disable_event_waiting =
     foreign "DisableEventWaiting" (void @-> returning void)
 
-  let swap_screen_buffer = foreign "SwapScreenBuffer" (void @-> returning void)
-  let poll_input_events = foreign "PollInputEvents" (void @-> returning void)
-  let wait_time = foreign "WaitTime" (float @-> returning void)
   let show_cursor = foreign "ShowCursor" (void @-> returning void)
   let hide_cursor = foreign "HideCursor" (void @-> returning void)
   let is_cursor_hidden = foreign "IsCursorHidden" (void @-> returning bool)
@@ -197,28 +202,32 @@ module Description (F : Ctypes.FOREIGN) = struct
       (Vector2.t @-> Camera2D.t @-> returning Vector2.t)
 
   let set_target_fps = foreign "SetTargetFPS" (int @-> returning void)
-  let get_fps = foreign "GetFPS" (void @-> returning int)
   let get_frame_time = foreign "GetFrameTime" (void @-> returning float)
   let get_time = foreign "GetTime" (void @-> returning double)
-  let get_random_value = foreign "GetRandomValue" (int @-> int @-> returning int)
+  let get_fps = foreign "GetFPS" (void @-> returning int)
+  let swap_screen_buffer = foreign "SwapScreenBuffer" (void @-> returning void)
+  let poll_input_events = foreign "PollInputEvents" (void @-> returning void)
+  let wait_time = foreign "WaitTime" (double @-> returning void)
   let set_random_seed = foreign "SetRandomSeed" (uint @-> returning void)
+  let get_random_value = foreign "GetRandomValue" (int @-> int @-> returning int)
+
+  let load_random_sequence =
+    foreign "LoadRandomSequence" (int @-> int @-> int @-> returning (ptr int))
+
+  let unload_random_sequence =
+    foreign "UnloadRandomSequence" (ptr int @-> returning void)
+
   let take_screenshot = foreign "TakeScreenshot" (string @-> returning void)
-
-  let set_config_flags =
-    foreign "SetConfigFlags" (ConfigFlags.t_bitmask @-> returning void)
-
+  let set_config_flags = foreign "SetConfigFlags" (ConfigFlags.t_bitmask @-> returning void)
+  let open_url = foreign "OpenURL" (string @-> returning void)
   let trace_log = foreign "TraceLog" (int @-> string @-> returning void)
-
-  let set_trace_log_level =
-    foreign "SetTraceLogLevel" (TraceLogLevel.t @-> returning void)
-
+  let set_trace_log_level = foreign "SetTraceLogLevel" (TraceLogLevel.t @-> returning void)
   let mem_alloc = foreign "MemAlloc" (int @-> returning (ptr void))
 
   let mem_realloc =
     foreign "MemRealloc" (ptr void @-> int @-> returning (ptr void))
 
   let mem_free = foreign "MemFree" (ptr void @-> returning void)
-  let open_url = foreign "OpenURL" (string @-> returning void)
 
   (* let set_trace_log_callback = *)
   (*   foreign "SetTraceLogCallback" (trace_log_callback @-> returning void) *)
@@ -313,18 +322,50 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   (* let encode_data_base64 = *)
   (*   foreign "EncodeDataBase64" *)
-  (*     (ptr uchar @-> int @-> ptr int @-> returning (ptr char)) *)
+  (*     (string @-> int @-> ptr int @-> returning (ptr char)) *)
 
   (* let decode_data_base64 = *)
-  (*   foreign "DecodeDataBase64" (ptr uchar @-> ptr int @-> returning (ptr uchar)) *)
+  (*   foreign "DecodeDataBase64" (string @-> ptr int @-> returning (ptr uchar)) *)
+
+  let load_automation_event_list =
+    foreign "LoadAutomationEventList"
+      (string @-> returning AutomationEventList.t)
+
+  let unload_automation_event_list =
+    foreign "UnloadAutomationEventList"
+      (ptr AutomationEventList.t @-> returning void)
+
+  let export_automation_event_list =
+    foreign "ExportAutomationEventList"
+      (AutomationEventList.t @-> string @-> returning bool)
+
+  let set_automation_event_list =
+    foreign "SetAutomationEventList"
+      (ptr AutomationEventList.t @-> returning void)
+
+  let set_automation_event_base_frame =
+    foreign "SetAutomationEventBaseFrame" (int @-> returning void)
+
+  let start_automation_event_recording =
+    foreign "StartAutomationEventRecording" (void @-> returning void)
+
+  let stop_automation_event_recording =
+    foreign "StopAutomationEventRecording" (void @-> returning void)
+
+  let play_automation_event =
+    foreign "PlayAutomationEvent" (AutomationEvent.t @-> returning void)
 
   let is_key_pressed = foreign "IsKeyPressed" (Key.t @-> returning bool)
+
+  let is_key_pressed_repeat =
+    foreign "IsKeyPressedRepeat" (Key.t @-> returning bool)
+
   let is_key_down = foreign "IsKeyDown" (Key.t @-> returning bool)
   let is_key_released = foreign "IsKeyReleased" (Key.t @-> returning bool)
   let is_key_up = foreign "IsKeyUp" (Key.t @-> returning bool)
-  let set_exit_key = foreign "SetExitKey" (Key.t @-> returning void)
   let get_key_pressed = foreign "GetKeyPressed" (void @-> returning Key.t)
   let _get_char_pressed = foreign "GetCharPressed" (void @-> returning int)
+  let set_exit_key = foreign "SetExitKey" (Key.t @-> returning void)
 
   let is_gamepad_available =
     foreign "IsGamepadAvailable" (int @-> returning bool)
@@ -456,23 +497,13 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "DrawLineEx"
       (Vector2.t @-> Vector2.t @-> float @-> Color.t @-> returning void)
 
-  let draw_line_bezier =
-    foreign "DrawLineBezier"
-      (Vector2.t @-> Vector2.t @-> float @-> Color.t @-> returning void)
-
-  let draw_line_bezier_quad =
-    foreign "DrawLineBezierQuad"
-      (Vector2.t @-> Vector2.t @-> Vector2.t @-> float @-> Color.t
-     @-> returning void)
-
-  let draw_line_bezier_cubic =
-    foreign "DrawLineBezierCubic"
-      (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> float @-> Color.t
-     @-> returning void)
-
   let draw_line_strip =
     foreign "DrawLineStrip"
       (ptr Vector2.t @-> int @-> Color.t @-> returning void)
+
+  let draw_line_bezier =
+    foreign "DrawLineBezier"
+      (Vector2.t @-> Vector2.t @-> float @-> Color.t @-> returning void)
 
   let draw_circle =
     foreign "DrawCircle" (int @-> int @-> float @-> Color.t @-> returning void)
@@ -497,6 +528,10 @@ module Description (F : Ctypes.FOREIGN) = struct
   let draw_circle_lines =
     foreign "DrawCircleLines"
       (int @-> int @-> float @-> Color.t @-> returning void)
+
+  let draw_circle_lines_v =
+    foreign "DrawCircleLinesV"
+      (Vector2.t @-> float @-> Color.t @-> returning void)
 
   let draw_ellipse =
     foreign "DrawEllipse"
@@ -589,6 +624,73 @@ module Description (F : Ctypes.FOREIGN) = struct
       (Vector2.t @-> int @-> float @-> float @-> float @-> Color.t
      @-> returning void)
 
+  let draw_spline_linear =
+    foreign "DrawSplineLinear"
+      (ptr Vector2.t @-> int @-> float @-> Color.t @-> returning void)
+
+  let draw_spline_basis =
+    foreign "DrawSplineBasis"
+      (ptr Vector2.t @-> int @-> float @-> Color.t @-> returning void)
+
+  let draw_spline_catmull_rom =
+    foreign "DrawSplineCatmullRom"
+      (ptr Vector2.t @-> int @-> float @-> Color.t @-> returning void)
+
+  let draw_spline_bezier_quadratic =
+    foreign "DrawSplineBezierQuadratic"
+      (ptr Vector2.t @-> int @-> float @-> Color.t @-> returning void)
+
+  let draw_spline_bezier_cubic =
+    foreign "DrawSplineBezierCubic"
+      (ptr Vector2.t @-> int @-> float @-> Color.t @-> returning void)
+
+  let draw_spline_segment_linear =
+    foreign "DrawSplineSegmentLinear"
+      (Vector2.t @-> Vector2.t @-> float @-> Color.t @-> returning void)
+
+  let draw_spline_segment_basis =
+    foreign "DrawSplineSegmentBasis"
+      (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> float @-> Color.t
+     @-> returning void)
+
+  let draw_spline_segment_catmull_rom =
+    foreign "DrawSplineSegmentCatmullRom"
+      (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> float @-> Color.t
+     @-> returning void)
+
+  let draw_spline_segment_bezier_quadratic =
+    foreign "DrawSplineSegmentBezierQuadratic"
+      (Vector2.t @-> Vector2.t @-> Vector2.t @-> float @-> Color.t
+     @-> returning void)
+
+  let draw_spline_segment_bezier_cubic =
+    foreign "DrawSplineSegmentBezierCubic"
+      (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> float @-> Color.t
+     @-> returning void)
+
+  let get_spline_point_linear =
+    foreign "GetSplinePointLinear"
+      (Vector2.t @-> Vector2.t @-> float @-> returning Vector2.t)
+
+  let get_spline_point_basis =
+    foreign "GetSplinePointBasis"
+      (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> float
+     @-> returning Vector2.t)
+
+  let get_spline_point_catmull_rom =
+    foreign "GetSplinePointCatmullRom"
+      (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> float
+     @-> returning Vector2.t)
+
+  let get_spline_point_bezier_quad =
+    foreign "GetSplinePointBezierQuad"
+      (Vector2.t @-> Vector2.t @-> Vector2.t @-> float @-> returning Vector2.t)
+
+  let get_spline_point_bezier_cubic =
+    foreign "GetSplinePointBezierCubic"
+      (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> float
+     @-> returning Vector2.t)
+
   let check_collision_recs =
     foreign "CheckCollisionRecs" (Rectangle.t @-> Rectangle.t @-> returning bool)
 
@@ -635,6 +737,9 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "LoadImageRaw"
       (string @-> int @-> int @-> PixelFormat.t @-> int @-> returning Image.t)
 
+  let load_image_svg =
+    foreign "LoadImageSvg" (string @-> int @-> int @-> returning Image.t)
+
   let load_image_anim =
     foreign "LoadImageAnim" (string @-> ptr int @-> returning Image.t)
 
@@ -654,22 +759,26 @@ module Description (F : Ctypes.FOREIGN) = struct
   let export_image =
     foreign "ExportImage" (Image.t @-> string @-> returning bool)
 
+  let export_image_to_memory =
+    foreign "ExportImageToMemory"
+      (Image.t @-> string @-> ptr int @-> returning string)
+
   let export_image_as_code =
     foreign "ExportImageAsCode" (Image.t @-> string @-> returning bool)
 
   let gen_image_color =
     foreign "GenImageColor" (int @-> int @-> Color.t @-> returning Image.t)
 
-  let gen_image_gradient_v =
-    foreign "GenImageGradientV"
-      (int @-> int @-> Color.t @-> Color.t @-> returning Image.t)
-
-  let gen_image_gradient_h =
-    foreign "GenImageGradientH"
-      (int @-> int @-> Color.t @-> Color.t @-> returning Image.t)
+  let gen_image_gradient_linear =
+    foreign "GenImageGradientLinear"
+      (int @-> int @-> int @-> Color.t @-> Color.t @-> returning Image.t)
 
   let gen_image_gradient_radial =
     foreign "GenImageGradientRadial"
+      (int @-> int @-> float @-> Color.t @-> Color.t @-> returning Image.t)
+
+  let gen_image_gradient_square =
+    foreign "GenImageGradientSquare"
       (int @-> int @-> float @-> Color.t @-> Color.t @-> returning Image.t)
 
   let gen_image_checked =
@@ -748,6 +857,9 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let image_flip_horizontal =
     foreign "ImageFlipHorizontal" (ptr Image.t @-> returning void)
+
+  let image_rotate =
+    foreign "ImageRotate" (ptr Image.t @-> int @-> returning void)
 
   let image_rotate_cw = foreign "ImageRotateCW" (ptr Image.t @-> returning void)
 
@@ -1026,6 +1138,9 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "DrawTextCodepoints"
       (Font.t @-> ptr int @-> int @-> Vector2.t @-> float @-> float @-> Color.t
      @-> returning void)
+
+  let set_text_line_spacing =
+    foreign "SetTextLineSpacing" (int @-> returning void)
 
   let measure_text = foreign "MeasureText" (string @-> int @-> returning int)
 
@@ -1362,6 +1477,7 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "IsAudioDeviceReady" (void @-> returning bool)
 
   let set_master_volume = foreign "SetMasterVolume" (float @-> returning void)
+  let get_master_volume = foreign "GetMasterVolume" (void @-> returning float)
   let load_wave = foreign "LoadWave" (string @-> returning Wave.t)
 
   let load_wave_from_memory =
@@ -1373,6 +1489,7 @@ module Description (F : Ctypes.FOREIGN) = struct
   let load_sound_from_wave =
     foreign "LoadSoundFromWave" (Wave.t @-> returning Sound.t)
 
+  let load_sound_alias = foreign "LoadSoundAlias" (Sound.t @-> returning Sound.t)
   let is_sound_ready = foreign "IsSoundReady" (Sound.t @-> returning bool)
 
   let update_sound =
@@ -1380,6 +1497,10 @@ module Description (F : Ctypes.FOREIGN) = struct
 
   let unload_wave = foreign "UnloadWave" (Wave.t @-> returning void)
   let unload_sound = foreign "UnloadSound" (Sound.t @-> returning void)
+
+  let unload_sound_alias =
+    foreign "UnloadSoundAlias" (Sound.t @-> returning void)
+
   let export_wave = foreign "ExportWave" (Wave.t @-> string @-> returning bool)
 
   let export_wave_as_code =

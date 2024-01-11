@@ -587,9 +587,9 @@ let () =
     api |> member "functions" |> to_list |> List.map Function.of_json
   in
   let stubs = funcs |> List.map Function.stub |> String.concat "" in
-  print_string stubs;
+  (* print_string stubs; *)
   ignore stubs;
   let itf = funcs |> List.map Function.itf |> String.concat "\n" in
-  (* print_string itf; *)
-  ignore itf;
+  print_string itf;
+  (* ignore itf; *)
   ()

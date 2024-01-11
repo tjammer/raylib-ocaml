@@ -16,6 +16,7 @@ module Types (F : Ctypes.TYPE) = struct
       | Window_transparent
       | Window_highdpi
       | Window_mouse_passthrough
+      | Borderless_windowed_mode
       | Msaa_4x_hint
       | Interlaced_hint
 
@@ -35,6 +36,8 @@ module Types (F : Ctypes.TYPE) = struct
         (Window_highdpi, constant "FLAG_WINDOW_HIGHDPI" int64_t);
         ( Window_mouse_passthrough,
           constant "FLAG_WINDOW_MOUSE_PASSTHROUGH" int64_t );
+        ( Borderless_windowed_mode,
+          constant "FLAG_BORDERLESS_WINDOWED_MODE" int64_t );
         (Msaa_4x_hint, constant "FLAG_MSAA_4X_HINT" int64_t);
         (Interlaced_hint, constant "FLAG_INTERLACED_HINT" int64_t);
       ]
@@ -555,6 +558,9 @@ module Types (F : Ctypes.TYPE) = struct
       | Uncompressed_r32
       | Uncompressed_r32g32b32
       | Uncompressed_r32g32b32a32
+      | Uncompressed_r16
+      | Uncompressed_r16g16b16
+      | Uncompressed_r16g16b16a16
       | Compressed_dxt1_rgb
       | Compressed_dxt1_rgba
       | Compressed_dxt3_rgba
@@ -586,6 +592,11 @@ module Types (F : Ctypes.TYPE) = struct
           constant "PIXELFORMAT_UNCOMPRESSED_R32G32B32" int64_t );
         ( Uncompressed_r32g32b32a32,
           constant "PIXELFORMAT_UNCOMPRESSED_R32G32B32A32" int64_t );
+        (Uncompressed_r16, constant "PIXELFORMAT_UNCOMPRESSED_R16" int64_t);
+        ( Uncompressed_r16g16b16,
+          constant "PIXELFORMAT_UNCOMPRESSED_R16G16B16" int64_t );
+        ( Uncompressed_r16g16b16a16,
+          constant "PIXELFORMAT_UNCOMPRESSED_R16G16B16A16" int64_t );
         (Compressed_dxt1_rgb, constant "PIXELFORMAT_COMPRESSED_DXT1_RGB" int64_t);
         ( Compressed_dxt1_rgba,
           constant "PIXELFORMAT_COMPRESSED_DXT1_RGBA" int64_t );
@@ -1045,6 +1056,8 @@ module Types (F : Ctypes.TYPE) = struct
   end
 
   module ModelAnimation = struct
+    let char_array_32 = array 32 char
+
     type t
 
     let t : t Ctypes.structure typ = structure "ModelAnimation"
@@ -1052,6 +1065,7 @@ module Types (F : Ctypes.TYPE) = struct
     let frame_count = field t "frameCount" int
     let bones = field t "bones" (ptr BoneInfo.t)
     let frame_poses = field t "framePoses" (ptr (ptr Transform.t))
+    let name = field t "name" char_array_32
     let () = seal t
   end
 
@@ -1179,6 +1193,28 @@ module Types (F : Ctypes.TYPE) = struct
     let capacity = field t "capacity" int
     let count = field t "count" int
     let paths = field t "paths" (ptr string)
+    let () = seal t
+  end
+
+  module AutomationEvent = struct
+    let int_array_4 = array 4 int
+
+    type t
+
+    let t : t Ctypes.structure typ = structure "AutomationEvent"
+    let frame = field t "frame" uint
+    let typ = field t "type" uint
+    let params = field t "params" int_array_4
+    let () = seal t
+  end
+
+  module AutomationEventList = struct
+    type t
+
+    let t : t Ctypes.structure typ = structure "AutomationEventList"
+    let capacity = field t "capacity" uint
+    let count = field t "count" uint
+    let events = field t "events" (ptr AutomationEvent.t)
     let () = seal t
   end
 end

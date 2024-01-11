@@ -742,14 +742,9 @@ module Wave = struct
   type t = t' ctyp
 
   let t = Wave.t
-  let frame_count sound = getf sound Wave.frame_count
   let sample_rate wave = getf wave Wave.sample_rate
   let sample_size wave = getf wave Wave.sample_size
   let channels wave = getf wave Wave.channels
-
-  let set_frame_count sound frame_count =
-    setf sound Wave.frame_count frame_count
-
   let set_sample_rate wave sample_rate = setf wave Wave.sample_rate sample_rate
   let set_sample_size wave sample_size = setf wave Wave.sample_size sample_size
   let set_channels wave channels = setf wave Wave.channels channels
@@ -780,11 +775,7 @@ module Sound = struct
 
   let t = Sound.t
   let stream sound = getf sound Sound.stream
-  let frame_count sound = getf sound Sound.frame_count
   let set_stream sound stream = setf sound Sound.stream stream
-
-  let set_frame_count sound frame_count =
-    setf sound Sound.frame_count frame_count
 end
 
 module Music = struct
@@ -792,14 +783,9 @@ module Music = struct
   type t = t' ctyp
 
   let t = Music.t
-  let frame_count music = getf music Music.frame_count
   let stream music = getf music Music.stream
   let looping music = getf music Music.looping
   let ctx_type music = getf music Music.ctx_type
-
-  let set_frame_count music frame_count =
-    setf music Music.frame_count frame_count
-
   let set_stream music stream = setf music Music.stream stream
   let set_looping music looping = setf music Music.looping looping
   let set_ctx_type music ctx_type = setf music Music.ctx_type ctx_type
@@ -951,6 +937,20 @@ module FilePathList = struct
     let count = getf filepathlist FilePathList.count in
     CArray.from_ptr (getf filepathlist FilePathList.paths) count
     |> CArray.to_list
+end
+
+module AutomationEvent = struct
+  type t' = AutomationEvent.t
+  type t = t' ctyp
+
+  let t = AutomationEvent.t
+end
+
+module AutomationEventList = struct
+  type t' = AutomationEventList.t
+  type t = t' ctyp
+
+  let t = AutomationEventList.t
 end
 
 let max_material_maps = max_material_maps

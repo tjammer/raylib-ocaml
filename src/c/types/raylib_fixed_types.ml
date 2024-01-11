@@ -205,6 +205,8 @@ module Music = Music
 module VrDeviceInfo = VrDeviceInfo
 module VrStereoConfig = VrStereoConfig
 module FilePathList = FilePathList
+module AutomationEvent = AutomationEvent
+module AutomationEventList = AutomationEventList
 
 let max_material_maps = max_material_maps
 let max_shader_locations = max_shader_locations
