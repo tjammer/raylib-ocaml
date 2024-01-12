@@ -1,13 +1,11 @@
 diff -u a/vendor/raylib/src/Makefile b/vendor/raylib/src/Makefile
 --- a/vendor/raylib/src/Makefile
 +++ b/vendor/raylib/src/Makefile
-@@ -225,7 +225,8 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
+@@ -326,6 +326,7 @@ ifeq ($(RAYLIB_BUILD_MODE),RELEASE)
      endif
-     ifeq ($(PLATFORM_OS),BSD)
-         # FreeBSD, OpenBSD, NetBSD, DragonFly default compiler
--        CC = clang
-+        CC = gcc
+     ifeq ($(PLATFORM),PLATFORM_DESKTOP)
+         CFLAGS += -O1
 +        CFLAGS += -fPIC
      endif
- endif
- ifeq ($(PLATFORM),PLATFORM_RPI)
+     ifeq ($(PLATFORM),PLATFORM_ANDROID)
+         CFLAGS += -O2
