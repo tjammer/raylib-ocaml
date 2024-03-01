@@ -1,11 +1,11 @@
-type gui_state =
-  { camera : Raylib.Camera3D.t
-  ; cubicmap : Raylib.Texture2D.t
-  ; model : Raylib.Model.t
-  ; texture : Raylib.Texture2D.t
-  ; map_pixels : Raylib.Color.t Raylib.CArray.t
-  ; map_position : Raylib.Vector3.t
-  }
+type gui_state = {
+  camera : Raylib.Camera3D.t;
+  cubicmap : Raylib.Texture2D.t;
+  model : Raylib.Model.t;
+  texture : Raylib.Texture2D.t;
+  map_pixels : Raylib.Color.t Raylib.CArray.t;
+  map_position : Raylib.Vector3.t;
+}
 
 let gui_init () =
   let open Raylib in
@@ -37,11 +37,12 @@ let gui_init () =
   (* Set map diffuse texture *)
   set_material_texture
     (CArray.get (Model.materials model) 0 |> addr)
-    MaterialMapIndex.Albedo
-    texture;
+    MaterialMapIndex.Albedo texture;
   (* Get map image data to be used for collision detection *)
   let map_pixels_ptr = load_image_colors map_image in
-  let map_pixels = CArray.from_ptr map_pixels_ptr (map_image_width * map_image_height) in
+  let map_pixels =
+    CArray.from_ptr map_pixels_ptr (map_image_width * map_image_height)
+  in
   (* Unload image from RAM *)
   unload_image map_image;
   (* Set model position *)
@@ -51,7 +52,6 @@ let gui_init () =
   (* Set our game to run at 60 frames-per-second *)
   set_target_fps 60;
   { camera; model; cubicmap; texture; map_pixels; map_position }
-;;
 
 let gui_destroy state =
   let open Raylib in
@@ -59,12 +59,10 @@ let gui_destroy state =
   unload_texture state.cubicmap;
   unload_texture state.texture;
   Raylib.close_window ()
-;;
 
 let rec gui_main_loop state =
   (* Detect window close button or ESC key *)
-  if Raylib.window_should_close ()
-  then state
+  if Raylib.window_should_close () then state
   else
     let open Raylib in
     let screen_width = get_screen_width () |> Float.of_int in
@@ -89,10 +87,12 @@ let rec gui_main_loop state =
     (* Collision radius (player is modelled as a cilinder for collision) *)
     let player_radius = 0.1 in
     let player_cell_x =
-      Vector2.x player_pos -. Vector3.x state.map_position +. 0.5 |> Int.of_float
+      Vector2.x player_pos -. Vector3.x state.map_position +. 0.5
+      |> Int.of_float
     in
     let player_cell_y =
-      Vector2.y player_pos -. Vector3.z state.map_position +. 0.5 |> Int.of_float
+      Vector2.y player_pos -. Vector3.z state.map_position +. 0.5
+      |> Int.of_float
     in
     (* Out-of-limits security check *)
     let player_cell_x = Int.max player_cell_x 0 in
@@ -107,16 +107,20 @@ let rec gui_main_loop state =
       for x = 0 to cubicmap_width - 1 do
         let open Ctypes in
         (* Collision: white pixel, only check R channel *)
-        let r = Color.r @@ CArray.get state.map_pixels ((y * cubicmap_width) + x) in
+        let r =
+          Color.r @@ CArray.get state.map_pixels ((y * cubicmap_width) + x)
+        in
         let rectangle =
           Rectangle.create
             (map_position_x -. 0.5 +. Float.of_int x)
             (map_position_z -. 0.5 +. Float.of_int y)
-            1.0
-            1.0
+            1.0 1.0
         in
-        let is_in_rec = check_collision_circle_rec player_pos player_radius rectangle in
-        if r = 255 && is_in_rec then Camera.set_position state.camera old_camera_pos
+        let is_in_rec =
+          check_collision_circle_rec player_pos player_radius rectangle
+        in
+        if r = 255 && is_in_rec then
+          Camera.set_position state.camera old_camera_pos
       done
     done;
     begin_drawing ();
@@ -124,17 +128,16 @@ let rec gui_main_loop state =
     begin_mode_3d state.camera;
     draw_model state.model state.map_position 1.0 Color.white;
     end_mode_3d ();
-    let v = Vector2.create (screen_width -. (cubicmap_width_f *. 4.0) -. 20.0) 20.0 in
+    let v =
+      Vector2.create (screen_width -. (cubicmap_width_f *. 4.0) -. 20.0) 20.0
+    in
     draw_texture_ex state.cubicmap v 0.0 4.0 Color.white;
     (* Draw player position radar *)
     draw_rectangle
       (get_screen_width () - (cubicmap_width * 4) - 20 + (player_cell_x * 4))
       (20 + (player_cell_y * 4))
-      4
-      4
-      Color.red;
+      4 4 Color.red;
     end_drawing ();
     gui_main_loop state
-;;
 
 let () = gui_init () |> gui_main_loop |> gui_destroy
