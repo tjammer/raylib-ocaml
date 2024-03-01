@@ -17,3 +17,8 @@
  (name models_mesh_generation)
  (modules Models_mesh_generation)
  (libraries raylib))
+
+(executable
+ (name models_first_person_maze)
+ (modules Models_first_person_maze)
+ (libraries raylib))
