@@ -9,8 +9,7 @@ type gui_state = {
 
 let gui_init () =
   let open Raylib in
-  init_window 800 600 "Reactive GUI";
-  set_target_fps 60;
+  init_window 800 450 "raylib [models] example - first person maze";
   let camera =
     Camera.create
       (* Position *)
@@ -137,6 +136,7 @@ let rec gui_main_loop state =
       (get_screen_width () - (cubicmap_width * 4) - 20 + (player_cell_x * 4))
       (20 + (player_cell_y * 4))
       4 4 Color.red;
+    draw_fps 10 10;
     end_drawing ();
     gui_main_loop state
 
