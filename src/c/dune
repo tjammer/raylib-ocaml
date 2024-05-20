@@ -76,13 +76,18 @@
    (= %{system} elf)))
  (deps
   (source_tree vendor/raylib)
-  enable_jpg.patch)
+  enable_jpg.patch
+  gui_warnings.patch)
  (action
   (no-infer
    (progn
     (run chmod +w vendor/raylib/src/config.h)
     (with-stdin-from
      enable_jpg.patch
+     (run patch -sp1))
+    (run chmod +w vendor/raygui/src/raygui.h)
+    (with-stdin-from
+     gui_warnings.patch
      (run patch -sp1))
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
@@ -97,13 +102,18 @@
   (= %{system} macosx))
  (deps
   (source_tree vendor/raylib)
-  enable_jpg.patch)
+  enable_jpg.patch
+  gui_warnings.patch)
  (action
   (no-infer
    (progn
     (run chmod +w vendor/raylib/src/config.h)
     (with-stdin-from
      enable_jpg.patch
+     (run patch -sp1))
+    (run chmod +w vendor/raygui/src/raygui.h)
+    (with-stdin-from
+     gui_warnings.patch
      (run patch -sp1))
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
@@ -119,7 +129,8 @@
  (deps
   (source_tree vendor/raylib)
   enable_jpg.patch
-  mingw64.patch)
+  mingw64.patch
+  gui_warnings.patch)
  (action
   (no-infer
    (progn
@@ -133,6 +144,11 @@
     (with-stdin-from
      mingw64.patch
      (run patch --binary -p1))
+    (run chmod +w vendor/raygui/src/raygui.h)
+    (run unix2dos vendor/raygui/src/raygui.h)
+    (with-stdin-from
+     gui_warnings.patch
+     (run patch --binary -sp1))
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
@@ -152,7 +168,8 @@
  (deps
   (source_tree vendor/raylib)
   enable_jpg.patch
-  freebsd.patch)
+  freebsd.patch
+  gui_warnings.patch)
  (action
   (no-infer
    (progn
@@ -163,6 +180,10 @@
     (run chmod +w vendor/raylib/src/Makefile)
     (with-stdin-from
      freebsd.patch
+     (run patch -sp1))
+    (run chmod +w vendor/raygui/src/raygui.h)
+    (with-stdin-from
+     gui_warnings.patch
      (run patch -sp1))
     (run gmake -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
