@@ -1,3 +1,9 @@
+1.3.0 (2024-05-21)
+------------------
+
+* Enable jpg and bmp image formats by default
+* Fix raygui build for gcc14
+
 1.2.1 (2024-01-12)
 ------------------
 
