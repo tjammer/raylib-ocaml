@@ -66,7 +66,7 @@ let rec loop width height shader locations camera runtime =
 
       let delta_time = get_frame_time () in
       let runtime = runtime +. delta_time in
-      let runtime_v = Vector2.create runtime 0.0 in
+      let runtime_v = Ctypes.(allocate float) runtime in
 
       set_shader_value shader locations.view_eye
         (to_voidp (addr (Camera.position camera)))
@@ -76,8 +76,7 @@ let rec loop width height shader locations camera runtime =
         (Camera.target camera |> addr |> to_voidp)
         ShaderUniformDataType.Vec3;
 
-      set_shader_value shader locations.runtime
-        (to_voidp (addr runtime_v))
+      set_shader_value shader locations.runtime (to_voidp runtime_v)
         ShaderUniformDataType.Float;
 
       begin_drawing ();
