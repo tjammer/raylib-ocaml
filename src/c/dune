@@ -83,7 +83,7 @@
     (run chmod +w vendor/raylib/src/config.h)
     (with-stdin-from
      enable_jpg.patch
-     (run patch -sp1))
+     (run patch -p1))
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
@@ -104,7 +104,7 @@
     (run chmod +w vendor/raylib/src/config.h)
     (with-stdin-from
      enable_jpg.patch
-     (run patch -sp1))
+     (run patch -p1))
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
@@ -127,7 +127,7 @@
     (run unix2dos vendor/raylib/src/config.h)
     (with-stdin-from
      enable_jpg.patch
-     (run patch --binary -sp1))
+     (run patch --binary -p1))
     (run chmod +w vendor/raylib/src/Makefile)
     (run unix2dos vendor/raylib/src/Makefile)
     (with-stdin-from
@@ -159,11 +159,11 @@
     (run chmod +w vendor/raylib/src/config.h)
     (with-stdin-from
      enable_jpg.patch
-     (run patch -sp1))
+     (run patch -p1))
     (run chmod +w vendor/raylib/src/Makefile)
     (with-stdin-from
      freebsd.patch
-     (run patch -sp1))
+     (run patch -p1))
     (run gmake -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run gmake -C vendor/raylib/src clean)
@@ -208,7 +208,7 @@
     (run chmod +w vendor/raygui/src/raygui.h)
     (with-stdin-from
       gui_warnings.patch
-     (run patch -sp1))
+     (run patch -p1))
     (run touch raygui-patched)))))
 
 (rule
@@ -226,7 +226,7 @@
     (run unix2dos vendor/raygui/src/raygui.h)
     (with-stdin-from
       gui_warnings.patch
-     (run patch --binary -sp1))
+     (run patch --binary -p1))
     (run touch raygui-patched)))))
 
 (rule
