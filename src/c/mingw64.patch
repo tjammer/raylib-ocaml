@@ -3,7 +3,7 @@ deleted file mode 100644
 index 193e3eb5..11412e60 100644
 --- a/vendor/raylib/src/Makefile
 +++ /b/vendor/raylib/src/Makefile
-@@ -251,8 +251,8 @@ endif
+@@ -240,8 +240,8 @@ endif
  
  # Define default C compiler and archiver to pack library: CC, AR
  #------------------------------------------------------------------------------------------------
@@ -14,8 +14,8 @@ index 193e3eb5..11412e60 100644
  
  ifeq ($(PLATFORM),PLATFORM_DESKTOP)
      ifeq ($(PLATFORM_OS),OSX)
-@@ -581,7 +581,7 @@ else
-         ifeq ($(PLATFORM),PLATFORM_DESKTOP)
+@@ -605,7 +605,7 @@ else
+         ifeq ($(PLATFORM),$(filter $(PLATFORM),PLATFORM_DESKTOP PLATFORM_DESKTOP_SDL))
              ifeq ($(PLATFORM_OS),WINDOWS)
                  # NOTE: Linking with provided resource file
 -				$(CC) -shared -o $(RAYLIB_RELEASE_PATH)/$(RAYLIB_LIB_NAME).dll $(OBJS) $(RAYLIB_RES_FILE) $(LDFLAGS) $(LDLIBS)
