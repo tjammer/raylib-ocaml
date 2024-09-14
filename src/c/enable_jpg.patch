@@ -1,4 +1,4 @@
-diff -u a/vendor/raylib/src/config.h b/vendor/raylib/src/config.h
+diff --git a/vendor/raylib/src/config.h b/vendor/raylib/src/config.h
 --- a/vendor/raylib/src/config.h
 +++ b/vendor/raylib/src/config.h
 @@ -148,9 +148,9 @@
