@@ -1,7 +1,7 @@
 (executable
  (name apply_patch)
  (modules Apply_patch)
-  (libraries patch))
+ (libraries patch))
 
 (library
  (name raylib_c)
@@ -101,14 +101,13 @@
   (= %{system} macosx))
  (deps
   (source_tree vendor/raylib)
-  enable_jpg.patch)
+  enable_jpg.patch
+  (:discover apply_patch.exe))
  (action
   (no-infer
    (progn
     (run chmod +w vendor/raylib/src/config.h)
-    (with-stdin-from
-     enable_jpg.patch
-     (run patch -p1))
+    (run ./apply_patch.exe enable_jpg.patch)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
@@ -124,7 +123,7 @@
   (source_tree vendor/raylib)
   enable_jpg.patch
   mingw64.patch
- (:discover apply_patch.exe))
+  (:discover apply_patch.exe))
  (action
   (no-infer
    (progn
@@ -151,18 +150,15 @@
  (deps
   (source_tree vendor/raylib)
   enable_jpg.patch
-  freebsd.patch)
+  freebsd.patch
+  (:discover apply_patch.exe))
  (action
   (no-infer
    (progn
     (run chmod +w vendor/raylib/src/config.h)
-    (with-stdin-from
-     enable_jpg.patch
-     (run patch -p1))
+    (run ./apply_patch.exe enable_jpg.patch)
     (run chmod +w vendor/raylib/src/Makefile)
-    (with-stdin-from
-     freebsd.patch
-     (run patch -p1))
+    (run ./apply_patch.exe freebsd.patch)
     (run gmake -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run gmake -C vendor/raylib/src clean)
@@ -187,52 +183,22 @@
 (rule
  (alias patch-raygui)
  (targets raygui-patched)
- (enabled_if
-  (or
-   (= %{system} linux)
-   (= %{system} linux_elf)
-   (= %{system} elf)
-   (= %{system} netbsd)
-   (= %{system} freebsd)
-   (= %{system} openbsd)
-   (= %{system} bsd)
-   (= %{system} bsd_elf)
-   (= %{system} macosx)))
  (deps
   (source_tree vendor/raygui)
-   gui_warnings.patch)
+  gui_warnings.patch
+  (:discover apply_patch.exe))
  (action
   (no-infer
    (progn
     (run chmod +w vendor/raygui/src/raygui.h)
-    (with-stdin-from
-      gui_warnings.patch
-     (run patch -p1))
-    (run touch raygui-patched)))))
-
-(rule
- (alias patch-raygui)
- (targets raygui-patched)
- (enabled_if
-  (= %{system} mingw64))
- (deps
-  (source_tree vendor/raygui)
-   gui_warnings.patch)
- (action
-  (no-infer
-   (progn
-    (run chmod +w vendor/raygui/src/raygui.h)
-    (run unix2dos vendor/raygui/src/raygui.h)
-    (with-stdin-from
-      gui_warnings.patch
-     (run patch --binary -p1))
+    (run ./apply_patch.exe gui_warnings.patch)
     (run touch raygui-patched)))))
 
 (rule
  (deps raygui-patched)
  (action
   (with-stdout-to
-    c_generated_gui.c
+   c_generated_gui.c
    (run stubgen/generate_c_gui.exe raygui_stub))))
 
 (rule

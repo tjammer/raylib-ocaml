@@ -18,7 +18,8 @@
   dune
   dune-configurator
   (ctypes (>= 0.14))
-  (integers (>= 0.5))))
+  (integers (>= 0.5))
+  (patch (>= 2.0))))
 
 (package
  (name raygui)
