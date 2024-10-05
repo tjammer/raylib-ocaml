@@ -181,21 +181,6 @@
   (:include library_flags.sexp)))
 
 (rule
- (alias patch-raygui)
- (targets raygui-patched)
- (deps
-  (source_tree vendor/raygui)
-  gui_warnings.patch
-  (:discover apply_patch.exe))
- (action
-  (no-infer
-   (progn
-    (run chmod +w vendor/raygui/src/raygui.h)
-    (run ./apply_patch.exe gui_warnings.patch)
-    (run touch raygui-patched)))))
-
-(rule
- (deps raygui-patched)
  (action
   (with-stdout-to
    c_generated_gui.c

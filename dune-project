@@ -23,14 +23,15 @@
 
 (package
  (name raygui)
- (version 0.3.0)
+ (version 1.3.1)
  (description "OCaml bindings for raygui")
  (synopsis "OCaml bindings for raygui")
  (depends
   dune
   dune-configurator
   (ctypes (>= 0.14))
-  (raylib (>= 0.6))))
+  (raylib (>= 0.6))
+  (patch (>= 2.0))))
 
 (package
  (name raylib-gen)
