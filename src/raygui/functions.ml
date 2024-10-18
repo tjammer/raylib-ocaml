@@ -41,6 +41,16 @@ let value_box rct label vl ~min ~max edit =
   let rt = _value_box (to_struct rct) label vl_ptr min max edit in
   (Ctypes.(!@vl_ptr), rt)
 
+let carray_of_string str =
+  (* Two null bytes to have room for a new character *)
+  let len = String.length str in
+  let open Ctypes in
+  let arr = CArray.make char (len + 2) in
+  String.iteri (CArray.set arr) str;
+  CArray.set arr len '\x00';
+  CArray.set arr (len + 1) '\x00';
+  arr
+
 let text_box rct txt state =
   let open Ctypes in
   let str_arr = CArray.of_string txt in
@@ -49,7 +59,16 @@ let text_box rct txt state =
       (CArray.length str_arr + 1)
       state
   in
-  (String.init (CArray.length str_arr) (CArray.unsafe_get str_arr), rt)
+  let str =
+    Ctypes.string_from_ptr (CArray.start str_arr)
+      ~length:(CArray.length str_arr)
+  in
+  let str =
+    match String.index_opt str '\x00' with
+    | Some last -> String.sub str 0 last
+    | None -> str
+  in
+  (str, rt)
 
 let text_box_multi rct txt state =
   let open Ctypes in
@@ -59,7 +78,16 @@ let text_box_multi rct txt state =
       (CArray.length str_arr + 1)
       state
   in
-  (String.init (CArray.length str_arr) (CArray.unsafe_get str_arr), rt)
+  let str =
+    Ctypes.string_from_ptr (CArray.start str_arr)
+      ~length:(CArray.length str_arr)
+  in
+  let str =
+    match String.index_opt str '\x00' with
+    | Some last -> String.sub str 0 last
+    | None -> str
+  in
+  (str, rt)
 
 let slider rct label txt value ~min ~max =
   _slider (to_struct rct) label txt value min max

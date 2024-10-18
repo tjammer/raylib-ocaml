@@ -221,10 +221,10 @@ val value_box :
 (** [value_box bounds text value ~min ~max edit_mode] Value Box control, updates input text with numbers, returns value, edit_mode *)
 
 val text_box : Raylib.Rectangle.t -> string -> bool -> string * bool
-(** [text_box bounds text text_size edit_mode] Text Box control, returns text, edit_mode *)
+(** [text_box bounds text edit_mode] Text Box control, returns text, edit_mode *)
 
 val text_box_multi : Raylib.Rectangle.t -> string -> bool -> string * bool
-(** [text_box_multi bounds text text_size edit_mode] Text Box control with multiple lines,returns text, edit_mode *)
+(** [text_box_multi bounds text edit_mode] Text Box control with multiple lines,returns text, edit_mode *)
 
 val slider :
   Raylib.Rectangle.t ->
