@@ -4,6 +4,11 @@
  (libraries raylib))
 
 (executable
+ (name core_2d_camera_mouse_zoom)
+ (modules Core_2d_camera_mouse_zoom)
+ (libraries raylib))
+
+(executable
  (name core_2d_camera_platformer)
  (modules Core_2d_camera_platformer)
  (libraries raylib))
