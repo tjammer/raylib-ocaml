@@ -34,6 +34,11 @@
  (libraries raylib))
 
 (executable
+ (name core_3d_camera_split_screen)
+ (modules Core_3d_camera_split_screen)
+ (libraries raylib))
+
+(executable
  (name core_3d_picking)
  (modules Core_3d_picking)
  (libraries raylib))
