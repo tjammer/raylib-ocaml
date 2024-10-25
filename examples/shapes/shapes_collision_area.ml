@@ -47,19 +47,20 @@ let rec loop (pause, box_a, box_a_speed_x, box_b, box_collision) =
 
       (* Make sure Box B does not go out of move area limits *)
       (if
-       Rectangle.(x box_b +. width box_b >= Float.of_int (get_screen_width ()))
-      then
-       Rectangle.(
-         set_x box_b (Float.of_int (get_screen_width ()) -. width box_b))
-      else if Rectangle.(x box_b <= 0.0) then Rectangle.(set_x box_b 0.0));
+         Rectangle.(
+           x box_b +. width box_b >= Float.of_int (get_screen_width ()))
+       then
+         Rectangle.(
+           set_x box_b (Float.of_int (get_screen_width ()) -. width box_b))
+       else if Rectangle.(x box_b <= 0.0) then Rectangle.(set_x box_b 0.0));
       (if
-       Rectangle.(
-         y box_b +. height box_b >= Float.of_int (get_screen_height ()))
-      then
-       Rectangle.(
-         set_y box_b (Float.of_int (get_screen_height ()) -. height box_b))
-      else if Rectangle.(y box_b <= screen_upper_limit) then
-        Rectangle.(set_y box_b screen_upper_limit));
+         Rectangle.(
+           y box_b +. height box_b >= Float.of_int (get_screen_height ()))
+       then
+         Rectangle.(
+           set_y box_b (Float.of_int (get_screen_height ()) -. height box_b))
+       else if Rectangle.(y box_b <= screen_upper_limit) then
+         Rectangle.(set_y box_b screen_upper_limit));
 
       (* Check boxes collision *)
       let collision = check_collision_recs box_a box_b in

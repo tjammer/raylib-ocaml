@@ -41,9 +41,9 @@ let rec loop font font_size font_position filter =
       let text_size = measure_text_ex font msg (Float.of_int font_size) 0.0 in
 
       (if is_key_down Key.Left then
-       Vector2.(set_x font_position (x font_position -. 10.0))
-      else if is_key_down Key.Right then
-        Vector2.(set_x font_position (x font_position +. 10.0)));
+         Vector2.(set_x font_position (x font_position -. 10.0))
+       else if is_key_down Key.Right then
+         Vector2.(set_x font_position (x font_position +. 10.0)));
 
       let font =
         if is_file_dropped () then (

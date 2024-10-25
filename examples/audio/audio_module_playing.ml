@@ -98,7 +98,7 @@ let rec loop circles music pause =
 
              circles.(i) <-
                (if alpha <= 0.0 then random_circle ()
-               else { circle with alpha; speed; radius })))
+                else { circle with alpha; speed; radius })))
           circles;
       begin_drawing ();
 
