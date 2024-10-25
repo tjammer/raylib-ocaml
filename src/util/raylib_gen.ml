@@ -88,11 +88,11 @@ module Enum = struct
     let nm = enum.name.name in
     Printf.sprintf "module %s = struct\n  include %s\n\n" nm nm
     ^ (if enum.bitmask then
-       Printf.sprintf
-         "  let t_bitmask = build_enum_bitmask \"%s\" Ctypes.int64_t \
-          ~typedef:true vals\n\n"
-         nm
-      else "")
+         Printf.sprintf
+           "  let t_bitmask = build_enum_bitmask \"%s\" Ctypes.int64_t \
+            ~typedef:true vals\n\n"
+           nm
+       else "")
     ^ "  let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)\n"
     ^ "  let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))\n\
        end\n\n"

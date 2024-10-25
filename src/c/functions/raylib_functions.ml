@@ -218,10 +218,16 @@ module Description (F : Ctypes.FOREIGN) = struct
     foreign "UnloadRandomSequence" (ptr int @-> returning void)
 
   let take_screenshot = foreign "TakeScreenshot" (string @-> returning void)
-  let set_config_flags = foreign "SetConfigFlags" (ConfigFlags.t_bitmask @-> returning void)
+
+  let set_config_flags =
+    foreign "SetConfigFlags" (ConfigFlags.t_bitmask @-> returning void)
+
   let open_url = foreign "OpenURL" (string @-> returning void)
   let trace_log = foreign "TraceLog" (int @-> string @-> returning void)
-  let set_trace_log_level = foreign "SetTraceLogLevel" (TraceLogLevel.t @-> returning void)
+
+  let set_trace_log_level =
+    foreign "SetTraceLogLevel" (TraceLogLevel.t @-> returning void)
+
   let mem_alloc = foreign "MemAlloc" (int @-> returning (ptr void))
 
   let mem_realloc =
