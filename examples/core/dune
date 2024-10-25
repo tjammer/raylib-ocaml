@@ -14,6 +14,11 @@
  (libraries raylib))
 
 (executable
+ (name core_2d_camera_split_screen)
+ (modules Core_2d_camera_split_screen)
+ (libraries raylib))
+
+(executable
  (name core_3d_camera_first_person)
  (modules Core_3d_camera_first_person)
  (libraries raylib))
