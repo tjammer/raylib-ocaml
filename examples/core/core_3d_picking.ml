@@ -51,7 +51,12 @@ let rec loop camera collision ray =
   let open Raylib in
   if window_should_close () then close_window ()
   else (
-    update_camera (addr camera) CameraMode.Free;
+    if is_cursor_hidden () then
+      update_camera (addr camera) CameraMode.First_person;
+
+    if is_mouse_button_pressed MouseButton.Right then
+      if is_cursor_hidden () then enable_cursor () else disable_cursor ();
+
     let collision, ray =
       match (is_mouse_button_pressed MouseButton.Left, collision) with
       | true, true -> (false, None)
