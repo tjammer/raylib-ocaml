@@ -92,3 +92,8 @@
  (name core_window_letterbox)
  (modules Core_window_letterbox)
  (libraries raylib))
+
+(executable
+ (name core_world_screen)
+ (modules Core_world_screen)
+ (libraries raylib))
