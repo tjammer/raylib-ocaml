@@ -1,4 +1,9 @@
 (executable
+ (name shapes_bouncing_ball)
+ (modules Shapes_bouncing_ball)
+ (libraries raylib))
+
+(executable
  (name shapes_logo)
  (modules Shapes_logo)
  (libraries raylib))
