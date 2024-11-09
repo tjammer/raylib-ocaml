@@ -93,7 +93,7 @@ let rec loop state =
       let { State.line; mouse_pos = _ } = state in
       let mouse_pos = get_mouse_position () in
       let line = Line.step ~mouse_pos line in
-      let state = { state with line } in
+      let state = { State.line; mouse_pos } in
       State.draw state;
       loop state
 
