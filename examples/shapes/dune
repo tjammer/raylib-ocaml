@@ -7,3 +7,8 @@
  (name shapes_collision_area)
  (modules Shapes_collision_area)
  (libraries raylib))
+
+(executable
+ (name shapes_lines_bezier)
+ (modules Shapes_lines_bezier)
+ (libraries raylib))
