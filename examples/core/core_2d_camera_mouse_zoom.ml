@@ -70,11 +70,11 @@ let rec loop { zoom_mode; camera } =
     Raylib.begin_mode_2d camera;
     (* Draw the 3d grid, rotated 90 degrees and centered around 0,0
              just so we have something in the XY plane *)
-    Raylib.Rlgl.push_matrix ();
-    Raylib.Rlgl.translatef 0. (25. *. 50.) 0.;
-    Raylib.Rlgl.rotatef 90. 1. 0. 0.;
+    Rlgl.push_matrix ();
+    Rlgl.translatef 0. (25. *. 50.) 0.;
+    Rlgl.rotatef 90. 1. 0. 0.;
     Raylib.draw_grid 100 50.;
-    Raylib.Rlgl.pop_matrix ();
+    Rlgl.pop_matrix ();
 
     (* Draw a reference circle *)
     Raylib.draw_circle

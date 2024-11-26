@@ -1,0 +1,4 @@
+(library
+ (name rlgl)
+ (public_name raylib-rlgl)
+ (libraries raylib))

@@ -1,12 +1,18 @@
 (lang dune 2.8)
+
 (name raylib)
 
 ; cannot specify conditional deps otherwise
+
 (generate_opam_files false)
 
-(source (github tjammer/raylib-ocaml))
+(source
+ (github tjammer/raylib-ocaml))
+
 (license MIT)
+
 (authors "Tobias Mock")
+
 (maintainers "tobiasjammer@gmail.com")
 
 (package
@@ -17,9 +23,23 @@
  (depends
   dune
   dune-configurator
-  (ctypes (>= 0.14))
-  (integers (>= 0.5))
-  (patch (>= 2.0))))
+  (ctypes
+   (>= 0.14))
+  (integers
+   (>= 0.5))
+  (patch
+   (>= 2.0))))
+
+(package
+ (name raylib-rlgl)
+ (version 1.3.1)
+ (description "OCaml bindings for raylib")
+ (synopsis "OCaml bindings for raylib")
+ (depends
+  dune
+  dune-configurator
+  (raylib
+   (= :version))))
 
 (package
  (name raygui)
@@ -29,16 +49,16 @@
  (depends
   dune
   dune-configurator
-  (ctypes (>= 0.14))
-  (raylib (>= 0.6))
-  (patch (>= 2.0))))
+  (ctypes
+   (>= 0.14))
+  (raylib
+   (>= 0.6))
+  (patch
+   (>= 2.0))))
 
 (package
  (name raylib-gen)
  (version 0.1.0)
  (description "Binding generation for raylib")
  (synopsis "Binding generation for raylib")
- (depends
-  dune
-  yojson
-  re))
+ (depends dune yojson re))
