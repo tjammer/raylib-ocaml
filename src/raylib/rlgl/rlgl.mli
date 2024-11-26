@@ -146,12 +146,7 @@ val get_matrix_projection_stereo : int -> Raylib.Matrix.t
 val get_matrix_view_offset_stereo : int -> Raylib.Matrix.t
 val set_matrix_projection : Raylib.Matrix.t -> unit
 val set_matrix_modelview : Raylib.Matrix.t -> unit
-
-val set_matrix_projection_stereo :
-  Raylib.Matrix.t -> Raylib.Matrix.t -> unit
-
-val set_matrix_view_offset_stereo :
-  Raylib.Matrix.t -> Raylib.Matrix.t -> unit
-
+val set_matrix_projection_stereo : Raylib.Matrix.t -> Raylib.Matrix.t -> unit
+val set_matrix_view_offset_stereo : Raylib.Matrix.t -> Raylib.Matrix.t -> unit
 val load_draw_cube : unit -> unit
 val load_draw_quad : unit -> unit

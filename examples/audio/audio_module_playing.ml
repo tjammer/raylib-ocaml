@@ -46,6 +46,7 @@ let random_circle () =
 
 let setup () =
   let open Raylib in
+  let open Raudio in
   set_config_flags [ ConfigFlags.Msaa_4x_hint ];
   init_window width height "raylib [audio] example - module playing (streaming)";
   init_audio_device ();
@@ -59,6 +60,7 @@ let setup () =
   (circles, music)
 
 let rec loop circles music pause =
+  let open Raudio in
   match Raylib.window_should_close () with
   | true ->
       let open Raylib in

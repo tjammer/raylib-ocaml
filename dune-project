@@ -42,6 +42,17 @@
    (= :version))))
 
 (package
+ (name raylib-raudio)
+ (version 1.3.1)
+ (description "OCaml bindings for raylib")
+ (synopsis "OCaml bindings for raylib")
+ (depends
+  dune
+  dune-configurator
+  (raylib
+   (= :version))))
+
+(package
  (name raygui)
  (version 1.3.1)
  (description "OCaml bindings for raygui")

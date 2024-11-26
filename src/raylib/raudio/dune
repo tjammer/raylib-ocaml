@@ -1,0 +1,4 @@
+(library
+ (name raudio)
+ (public_name raylib-raudio)
+ (libraries raylib))

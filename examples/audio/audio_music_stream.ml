@@ -3,6 +3,7 @@ let height = 450
 
 let setup () =
   let open Raylib in
+  let open Raudio in
   init_window width height "raylib [audio] example - music playing (streaming)";
   init_audio_device ();
 
@@ -15,6 +16,7 @@ let setup () =
 
 let rec loop music pause =
   let open Raylib in
+  let open Raudio in
   match window_should_close () with
   | true ->
       unload_music_stream music;
