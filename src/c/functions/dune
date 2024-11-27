@@ -24,7 +24,7 @@
 
 (library
  (name raylib_rlgl)
- (package raylib)
+ (package raylib-rlgl)
  (modules Raylib_rlgl)
  (flags
   (:standard -w -9-27))

@@ -38,7 +38,7 @@
 
 (library
  (name rlgl_types)
- (package raylib)
+ (package raylib-rlgl)
  (modules Rlgl_types)
  (flags
   (:standard -w -9-27))
@@ -51,7 +51,7 @@
 
 (library
  (name rlgl_generated_types)
- (package raylib)
+ (package raylib-rlgl)
  (modules Rlgl_generated_types Rlgl_c_generated_types)
  (flags
   (:standard -w -9-27))
