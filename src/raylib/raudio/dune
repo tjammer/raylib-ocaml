@@ -1,4 +1,4 @@
 (library
  (name raudio)
  (public_name raylib-raudio)
- (libraries raylib))
+ (libraries raylib raylib_raudio_c raudio_fixed_types raudio_types))

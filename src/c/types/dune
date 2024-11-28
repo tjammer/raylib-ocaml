@@ -1,3 +1,5 @@
+; RAYLIB
+
 (library
  (name raylib_types)
  (package raylib)
@@ -17,6 +19,29 @@
   raylib_c_generated_types.ml
   (run ../generate_types_step_2.exe)))
 
+; RAUDIO
+
+(library
+ (name raudio_types)
+ (package raylib-raudio)
+ (modules Raudio_types)
+ (flags
+  (:standard -w -9-27))
+ (libraries ctypes.stubs))
+
+(library
+ (name raudio_fixed_types)
+ (package raylib-raudio)
+ (modules Raudio_fixed_types Raudio_c_generated_types)
+ (libraries ctypes raudio_types))
+
+(rule
+ (with-stdout-to
+  raudio_c_generated_types.ml
+  (run ../generate_raudio_types_step_2.exe)))
+
+; RAYGUI
+
 (library
  (name raygui_types)
  (package raygui)
@@ -35,6 +60,8 @@
  (with-stdout-to
   raygui_c_generated_types.ml
   (run ../generate_raygui_types_step_2.exe)))
+
+; RLGL
 
 (library
  (name rlgl_types)

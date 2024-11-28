@@ -28,6 +28,18 @@
  (library_flags
   (:include library_flags.sexp)))
 
+(library
+ (name raylib_raudio_c)
+ (package raylib-raudio)
+ (modules Raylib_c_generated_raudio)
+ (foreign_stubs
+  (language c)
+  (names c_generated_raudio)
+  (include_dirs %{project_root}/src/c/vendor/raylib/src))
+ (libraries ctypes.stubs raylib_raudio)
+ (library_flags
+  (:include library_flags.sexp)))
+
 (rule
  (targets library_flags.sexp)
  (deps
@@ -75,8 +87,18 @@
 
 (rule
  (with-stdout-to
+  c_generated_raudio.c
+  (run stubgen/generate_c_raudio.exe raylib_stub)))
+
+(rule
+ (with-stdout-to
   raylib_c_generated_rlgl.ml
   (run stubgen/generate_ml_rlgl.exe raylib_stub)))
+
+(rule
+ (with-stdout-to
+  raylib_c_generated_raudio.ml
+  (run stubgen/generate_ml_raudio.exe raylib_stub)))
 
 (data_only_dirs vendor)
 
@@ -222,6 +244,19 @@
    "%{cc} %{c} -I '%{lib:ctypes:.}' -I %{ocaml_where} -I vendor/raylib/src -o %{targets}")))
 
 (rule
+ (targets generate_raudio_types_step_2.exe)
+ (deps
+  (:c raudio_c_generated_types.c))
+ (action
+  (bash
+   "%{cc} %{c} -I '%{lib:ctypes:.}' -I %{ocaml_where} -I vendor/raylib/src -o %{targets}")))
+
+(rule
  (with-stdout-to
   rlgl_c_generated_types.c
   (run stubgen/generate_c_rlgl_types.exe raylib_stub)))
+
+(rule
+ (with-stdout-to
+  raudio_c_generated_types.c
+  (run stubgen/generate_c_raudio_types.exe raylib_stub)))

@@ -1,6 +1,5 @@
-open Raylib_fixed_types
-module Math = Raylib_math.Description (Raylib_c.Raylib_c_generated_math)
-include Raylib_functions.Description (Raylib_c.Raylib_c_generated_functions)
+open Raudio_fixed_types
+include Raylib_raudio.Description (Raylib_raudio_c.Raylib_c_generated_raudio)
 open Ctypes
 
 module Wave = struct

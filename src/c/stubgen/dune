@@ -37,9 +37,19 @@
  (libraries ctypes.stubs raylib_rlgl))
 
 (executable
+ (name generate_c_raudio)
+ (modules Generate_c_raudio)
+ (libraries ctypes.stubs raylib_raudio))
+
+(executable
  (name generate_ml_rlgl)
  (modules Generate_ml_rlgl)
  (libraries ctypes.stubs raylib_rlgl))
+
+(executable
+ (name generate_ml_raudio)
+ (modules Generate_ml_raudio)
+ (libraries ctypes.stubs raylib_raudio))
 
 (executable
  (name generate_c_raylib_types)
@@ -55,3 +65,8 @@
  (name generate_c_rlgl_types)
  (modules Generate_c_rlgl_types)
  (libraries ctypes.stubs rlgl_types))
+
+(executable
+ (name generate_c_raudio_types)
+ (modules Generate_c_raudio_types)
+ (libraries ctypes.stubs raudio_types))

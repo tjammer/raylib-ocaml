@@ -7,6 +7,14 @@
  (libraries ctypes.stubs raylib_fixed_types))
 
 (library
+ (name raylib_raudio)
+ (package raylib)
+ (modules Raylib_raudio)
+ (flags
+  (:standard -w -9-27))
+ (libraries ctypes.stubs raudio_fixed_types))
+
+(library
  (name raylib_math)
  (package raylib)
  (modules Raylib_math)
