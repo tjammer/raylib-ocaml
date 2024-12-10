@@ -20,7 +20,7 @@ type state = {
   list_view_active : int;
   list_view_ex_active : int;
   mutable list_view_ex_focus : int;
-  mutable list_view_ex_index : int;
+  mutable list_view_ex_scroll_index : int;
   toggle_group_active : int;
   multi_text_box_text : string;
   mutable multi_text_box_edit_mode : bool;
@@ -52,7 +52,7 @@ let setup () =
     list_view_active = 0;
     list_view_ex_active = 0;
     list_view_ex_focus = 0;
-    list_view_ex_index = 0;
+    list_view_ex_scroll_index = 0;
     toggle_group_active = 0;
     multi_text_box_text = "Multi text box";
     multi_text_box_edit_mode = false;
@@ -181,7 +181,7 @@ let rec loop s =
       in
 
       let rect = Rectangle.create 165.0 180.0 140.0 200.0 in
-      let list_view_ex_active, list_view_ex_focus, list_view_ex_index =
+      let list_view_ex_active, list_view_ex_focus, list_view_ex_scroll_index =
         Raygui.(
           list_view_ex rect
             [
@@ -194,7 +194,8 @@ let rec loop s =
               "elements";
               "amazing!";
             ]
-            s.list_view_ex_focus s.list_view_ex_index s.list_view_ex_active)
+            s.list_view_ex_focus s.list_view_ex_scroll_index
+            s.list_view_ex_active)
       in
 
       let rect = Rectangle.create 165.5 400.0 140.0 25.0 in
@@ -278,7 +279,7 @@ let rec loop s =
           list_view_active;
           list_view_ex_active;
           list_view_ex_focus;
-          list_view_ex_index;
+          list_view_ex_scroll_index;
           toggle_group_active;
           multi_text_box_text;
           color_picker_val;

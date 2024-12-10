@@ -271,11 +271,13 @@ val grid : Raylib.Rectangle.t -> float -> int -> Raylib.Vector2.t
 (** {1 Advance controls set } *)
 
 val list_view : Raylib.Rectangle.t -> string -> int -> int -> int * int
-(** [list_view bounds text scross_index active] List View control, returns selected list item index, active *)
+(** [list_view bounds text scroll_index active] List View control, returns
+    selected list item index, scroll index *)
 
 val list_view_ex :
   Raylib.Rectangle.t -> string list -> int -> int -> int -> int * int * int
-(** [list_view_ex bounds text_list focus scroll_index active] List View with extended parameters, returns selected list item index, focus, active  *)
+(** [list_view_ex bounds text_list focus scroll_index active] List View with
+    extended parameters, returns selected list item index, focus, scroll index *)
 
 val message_box : Raylib.Rectangle.t -> string -> string -> string -> int
 (** [message_box bounds title message buttons] Message Box control, displays a message *)

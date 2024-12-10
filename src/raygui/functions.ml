@@ -105,8 +105,8 @@ let grid rct b c = _grid (to_struct rct) b c |> Raylib.to_ctyp
 
 let list_view rct label index active =
   let vl_ptr = Raylib.ptr_of_int index in
-  let rt = _list_view (to_struct rct) label vl_ptr active in
-  (rt, Ctypes.(!@vl_ptr))
+  let active = _list_view (to_struct rct) label vl_ptr active in
+  (active, Ctypes.(!@vl_ptr))
 
 let list_view_ex rct strings focus index active =
   let open Ctypes in
