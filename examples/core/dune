@@ -6,7 +6,7 @@
 (executable
  (name core_2d_camera_mouse_zoom)
  (modules Core_2d_camera_mouse_zoom)
- (libraries raylib))
+ (libraries raylib-rlgl))
 
 (executable
  (name core_2d_camera_platformer)

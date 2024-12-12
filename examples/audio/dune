@@ -1,9 +1,9 @@
 (executable
  (name audio_module_playing)
  (modules Audio_module_playing)
- (libraries raylib))
+ (libraries raylib-raudio))
 
 (executable
  (name audio_music_stream)
  (modules Audio_music_stream)
- (libraries raylib))
+ (libraries raylib-raudio))
