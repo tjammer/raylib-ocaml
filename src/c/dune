@@ -81,13 +81,13 @@
    (= %{system} elf)))
  (deps
   (source_tree vendor/raylib)
-  enable_jpg.patch
+  enable_formats.patch
   (:discover apply_patch.exe))
  (action
   (no-infer
    (progn
     (run chmod +w vendor/raylib/src/config.h)
-    (run ./apply_patch.exe enable_jpg.patch)
+    (run ./apply_patch.exe enable_formats.patch)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
@@ -101,13 +101,13 @@
   (= %{system} macosx))
  (deps
   (source_tree vendor/raylib)
-  enable_jpg.patch
+  enable_formats.patch
   (:discover apply_patch.exe))
  (action
   (no-infer
    (progn
     (run chmod +w vendor/raylib/src/config.h)
-    (run ./apply_patch.exe enable_jpg.patch)
+    (run ./apply_patch.exe enable_formats.patch)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
@@ -121,14 +121,14 @@
   (= %{system} mingw64))
  (deps
   (source_tree vendor/raylib)
-  enable_jpg.patch
+  enable_formats.patch
   mingw64.patch
   (:discover apply_patch.exe))
  (action
   (no-infer
    (progn
     (run chmod +w vendor/raylib/src/config.h)
-    (run ./apply_patch.exe enable_jpg.patch)
+    (run ./apply_patch.exe enable_formats.patch)
     (run chmod +w vendor/raylib/src/Makefile)
     (run ./apply_patch.exe mingw64.patch)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
@@ -149,14 +149,14 @@
    (= %{system} bsd_elf)))
  (deps
   (source_tree vendor/raylib)
-  enable_jpg.patch
+  enable_formats.patch
   freebsd.patch
   (:discover apply_patch.exe))
  (action
   (no-infer
    (progn
     (run chmod +w vendor/raylib/src/config.h)
-    (run ./apply_patch.exe enable_jpg.patch)
+    (run ./apply_patch.exe enable_formats.patch)
     (run chmod +w vendor/raylib/src/Makefile)
     (run ./apply_patch.exe freebsd.patch)
     (run gmake -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
