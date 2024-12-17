@@ -1,17 +1,3 @@
-(library
- (name raylib_types)
- (package raylib)
- (modules Raylib_types)
- (flags
-  (:standard -w -9-27))
- (libraries ctypes.stubs))
-
-(library
- (name raylib_fixed_types)
- (package raylib)
- (modules Raylib_fixed_types Raylib_c_generated_types)
- (libraries ctypes raylib_types))
-
 (rule
  (with-stdout-to
   raylib_c_generated_types.ml
@@ -44,15 +30,3 @@
   (:standard -w -9-27))
  (libraries ctypes.stubs))
 
-(rule
- (with-stdout-to
-  rlgl_c_generated_types.ml
-  (run ../generate_rlgl_types_step_2.exe)))
-
-(library
- (name rlgl_generated_types)
- (package raylib)
- (modules Rlgl_generated_types Rlgl_c_generated_types)
- (flags
-  (:standard -w -9-27))
- (libraries ctypes.stubs rlgl_types))

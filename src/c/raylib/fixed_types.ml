@@ -1,5 +1,4 @@
-module Types = Raylib_types.Types (Raylib_c_generated_types)
-open Types
+open Raylib_types_generated
 
 external identity : 'a -> 'a = "%identity"
 

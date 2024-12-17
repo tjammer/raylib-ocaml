@@ -2,7 +2,7 @@ module C = Configurator.V1
 
 let rec link ?(flag = "-l") = function
   | [] -> []
-  | lib :: libs -> "-cclib" :: (flag ^ " " ^ lib) :: link ~flag libs
+  | lib :: libs -> (flag ^ " " ^ lib) :: link ~flag libs
 
 let () =
   C.main ~name:"raylib" (fun c ->
@@ -15,7 +15,7 @@ let () =
               [ "OpenGL"; "Cocoa"; "IOKit"; "CoreAudio"; "CoreVideo" ]
         | Some "mingw64" -> link [ "opengl32"; "gdi32"; "winmm"; "pthread" ]
         | Some ("netbsd" | "freebsd" | "openbsd" | "bsd" | "bsd_elf") ->
-            "-cclib" :: "-L /usr/local/lib"
+             "-L /usr/local/lib"
             :: link
                  [
                    "GL";

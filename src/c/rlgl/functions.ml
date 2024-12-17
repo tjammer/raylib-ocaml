@@ -1,10 +1,8 @@
-module Types = Raylib_fixed_types
-
-module Description (F : Ctypes.FOREIGN) = struct
+module Functions (F : Ctypes.FOREIGN) = struct
   open Ctypes
   open F
-  open Raylib_fixed_types
-  open Rlgl_generated_types
+  open Raylib_c.Types
+  open Rlgl_types_generated
 
   (*------------------------------------------------------------------------------------*)
   (* Functions Declaration - Matrix operations*)

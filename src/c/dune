@@ -3,22 +3,6 @@
  (modules Apply_patch)
  (libraries patch))
 
-(library
- (name raylib_c)
- (package raylib)
- (modules
-  Raylib_c_generated_functions
-  Raylib_c_generated_math
-  Raylib_c_generated_rlgl)
- (foreign_archives raylib)
- (foreign_stubs
-  (language c)
-  (names c_generated_functions c_generated_math c_generated_rlgl)
-  (include_dirs %{project_root}/src/c/vendor/raylib/src))
- (libraries ctypes.stubs raylib_functions raylib_math raylib_rlgl)
- (library_flags
-  (:include library_flags.sexp)))
-
 (rule
  (targets library_flags.sexp)
  (deps
@@ -203,14 +187,6 @@
  (with-stdout-to
   raygui_c_generated_types.c
   (run stubgen/generate_c_raygui_types.exe raygui_stub)))
-
-(rule
- (targets generate_rlgl_types_step_2.exe)
- (deps
-  (:c rlgl_c_generated_types.c))
- (action
-  (bash
-   "%{cc} %{c} -I '%{lib:ctypes:.}' -I %{ocaml_where} -I vendor/raylib/src -o %{targets}")))
 
 (rule
  (with-stdout-to

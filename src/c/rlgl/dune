@@ -1,0 +1,20 @@
+(library
+ (name rlgl_c)
+ (package raylib)
+ (ctypes
+  (external_library_name raylib)
+  (build_flags_resolver
+   (vendored
+    (c_flags :standard "-I../vendor/raylib/src")
+    (c_library_flags :standard (:include ../library_flags.sexp))))
+  (headers
+   (include "rlgl.h"))
+  (type_description
+   (instance Types)
+   (functor Types))
+  (function_description
+   (instance Functions)
+   (functor Functions))
+  (generated_types Rlgl_types_generated)
+  (generated_entry_point Rlgl_generated))
+(libraries raylib_c))

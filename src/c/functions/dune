@@ -1,20 +1,4 @@
 (library
- (name raylib_functions)
- (package raylib)
- (modules Raylib_functions)
- (flags
-  (:standard -w -9-27))
- (libraries ctypes.stubs raylib_fixed_types))
-
-(library
- (name raylib_math)
- (package raylib)
- (modules Raylib_math)
- (flags
-  (:standard -w -9-27))
- (libraries ctypes.stubs raylib_fixed_types))
-
-(library
  (name raygui_functions)
  (package raygui)
  (modules Raygui_functions)
@@ -22,10 +6,3 @@
   (:standard -w -9-27))
  (libraries ctypes.stubs raygui_fixed_types raylib_fixed_types))
 
-(library
- (name raylib_rlgl)
- (package raylib)
- (modules Raylib_rlgl)
- (flags
-  (:standard -w -9-27))
- (libraries ctypes.stubs rlgl_generated_types raylib_fixed_types))

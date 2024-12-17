@@ -1,7 +1,9 @@
-open Raylib_fixed_types
-module Math = Raylib_math.Description (Raylib_c.Raylib_c_generated_math)
+open Raylib_c.Types
+module Math = Raylib_c.Functions.Math
 open Ctypes_reexports
 open Ctypes
+
+(* Enums *)
 module ConfigFlags = ConfigFlags
 module TraceLogLevel = TraceLogLevel
 module Key = Key
@@ -24,6 +26,7 @@ module CameraMode = CameraMode
 module CameraProjection = CameraProjection
 module NPatchLayout = NPatchLayout
 
+(* Structs *)
 module Vector2 = struct
   type t' = Vector2.t
   type t = t' ctyp

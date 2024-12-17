@@ -1,6 +1,6 @@
 open Ctypes_reexports
 open Ctypes
-include Raylib_functions.Description (Raylib_c.Raylib_c_generated_functions)
+include Raylib_c.Functions
 
 (* CArray wrapped functions *)
 let load_file_data path =

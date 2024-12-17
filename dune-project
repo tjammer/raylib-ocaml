@@ -1,4 +1,6 @@
-(lang dune 2.8)
+(lang dune 3.17)
+(using ctypes 0.3)
+
 (name raylib)
 
 ; cannot specify conditional deps otherwise

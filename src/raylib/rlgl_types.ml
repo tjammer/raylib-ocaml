@@ -1,4 +1,4 @@
-module Types = Rlgl_generated_types
+module Types = Rlgl_c.Types
 open Ctypes_reexports
 
 module RlVertexBuffer = struct
