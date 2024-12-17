@@ -10,49 +10,6 @@
  (action
   (run %{discover})))
 
-(rule
- (with-stdout-to
-  c_generated_functions.c
-  (run stubgen/generate_c_functions.exe raylib_stub)))
-
-(rule
- (targets generate_types_step_2.exe)
- (deps
-  (:c c_generated_types.c))
- (action
-  (bash
-   "%{cc} %{c} -I '%{lib:ctypes:.}' -I %{ocaml_where} -I vendor/raylib/src -o %{targets}")))
-
-(rule
- (with-stdout-to
-  c_generated_types.c
-  (run stubgen/generate_c_raylib_types.exe raylib_stub)))
-
-(rule
- (with-stdout-to
-  raylib_c_generated_functions.ml
-  (run stubgen/generate_ml_functions.exe raylib_stub)))
-
-(rule
- (with-stdout-to
-  c_generated_math.c
-  (run stubgen/generate_c_math.exe raylib_stub)))
-
-(rule
- (with-stdout-to
-  raylib_c_generated_math.ml
-  (run stubgen/generate_ml_math.exe raylib_stub)))
-
-(rule
- (with-stdout-to
-  c_generated_rlgl.c
-  (run stubgen/generate_c_rlgl.exe raylib_stub)))
-
-(rule
- (with-stdout-to
-  raylib_c_generated_rlgl.ml
-  (run stubgen/generate_ml_rlgl.exe raylib_stub)))
-
 (data_only_dirs vendor)
 
 (rule
@@ -148,47 +105,3 @@
     (run gmake -C vendor/raylib/src clean)
     (run gmake -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
     (copy vendor/raylib/src/libraylib.5.0.0.so dllraylib.so)))))
-
-(library
- (name raygui_c)
- (package raygui)
- (modules C_generated_gui)
- ; (foreign_archives raygui)
- (foreign_stubs
-  (language c)
-  (names c_generated_gui)
-  (include_dirs
-   %{project_root}/src/c/vendor/raygui/src
-   %{project_root}/src/c/vendor/raylib/src))
- (libraries ctypes.stubs raygui_functions raygui_fixed_types)
- (library_flags
-  (:include library_flags.sexp)))
-
-(rule
- (action
-  (with-stdout-to
-   c_generated_gui.c
-   (run stubgen/generate_c_gui.exe raygui_stub))))
-
-(rule
- (with-stdout-to
-  c_generated_gui.ml
-  (run stubgen/generate_ml_gui.exe raygui_stub)))
-
-(rule
- (targets generate_raygui_types_step_2.exe)
- (deps
-  (:c raygui_c_generated_types.c))
- (action
-  (bash
-   "%{cc} %{c} -I '%{lib:ctypes:.}' -I %{ocaml_where} -I vendor/raylib/src -I vendor/raygui/src -o %{targets}")))
-
-(rule
- (with-stdout-to
-  raygui_c_generated_types.c
-  (run stubgen/generate_c_raygui_types.exe raygui_stub)))
-
-(rule
- (with-stdout-to
-  rlgl_c_generated_types.c
-  (run stubgen/generate_c_rlgl_types.exe raylib_stub)))

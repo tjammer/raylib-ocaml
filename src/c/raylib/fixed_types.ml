@@ -1,7 +1,5 @@
 open Raylib_types_generated
 
-external identity : 'a -> 'a = "%identity"
-
 let build_enum_bitmask name alist =
   let lor', land', zero, lnot' = Int64.(logor, logand, zero, lognot) in
   let unexpected _ k =

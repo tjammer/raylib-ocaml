@@ -1,8 +1,0 @@
-(library
- (name raygui_functions)
- (package raygui)
- (modules Raygui_functions)
- (flags
-  (:standard -w -9-27))
- (libraries ctypes.stubs raygui_fixed_types raylib_fixed_types))
-

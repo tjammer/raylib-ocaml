@@ -6,7 +6,9 @@
   (build_flags_resolver
    (vendored
     (c_flags :standard "-I../vendor/raylib/src")
-    (c_library_flags :standard (:include ../library_flags.sexp))))
+    (c_library_flags
+     :standard
+     (:include ../library_flags.sexp))))
   (headers
    (include "rlgl.h"))
   (type_description
@@ -17,4 +19,4 @@
    (functor Functions))
   (generated_types Rlgl_types_generated)
   (generated_entry_point Rlgl_generated))
-(libraries raylib_c))
+ (libraries raylib_c))

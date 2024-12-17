@@ -1,28 +1,4 @@
-module Types = Raygui_types.Types (Raygui_c_generated_types)
-open Types
-
-external identity : 'a -> 'a = "%identity"
-
-let build_enum_bitmask name alist =
-  let lor', land', zero, lnot' = Int64.(logor, logand, zero, lognot) in
-  let unexpected _ k =
-    Printf.ksprintf failwith "Unexpected enum value for %s: %s" name
-      (Int64.to_string k)
-  in
-  let ralist = List.rev alist in
-  let write l = List.fold_left (fun ac k -> lor' (List.assoc k alist) ac) zero l
-  and read res =
-    let rec iter res_orig ac res l =
-      match l with
-      | [] -> if res = zero then ac else unexpected ac res
-      | (a, b) :: tl ->
-          if land' b res_orig = b then
-            iter res_orig (a :: ac) (land' res (lnot' b)) tl
-          else iter res_orig ac res tl
-    in
-    iter res [] res ralist
-  and format_typ k fmt = Format.fprintf fmt "%s%t" name k in
-  Ctypes_static.view ~format_typ ~read ~write Ctypes.int64_t
+open Raygui_types_generated
 
 module ControlState = struct
   include ControlState

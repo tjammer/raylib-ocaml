@@ -1,0 +1,32 @@
+(library
+ (name raygui_c)
+ (package raygui)
+ (ctypes
+  (external_library_name raylib)
+  (build_flags_resolver
+   (vendored
+    (c_flags :standard "-I../vendor/raygui/src" "-I../vendor/raylib/src")
+    (c_library_flags
+      :standard
+     (:include ../library_flags.sexp)
+     (:include empty))))
+  (headers
+   (include "raygui.h" "raylib.h"))
+  (type_description
+   (instance Types)
+   (functor Types))
+  (function_description
+   (instance Functions)
+   (functor Functions))
+  (generated_types Raygui_types_generated)
+  (generated_entry_point Raygui_generated))
+ (libraries raylib_c))
+
+;; This is stupid, but we have to get [raygui_c] to depend on the source tree
+;; somehow. It seems header-only libraries are not well supported by dune
+(rule
+ (targets empty)
+ (deps (source_tree ../vendor/raygui))
+ (action
+  (with-stdout-to empty
+   (run echo "()"))))

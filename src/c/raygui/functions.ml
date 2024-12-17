@@ -1,9 +1,8 @@
-module Types = Raylib_fixed_types
-module Constants = Raygui_fixed_types
-
-module Description (F : Ctypes.FOREIGN) = struct
+module Functions (F : Ctypes.FOREIGN) = struct
   open Ctypes
   open F
+  module Constants = Fixed_types
+  module Types = Raylib_fixed_types
 
   (* State modification functions *)
   (*  Enable gui controls (global state) *)
