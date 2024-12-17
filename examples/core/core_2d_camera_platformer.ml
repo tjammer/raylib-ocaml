@@ -14,8 +14,6 @@ type camera_mode_t =
   | EvenOutOnLanding of bool * float
   | PlayerBoundsPush
 
-type state_t = player_t * env_item_t List.t * Raylib.Camera2D.t * camera_mode_t
-
 (* Constants *)
 let width = 800
 let height = 450
@@ -56,7 +54,6 @@ let camera_description = function
   | PlayerBoundsPush -> "Player push camera on getting too close to screen edge"
 
 let clamp_zoom z = if z > 3.0 then 3.0 else if z < 0.25 then 0.25 else z
-let vy_of_float y = Raylib.Vector2.create 0.0 y
 
 (* Game functions *)
 let setup () =

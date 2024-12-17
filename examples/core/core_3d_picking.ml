@@ -1,12 +1,6 @@
 let width = 800
 let height = 450
 
-type column_t = {
-  height : float;
-  position : Raylib.Vector3.t;
-  color : Raylib.Color.t;
-}
-
 let cube_pos = Raylib.Vector3.create 0.0 1.0 0.0
 
 let setup () =

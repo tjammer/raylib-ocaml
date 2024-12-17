@@ -20,10 +20,6 @@ module Enum = struct
 
   let strip_2nd cname = strip_1st cname |> strip_1st
 
-  let rstrip_1st cname =
-    let start = String.rindex cname '_' in
-    String.take start cname
-
   let value_of_cname enum_name cname =
     let name =
       match enum_name with

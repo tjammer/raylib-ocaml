@@ -3,7 +3,7 @@ let height = 450
 
 let setup () =
   let open Raylib in
-  init_window 800 450 "raylib [text] example - input box";
+  init_window width height "raylib [text] example - input box";
 
   let text_box =
     Rectangle.create ((Float.of_int width /. 2.0) -. 100.0) 180.0 225.0 50.0
