@@ -7,9 +7,8 @@
    (vendored
     (c_flags :standard "-I../vendor/raygui/src" "-I../vendor/raylib/src")
     (c_library_flags
-      :standard
-     (:include ../library_flags.sexp)
-     (:include empty))))
+     :standard
+     (:include ../library_flags.sexp))))
   (headers
    (include "raygui.h" "raylib.h"))
   (type_description
@@ -20,13 +19,25 @@
    (functor Functions))
   (generated_types Raygui_types_generated)
   (generated_entry_point Raygui_generated))
- (libraries raylib_c))
+ (foreign_stubs
+  (language c)
+  (names raygui_impl)
+  (include_dirs ../vendor/raygui/src ../vendor/raylib/src))
+ (libraries raylib))
 
-;; This is stupid, but we have to get [raygui_c] to depend on the source tree
-;; somehow. It seems header-only libraries are not well supported by dune
+;; dune's ctypes stanza cannot deal with header only libraries which pull in the
+;; implementation by a define, once. We solve it by creating a c-file with the
+;; implementation and using it as a foreign_stub
+
 (rule
- (targets empty)
- (deps (source_tree ../vendor/raygui))
+ (targets raygui_impl.c)
+ (deps
+  (source_tree ../vendor/raygui)
+  (source_tree ../vendor/raylib))
  (action
-  (with-stdout-to empty
-   (run echo "()"))))
+  (with-stdout-to
+   raygui_impl.c
+   (progn
+    (echo "#define RAYGUI_IMPLEMENTATION\n")
+    (echo "#define RAYGUI_SUPPORT_ICONS\n")
+    (echo "#include \"raygui.h\"\n")))))
