@@ -6,9 +6,7 @@
   (build_flags_resolver
    (vendored
     (c_flags :standard "-I../vendor/raygui/src" "-I../vendor/raylib/src")
-    (c_library_flags
-     :standard
-     (:include ../library_flags.sexp))))
+    (c_library_flags :standard)))
   (headers
    (include "raygui.h" "raylib.h"))
   (type_description
