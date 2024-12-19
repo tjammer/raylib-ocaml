@@ -1,6 +1,5 @@
 let width = 800
 let height = 450
-
 let cube_pos = Raylib.Vector3.create 0.0 1.0 0.0
 
 let setup () =

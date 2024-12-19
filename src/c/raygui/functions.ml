@@ -54,7 +54,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "GuiGroupBox" (Raylib.Rectangle.t @-> string @-> returning void)
 
   (*  Line separator control, could contain text *)
-  let _line = foreign "GuiLine" (Raylib.Rectangle.t @-> string @-> returning void)
+  let _line =
+    foreign "GuiLine" (Raylib.Rectangle.t @-> string @-> returning void)
 
   (*  Panel control, useful to group controls *)
   let _panel = foreign "GuiPanel" (Raylib.Rectangle.t @-> returning void)
