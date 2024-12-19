@@ -9,7 +9,7 @@ license: "MIT"
 homepage: "https://github.com/tjammer/raylib-ocaml"
 bug-reports: "https://github.com/tjammer/raylib-ocaml/issues"
 depends: [
-  "dune" {>= "2.8"}
+  "dune" {>= "3.17" & >= "3.17"}
   "dune-configurator"
   "ctypes" {>= "0.14"}
   "integers" {>= "0.5"}
@@ -22,6 +22,7 @@ depends: [
   "odoc" {with-doc}
 ]
 build: [
+  ["dune" "subst"] {dev}
   [
     "dune"
     "build"
@@ -33,7 +34,6 @@ build: [
     "@runtest" {with-test}
     "@doc" {with-doc}
   ]
-  ["dune" "build" "@doc" "-p" name ] {with-doc}
 ]
 dev-repo: "git+https://github.com/tjammer/raylib-ocaml.git"
 available: [arch != "arm32" & arch != "ppc64"]

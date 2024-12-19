@@ -17,8 +17,8 @@
  (description "OCaml bindings for raylib")
  (synopsis "OCaml bindings for raylib")
  (depends
-  dune
-  dune-configurator
+  (dune (>= 3.17))
+   dune-configurator
   (ctypes (>= 0.14))
   (integers (>= 0.5))
   (patch (>= 2.0))))
@@ -29,8 +29,8 @@
  (description "OCaml bindings for raygui")
  (synopsis "OCaml bindings for raygui")
  (depends
-  dune
-  dune-configurator
+  (dune (>= 3.17))
+   dune-configurator
   (ctypes (>= 0.14))
   (raylib (>= 0.6))
   (patch (>= 2.0))))
@@ -41,6 +41,6 @@
  (description "Binding generation for raylib")
  (synopsis "Binding generation for raylib")
  (depends
-  dune
-  yojson
-  re))
+   (dune (>= 3.17))
+   yojson
+   re))
