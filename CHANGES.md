@@ -1,3 +1,12 @@
+1.4.0 (2024-12-20)
+------------------
+
+* Fix buffer handling of raygui text boxes (#46)
+* Port 7 new examples (thank you @gpetiot)
+* Fix documentation of raygui list view functions (#56)
+* Enable FLAC format by default (#57)
+* Use dune 3 and its new `ctypes` stanza (#53)
+
 1.3.1 (2024-09-24)
 ------------------
 
