@@ -29,6 +29,7 @@
  (description "OCaml bindings for raygui")
  (synopsis "OCaml bindings for raygui")
  (depends
+  (ocaml (>= 4.05))
   (dune (>= 3.17))
    dune-configurator
   (ctypes (>= 0.14))
