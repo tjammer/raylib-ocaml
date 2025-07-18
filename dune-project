@@ -21,7 +21,7 @@
    dune-configurator
   (ctypes (>= 0.14))
   (integers (>= 0.5))
-  (patch (>= 2.0))))
+  (patch (>= 3.0.0))))
 
 (package
  (name raygui)
@@ -34,7 +34,7 @@
    dune-configurator
   (ctypes (>= 0.14))
   (raylib (>= 1.4.0))
-  (patch (>= 2.0))))
+  (patch (>= 3.0.0))))
 
 (package
  (name raylib-gen)

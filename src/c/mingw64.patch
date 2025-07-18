@@ -1,8 +1,7 @@
-diff --git a/vendor/raylib/src/Makefile /b/vendor/raylib/src/Makefile
-deleted file mode 100644
+diff --git a/vendor/raylib/src/Makefile b/vendor/raylib/src/Makefile
 index 193e3eb5..11412e60 100644
 --- a/vendor/raylib/src/Makefile
-+++ /b/vendor/raylib/src/Makefile
++++ b/vendor/raylib/src/Makefile
 @@ -240,8 +240,8 @@ endif
  
  # Define default C compiler and archiver to pack library: CC, AR

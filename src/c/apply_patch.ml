@@ -7,7 +7,7 @@ let patch file =
   let s = really_input_string patch_ic (in_channel_length patch_ic) in
   close_in patch_ic;
 
-  let patch = Patch.parse s |> List.hd in
+  let patch = Patch.parse ~p:1 s |> List.hd in
   let target =
     match patch.operation with
     | Edit (a, _) -> String.trim a
@@ -21,7 +21,7 @@ let patch file =
   print_endline ("patching " ^ target);
 
   let output =
-    match Patch.patch (Some input) patch with
+    match Patch.patch ~cleanly:true (Some input) patch with
     | Some output -> output
     | None -> failwith "Patch does not apply"
   in
