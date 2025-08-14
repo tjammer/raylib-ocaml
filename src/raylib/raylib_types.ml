@@ -370,7 +370,10 @@ module Font = struct
 
   let set_texture font texture = setf font Font.texture texture
   let set_recs font recs = setf font Font.recs recs
-  let set_glyphs font glyphs = setf font Font.glyphs (CArray.start glyphs)
+
+  let set_glyphs font glyphs =
+    setf font Font.glyph_count (CArray.length glyphs);
+    setf font Font.glyphs (CArray.start glyphs)
 end
 
 module Camera3D = struct

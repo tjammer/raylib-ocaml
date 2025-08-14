@@ -16,6 +16,7 @@ val ptr_of_uint : Unsigned.uint -> Unsigned.uint ptr
 val void_ptr_of_int : int -> unit ptr
 
 module CArray = Ctypes.CArray
+module Raylib_c = Raylib_c
 
 (** {1 Constants} *)
 
