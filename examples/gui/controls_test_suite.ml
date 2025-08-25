@@ -22,8 +22,8 @@ type state = {
   list_view_ex_focus : int;
   list_view_ex_scroll_index : int;
   toggle_group_active : int;
-  multi_text_box_text : string;
-  mutable multi_text_box_edit_mode : bool;
+(*  multi_text_box_text : string; *)
+(*  mutable multi_text_box_edit_mode : bool; *)
   color_picker_val : Raylib.Color.t;
   slider_val : float;
   slider_bar_val : float;
@@ -54,8 +54,8 @@ let setup () =
     list_view_ex_focus = 0;
     list_view_ex_scroll_index = 0;
     toggle_group_active = 0;
-    multi_text_box_text = "Multi text box";
-    multi_text_box_edit_mode = false;
+(*    multi_text_box_text = "Multi text box"; *)
+(*    multi_text_box_edit_mode = false; *)
     color_picker_val = Raylib.Color.raywhite;
     slider_val = 0.0;
     slider_bar_val = 50.0;
@@ -127,18 +127,18 @@ let rec loop s =
       Raygui.group_box (Rectangle.create 25.0 310.0 125.0 150.0) "STATES";
       Raygui.lock ();
       Raygui.(
-        set_state ControlState.Normal;
+        set_state State.Normal;
         ignore (button (Rectangle.create 30.0 320.0 115.0 30.0) "NORMAL"));
       Raygui.(
-        set_state ControlState.Focused;
+        set_state State.Focused;
         ignore (button (Rectangle.create 30.0 355.0 115.0 30.0) "FOCUSED"));
       Raygui.(
-        set_state ControlState.Pressed;
+        set_state State.Pressed;
         ignore (button (Rectangle.create 30.0 390.0 115.0 30.0) "#15#PRESSED"));
       Raygui.(
-        set_state ControlState.Disabled;
+        set_state State.Disabled;
         ignore (button (Rectangle.create 30.0 425.0 115.0 30.0) "DISABLED"));
-      Raygui.set_state Raygui.ControlState.Normal;
+      Raygui.set_state Raygui.State.Normal;
       if not s.show_text_input_box then Raygui.unlock ();
 
       let rect = Rectangle.create 25.0 470.0 125.0 30.0 in
@@ -206,7 +206,7 @@ let rec loop s =
       in
 
       (* third column *)
-      let rect = Rectangle.create 320.0 25.0 225.0 140.0 in
+      (*let rect = Rectangle.create 320.0 25.0 225.0 140.0 in
       let multi_text_box_text =
         match
           Raygui.text_box_multi rect s.multi_text_box_text
@@ -216,10 +216,10 @@ let rec loop s =
             s.multi_text_box_edit_mode <- not s.multi_text_box_edit_mode;
             vl
         | vl, false -> vl
-      in
+      in*)
 
       let rect = Rectangle.create 320.0 185.0 196.0 192.0 in
-      let color_picker_val = Raygui.color_picker rect s.color_picker_val in
+      let color_picker_val = Raygui.color_picker rect "Color picker" s.color_picker_val in
 
       let rect = Rectangle.create 355.0 400.0 165.0 20.0 in
       let slider_val =
@@ -246,7 +246,7 @@ let rec loop s =
           draw_rectangle 0 0 (get_screen_width ()) (get_screen_height ())
             (fade Color.raywhite 0.8);
 
-          let text_input_text, res =
+          let text_input_text, _, res =
             Raygui.text_input_box
               (Rectangle.create
                  ((float_of_int (get_screen_width ()) /. 2.0) -. 120.0)
@@ -254,6 +254,7 @@ let rec loop s =
                  240.0 140.0)
               "Save file as..." "Introduce a save file name" "Ok;Cancel"
               s.text_input_text
+              100 0
           in
           if res = 0 || res = 1 || res = 2 then (text_input_text, false)
           else (text_input_text, show_text_input_box))
@@ -281,7 +282,7 @@ let rec loop s =
           list_view_ex_focus;
           list_view_ex_scroll_index;
           toggle_group_active;
-          multi_text_box_text;
+(*          multi_text_box_text; *)
           color_picker_val;
           slider_val;
           slider_bar_val;

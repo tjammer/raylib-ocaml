@@ -1,0 +1,28 @@
+diff --git a/vendor/raygui/src/raygui.h b/vendor/raygui/src/raygui.h
+--- a/vendor/raygui/src/raygui.h
++++ b/vendor/raygui/src/raygui.h
+@@ -591,6 +591,7 @@ RAYGUIAPI float GuiSliderBar(Rectangle bounds, const char *textLeft, const char
+ RAYGUIAPI float GuiProgressBar(Rectangle bounds, const char *textLeft, const char *textRight, float value, float minValue, float maxValue); // Progress Bar control, shows current progress value
+ RAYGUIAPI void GuiStatusBar(Rectangle bounds, const char *text);                                        // Status Bar control, shows info text
+ RAYGUIAPI void GuiDummyRec(Rectangle bounds, const char *text);                                         // Dummy control for placeholders
++RAYGUIAPI int GuiScrollBar(Rectangle bounds, int value, int minValue, int maxValue);   // Scroll bar control, used by GuiScrollPanel()
+ RAYGUIAPI Vector2 GuiGrid(Rectangle bounds, const char *text, float spacing, int subdivs);              // Grid control, returns mouse cell position
+ 
+ // Advance controls set
+@@ -1340,7 +1341,6 @@ static const char **GuiTextSplit(const char *text, char delimiter, int *count, i
+ static Vector3 ConvertHSVtoRGB(Vector3 hsv);                    // Convert color data from HSV to RGB
+ static Vector3 ConvertRGBtoHSV(Vector3 rgb);                    // Convert color data from RGB to HSV
+ 
+-static int GuiScrollBar(Rectangle bounds, int value, int minValue, int maxValue);   // Scroll bar control, used by GuiScrollPanel()
+ static void GuiTooltip(Rectangle controlRec);                   // Draw tooltip using control rec position
+ 
+ 
+@@ -4439,7 +4439,7 @@ static Vector3 ConvertHSVtoRGB(Vector3 hsv)
+ }
+ 
+ // Scroll bar control (used by GuiScrollPanel())
+-static int GuiScrollBar(Rectangle bounds, int value, int minValue, int maxValue)
++int GuiScrollBar(Rectangle bounds, int value, int minValue, int maxValue)
+ {
+     GuiState state = guiState;
+ 

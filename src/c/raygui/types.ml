@@ -3,18 +3,18 @@ module Types (F : Ctypes.TYPE) = struct
 
   let typedef = true
 
-  module ControlState = struct
+  module State = struct
     type t = Normal | Focused | Pressed | Disabled
 
     let vals =
       [
-        (Normal, constant "GUI_STATE_NORMAL" int64_t);
-        (Focused, constant "GUI_STATE_FOCUSED" int64_t);
-        (Pressed, constant "GUI_STATE_PRESSED" int64_t);
-        (Disabled, constant "GUI_STATE_DISABLED" int64_t);
+        (Normal, constant "STATE_NORMAL" int64_t);
+        (Focused, constant "STATE_FOCUSED" int64_t);
+        (Pressed, constant "STATE_PRESSED" int64_t);
+        (Disabled, constant "STATE_DISABLED" int64_t);
       ]
 
-    let t = enum "GuiControlState" ~typedef vals
+    let t = enum "GuiState" ~typedef vals
   end
 
   module TextAlignment = struct
@@ -22,9 +22,9 @@ module Types (F : Ctypes.TYPE) = struct
 
     let vals =
       [
-        (Left, constant "GUI_TEXT_ALIGN_LEFT" int64_t);
-        (Center, constant "GUI_TEXT_ALIGN_CENTER" int64_t);
-        (Right, constant "GUI_TEXT_ALIGN_RIGHT" int64_t);
+        (Left, constant "TEXT_ALIGN_LEFT" int64_t);
+        (Center, constant "TEXT_ALIGN_CENTER" int64_t);
+        (Right, constant "TEXT_ALIGN_RIGHT" int64_t);
       ]
 
     let t = enum "GuiTextAlignment" ~typedef vals
@@ -162,24 +162,24 @@ module Types (F : Ctypes.TYPE) = struct
   end
 
   module ComboBoxProperty = struct
-    type t = Width | Padding
+    type t = Width | Spacing
 
     let vals =
       [
         (Width, constant "COMBO_BUTTON_WIDTH" int64_t);
-        (Padding, constant "COMBO_BUTTON_PADDING" int64_t);
+        (Spacing, constant "COMBO_BUTTON_SPACING" int64_t);
       ]
 
     let t = enum "GuiComboBoxProperty" ~typedef vals
   end
 
   module DropdownBoxProperty = struct
-    type t = Arrow_padding | Dropdown_items_padding
+    type t = Arrow_padding | Dropdown_items_spacing
 
     let vals =
       [
         (Arrow_padding, constant "ARROW_PADDING" int64_t);
-        (Dropdown_items_padding, constant "DROPDOWN_ITEMS_PADDING" int64_t);
+        (Dropdown_items_spacing, constant "DROPDOWN_ITEMS_SPACING" int64_t);
       ]
 
     let t = enum "GuiDropdownBoxProperty" ~typedef vals
@@ -188,28 +188,30 @@ module Types (F : Ctypes.TYPE) = struct
   module TextBoxProperty = struct
     type t =
       | Text_inner_padding
-      | Text_lines_padding
-      | Color_selected_fg
-      | Color_selected_bg
+      | Text_lines_spacing
+      | Text_alignment_vertical
+      | Text_multiline
+      | Text_wrap_mode
 
     let vals =
       [
         (Text_inner_padding, constant "TEXT_INNER_PADDING" int64_t);
-        (Text_lines_padding, constant "TEXT_LINES_PADDING" int64_t);
-        (Color_selected_fg, constant "COLOR_SELECTED_FG" int64_t);
-        (Color_selected_bg, constant "COLOR_SELECTED_BG" int64_t);
+        (Text_lines_spacing, constant "TEXT_LINES_SPACING" int64_t);
+        (Text_alignment_vertical, constant "TEXT_ALIGNMENT_VERTICAL" int64_t);
+        (Text_multiline, constant "TEXT_MULTILINE" int64_t);
+        (Text_wrap_mode, constant "TEXT_WRAP_MODE" int64_t);
       ]
 
     let t = enum "GuiTextBoxProperty" ~typedef vals
   end
 
   module SpinnerProperty = struct
-    type t = Width | Padding
+    type t = Width | Spacing
 
     let vals =
       [
         (Width, constant "SPIN_BUTTON_WIDTH" int64_t);
-        (Padding, constant "SPIN_BUTTON_PADDING" int64_t);
+        (Spacing, constant "SPIN_BUTTON_SPACING" int64_t);
       ]
 
     let t = enum "GuiSpinnerProperty" ~typedef vals
@@ -237,29 +239,17 @@ module Types (F : Ctypes.TYPE) = struct
     let t = enum "GuiScrollBarProperty" ~typedef vals
   end
 
-  module ScrollBarSide = struct
-    type t = Left | Right
-
-    let vals =
-      [
-        (Left, constant "SCROLLBAR_LEFT_SIDE" int64_t);
-        (Right, constant "SCROLLBAR_RIGHT_SIDE" int64_t);
-      ]
-
-    let t = enum "GuiScrollBarSide" ~typedef vals
-  end
-
   module ListViewProperty = struct
     type t =
       | List_items_height
-      | List_items_padding
+      | List_items_spacing
       | Scrollbar_width
       | Scrollbar_side
 
     let vals =
       [
         (List_items_height, constant "LIST_ITEMS_HEIGHT" int64_t);
-        (List_items_padding, constant "LIST_ITEMS_PADDING" int64_t);
+        (List_items_spacing, constant "LIST_ITEMS_SPACING" int64_t);
         (Scrollbar_width, constant "SCROLLBAR_WIDTH" int64_t);
         (Scrollbar_side, constant "SCROLLBAR_SIDE" int64_t);
       ]
@@ -293,7 +283,7 @@ module Types (F : Ctypes.TYPE) = struct
     let t : t Ctypes.structure typ = structure "GuiStyleProp"
     let control_id = field t "controlId" ushort
     let property_id = field t "propertyId" ushort
-    let property_value = field t "propertyValue" int
+    let property_value = field t "propertyValue" uint
     let () = seal t
   end
 end

@@ -1,4 +1,4 @@
-module ControlState : sig
+module State : sig
   type t = Normal | Focused | Pressed | Disabled
 
   val to_int : t -> int
@@ -31,23 +31,24 @@ module CheckBox : sig
 end
 
 module ComboBox : sig
-  type t = [ `Padding_combobox | `Width_combobox ]
+  type t = [ `Spacing_combobox | `Width_combobox ]
 end
 
 module DropdownBox : sig
-  type t = [ `Arrow_padding | `Dropdown_items_padding ]
+  type t = [ `Arrow_padding | `Dropdown_items_spacing ]
 end
 
 module TextBox : sig
   type t =
-    [ `Color_selected_bg
-    | `Color_selected_fg
-    | `Text_inner_padding
-    | `Text_lines_padding ]
+    [ `Text_inner_padding
+    | `Text_lines_spacing
+    | `Text_alignment_vertical
+    | `Text_multiline
+    | `Text_wrap_mode ]
 end
 
 module Spinner : sig
-  type t = [ `Padding_spinner | `Width_spinner ]
+  type t = [ `Spacing_spinner | `Width_spinner ]
 end
 
 module ScrollBar : sig
@@ -63,7 +64,7 @@ end
 module ListView : sig
   type t =
     [ `List_items_height
-    | `List_items_padding
+    | `List_items_spacing
     | `Scrollbar_side
     | `Scrollbar_width ]
 end
@@ -128,13 +129,16 @@ val lock : unit -> unit
 val unlock : unit -> unit
 (** [unlock ()] Unlock gui controls (global state) *)
 
+val is_locked : unit -> bool
+(** [is_locked ()] Get gui is locked (global state) *)
+
 val fade : float -> unit
 (** [fade alpha] Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f *)
 
-val set_state : ControlState.t -> unit
+val set_state : State.t -> unit
 (** [set_state state] Set gui state (global state) *)
 
-val get_state : unit -> ControlState.t
+val get_state : unit -> State.t
 (** [get_state ()] Get gui state (global state) *)
 
 (** {1 Font set/get functions } *)
@@ -164,15 +168,19 @@ val group_box : Raylib.Rectangle.t -> string -> unit
 val line : Raylib.Rectangle.t -> string -> unit
 (** [line bounds text] Line separator control, could contain text *)
 
-val panel : Raylib.Rectangle.t -> unit
-(** [panel bounds] Panel control, useful to group controls *)
+val panel : Raylib.Rectangle.t -> string -> unit
+(** [panel bounds text] Panel control, useful to group controls *)
+
+val tab_bar : Raylib.Rectangle.t -> string -> int -> int -> string * int * int
+(** [tab_bar bounds text count active] Tab bar control, returns text, active, closing *)
 
 val scroll_panel :
   Raylib.Rectangle.t ->
+  string ->
   Raylib.Rectangle.t ->
   Raylib.Vector2.t Raylib.ptr ->
   Raylib.Rectangle.t
-(** [scroll_panel bounds content scroll] Scroll Panel control *)
+(** [scroll_panel bounds text content scroll] Scroll Panel control *)
 
 (** {1 Basic controls set } *)
 
@@ -223,9 +231,6 @@ val value_box :
 val text_box : Raylib.Rectangle.t -> string -> bool -> string * bool
 (** [text_box bounds text edit_mode] Text Box control, returns text, edit_mode *)
 
-val text_box_multi : Raylib.Rectangle.t -> string -> bool -> string * bool
-(** [text_box_multi bounds text edit_mode] Text Box control with multiple lines,returns text, edit_mode *)
-
 val slider :
   Raylib.Rectangle.t ->
   string ->
@@ -265,8 +270,8 @@ val dummy_rec : Raylib.Rectangle.t -> string -> unit
 val scroll_bar : Raylib.Rectangle.t -> int -> min:int -> max:int -> int
 (** [scroll_bar bounds value ~min ~max] Scroll Bar control *)
 
-val grid : Raylib.Rectangle.t -> float -> int -> Raylib.Vector2.t
-(** [grid bounds spacing subdivs] Grid control *)
+val grid : Raylib.Rectangle.t -> string -> float -> int -> Raylib.Vector2.t
+(** [grid bounds text spacing subdivs] Grid control *)
 
 (** {1 Advance controls set } *)
 
@@ -283,20 +288,23 @@ val message_box : Raylib.Rectangle.t -> string -> string -> string -> int
 (** [message_box bounds title message buttons] Message Box control, displays a message *)
 
 val text_input_box :
-  Raylib.Rectangle.t -> string -> string -> string -> string -> string * int
-(** [text_input_box bounds title message buttons text] Text Input Box control, returns text, state *)
+  Raylib.Rectangle.t -> string -> string -> string -> string -> int -> int -> string * int * int
+(** [text_input_box bounds title message buttons text text_max_size secret_view_active] Text Input Box control, returns text, secret_view_active, state *)
 
-val color_picker : Raylib.Rectangle.t -> Raylib.Color.t -> Raylib.Color.t
-(** [color_picker bounds color] Color Picker control (multiple color controls) *)
+val color_picker : Raylib.Rectangle.t -> string -> Raylib.Color.t -> Raylib.Color.t
+(** [color_picker bounds text color] Color Picker control (multiple color controls) *)
 
-val color_panel : Raylib.Rectangle.t -> Raylib.Color.t -> Raylib.Color.t
-(** [color_panel bounds color] Color Panel control *)
+val color_panel : Raylib.Rectangle.t -> string -> Raylib.Color.t -> Raylib.Color.t
+(** [color_panel bounds text color] Color Panel control *)
 
-val color_bar_alpha : Raylib.Rectangle.t -> float -> float
-(** [color_bar_alpha bounds alpha] Color Bar Alpha control *)
+val color_bar_alpha : Raylib.Rectangle.t -> string -> float -> float
+(** [color_bar_alpha bounds text alpha] Color Bar Alpha control *)
 
-val color_bar_hue : Raylib.Rectangle.t -> float -> float
-(** [color_bar_hue bounds value] Color Bar Hue control *)
+val color_bar_hue : Raylib.Rectangle.t -> string -> float -> float
+(** [color_bar_hue bounds text value] Color Bar Hue control *)
+
+val draw_icon : int -> int -> int -> int -> Raylib.Color.t -> unit
+(** [draw_icon icon_id pos_x pos_y pixel_size color] Draw selected icon using rectangles pixel-by-pixel *)
 
 (** Styles loading functions *)
 val load_style : string -> unit
@@ -304,3 +312,18 @@ val load_style : string -> unit
 
 val load_style_default : unit -> unit
 (** [load_style_default ()] Load style default over global style *)
+
+val enable_tooltip : unit -> unit
+(** [enable_tooltip ()] Enable tooltip (global state) *)
+
+val disable_tooltip : unit -> unit
+(** [disable_tooltip ()] Disable tooltip (global state) *)
+
+val set_tooltip : string -> unit
+(** [set_tooltip tooltip] Set tooltip (global state) *)
+
+val icon_text : int -> string -> string
+(** [icon_text id text] Get text with icon id prepended (if supported) *)
+
+val set_icon_scale : int -> unit
+(** [set_icon_scale s] Set icon scale (global state) *)

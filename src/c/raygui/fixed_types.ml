@@ -1,7 +1,7 @@
 open Raygui_types_generated
 
-module ControlState = struct
-  include ControlState
+module State = struct
+  include State
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
@@ -93,13 +93,6 @@ end
 
 module ScrollBarProperty = struct
   include ScrollBarProperty
-
-  let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
-  let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
-end
-
-module ScrollBarSide = struct
-  include ScrollBarSide
 
   let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)
   let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))
