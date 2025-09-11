@@ -44,4 +44,5 @@
  (depends
    (dune (>= 3.17))
    yojson
-   re))
+   re
+   containers))

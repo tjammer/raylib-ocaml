@@ -470,6 +470,9 @@ module Types (F : Ctypes.TYPE) = struct
       | Map_irradiance
       | Map_prefilter
       | Map_brdf
+      | Vertex_boneids
+      | Vertex_boneweights
+      | Bone_matrices
 
     let vals =
       [
@@ -499,6 +502,9 @@ module Types (F : Ctypes.TYPE) = struct
         (Map_irradiance, constant "SHADER_LOC_MAP_IRRADIANCE" int64_t);
         (Map_prefilter, constant "SHADER_LOC_MAP_PREFILTER" int64_t);
         (Map_brdf, constant "SHADER_LOC_MAP_BRDF" int64_t);
+        (Vertex_boneids, constant "SHADER_LOC_VERTEX_BONEIDS" int64_t);
+        (Vertex_boneweights, constant "SHADER_LOC_VERTEX_BONEWEIGHTS" int64_t);
+        (Bone_matrices, constant "SHADER_LOC_BONE_MATRICES" int64_t);
       ]
 
     let t = enum "ShaderLocationIndex" ~typedef:true vals
@@ -663,7 +669,6 @@ module Types (F : Ctypes.TYPE) = struct
       | Line_horizontal
       | Cross_three_by_four
       | Cross_four_by_three
-      | Panorama
 
     let vals =
       [
@@ -674,7 +679,6 @@ module Types (F : Ctypes.TYPE) = struct
           constant "CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR" int64_t );
         ( Cross_four_by_three,
           constant "CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE" int64_t );
-        (Panorama, constant "CUBEMAP_LAYOUT_PANORAMA" int64_t);
       ]
 
     let t = enum "CubemapLayout" ~typedef:true vals
@@ -791,9 +795,6 @@ module Types (F : Ctypes.TYPE) = struct
 
     let t = enum "NPatchLayout" ~typedef:true vals
   end
-
-  let max_material_maps = constant "MAX_MATERIAL_MAPS" camlint
-  let max_shader_locations = constant "RL_MAX_SHADER_LOCATIONS" camlint
 
   module Vector2 = struct
     type t
@@ -982,6 +983,8 @@ module Types (F : Ctypes.TYPE) = struct
     let anim_normals = field t "animNormals" (ptr float)
     let bone_ids = field t "boneIds" (ptr int)
     let bone_weights = field t "boneWeights" (ptr float)
+    let bone_matrices = field t "boneMatrices" (ptr Matrix.t)
+    let bone_count = field t "boneCount" int
     let vao_id = field t "vaoId" uint
     let vbo_id = field t "vboId" (ptr uint)
     let () = seal t
@@ -1159,7 +1162,6 @@ module Types (F : Ctypes.TYPE) = struct
     let v_resolution = field t "vResolution" int
     let h_screen_size = field t "hScreenSize" float
     let v_screen_size = field t "vScreenSize" float
-    let v_screen_center = field t "vScreenCenter" float
     let eye_to_screen_distance = field t "eyeToScreenDistance" float
     let lens_separation_distance = field t "lensSeparationDistance" float
     let interpupillary_distance = field t "interpupillaryDistance" float
@@ -1217,4 +1219,7 @@ module Types (F : Ctypes.TYPE) = struct
     let events = field t "events" (ptr AutomationEvent.t)
     let () = seal t
   end
+
+  let max_material_maps = constant "MAX_MATERIAL_MAPS" camlint
+  let max_shader_locations = constant "RL_MAX_SHADER_LOCATIONS" camlint
 end

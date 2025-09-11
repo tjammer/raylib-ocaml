@@ -89,7 +89,7 @@ val unload_vertex_array : Unsigned.uint -> unit
 val unload_vertex_buffer : Unsigned.uint -> unit
 
 val set_vertex_attribute :
-  Unsigned.uint -> int -> int -> bool -> int -> unit Ctypes.ptr -> unit
+  Unsigned.uint -> int -> int -> bool -> int -> int -> unit
 
 val set_vertex_attribute_divisor : Unsigned.uint -> int -> unit
 val set_vertex_attribute_default : int -> unit Ctypes.ptr -> int -> int -> unit
@@ -102,7 +102,7 @@ val draw_vertex_array_elements_instanced :
 
 val load_texture : unit Ctypes.ptr -> int -> int -> int -> int -> Unsigned.uint
 val load_texture_depth : int -> int -> bool -> Unsigned.uint
-val load_texture_cubemap : unit Ctypes.ptr -> int -> int -> Unsigned.uint
+val load_texture_cubemap : unit Ctypes.ptr -> int -> int -> int -> Unsigned.uint
 
 val update_texture :
   Unsigned.uint -> int -> int -> int -> int -> int -> unit Ctypes.ptr -> unit
@@ -122,7 +122,7 @@ val gen_texture_mipmaps :
 
 val read_texture_pixels : Unsigned.uint -> int -> int -> int -> unit Ctypes.ptr
 val read_screen_pixels : int -> int -> Unsigned.uchar Ctypes.ptr
-val load_framebuffer : int -> int -> Unsigned.uint
+val load_framebuffer : unit -> Unsigned.uint
 
 val framebuffer_attach :
   Unsigned.uint -> Unsigned.uint -> int -> int -> int -> unit

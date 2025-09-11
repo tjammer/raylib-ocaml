@@ -95,6 +95,9 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let get_clipboard_text =
     foreign "GetClipboardText" (void @-> returning string_opt)
 
+  let get_clipboard_image =
+    foreign "GetClipboardImage" (void @-> returning Image.t)
+
   let enable_event_waiting =
     foreign "EnableEventWaiting" (void @-> returning void)
 
@@ -149,7 +152,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let load_shader_from_memory =
     foreign "LoadShaderFromMemory" (string @-> string @-> returning Shader.t)
 
-  let is_shader_ready = foreign "IsShaderReady" (Shader.t @-> returning bool)
+  let is_shader_valid = foreign "IsShaderValid" (Shader.t @-> returning bool)
 
   let get_shader_location =
     foreign "GetShaderLocation" (Shader.t @-> string @-> returning int)
@@ -177,29 +180,33 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   let unload_shader = foreign "UnloadShader" (Shader.t @-> returning void)
 
-  let get_mouse_ray =
-    foreign "GetMouseRay" (Vector2.t @-> Camera3D.t @-> returning Ray.t)
+  let get_screen_to_world_ray =
+    foreign "GetScreenToWorldRay" (Vector2.t @-> Camera3D.t @-> returning Ray.t)
+
+  let get_screen_to_world_ray_ex =
+    foreign "GetScreenToWorldRayEx"
+      (Vector2.t @-> Camera3D.t @-> int @-> int @-> returning Ray.t)
+
+  let get_world_to_screen =
+    foreign "GetWorldToScreen" (Vector3.t @-> Camera3D.t @-> returning Vector2.t)
+
+  let get_world_to_screen_ex =
+    foreign "GetWorldToScreenEx"
+      (Vector3.t @-> Camera3D.t @-> int @-> int @-> returning Vector2.t)
+
+  let get_screen_to_world_2d =
+    foreign "GetScreenToWorld2D"
+      (Vector2.t @-> Camera2D.t @-> returning Vector2.t)
+
+  let get_world_to_screen_2d =
+    foreign "GetWorldToScreen2D"
+      (Vector2.t @-> Camera2D.t @-> returning Vector2.t)
 
   let get_camera_matrix =
     foreign "GetCameraMatrix" (Camera3D.t @-> returning Matrix.t)
 
   let get_camera_matrix_2d =
     foreign "GetCameraMatrix2D" (Camera2D.t @-> returning Matrix.t)
-
-  let get_world_to_screen =
-    foreign "GetWorldToScreen" (Vector3.t @-> Camera3D.t @-> returning Vector2.t)
-
-  let get_screen_to_world_2d =
-    foreign "GetScreenToWorld2D"
-      (Vector2.t @-> Camera2D.t @-> returning Vector2.t)
-
-  let get_world_to_screen_ex =
-    foreign "GetWorldToScreenEx"
-      (Vector3.t @-> Camera3D.t @-> int @-> int @-> returning Vector2.t)
-
-  let get_world_to_screen_2d =
-    foreign "GetWorldToScreen2D"
-      (Vector2.t @-> Camera2D.t @-> returning Vector2.t)
 
   let set_target_fps = foreign "SetTargetFPS" (int @-> returning void)
   let get_frame_time = foreign "GetFrameTime" (void @-> returning float)
@@ -239,16 +246,20 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (*   foreign "SetTraceLogCallback" (trace_log_callback @-> returning void) *)
 
   (* let set_load_file_data_callback = *)
-  (*   foreign "SetLoadFileDataCallback" (load_file_data_callback @-> returning void) *)
+  (*   foreign "SetLoadFileDataCallback" *)
+  (*     (load_file_data_callback @-> returning void) *)
 
   (* let set_save_file_data_callback = *)
-  (*   foreign "SetSaveFileDataCallback" (save_file_data_callback @-> returning void) *)
+  (*   foreign "SetSaveFileDataCallback" *)
+  (*     (save_file_data_callback @-> returning void) *)
 
   (* let set_load_file_text_callback = *)
-  (*   foreign "SetLoadFileTextCallback" (load_file_text_callback @-> returning void) *)
+  (*   foreign "SetLoadFileTextCallback" *)
+  (*     (load_file_text_callback @-> returning void) *)
 
   (* let set_save_file_text_callback = *)
-  (*   foreign "SetSaveFileTextCallback" (save_file_text_callback @-> returning void) *)
+  (*   foreign "SetSaveFileTextCallback" *)
+  (*     (save_file_text_callback @-> returning void) *)
 
   let _load_file_data =
     foreign "LoadFileData" (string @-> ptr uint @-> returning (ptr uchar))
@@ -295,8 +306,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let get_application_directory =
     foreign "GetApplicationDirectory" (void @-> returning string)
 
+  let make_directory = foreign "MakeDirectory" (string @-> returning int)
   let change_directory = foreign "ChangeDirectory" (string @-> returning bool)
   let is_path_file = foreign "IsPathFile" (string @-> returning bool)
+  let is_file_name_valid = foreign "IsFileNameValid" (string @-> returning bool)
 
   let load_directory_files =
     foreign "LoadDirectoryFiles" (string @-> returning FilePathList.t)
@@ -333,13 +346,22 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (* let decode_data_base64 = *)
   (*   foreign "DecodeDataBase64" (string @-> ptr int @-> returning (ptr uchar)) *)
 
+  (* let compute_crc32 = *)
+  (*   foreign "ComputeCRC32" (ptr uchar @-> int @-> returning uint) *)
+
+  (* let compute_md5 = *)
+  (*   foreign "ComputeMD5" (ptr uchar @-> int @-> returning (ptr uint)) *)
+
+  (* let compute_sha1 = *)
+  (*   foreign "ComputeSHA1" (ptr uchar @-> int @-> returning (ptr uint)) *)
+
   let load_automation_event_list =
     foreign "LoadAutomationEventList"
       (string @-> returning AutomationEventList.t)
 
   let unload_automation_event_list =
     foreign "UnloadAutomationEventList"
-      (ptr AutomationEventList.t @-> returning void)
+      (AutomationEventList.t @-> returning void)
 
   let export_automation_event_list =
     foreign "ExportAutomationEventList"
@@ -402,6 +424,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   let set_gamepad_mappings =
     foreign "SetGamepadMappings" (string @-> returning int)
+
+  let set_gamepad_vibration =
+    foreign "SetGamepadVibration"
+      (int @-> float @-> float @-> float @-> returning void)
 
   let is_mouse_button_pressed =
     foreign "IsMouseButtonPressed" (MouseButton.t @-> returning bool)
@@ -485,6 +511,12 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   let set_shapes_texture =
     foreign "SetShapesTexture" (Texture.t @-> Rectangle.t @-> returning void)
+
+  let get_shapes_texture =
+    foreign "GetShapesTexture" (void @-> returning Texture.t)
+
+  let get_shapes_texture_rectangle =
+    foreign "GetShapesTextureRectangle" (void @-> returning Rectangle.t)
 
   let draw_pixel =
     foreign "DrawPixel" (int @-> int @-> Color.t @-> returning void)
@@ -599,6 +631,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   let draw_rectangle_rounded_lines =
     foreign "DrawRectangleRoundedLines"
+      (Rectangle.t @-> float @-> int @-> Color.t @-> returning void)
+
+  let draw_rectangle_rounded_lines_ex =
+    foreign "DrawRectangleRoundedLinesEx"
       (Rectangle.t @-> float @-> int @-> float @-> Color.t @-> returning void)
 
   let draw_triangle =
@@ -708,6 +744,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "CheckCollisionCircleRec"
       (Vector2.t @-> float @-> Rectangle.t @-> returning bool)
 
+  let check_collision_circle_line =
+    foreign "CheckCollisionCircleLine"
+      (Vector2.t @-> float @-> Vector2.t @-> Vector2.t @-> returning bool)
+
   let check_collision_point_rec =
     foreign "CheckCollisionPointRec"
       (Vector2.t @-> Rectangle.t @-> returning bool)
@@ -720,6 +760,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "CheckCollisionPointTriangle"
       (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> returning bool)
 
+  let check_collision_point_line =
+    foreign "CheckCollisionPointLine"
+      (Vector2.t @-> Vector2.t @-> Vector2.t @-> int @-> returning bool)
+
   let check_collision_point_poly =
     foreign "CheckCollisionPointPoly"
       (Vector2.t @-> ptr Vector2.t @-> int @-> returning bool)
@@ -728,10 +772,6 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "CheckCollisionLines"
       (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> ptr Vector2.t
      @-> returning bool)
-
-  let check_collision_point_line =
-    foreign "CheckCollisionPointLine"
-      (Vector2.t @-> Vector2.t @-> Vector2.t @-> int @-> returning bool)
 
   let get_collision_rec =
     foreign "GetCollisionRec"
@@ -743,11 +783,12 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "LoadImageRaw"
       (string @-> int @-> int @-> PixelFormat.t @-> int @-> returning Image.t)
 
-  let load_image_svg =
-    foreign "LoadImageSvg" (string @-> int @-> int @-> returning Image.t)
-
   let load_image_anim =
     foreign "LoadImageAnim" (string @-> ptr int @-> returning Image.t)
+
+  let load_image_anim_from_memory =
+    foreign "LoadImageAnimFromMemory"
+      (string @-> string @-> int @-> ptr int @-> returning Image.t)
 
   let load_image_from_memory =
     foreign "LoadImageFromMemory"
@@ -759,7 +800,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let load_image_from_screen =
     foreign "LoadImageFromScreen" (void @-> returning Image.t)
 
-  let is_image_ready = foreign "IsImageReady" (Image.t @-> returning bool)
+  let is_image_valid = foreign "IsImageValid" (Image.t @-> returning bool)
   let unload_image = foreign "UnloadImage" (Image.t @-> returning void)
 
   let export_image =
@@ -809,6 +850,9 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let image_from_image =
     foreign "ImageFromImage" (Image.t @-> Rectangle.t @-> returning Image.t)
 
+  let image_from_channel =
+    foreign "ImageFromChannel" (Image.t @-> int @-> returning Image.t)
+
   let image_text =
     foreign "ImageText" (string @-> int @-> Color.t @-> returning Image.t)
 
@@ -840,6 +884,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   let image_blur_gaussian =
     foreign "ImageBlurGaussian" (ptr Image.t @-> int @-> returning void)
+
+  let image_kernel_convolution =
+    foreign "ImageKernelConvolution"
+      (ptr Image.t @-> ptr float @-> int @-> returning void)
 
   let image_resize =
     foreign "ImageResize" (ptr Image.t @-> int @-> int @-> returning void)
@@ -930,6 +978,11 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "ImageDrawLineV"
       (ptr Image.t @-> Vector2.t @-> Vector2.t @-> Color.t @-> returning void)
 
+  let image_draw_line_ex =
+    foreign "ImageDrawLineEx"
+      (ptr Image.t @-> Vector2.t @-> Vector2.t @-> int @-> Color.t
+     @-> returning void)
+
   let image_draw_circle =
     foreign "ImageDrawCircle"
       (ptr Image.t @-> int @-> int @-> int @-> Color.t @-> returning void)
@@ -963,6 +1016,29 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "ImageDrawRectangleLines"
       (ptr Image.t @-> Rectangle.t @-> int @-> Color.t @-> returning void)
 
+  let image_draw_triangle =
+    foreign "ImageDrawTriangle"
+      (ptr Image.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> Color.t
+     @-> returning void)
+
+  let image_draw_triangle_ex =
+    foreign "ImageDrawTriangleEx"
+      (ptr Image.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> Color.t
+     @-> Color.t @-> Color.t @-> returning void)
+
+  let image_draw_triangle_lines =
+    foreign "ImageDrawTriangleLines"
+      (ptr Image.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> Color.t
+     @-> returning void)
+
+  let image_draw_triangle_fan =
+    foreign "ImageDrawTriangleFan"
+      (ptr Image.t @-> ptr Vector2.t @-> int @-> Color.t @-> returning void)
+
+  let image_draw_triangle_strip =
+    foreign "ImageDrawTriangleStrip"
+      (ptr Image.t @-> ptr Vector2.t @-> int @-> Color.t @-> returning void)
+
   let image_draw =
     foreign "ImageDraw"
       (ptr Image.t @-> Image.t @-> Rectangle.t @-> Rectangle.t @-> Color.t
@@ -989,11 +1065,11 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let load_render_texture =
     foreign "LoadRenderTexture" (int @-> int @-> returning RenderTexture.t)
 
-  let is_texture_ready = foreign "IsTextureReady" (Texture.t @-> returning bool)
+  let is_texture_valid = foreign "IsTextureValid" (Texture.t @-> returning bool)
   let unload_texture = foreign "UnloadTexture" (Texture.t @-> returning void)
 
-  let is_render_texture_ready =
-    foreign "IsRenderTextureReady" (RenderTexture.t @-> returning bool)
+  let is_render_texture_valid =
+    foreign "IsRenderTextureValid" (RenderTexture.t @-> returning bool)
 
   let unload_render_texture =
     foreign "UnloadRenderTexture" (RenderTexture.t @-> returning void)
@@ -1041,6 +1117,9 @@ module Functions (F : Ctypes.FOREIGN) = struct
       (Texture.t @-> NPatchInfo.t @-> Rectangle.t @-> Vector2.t @-> float
      @-> Color.t @-> returning void)
 
+  let color_is_equal =
+    foreign "ColorIsEqual" (Color.t @-> Color.t @-> returning bool)
+
   let fade = foreign "Fade" (Color.t @-> float @-> returning Color.t)
   let color_to_int = foreign "ColorToInt" (Color.t @-> returning int)
 
@@ -1071,6 +1150,9 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "ColorAlphaBlend"
       (Color.t @-> Color.t @-> Color.t @-> returning Color.t)
 
+  let color_lerp =
+    foreign "ColorLerp" (Color.t @-> Color.t @-> float @-> returning Color.t)
+
   let get_color = foreign "GetColor" (int @-> returning Color.t)
 
   let get_pixel_color =
@@ -1099,7 +1181,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
       (string @-> string @-> int @-> int @-> ptr int @-> int
      @-> returning Font.t)
 
-  let is_font_ready = foreign "IsFontReady" (Font.t @-> returning bool)
+  let is_font_valid = foreign "IsFontValid" (Font.t @-> returning bool)
 
   let load_font_data =
     foreign "LoadFontData"
@@ -1220,7 +1302,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let text_to_upper = foreign "TextToUpper" (string @-> returning string)
   let text_to_lower = foreign "TextToLower" (string @-> returning string)
   let text_to_pascal = foreign "TextToPascal" (string @-> returning string)
+  let text_to_snake = foreign "TextToSnake" (string @-> returning string)
+  let text_to_camel = foreign "TextToCamel" (string @-> returning string)
   let text_to_integer = foreign "TextToInteger" (string @-> returning int)
+  let text_to_float = foreign "TextToFloat" (string @-> returning float)
 
   let draw_line_3d =
     foreign "DrawLine3D" (Vector3.t @-> Vector3.t @-> Color.t @-> returning void)
@@ -1307,7 +1392,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let load_model_from_mesh =
     foreign "LoadModelFromMesh" (Mesh.t @-> returning Model.t)
 
-  let is_model_ready = foreign "IsModelReady" (Model.t @-> returning bool)
+  let is_model_valid = foreign "IsModelValid" (Model.t @-> returning bool)
   let unload_model = foreign "UnloadModel" (Model.t @-> returning void)
 
   let get_model_bounding_box =
@@ -1328,6 +1413,15 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   let draw_model_wires_ex =
     foreign "DrawModelWiresEx"
+      (Model.t @-> Vector3.t @-> Vector3.t @-> float @-> Vector3.t @-> Color.t
+     @-> returning void)
+
+  let draw_model_points =
+    foreign "DrawModelPoints"
+      (Model.t @-> Vector3.t @-> float @-> Color.t @-> returning void)
+
+  let draw_model_points_ex =
+    foreign "DrawModelPointsEx"
       (Model.t @-> Vector3.t @-> Vector3.t @-> float @-> Vector3.t @-> Color.t
      @-> returning void)
 
@@ -1364,13 +1458,16 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "DrawMeshInstanced"
       (Mesh.t @-> Material.t @-> ptr Matrix.t @-> int @-> returning void)
 
-  let export_mesh = foreign "ExportMesh" (Mesh.t @-> string @-> returning bool)
-
   let get_mesh_bounding_box =
     foreign "GetMeshBoundingBox" (Mesh.t @-> returning BoundingBox.t)
 
   let gen_mesh_tangents =
     foreign "GenMeshTangents" (ptr Mesh.t @-> returning void)
+
+  let export_mesh = foreign "ExportMesh" (Mesh.t @-> string @-> returning bool)
+
+  let export_mesh_as_code =
+    foreign "ExportMeshAsCode" (Mesh.t @-> string @-> returning bool)
 
   let gen_mesh_poly = foreign "GenMeshPoly" (int @-> float @-> returning Mesh.t)
 
@@ -1410,8 +1507,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let load_material_default =
     foreign "LoadMaterialDefault" (void @-> returning Material.t)
 
-  let is_material_ready =
-    foreign "IsMaterialReady" (Material.t @-> returning bool)
+  let is_material_valid =
+    foreign "IsMaterialValid" (Material.t @-> returning bool)
 
   let unload_material = foreign "UnloadMaterial" (Material.t @-> returning void)
 
@@ -1429,6 +1526,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   let update_model_animation =
     foreign "UpdateModelAnimation"
+      (Model.t @-> ModelAnimation.t @-> int @-> returning void)
+
+  let update_model_animation_bones =
+    foreign "UpdateModelAnimationBones"
       (Model.t @-> ModelAnimation.t @-> int @-> returning void)
 
   let unload_model_animation =
@@ -1489,14 +1590,14 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let load_wave_from_memory =
     foreign "LoadWaveFromMemory" (string @-> string @-> int @-> returning Wave.t)
 
-  let is_wave_ready = foreign "IsWaveReady" (Wave.t @-> returning bool)
+  let is_wave_valid = foreign "IsWaveValid" (Wave.t @-> returning bool)
   let load_sound = foreign "LoadSound" (string @-> returning Sound.t)
 
   let load_sound_from_wave =
     foreign "LoadSoundFromWave" (Wave.t @-> returning Sound.t)
 
   let load_sound_alias = foreign "LoadSoundAlias" (Sound.t @-> returning Sound.t)
-  let is_sound_ready = foreign "IsSoundReady" (Sound.t @-> returning bool)
+  let is_sound_valid = foreign "IsSoundValid" (Sound.t @-> returning bool)
 
   let update_sound =
     foreign "UpdateSound" (Sound.t @-> ptr void @-> int @-> returning void)
@@ -1548,7 +1649,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "LoadMusicStreamFromMemory"
       (string @-> string @-> int @-> returning Music.t)
 
-  let is_music_ready = foreign "IsMusicReady" (Music.t @-> returning bool)
+  let is_music_valid = foreign "IsMusicValid" (Music.t @-> returning bool)
 
   let unload_music_stream =
     foreign "UnloadMusicStream" (Music.t @-> returning void)
@@ -1590,8 +1691,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let load_audio_stream =
     foreign "LoadAudioStream" (int @-> int @-> int @-> returning AudioStream.t)
 
-  let is_audio_stream_ready =
-    foreign "IsAudioStreamReady" (AudioStream.t @-> returning bool)
+  let is_audio_stream_valid =
+    foreign "IsAudioStreamValid" (AudioStream.t @-> returning bool)
 
   let unload_audio_stream =
     foreign "UnloadAudioStream" (AudioStream.t @-> returning void)

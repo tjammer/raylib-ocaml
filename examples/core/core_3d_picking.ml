@@ -54,7 +54,7 @@ let rec loop camera collision ray =
       match (is_mouse_button_pressed MouseButton.Left, collision) with
       | true, true -> (false, None)
       | true, false ->
-          let r = get_mouse_ray (get_mouse_position ()) camera in
+          let r = get_screen_to_world_ray (get_mouse_position ()) camera in
           let collision =
             get_ray_collision_box r
               (BoundingBox.create

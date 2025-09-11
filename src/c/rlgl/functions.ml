@@ -347,7 +347,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   let set_vertex_attribute =
     foreign "rlSetVertexAttribute"
-      (uint @-> int @-> int @-> bool @-> int @-> ptr void @-> returning void)
+      (uint @-> int @-> int @-> bool @-> int @-> int @-> returning void)
 
   let set_vertex_attribute_divisor =
     foreign "rlSetVertexAttributeDivisor" (uint @-> int @-> returning void)
@@ -383,7 +383,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   (* Load texture cubemap*)
   let load_texture_cubemap =
-    foreign "rlLoadTextureCubemap" (ptr void @-> int @-> int @-> returning uint)
+    foreign "rlLoadTextureCubemap"
+      (ptr void @-> int @-> int @-> int @-> returning uint)
 
   (* Update GPU texture with new data*)
   let update_texture =
@@ -419,8 +420,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   (* Framebuffer management (fbo)*)
   (* Load an empty framebuffer*)
-  let load_framebuffer =
-    foreign "rlLoadFramebuffer" (int @-> int @-> returning uint)
+  let load_framebuffer = foreign "rlLoadFramebuffer" (void @-> returning uint)
 
   (* Attach texture/renderbuffer to a framebuffer*)
   let framebuffer_attach =

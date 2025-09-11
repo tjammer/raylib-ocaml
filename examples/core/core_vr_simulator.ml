@@ -13,7 +13,6 @@ let setup () =
     set_v_resolution hmd 1200;
     set_h_screen_size hmd 0.133793;
     set_v_screen_size hmd 0.0669;
-    set_v_screen_center hmd 0.0478;
     set_eye_to_screen_distance hmd 0.041;
     set_lens_separation_distance hmd 0.07;
     set_interpupillary_distance hmd 0.07;

@@ -807,9 +807,6 @@ module VrDeviceInfo = struct
   let h_screen_size vrdeviceinfo = getf vrdeviceinfo VrDeviceInfo.h_screen_size
   let v_screen_size vrdeviceinfo = getf vrdeviceinfo VrDeviceInfo.v_screen_size
 
-  let v_screen_center vrdeviceinfo =
-    getf vrdeviceinfo VrDeviceInfo.v_screen_center
-
   let eye_to_screen_distance vrdeviceinfo =
     getf vrdeviceinfo VrDeviceInfo.eye_to_screen_distance
 
@@ -836,9 +833,6 @@ module VrDeviceInfo = struct
 
   let set_v_screen_size vrdeviceinfo v_screen_size =
     setf vrdeviceinfo VrDeviceInfo.v_screen_size v_screen_size
-
-  let set_v_screen_center vrdeviceinfo v_screen_center =
-    setf vrdeviceinfo VrDeviceInfo.v_screen_center v_screen_center
 
   let set_eye_to_screen_distance vrdeviceinfo eye_to_screen_distance =
     setf vrdeviceinfo VrDeviceInfo.eye_to_screen_distance eye_to_screen_distance
@@ -937,6 +931,9 @@ module FilePathList = struct
   type t = t' ctyp
 
   let t = FilePathList.t
+  let capacity filepathlist = getf filepathlist FilePathList.capacity
+  let count filepathlist = getf filepathlist FilePathList.count
+  let paths filepathlist = getf filepathlist FilePathList.paths
 
   let files filepathlist =
     let count = getf filepathlist FilePathList.count in
@@ -949,6 +946,21 @@ module AutomationEvent = struct
   type t = t' ctyp
 
   let t = AutomationEvent.t
+  let frame automationevent = getf automationevent AutomationEvent.frame
+  let typ automationevent = getf automationevent AutomationEvent.typ
+  let params automationevent = getf automationevent AutomationEvent.params
+
+  let set_frame automationevent frame =
+    setf automationevent AutomationEvent.frame frame
+
+  let set_typ automationevent typ = setf automationevent AutomationEvent.typ typ
+
+  let set_params automationevent v0 v1 v2 v3 =
+    let arr = params automationevent in
+    CArray.set arr 0 v0;
+    CArray.set arr 1 v1;
+    CArray.set arr 2 v2;
+    CArray.set arr 3 v3
 end
 
 module AutomationEventList = struct
@@ -956,6 +968,24 @@ module AutomationEventList = struct
   type t = t' ctyp
 
   let t = AutomationEventList.t
+
+  let capacity automationeventlist =
+    getf automationeventlist AutomationEventList.capacity
+
+  let count automationeventlist =
+    getf automationeventlist AutomationEventList.count
+
+  let events automationeventlist =
+    getf automationeventlist AutomationEventList.events
+
+  let set_capacity automationeventlist capacity =
+    setf automationeventlist AutomationEventList.capacity capacity
+
+  let set_count automationeventlist count =
+    setf automationeventlist AutomationEventList.count count
+
+  let set_events automationeventlist events =
+    setf automationeventlist AutomationEventList.events events
 end
 
 let max_material_maps = max_material_maps

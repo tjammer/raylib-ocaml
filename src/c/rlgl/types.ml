@@ -2,7 +2,7 @@ module Types (F : Ctypes.TYPE) = struct
   open F
 
   module RlVertexBuffer = struct
-    let uint_array_4 = array 4 uint
+    let uint_array_5 = array 5 uint
 
     type t
 
@@ -15,7 +15,7 @@ module Types (F : Ctypes.TYPE) = struct
     (* TODO assume opengl 11, for es2 this would be indices : short ptr *)
     let indices = field t "indices" (ptr uint)
     let vao_id = field t "vaoId" uint
-    let vbo_id = field t "vboId" uint_array_4
+    let vbo_id = field t "vboId" uint_array_5
     let () = seal t
   end
 

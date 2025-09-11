@@ -1,8 +1,8 @@
 diff --git a/vendor/raylib/src/Makefile b/vendor/raylib/src/Makefile
-index 193e3eb5..11412e60 100644
+index 7dde52fb..9df71f4f 100644
 --- a/vendor/raylib/src/Makefile
 +++ b/vendor/raylib/src/Makefile
-@@ -240,8 +240,8 @@ endif
+@@ -266,8 +266,8 @@ endif
  
  # Define default C compiler and archiver to pack library: CC, AR
  #------------------------------------------------------------------------------------------------
@@ -11,10 +11,10 @@ index 193e3eb5..11412e60 100644
 +CC = x86_64-w64-mingw32-gcc
 +AR = x86_64-w64-mingw32-ar
  
- ifeq ($(PLATFORM),PLATFORM_DESKTOP)
+ ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_GLFW)
      ifeq ($(PLATFORM_OS),OSX)
-@@ -605,7 +605,7 @@ else
-         ifeq ($(PLATFORM),$(filter $(PLATFORM),PLATFORM_DESKTOP PLATFORM_DESKTOP_SDL))
+@@ -669,7 +669,7 @@ else
+         ifeq ($(TARGET_PLATFORM),$(filter $(TARGET_PLATFORM),PLATFORM_DESKTOP_GLFW PLATFORM_DESKTOP_SDL PLATFORM_DESKTOP_RGFW))
              ifeq ($(PLATFORM_OS),WINDOWS)
                  # NOTE: Linking with provided resource file
 -				$(CC) -shared -o $(RAYLIB_RELEASE_PATH)/$(RAYLIB_LIB_NAME).dll $(OBJS) $(RAYLIB_RES_FILE) $(LDFLAGS) $(LDLIBS)

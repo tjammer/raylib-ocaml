@@ -354,8 +354,8 @@ module Type = struct
         ^ Printf.sprintf "    let %s = make t in\n" typ_nm
         ^ (List.map
              (fun name ->
-               Printf.sprintf "    setf %s Types.%s.%s %s;" typ_nm typ.name.name
-                 name name)
+               Printf.sprintf "    setf %s %s.%s %s;" typ_nm typ.name.name name
+                 name)
              names
           |> String.concat "\n")
         ^ "\n    " ^ typ_nm ^ "\n\n"
@@ -366,7 +366,7 @@ module Type = struct
     let start = Printf.sprintf "  let %s %s = " field.name.name typ_nm in
     let def =
       start
-      ^ Printf.sprintf "\n    getf %s Types.%s.%s\n" typ_nm typ.name.name
+      ^ Printf.sprintf "\n    getf %s %s.%s\n" typ_nm typ.name.name
           field.name.name
     in
     if String.mem ~sub:"_count" field.name.name then None
@@ -376,9 +376,9 @@ module Type = struct
       | Ptr _, Some count ->
           Some
             (start
-            ^ Printf.sprintf "\n    let count = getf %s Types.%s.%s in\n" typ_nm
+            ^ Printf.sprintf "\n    let count = getf %s %s.%s in\n" typ_nm
                 typ.name.name count
-            ^ Printf.sprintf "    CArray.from_ptr (getf %s Types.%s.%s) count\n"
+            ^ Printf.sprintf "    CArray.from_ptr (getf %s %s.%s) count\n"
                 typ_nm typ.name.name field.name.name)
       | C _, _ | Ray _, _ | Ptr _, _ -> Some def
       | Forw_decl _, _ -> None
@@ -399,12 +399,12 @@ module Type = struct
       | Ptr _ when has_count field.name.name |> Option.is_some ->
           Some
             (start
-            ^ Printf.sprintf "    setf %s Types.%s.%s (CArray.start %s)\n"
-                typ_nm typ.name.name field.name.name field.name.name)
+            ^ Printf.sprintf "    setf %s %s.%s (CArray.start %s)\n" typ_nm
+                typ.name.name field.name.name field.name.name)
       | C _ | Ray _ | Ptr _ ->
           Some
             (start
-            ^ Printf.sprintf "    setf %s Types.%s.%s %s\n" typ_nm typ.name.name
+            ^ Printf.sprintf "    setf %s %s.%s %s\n" typ_nm typ.name.name
                 field.name.name field.name.name)
       | Forw_decl _ -> None
       | Array (size, _) ->
@@ -426,8 +426,8 @@ module Type = struct
   let impl typ =
     let nm = typ.name.name in
     Printf.sprintf "module %s = struct\n" nm
-    ^ "  type t' = Types." ^ nm ^ ".t\n\n" ^ "  type t = t' ctyp\n\n"
-    ^ Printf.sprintf "  let t = Types.%s.t\n\n" nm
+    ^ "  type t' = " ^ nm ^ ".t\n\n" ^ "  type t = t' ctyp\n\n"
+    ^ Printf.sprintf "  let t = %s.t\n\n" nm
     ^ ctor_impl typ
     (* getters *)
     ^ (List.filter_map (getter_impl typ @@ has_count typ.fields) typ.fields
@@ -543,13 +543,15 @@ end
 let () =
   let api = Yojson.Basic.from_file "src/util/raylib_api.json" in
   let open Yojson.Basic.Util in
+  (* Enums and structs both go into types *)
   let enums =
     api |> member "enums" |> to_list |> List.filter_map Enum.of_json
   in
-  (* TODO type and constants in one functor *)
+  let types = api |> member "structs" |> to_list |> List.map Type.of_json in
   let stubs =
     "module Types (F : Ctypes.TYPE) = struct\nopen F\n"
     ^ (enums |> List.map Enum.stubs |> String.concat "")
+    ^ (types |> List.map Type.stub |> String.concat "")
     ^ "end\n"
     ^ "let max_material_maps = [%c constant \"MAX_MATERIAL_MAPS\" camlint]\n\n"
     ^ "let max_shader_locations = [%c constant \"MAX_SHADER_LOCATIONS\" \
@@ -565,13 +567,9 @@ let () =
     ^ (enums |> List.map Enum.itf |> String.concat "")
     ^ "val max_material_maps : int\n\n" ^ "val max_shader_locations : int\n\n"
   in
-  (* print_string itf; *)
+  print_string itf;
   ignore itf;
 
-  let types = api |> member "structs" |> to_list |> List.map Type.of_json in
-  let stubs = types |> List.map Type.stub |> String.concat "" in
-  (* print_string stubs; *)
-  ignore stubs;
   let itf = types |> List.map Type.itf |> String.concat "" in
   (* print_string itf; *)
   ignore itf;
@@ -586,6 +584,6 @@ let () =
   (* print_string stubs; *)
   ignore stubs;
   let itf = funcs |> List.map Function.itf |> String.concat "\n" in
-  print_string itf;
-  (* ignore itf; *)
+  (* print_string itf; *)
+  ignore itf;
   ()
