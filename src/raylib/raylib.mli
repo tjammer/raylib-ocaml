@@ -1226,7 +1226,7 @@ module Wave : sig
 end
 
 module AudioStream : sig
-  type t'
+  type t' = Raylib_c.Types.AudioStream.t
   type t = t' ctyp
 
   val t : t Ctypes.typ
@@ -3249,20 +3249,5 @@ val set_audio_stream_pan : AudioStream.t -> float -> unit
 
 val set_audio_stream_buffer_size_default : int -> unit
 (** [set_audio_stream_buffer_size_default size] Default size for new audio streams*)
-
-(* val set_audio_stream_callback : AudioStream.t -> audio_callback -> unit *)
-(* (\** [set_audio_stream_callback stream callback] Audio thread callback to request new data*\) *)
-
-(* val attach_audio_stream_processor : AudioStream.t -> audio_callback -> unit *)
-(* (\** [attach_audio_stream_processor stream processor] Attach audio stream processor to stream, receives the samples as 'float'*\) *)
-
-(* val detach_audio_stream_processor : AudioStream.t -> audio_callback -> unit *)
-(* (\** [detach_audio_stream_processor stream processor] Detach audio stream processor from stream*\) *)
-
-(* val attach_audio_mixed_processor : audio_callback -> unit *)
-(* (\** [attach_audio_mixed_processor processor] Attach audio stream processor to the entire audio pipeline, receives the samples as 'float'*\) *)
-
-(* val detach_audio_mixed_processor : audio_callback -> unit *)
-(* (\** [detach_audio_mixed_processor processor] Detach audio stream processor from the entire audio pipeline*\) *)
 
 module Rlgl = Rlgl

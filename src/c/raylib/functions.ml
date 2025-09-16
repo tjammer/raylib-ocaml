@@ -245,22 +245,6 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (* let set_trace_log_callback = *)
   (*   foreign "SetTraceLogCallback" (trace_log_callback @-> returning void) *)
 
-  (* let set_load_file_data_callback = *)
-  (*   foreign "SetLoadFileDataCallback" *)
-  (*     (load_file_data_callback @-> returning void) *)
-
-  (* let set_save_file_data_callback = *)
-  (*   foreign "SetSaveFileDataCallback" *)
-  (*     (save_file_data_callback @-> returning void) *)
-
-  (* let set_load_file_text_callback = *)
-  (*   foreign "SetLoadFileTextCallback" *)
-  (*     (load_file_text_callback @-> returning void) *)
-
-  (* let set_save_file_text_callback = *)
-  (*   foreign "SetSaveFileTextCallback" *)
-  (*     (save_file_text_callback @-> returning void) *)
-
   let _load_file_data =
     foreign "LoadFileData" (string @-> ptr uint @-> returning (ptr uchar))
 
@@ -1731,20 +1715,6 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let set_audio_stream_buffer_size_default =
     foreign "SetAudioStreamBufferSizeDefault" (int @-> returning void)
 
-  (* let set_audio_stream_callback = *)
-  (*   foreign "SetAudioStreamCallback" (AudioStream.t @-> audio_callback @-> returning void) *)
-
-  (* let attach_audio_stream_processor = *)
-  (*   foreign "AttachAudioStreamProcessor" (AudioStream.t @-> audio_callback @-> returning void) *)
-
-  (* let detach_audio_stream_processor = *)
-  (*   foreign "DetachAudioStreamProcessor" (AudioStream.t @-> audio_callback @-> returning void) *)
-
-  (* let attach_audio_mixed_processor = *)
-  (*   foreign "AttachAudioMixedProcessor" (audio_callback @-> returning void) *)
-
-  (* let detach_audio_mixed_processor = *)
-  (*   foreign "DetachAudioMixedProcessor" (audio_callback @-> returning void) *)
   (*---------------------------------------------------------------------------------- *)
   (* Module Functions Definition - Utils math *)
   (*---------------------------------------------------------------------------------- *)

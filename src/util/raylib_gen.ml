@@ -567,7 +567,7 @@ let () =
     ^ (enums |> List.map Enum.itf |> String.concat "")
     ^ "val max_material_maps : int\n\n" ^ "val max_shader_locations : int\n\n"
   in
-  print_string itf;
+  (* print_string itf; *)
   ignore itf;
 
   let itf = types |> List.map Type.itf |> String.concat "" in
@@ -584,6 +584,6 @@ let () =
   (* print_string stubs; *)
   ignore stubs;
   let itf = funcs |> List.map Function.itf |> String.concat "\n" in
-  (* print_string itf; *)
-  ignore itf;
+  print_string itf;
+  (* ignore itf; *)
   ()

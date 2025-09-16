@@ -17,6 +17,7 @@
  (description "OCaml bindings for raylib")
  (synopsis "OCaml bindings for raylib")
  (depends
+  (ocaml (>= 4.08.0))
   (dune (>= 3.17))
    dune-configurator
   (ctypes (>= 0.14))
@@ -37,12 +38,26 @@
   (patch (>= 3.0.0))))
 
 (package
+ (name raylib-callbacks)
+ (version 1.4.0)
+ (description "OCaml bindings for raygui")
+ (synopsis "OCaml bindings for raygui")
+ (depends
+  (ocaml (>= 4.05))
+  (dune (>= 3.17))
+   dune-configurator
+  (ctypes (>= 0.14))
+  (ctypes-foreign (>= 0.14))
+  (raylib (>= 1.4.0))))
+
+(package
  (name raylib-gen)
  (version 0.1.0)
  (description "Binding generation for raylib")
  (synopsis "Binding generation for raylib")
  (depends
-   (dune (>= 3.17))
+  (ocaml (>= 4.08.0))
+  (dune (>= 3.17))
    yojson
    re
    containers))
