@@ -9,9 +9,11 @@ license: "MIT"
 homepage: "https://github.com/tjammer/raylib-ocaml"
 bug-reports: "https://github.com/tjammer/raylib-ocaml/issues"
 depends: [
+  "ocaml" {>= "4.08.0"}
   "dune" {>= "3.17" & >= "3.17"}
   "yojson"
   "re"
+  "containers"
   "odoc" {with-doc}
 ]
 build: [
