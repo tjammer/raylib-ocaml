@@ -1,4 +1,4 @@
 (library
- (name callbacks)
+ (name raylib_callbacks)
  (public_name raylib-callbacks)
- (libraries raylib raylib_callbacks_c))
+ (libraries raylib raylib_callbacks_c ctypes-foreign))
