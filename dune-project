@@ -3,8 +3,7 @@
 
 (name raylib)
 
-; cannot specify conditional deps otherwise
-(generate_opam_files false)
+(generate_opam_files true)
 
 (source (github tjammer/raylib-ocaml))
 (license MIT)
@@ -22,7 +21,12 @@
    dune-configurator
   (ctypes (>= 0.14))
   (integers (>= 0.5))
-  (patch (>= 3.0.0))))
+  (patch (>= 3.0.0))
+  (conf-mesa (or (= :os linux) (= :os-family bsd)))
+  (conf-libxcursor (or (= :os linux) (= :os-family bsd)))
+  (conf-libxi (or (= :os linux) (= :os-family bsd)))
+  (conf-libxinerama (or (= :os linux) (= :os-family bsd)))
+  (conf-libxrandr (or (= :os linux) (= :os-family bsd)))))
 
 (package
  (name raygui)
@@ -34,7 +38,7 @@
   (dune (>= 3.17))
    dune-configurator
   (ctypes (>= 0.14))
-  (raylib (>= 1.4.0))
+  (raylib (= :version))
   (patch (>= 3.0.0))))
 
 (package
@@ -48,7 +52,7 @@
    dune-configurator
   (ctypes (>= 0.14))
   (ctypes-foreign (>= 0.14))
-  (raylib (>= 1.4.0))))
+  (raylib (= :version))))
 
 (package
  (name raylib-gen)
