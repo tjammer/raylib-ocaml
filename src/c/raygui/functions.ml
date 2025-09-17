@@ -171,9 +171,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (*  List View with extended parameters *)
   let _list_view_ex =
     foreign "GuiListViewEx"
-      (Raylib.Rectangle.t
-      @-> ptr (const string)
-      @-> int @-> ptr int @-> ptr int @-> int @-> returning int)
+      (Raylib.Rectangle.t @-> ptr string @-> int @-> ptr int @-> ptr int @-> int
+     @-> returning int)
 
   (*  Message Box control, displays a message *)
   let _message_box =

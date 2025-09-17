@@ -5,11 +5,12 @@ module Functions (F : Ctypes.FOREIGN) = struct
   open Raylib_c.Types
 
   let audio_callback =
-    Foreign.funptr Ctypes.(ptr void @-> uint @-> returning void)
+    Foreign.funptr ~thread_registration:false ~runtime_lock:true
+      Ctypes.(ptr void @-> uint @-> returning void)
 
-  let set_audio_stream_callback =
-    foreign "SetAudioStreamCallback"
-      (AudioStream.t @-> audio_callback @-> returning void)
+  (* let set_audio_stream_callback = *)
+  (*   foreign "SetAudioStreamCallback" *)
+  (*     (AudioStream.t @-> audio_callback @-> returning void) *)
 
   let attach_audio_stream_processor =
     foreign "AttachAudioStreamProcessor"

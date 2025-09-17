@@ -2,6 +2,8 @@
 
 type audio_callback = unit Ctypes.ptr -> Unsigned.uint -> unit
 
+val end_drawing2 : unit -> unit
+
 val set_audio_stream_callback : Raylib.AudioStream.t -> audio_callback -> unit
 (** [set_audio_stream_callback stream callback] Audio thread callback to request new data*)
 
