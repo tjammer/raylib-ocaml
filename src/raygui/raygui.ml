@@ -21,23 +21,24 @@ module CheckBox = struct
 end
 
 module ComboBox = struct
-  type t = [ `Width_combobox | `Padding_combobox ]
+  type t = [ `Width_combobox | `Spacing_combobox ]
 end
 
 module DropdownBox = struct
-  type t = [ `Arrow_padding | `Dropdown_items_padding ]
+  type t = [ `Arrow_padding | `Dropdown_items_spacing ]
 end
 
 module TextBox = struct
   type t =
     [ `Text_inner_padding
-    | `Text_lines_padding
-    | `Color_selected_fg
-    | `Color_selected_bg ]
+    | `Text_lines_spacing
+    | `Text_alignment_vertical
+    | `Text_multiline
+    | `Text_wrap_mode ]
 end
 
 module Spinner = struct
-  type t = [ `Width_spinner | `Padding_spinner ]
+  type t = [ `Width_spinner | `Spacing_spinner ]
 end
 
 module ScrollBar = struct
@@ -55,7 +56,7 @@ end
 module ListView = struct
   type t =
     [ `List_items_height
-    | `List_items_padding
+    | `List_items_spacing
     | `Scrollbar_width
     | `Scrollbar_side ]
 end
@@ -132,16 +133,17 @@ let prop_to_int = function
   | `Padding_progressbar -> ProgressBarProperty.(to_int Padding)
   | `Padding_checkbox -> CheckBoxProperty.(to_int Padding)
   | `Width_combobox -> ComboBoxProperty.(to_int Width)
-  | `Padding_combobox -> ComboBoxProperty.(to_int Padding)
+  | `Spacing_combobox -> ComboBoxProperty.(to_int Spacing)
   | `Arrow_padding -> DropdownBoxProperty.(to_int Arrow_padding)
-  | `Dropdown_items_padding ->
-      DropdownBoxProperty.(to_int Dropdown_items_padding)
+  | `Dropdown_items_spacing ->
+      DropdownBoxProperty.(to_int Dropdown_items_spacing)
   | `Text_inner_padding -> TextBoxProperty.(to_int Text_inner_padding)
-  | `Text_lines_padding -> TextBoxProperty.(to_int Text_lines_padding)
-  | `Color_selected_fg -> TextBoxProperty.(to_int Color_selected_fg)
-  | `Color_selected_bg -> TextBoxProperty.(to_int Color_selected_bg)
+  | `Text_lines_spacing -> TextBoxProperty.(to_int Text_lines_spacing)
+  | `Text_alignment_vertical -> TextBoxProperty.(to_int Text_alignment_vertical)
+  | `Text_multiline -> TextBoxProperty.(to_int Text_multiline)
+  | `Text_wrap_mode -> TextBoxProperty.(to_int Text_wrap_mode)
   | `Width_spinner -> SpinnerProperty.(to_int Width)
-  | `Padding_spinner -> SpinnerProperty.(to_int Padding)
+  | `Spacing_spinner -> SpinnerProperty.(to_int Spacing)
   | `Arrows_size -> ScrollBarProperty.(to_int Arrows_size)
   | `Arrows_visible -> ScrollBarProperty.(to_int Arrows_visible)
   | `Scroll_slider_padding -> ScrollBarProperty.(to_int Scroll_slider_padding)
@@ -149,7 +151,7 @@ let prop_to_int = function
   | `Scroll_padding -> ScrollBarProperty.(to_int Scroll_padding)
   | `Scroll_speed -> ScrollBarProperty.(to_int Scroll_speed)
   | `List_items_height -> ListViewProperty.(to_int List_items_height)
-  | `List_items_padding -> ListViewProperty.(to_int List_items_padding)
+  | `List_items_spacing -> ListViewProperty.(to_int List_items_spacing)
   | `Scrollbar_width -> ListViewProperty.(to_int Scrollbar_width)
   | `Scrollbar_side -> ListViewProperty.(to_int Scrollbar_side)
   | `Color_selector_size -> ColorPickerProperty.(to_int Color_selector_size)

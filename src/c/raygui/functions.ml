@@ -16,16 +16,19 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (*  Unlock gui controls (global state) *)
   let unlock = foreign "GuiUnlock" (void @-> returning void)
 
+  (*  Get gui is locked (global state) *)
+  let is_locked = foreign "GuiIsLocked" (void @-> returning bool)
+
   (*  Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f *)
   let fade = foreign "GuiFade" (float @-> returning void)
 
   (*  Set gui state (global state) *)
   let set_state =
-    foreign "GuiSetState" (Constants.ControlState.t @-> returning void)
+    foreign "GuiSetState" (Constants.State.t @-> returning void)
 
   (*  Get gui state (global state) *)
   let get_state =
-    foreign "GuiGetState" (void @-> returning Constants.ControlState.t)
+    foreign "GuiGetState" (void @-> returning Constants.State.t)
 
   (* Font set/get functions *)
   (*  Set gui custom font (global state) *)
@@ -58,12 +61,15 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "GuiLine" (Raylib.Rectangle.t @-> string @-> returning void)
 
   (*  Panel control, useful to group controls *)
-  let _panel = foreign "GuiPanel" (Raylib.Rectangle.t @-> returning void)
+  let _panel = foreign "GuiPanel" (Raylib.Rectangle.t @-> string @-> returning void)
+
+  (*  Tab bar control *)
+  let _tab_bar = foreign "GuiTabBar" (Raylib.Rectangle.t @-> ptr string @-> int @-> ptr int @-> returning int)
 
   (*  Scroll Panel control *)
   let _scroll_panel =
     foreign "GuiScrollPanel"
-      (Raylib.Rectangle.t @-> Raylib.Rectangle.t @-> ptr Raylib.Vector2.t
+      (Raylib.Rectangle.t @-> string @-> Raylib.Rectangle.t @-> ptr Raylib.Vector2.t
       @-> returning Raylib.Rectangle.t)
 
   (* Basic controls set *)
@@ -121,11 +127,6 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "GuiTextBox"
       (Raylib.Rectangle.t @-> ptr char @-> int @-> bool @-> returning bool)
 
-  (*  Text Box control with multiple lines *)
-  let _text_box_multi =
-    foreign "GuiTextBoxMulti"
-      (Raylib.Rectangle.t @-> ptr char @-> int @-> bool @-> returning bool)
-
   (*  Slider control, returns selected value *)
   let _slider =
     foreign "GuiSlider"
@@ -160,7 +161,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (*  Grid control *)
   let _grid =
     foreign "GuiGrid"
-      (Raylib.Rectangle.t @-> float @-> int @-> returning Raylib.Vector2.t)
+      (Raylib.Rectangle.t @-> string @-> float @-> int @-> returning Raylib.Vector2.t)
 
   (* Advance controls set *)
   (*  List View control, returns selected list item index *)
@@ -182,26 +183,26 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (*  Text Input Box control, ask for text *)
   let _text_input_box =
     foreign "GuiTextInputBox"
-      (Raylib.Rectangle.t @-> string @-> string @-> string @-> ptr char
+      (Raylib.Rectangle.t @-> string @-> string @-> string @-> ptr char @-> int @-> ptr int
      @-> returning int)
 
   (*  Color Picker control (multiple color controls) *)
   let _color_picker =
     foreign "GuiColorPicker"
-      (Raylib.Rectangle.t @-> Raylib.Color.t @-> returning Raylib.Color.t)
+      (Raylib.Rectangle.t @-> string @-> Raylib.Color.t @-> returning Raylib.Color.t)
 
   (*  Color Panel control *)
   let _color_panel =
     foreign "GuiColorPanel"
-      (Raylib.Rectangle.t @-> Raylib.Color.t @-> returning Raylib.Color.t)
+      (Raylib.Rectangle.t @-> string @-> Raylib.Color.t @-> returning Raylib.Color.t)
 
   (*  Color Bar Alpha control *)
   let _color_bar_alpha =
-    foreign "GuiColorBarAlpha" (Raylib.Rectangle.t @-> float @-> returning float)
+    foreign "GuiColorBarAlpha" (Raylib.Rectangle.t @-> string @-> float @-> returning float)
 
   (*  Color Bar Hue control *)
   let _color_bar_hue =
-    foreign "GuiColorBarHue" (Raylib.Rectangle.t @-> float @-> returning float)
+    foreign "GuiColorBarHue" (Raylib.Rectangle.t @-> string @-> float @-> returning float)
 
   (* Styles loading functions *)
   (*  Load style file (.rgs) *)
@@ -210,4 +211,27 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (*  Load style default over global style *)
   let load_style_default =
     foreign "GuiLoadStyleDefault" (void @-> returning void)
+
+  (* Tooltips management functions *)
+  (*  Enable tooltip (global state) *)
+  let enable_tooltip = foreign "GuiEnableTooltip" (void @-> returning void)
+
+  (*  Disable tooltip (global state) *)
+  let disable_tooltip = foreign "GuiDisableTooltip" (void @-> returning void)
+
+  (*  Set tooltip (global state) *)
+  let set_tooltip = foreign "GuiSetTooltip" (string @-> returning void)
+
+  (* Icons functionality *)
+  let icon_text = foreign "GuiIconText" (int @-> string @-> returning string)
+
+  (* Set icon scale (global state) *)
+  let set_icon_scale = foreign "GuiSetIconScale" (int @-> returning void)
+
+(*  let _get_icons = foreign "GuiGetIcons" (void @-> returning (ptr uint)) *)
+
+(*  let _load_icons = foreign "GuiLoadIcons" (string @-> bool @-> returning (ptr @@ ptr char)) *)
+
+  let _draw_icon = foreign "GuiDrawIcon" (int @-> int @-> int @-> int @-> Raylib.Color.t @-> returning void)
+
 end

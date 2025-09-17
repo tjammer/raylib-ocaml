@@ -14,6 +14,7 @@ val to_voidp : 'a ptr -> unit ptr
 val ptr_of_int : int -> int ptr
 val ptr_of_uint : Unsigned.uint -> Unsigned.uint ptr
 val void_ptr_of_int : int -> unit ptr
+val ptr_of_string : string -> string ptr
 
 module CArray = Ctypes.CArray
 module Raylib_c = Raylib_c

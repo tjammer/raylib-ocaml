@@ -14,9 +14,14 @@ let window_box bx = _window_box @@ to_struct bx
 let group_box bx = _group_box @@ to_struct bx
 let line bx = _line @@ to_struct bx
 let panel bx = _panel @@ to_struct bx
+let tab_bar bx text count active =
+  let text_ptr = Raylib.ptr_of_string text in
+  let active_ptr = Raylib.ptr_of_int active in
+  let rt = _tab_bar (to_struct bx) text_ptr count active_ptr in
+  (Ctypes.(!@text_ptr), Ctypes.(!@active_ptr), rt)
 
-let scroll_panel a b c =
-  _scroll_panel (to_struct a) (to_struct b) (to_struct_ptr c) |> Raylib.to_ctyp
+let scroll_panel a s b c =
+  _scroll_panel (to_struct a) s (to_struct b) (to_struct_ptr c) |> Raylib.to_ctyp
 
 let label bx = _label @@ to_struct bx
 let button bx = _button @@ to_struct bx
@@ -70,7 +75,7 @@ let text_box rct txt state =
   in
   (str, rt)
 
-let text_box_multi rct txt state =
+(*let text_box_multi rct txt state =
   let open Ctypes in
   let str_arr = CArray.of_string txt in
   let rt =
@@ -87,7 +92,7 @@ let text_box_multi rct txt state =
     | Some last -> String.sub str 0 last
     | None -> str
   in
-  (str, rt)
+  (str, rt)*)
 
 let slider rct label txt value ~min ~max =
   _slider (to_struct rct) label txt value min max
@@ -101,7 +106,7 @@ let progress_bar rct label txt value ~min ~max =
 let status_bar rct = _status_bar @@ to_struct rct
 let dummy_rec rct = _dummy_rec @@ to_struct rct
 let scroll_bar rct value ~min ~max = _scroll_bar (to_struct rct) value min max
-let grid rct b c = _grid (to_struct rct) b c |> Raylib.to_ctyp
+let grid rct s b c = _grid (to_struct rct) s b c |> Raylib.to_ctyp
 
 let list_view rct label index active =
   let vl_ptr = Raylib.ptr_of_int index in
@@ -121,19 +126,23 @@ let list_view_ex rct strings focus index active =
 
 let message_box rct = _message_box @@ to_struct rct
 
-let text_input_box rct title message buttons text =
+let text_input_box rct title message buttons text text_max_size secret_view_active =
   let open Ctypes in
   let str_arr = CArray.of_string text in
+  let sv_ptr = Raylib.ptr_of_int secret_view_active in
   let rt =
-    _text_input_box (to_struct rct) title message buttons (CArray.start str_arr)
+    _text_input_box (to_struct rct) title message buttons (CArray.start str_arr) text_max_size sv_ptr
   in
-  (String.init (CArray.length str_arr) (CArray.unsafe_get str_arr), rt)
+  (String.init (CArray.length str_arr) (CArray.unsafe_get str_arr), Ctypes.(!@sv_ptr), rt)
 
-let color_picker rct col =
-  _color_picker (to_struct rct) (to_struct col) |> Raylib.to_ctyp
+let color_picker rct s col =
+  _color_picker (to_struct rct) s (to_struct col) |> Raylib.to_ctyp
 
-let color_panel rct col =
-  _color_panel (to_struct rct) (to_struct col) |> Raylib.to_ctyp
+let color_panel rct s col =
+  _color_panel (to_struct rct) s (to_struct col) |> Raylib.to_ctyp
 
 let color_bar_alpha rct = _color_bar_alpha @@ to_struct rct
 let color_bar_hue rct = _color_bar_hue @@ to_struct rct
+
+let draw_icon icon_id pos_x pos_y pixel_size color =
+  _draw_icon icon_id pos_x pos_y pixel_size @@ to_struct color
