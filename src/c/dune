@@ -3,6 +3,11 @@
  (modules Apply_patch)
  (libraries patch))
 
+(executable
+ (name chmodx)
+ (modules Chmodx)
+ (libraries unix))
+
 (rule
  (targets library_flags.sexp)
  (deps
@@ -23,11 +28,12 @@
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
-  (:discover apply_patch.exe))
+  apply_patch.exe
+  chmodx.exe)
  (action
   (no-infer
    (progn
-    (run chmod +w vendor/raylib/src/config.h)
+    (run ./chmodx.exe vendor/raylib/src/config.h)
     (run ./apply_patch.exe enable_formats.patch)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
@@ -43,11 +49,12 @@
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
-  (:discover apply_patch.exe))
+  apply_patch.exe
+  chmodx.exe)
  (action
   (no-infer
    (progn
-    (run chmod +w vendor/raylib/src/config.h)
+    (run ./chmodx.exe vendor/raylib/src/config.h)
     (run ./apply_patch.exe enable_formats.patch)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
@@ -64,13 +71,14 @@
   (source_tree vendor/raylib)
   enable_formats.patch
   mingw64.patch
-  (:discover apply_patch.exe))
+  apply_patch.exe
+  chmodx.exe)
  (action
   (no-infer
    (progn
-    (run chmod +w vendor/raylib/src/config.h)
+    (run ./chmodx.exe vendor/raylib/src/config.h)
     (run ./apply_patch.exe enable_formats.patch)
-    (run chmod +w vendor/raylib/src/Makefile)
+    (run ./chmodx.exe vendor/raylib/src/Makefile)
     (run ./apply_patch.exe mingw64.patch)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
@@ -92,13 +100,14 @@
   (source_tree vendor/raylib)
   enable_formats.patch
   freebsd.patch
-  (:discover apply_patch.exe))
+  apply_patch.exe
+  chmodx.exe)
  (action
   (no-infer
    (progn
-    (run chmod +w vendor/raylib/src/config.h)
+    (run ./chmodx.exe vendor/raylib/src/config.h)
     (run ./apply_patch.exe enable_formats.patch)
-    (run chmod +w vendor/raylib/src/Makefile)
+    (run ./chmodx.exe vendor/raylib/src/Makefile)
     (run ./apply_patch.exe freebsd.patch)
     (run gmake -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
