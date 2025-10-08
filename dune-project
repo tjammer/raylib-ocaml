@@ -12,7 +12,7 @@
 
 (package
  (name raylib)
- (version 1.4.0)
+ (version 1.5.0)
  (description "OCaml bindings for raylib")
  (synopsis "OCaml bindings for raylib")
  (depends
@@ -30,7 +30,7 @@
 
 (package
  (name raygui)
- (version 1.4.0)
+ (version 1.5.0)
  (description "OCaml bindings for raygui")
  (synopsis "OCaml bindings for raygui")
  (depends
@@ -43,7 +43,7 @@
 
 (package
  (name raylib-callbacks)
- (version 1.4.0)
+ (version 1.5.0)
  (description "OCaml bindings for raygui")
  (synopsis "OCaml bindings for raygui")
  (depends

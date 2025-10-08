@@ -1,3 +1,11 @@
+1.5.0 (2025-10-08)
+------------------
+
+* Upgrade dependency patch to 3.0.0
+* Correctly set `glyph_count` in `Font.set_glyphs`
+* Export `Raylib_c` module
+* Upgrade to raylib 5.5
+
 1.4.0 (2024-12-20)
 ------------------
 
