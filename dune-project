@@ -27,7 +27,7 @@
    (>= 3.20))
   dune-configurator
   (ctypes
-   (>= 0.14))
+   (>= 0.23.0))
   (integers
    (>= 0.5))
   (patch
