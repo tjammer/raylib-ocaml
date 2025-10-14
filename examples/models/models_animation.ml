@@ -1,6 +1,8 @@
 let width = 800
 let height = 450
 let position = Raylib.Vector3.create 0.0 0.0 0.0
+let asset_path (filename: string) = 
+  Raylib.get_application_directory() ^ filename
 
 let setup () =
   let open Raylib in
@@ -12,13 +14,14 @@ let setup () =
       (Vector3.create 0.0 1.0 0.0)
       45.0 CameraProjection.Perspective
   in
-  let model = load_model "resources/guy/guy.iqm" in
-  let texture = load_texture "resources/guy/guytex.png" in
+  let path = asset_path("") in
+  let model = load_model (path ^ "./resources/guy/guy.iqm") in
+  let texture = load_texture (path ^ "./resources/guy/guytex.png") in
   set_material_texture
     (CArray.get (Model.materials model) 0 |> addr)
     MaterialMapIndex.Albedo texture;
 
-  let anims = load_model_animations "resources/guy/guyanim.iqm" in
+  let anims = load_model_animations (path ^ "./resources/guy/guyanim.iqm") in
 
   disable_cursor ();
   set_target_fps 60;
@@ -34,10 +37,10 @@ let rec loop camera model anims frame_counter =
   | false ->
       let open Raylib in
       update_camera (addr camera) CameraMode.First_person;
+      let anims0 = CArray.get anims 0 in
       let frame_counter =
         if is_key_down Key.Space then (
           let frame_counter = succ frame_counter in
-          let anims0 = CArray.get anims 0 in
           update_model_animation model anims0 frame_counter;
           if frame_counter >= ModelAnimation.frame_count anims0 then 0
           else frame_counter)
@@ -57,7 +60,7 @@ let rec loop camera model anims frame_counter =
       CArray.iter
         (fun bone ->
           draw_cube (Transform.translation bone) 0.2 0.2 0.2 Color.red)
-        (ModelAnimation.frame_poses_at (CArray.get anims 0) frame_counter);
+        (ModelAnimation.frame_poses_at anims0 frame_counter);
       draw_grid 10 1.0;
 
       end_mode_3d ();
@@ -65,6 +68,8 @@ let rec loop camera model anims frame_counter =
       draw_text "PRESS SPACE to PLAY MODEL ANIMATION" 10 10 20 Color.maroon;
       draw_text "(c) Guy IQM 3D model by @culacant" (width - 200) (height - 20)
         10 Color.gray;
+      let anim_name = ModelAnimation.name anims0 in
+      draw_text ("animation: " ^ anim_name) 10 32 20 Color.maroon;
       end_drawing ();
       loop camera model anims frame_counter
 

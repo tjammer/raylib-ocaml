@@ -1137,6 +1137,8 @@ module ModelAnimation : sig
 
   val frame_count : t -> int
 
+  val name : t -> string
+
   val frame_poses_at : t -> int -> Transform.t CArray.t
   (** Poses array by frame *)
 
