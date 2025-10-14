@@ -1,0 +1,23 @@
+diff --git a/vendor/raylib/src/Makefile b/vendor/raylib/src/Makefile
+index 7dde52fb..9df71f4f 100644
+--- a/vendor/raylib/src/Makefile
++++ b/vendor/raylib/src/Makefile
+@@ -266,8 +266,8 @@ endif
+ 
+ # Define default C compiler and archiver to pack library: CC, AR
+ #------------------------------------------------------------------------------------------------
+-CC = gcc
++CC = x86_64-w64-mingw32-gcc
+ AR = ar
+ 
+ ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_GLFW)
+     ifeq ($(PLATFORM_OS),OSX)
+@@ -669,7 +669,7 @@ else
+         ifeq ($(TARGET_PLATFORM),$(filter $(TARGET_PLATFORM),PLATFORM_DESKTOP_GLFW PLATFORM_DESKTOP_SDL PLATFORM_DESKTOP_RGFW))
+             ifeq ($(PLATFORM_OS),WINDOWS)
+                 # NOTE: Linking with provided resource file
+-				$(CC) -shared -o $(RAYLIB_RELEASE_PATH)/$(RAYLIB_LIB_NAME).dll $(OBJS) $(RAYLIB_RES_FILE) $(LDFLAGS) $(LDLIBS)
++				$(CC) -shared -o $(RAYLIB_RELEASE_PATH)/$(RAYLIB_LIB_NAME).dll $(OBJS) $(LDFLAGS) $(LDLIBS)
+ 				@echo "raylib dynamic library ($(RAYLIB_LIB_NAME).dll) and import library (lib$(RAYLIB_LIB_NAME)dll.a) generated!"
+             endif
+             ifeq ($(PLATFORM_OS),LINUX)

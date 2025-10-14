@@ -66,7 +66,9 @@
  (alias build-raylib)
  (targets libraylib.a dllraylib.dll)
  (enabled_if
-  (= %{system} mingw64))
+  (and
+   (= %{system} mingw64)
+   (<> %{os_distribution} msys2)))
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
@@ -80,6 +82,32 @@
     (run ./apply_patch.exe enable_formats.patch)
     (run ./chmodx.exe vendor/raylib/src/Makefile)
     (run ./apply_patch.exe mingw64.patch)
+    (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
+    (copy vendor/raylib/src/libraylib.a libraylib.a)
+    (run make -C vendor/raylib/src clean)
+    (run make -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
+    (copy vendor/raylib/src/raylib.dll dllraylib.dll)))))
+
+(rule
+ (alias build-raylib)
+ (targets libraylib.a dllraylib.dll)
+ (enabled_if
+  (and
+   (= %{system} mingw64)
+   (= %{os_distribution} msys2)))
+ (deps
+  (source_tree vendor/raylib)
+  enable_formats.patch
+  msys2.patch
+  apply_patch.exe
+  chmodx.exe)
+ (action
+  (no-infer
+   (progn
+    (run ./chmodx.exe vendor/raylib/src/config.h)
+    (run ./apply_patch.exe enable_formats.patch)
+    (run ./chmodx.exe vendor/raylib/src/Makefile)
+    (run ./apply_patch.exe msys2.patch)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
