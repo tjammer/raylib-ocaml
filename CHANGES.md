@@ -1,3 +1,9 @@
+1.5.1 (2025-10-14)
+------------------
+
+* Fix constness of ptr argument to `GuiListViewEx`
+* Distingish msys and other mingw environments
+
 1.5.0 (2025-10-08)
 ------------------
 
