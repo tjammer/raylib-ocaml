@@ -674,6 +674,10 @@ module ModelAnimation = struct
   let frame_count modelanimation =
     getf modelanimation ModelAnimation.frame_count
 
+  let name modelanimation =
+    let ptr = Ctypes.CArray.start (getf modelanimation ModelAnimation.name) in 
+    Ctypes.string_from_ptr ptr ~length:32
+
   let frame_poses_at anim index =
     let frame_count = getf anim ModelAnimation.frame_count in
     let poses =
