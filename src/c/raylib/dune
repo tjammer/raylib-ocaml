@@ -13,6 +13,7 @@
    (instance Types)
    (functor Types))
   (function_description
+   (concurrency unlocked)
    (instance Functions)
    (functor Functions))
   (generated_types Raylib_types_generated)

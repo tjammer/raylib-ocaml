@@ -14,6 +14,7 @@
    (instance Types)
    (functor Functions))
   (function_description
+   (concurrency unlocked)
    (instance Functions)
    (functor Functions))
   (generated_types Raylib_callbacks_types_generated)

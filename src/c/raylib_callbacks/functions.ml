@@ -27,16 +27,20 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "DetachAudioMixedProcessor" (audio_callback @-> returning void)
 
   let load_file_data_callback =
-    Foreign.funptr Ctypes.(string @-> ptr int @-> returning (ptr uchar))
+    Foreign.funptr ~thread_registration:true ~runtime_lock:true
+      Ctypes.(string @-> ptr int @-> returning (ptr uchar))
 
   let save_file_data_callback =
-    Foreign.funptr Ctypes.(string @-> ptr void @-> int @-> returning bool)
+    Foreign.funptr ~thread_registration:true ~runtime_lock:true
+      Ctypes.(string @-> ptr void @-> int @-> returning bool)
 
   let load_file_text_callback =
-    Foreign.funptr Ctypes.(string @-> returning (ptr char))
+    Foreign.funptr ~thread_registration:true ~runtime_lock:true
+      Ctypes.(string @-> returning (ptr char))
 
   let save_file_text_callback =
-    Foreign.funptr Ctypes.(string @-> ptr char @-> returning bool)
+    Foreign.funptr ~thread_registration:true ~runtime_lock:true
+      Ctypes.(string @-> ptr char @-> returning bool)
 
   let set_load_file_data_callback =
     foreign "SetLoadFileDataCallback"
