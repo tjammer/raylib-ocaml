@@ -65,7 +65,8 @@ let draw (target, colors) =
   draw_text
     "If executed inside a window\n\
      you can resize the window\n\
-     and see the screen scaling!" 10 25 20 Color.white;
+     and see the screen scaling!"
+    10 25 20 Color.white;
 
   draw_text
     (Printf.sprintf "Default Mouse: [%i , %i]" (Int.of_float mouse_x)

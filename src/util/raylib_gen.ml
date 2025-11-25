@@ -499,15 +499,15 @@ module Function = struct
       Typing.of_cname cname None
     in
     let params =
-      ( (json |> member "params" |> function
-         | `Null -> []
-         | `List l -> l
-         | _ -> failwith "Expected list")
+      ( ( json |> member "params" |> function
+          | `Null -> []
+          | `List l -> l
+          | _ -> failwith "Expected list" )
       |> fun l -> (filter_member "name" l, filter_member "type" l) )
       |> fun (a, b) ->
       List.combine a b
       |> List.map (fun (cname, typ) ->
-             to_param (to_string cname) (to_string typ))
+          to_param (to_string cname) (to_string typ))
     in
     { name; desc; return; params }
 

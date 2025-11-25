@@ -1,6 +1,6 @@
 (** {1 Ctypes reexports}
 
-  Basic types and utility functions shared by the following modules *)
+    Basic types and utility functions shared by the following modules *)
 
 (* Ideally, the ctypes types would be completely abstract but both the gui
    bindings and the rlgl module need to be able to access them directly. If
@@ -643,13 +643,16 @@ and Matrix : sig
   val multiply : t -> t -> t
 
   val frustum : float -> float -> float -> float -> float -> float -> t
-  (** [frustum left right bottom top near far] returns perspective projection matrix *)
+  (** [frustum left right bottom top near far] returns perspective projection
+      matrix *)
 
   val perspective : float -> float -> float -> float -> t
-  (** [perspective fovy aspect near far] returns perspective projection matrix *)
+  (** [perspective fovy aspect near far] returns perspective projection matrix
+  *)
 
   val ortho : float -> float -> float -> float -> float -> float -> t
-  (** [ortho left right bottom top near far] returns orthographic projection matrix *)
+  (** [ortho left right bottom top near far] returns orthographic projection
+      matrix *)
 
   val look_at : Vector3.t -> Vector3.t -> Vector3.t -> t
   (** [look at eye target up] returns camera look-at matrix (view matrix) *)
@@ -902,7 +905,8 @@ module Camera3D : sig
   (** Camera up vector (rotation over its axis) *)
 
   val fovy : t -> float
-  (** Camera field-of-view aperture in Y (degrees) in perspective, used as near plane width in orthographic *)
+  (** Camera field-of-view aperture in Y (degrees) in perspective, used as near
+      plane width in orthographic *)
 
   val projection : t -> CameraProjection.t
   (** Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC *)
@@ -960,10 +964,12 @@ module Mesh : sig
   (** Vertex position (XYZ - 3 components per vertex) (shader-location = 0) *)
 
   val texcoords : t -> float Ctypes_static.carray
-  (** Vertex texture coordinates (UV - 2 components per vertex) (shader-location = 1) *)
+  (** Vertex texture coordinates (UV - 2 components per vertex) (shader-location
+      = 1) *)
 
   val texcoords2 : t -> float Ctypes_static.carray
-  (** Vertex second texture coordinates (useful for lightmaps) (shader-location = 5) *)
+  (** Vertex second texture coordinates (useful for lightmaps) (shader-location
+      = 5) *)
 
   val normals : t -> float Ctypes_static.carray
   (** Vertex normals (XYZ - 3 components per vertex) (shader-location = 2) *)
@@ -1136,7 +1142,6 @@ module ModelAnimation : sig
   (** Bones information (skeleton) *)
 
   val frame_count : t -> int
-
   val name : t -> string
 
   val frame_poses_at : t -> int -> Transform.t CArray.t
@@ -1421,7 +1426,8 @@ val close_window : unit -> unit
 (** [close_window ()] Close window and unload OpenGL context*)
 
 val window_should_close : unit -> bool
-(** [window_should_close ()] Check if application should close (KEY_ESCAPE pressed or windows close icon clicked)*)
+(** [window_should_close ()] Check if application should close (KEY_ESCAPE
+    pressed or windows close icon clicked)*)
 
 val is_window_ready : unit -> bool
 (** [is_window_ready ()] Check if window has been initialized successfully*)
@@ -1454,10 +1460,12 @@ val clear_window_state : ConfigFlags.t list -> unit
 (** [clear_window_state flags] Clear window configuration state flags*)
 
 val toggle_fullscreen : unit -> unit
-(** [toggle_fullscreen ()] Toggle window state: fullscreen/windowed, resizes monitor to match window resolution*)
+(** [toggle_fullscreen ()] Toggle window state: fullscreen/windowed, resizes
+    monitor to match window resolution*)
 
 val toggle_borderless_windowed : unit -> unit
-(** [toggle_borderless_windowed ()] Toggle window state: borderless windowed, resizes window to match monitor resolution*)
+(** [toggle_borderless_windowed ()] Toggle window state: borderless windowed,
+    resizes window to match monitor resolution*)
 
 val maximize_window : unit -> unit
 (** [maximize_window ()] Set window state: maximized, if resizable*)
@@ -1472,7 +1480,8 @@ val set_window_icon : Image.t -> unit
 (** [set_window_icon image] Set icon for window (single image, RGBA 32bit)*)
 
 val set_window_icons : Image.t ptr -> int -> unit
-(** [set_window_icons images count] Set icon for window (multiple images, RGBA 32bit)*)
+(** [set_window_icons images count] Set icon for window (multiple images, RGBA
+    32bit)*)
 
 val set_window_title : string -> unit
 (** [set_window_title title] Set title for window*)
@@ -1484,10 +1493,12 @@ val set_window_monitor : int -> unit
 (** [set_window_monitor monitor] Set monitor for the current window*)
 
 val set_window_min_size : int -> int -> unit
-(** [set_window_min_size width height] Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)*)
+(** [set_window_min_size width height] Set window minimum dimensions (for
+    FLAG_WINDOW_RESIZABLE)*)
 
 val set_window_max_size : int -> int -> unit
-(** [set_window_max_size width height] Set window maximum dimensions (for FLAG_WINDOW_RESIZABLE)*)
+(** [set_window_max_size width height] Set window maximum dimensions (for
+    FLAG_WINDOW_RESIZABLE)*)
 
 val set_window_size : int -> int -> unit
 (** [set_window_size width height] Set window dimensions*)
@@ -1523,16 +1534,20 @@ val get_monitor_position : int -> Vector2.t
 (** [get_monitor_position monitor] Get specified monitor position*)
 
 val get_monitor_width : int -> int
-(** [get_monitor_width monitor] Get specified monitor width (current video mode used by monitor)*)
+(** [get_monitor_width monitor] Get specified monitor width (current video mode
+    used by monitor)*)
 
 val get_monitor_height : int -> int
-(** [get_monitor_height monitor] Get specified monitor height (current video mode used by monitor)*)
+(** [get_monitor_height monitor] Get specified monitor height (current video
+    mode used by monitor)*)
 
 val get_monitor_physical_width : int -> int
-(** [get_monitor_physical_width monitor] Get specified monitor physical width in millimetres*)
+(** [get_monitor_physical_width monitor] Get specified monitor physical width in
+    millimetres*)
 
 val get_monitor_physical_height : int -> int
-(** [get_monitor_physical_height monitor] Get specified monitor physical height in millimetres*)
+(** [get_monitor_physical_height monitor] Get specified monitor physical height
+    in millimetres*)
 
 val get_monitor_refresh_rate : int -> int
 (** [get_monitor_refresh_rate monitor] Get specified monitor refresh rate*)
@@ -1544,7 +1559,8 @@ val get_window_scale_dpi : unit -> Vector2.t
 (** [get_window_scale_dpi ()] Get window scale DPI factor*)
 
 val get_monitor_name : int -> string
-(** [get_monitor_name monitor] Get the human-readable, UTF-8 encoded name of the specified monitor*)
+(** [get_monitor_name monitor] Get the human-readable, UTF-8 encoded name of the
+    specified monitor*)
 
 val set_clipboard_text : string -> unit
 (** [set_clipboard_text text] Set clipboard text content*)
@@ -1556,10 +1572,12 @@ val get_clipboard_image : unit -> Image.t
 (** [get_clipboard_image ()] Get clipboard image content*)
 
 val enable_event_waiting : unit -> unit
-(** [enable_event_waiting ()] Enable waiting for events on EndDrawing(), no automatic event polling*)
+(** [enable_event_waiting ()] Enable waiting for events on EndDrawing(), no
+    automatic event polling*)
 
 val disable_event_waiting : unit -> unit
-(** [disable_event_waiting ()] Disable waiting for events on EndDrawing(), automatic events polling*)
+(** [disable_event_waiting ()] Disable waiting for events on EndDrawing(),
+    automatic events polling*)
 
 (** {3 Cursor-related functions} *)
 
@@ -1615,13 +1633,15 @@ val end_shader_mode : unit -> unit
 (** [end_shader_mode ()] End custom shader drawing (use default shader)*)
 
 val begin_blend_mode : BlendMode.t -> unit
-(** [begin_blend_mode mode] Begin blending mode (alpha, additive, multiplied, subtract, custom)*)
+(** [begin_blend_mode mode] Begin blending mode (alpha, additive, multiplied,
+    subtract, custom)*)
 
 val end_blend_mode : unit -> unit
 (** [end_blend_mode ()] End blending mode (reset to default: alpha blending)*)
 
 val begin_scissor_mode : int -> int -> int -> int -> unit
-(** [begin_scissor_mode x y width height] Begin scissor mode (define screen area for following drawing)*)
+(** [begin_scissor_mode x y width height] Begin scissor mode (define screen area
+    for following drawing)*)
 
 val end_scissor_mode : unit -> unit
 (** [end_scissor_mode ()] End scissor mode*)
@@ -1633,16 +1653,19 @@ val end_vr_stereo_mode : unit -> unit
 (** [end_vr_stereo_mode ()] End stereo rendering (requires VR simulator)*)
 
 val load_vr_stereo_config : VrDeviceInfo.t -> VrStereoConfig.t
-(** [load_vr_stereo_config device] Load VR stereo config for VR simulator device parameters*)
+(** [load_vr_stereo_config device] Load VR stereo config for VR simulator device
+    parameters*)
 
 val unload_vr_stereo_config : VrStereoConfig.t -> unit
 (** [unload_vr_stereo_config config] Unload VR stereo config*)
 
 val load_shader : string -> string -> Shader.t
-(** [load_shader vs_file_name fs_file_name] Load shader from files and bind default locations*)
+(** [load_shader vs_file_name fs_file_name] Load shader from files and bind
+    default locations*)
 
 val load_shader_from_memory : string -> string -> Shader.t
-(** [load_shader_from_memory vs_code fs_code] Load shader from code strings and bind default locations*)
+(** [load_shader_from_memory vs_code fs_code] Load shader from code strings and
+    bind default locations*)
 
 val is_shader_valid : Shader.t -> bool
 (** [is_shader_valid shader] Check if a shader is valid (loaded on GPU)*)
@@ -1651,21 +1674,26 @@ val get_shader_location : Shader.t -> string -> ShaderLoc.t
 (** [get_shader_location shader uniform_name] Get shader uniform location*)
 
 val get_shader_location_attrib : Shader.t -> string -> ShaderLoc.t
-(** [get_shader_location_attrib shader attrib_name] Get shader attribute location*)
+(** [get_shader_location_attrib shader attrib_name] Get shader attribute
+    location*)
 
 val set_shader_value :
   Shader.t -> ShaderLoc.t -> unit ptr -> ShaderUniformDataType.t -> unit
-(** [set_shader_value shader loc_index value uniform_type] Set shader uniform value*)
+(** [set_shader_value shader loc_index value uniform_type] Set shader uniform
+    value*)
 
 val set_shader_value_v :
   Shader.t -> ShaderLoc.t -> unit ptr -> ShaderUniformDataType.t -> int -> unit
-(** [set_shader_value_v shader loc_index value uniform_type count] Set shader uniform value vector*)
+(** [set_shader_value_v shader loc_index value uniform_type count] Set shader
+    uniform value vector*)
 
 val set_shader_value_matrix : Shader.t -> ShaderLoc.t -> Matrix.t -> unit
-(** [set_shader_value_matrix shader loc_index mat] Set shader uniform value (matrix 4x4)*)
+(** [set_shader_value_matrix shader loc_index mat] Set shader uniform value
+    (matrix 4x4)*)
 
 val set_shader_value_texture : Shader.t -> ShaderLoc.t -> Texture.t -> unit
-(** [set_shader_value_texture shader loc_index texture] Set shader uniform value for texture (sampler2d)*)
+(** [set_shader_value_texture shader loc_index texture] Set shader uniform value
+    for texture (sampler2d)*)
 
 val unload_shader : Shader.t -> unit
 (** [unload_shader shader] Unload shader from GPU memory (VRAM)*)
@@ -1673,22 +1701,28 @@ val unload_shader : Shader.t -> unit
 (** {3 Screen-space-related functions} *)
 
 val get_screen_to_world_ray : Vector2.t -> Camera3D.t -> Ray.t
-(** [get_screen_to_world_ray position camera] Get a ray trace from screen position (i.e mouse)*)
+(** [get_screen_to_world_ray position camera] Get a ray trace from screen
+    position (i.e mouse)*)
 
 val get_screen_to_world_ray_ex : Vector2.t -> Camera3D.t -> int -> int -> Ray.t
-(** [get_screen_to_world_ray_ex position camera width height] Get a ray trace from screen position (i.e mouse) in a viewport*)
+(** [get_screen_to_world_ray_ex position camera width height] Get a ray trace
+    from screen position (i.e mouse) in a viewport*)
 
 val get_world_to_screen : Vector3.t -> Camera3D.t -> Vector2.t
-(** [get_world_to_screen position camera] Get the screen space position for a 3d world space position*)
+(** [get_world_to_screen position camera] Get the screen space position for a 3d
+    world space position*)
 
 val get_world_to_screen_ex : Vector3.t -> Camera3D.t -> int -> int -> Vector2.t
-(** [get_world_to_screen_ex position camera width height] Get size position for a 3d world space position*)
+(** [get_world_to_screen_ex position camera width height] Get size position for
+    a 3d world space position*)
 
 val get_world_to_screen_2d : Vector2.t -> Camera2D.t -> Vector2.t
-(** [get_world_to_screen_2d position camera] Get the screen space position for a 2d camera world space position*)
+(** [get_world_to_screen_2d position camera] Get the screen space position for a
+    2d camera world space position*)
 
 val get_screen_to_world_2d : Vector2.t -> Camera2D.t -> Vector2.t
-(** [get_screen_to_world_2d position camera] Get the world space position for a 2d camera screen space position*)
+(** [get_screen_to_world_2d position camera] Get the world space position for a
+    2d camera screen space position*)
 
 val get_camera_matrix : Camera3D.t -> Matrix.t
 (** [get_camera_matrix camera] Get camera transform matrix (view matrix)*)
@@ -1721,16 +1755,19 @@ val set_random_seed : Unsigned.uint -> unit
 (** [set_random_seed seed] Set the seed for the random number generator*)
 
 val get_random_value : int -> int -> int
-(** [get_random_value min max] Get a random value between min and max (both included)*)
+(** [get_random_value min max] Get a random value between min and max (both
+    included)*)
 
 val load_random_sequence : int -> int -> int -> int ptr
-(** [load_random_sequence count min max] Load random values sequence, no values repeated*)
+(** [load_random_sequence count min max] Load random values sequence, no values
+    repeated*)
 
 val unload_random_sequence : int ptr -> unit
 (** [unload_random_sequence sequence] Unload random values sequence*)
 
 val take_screenshot : string -> unit
-(** [take_screenshot file_name] Takes a screenshot of current screen (filename extension defines format)*)
+(** [take_screenshot file_name] Takes a screenshot of current screen (filename
+    extension defines format)*)
 
 val set_config_flags : ConfigFlags.t list -> unit
 (** [set_config_flags flags] Setup init configuration flags (view FLAGS)*)
@@ -1739,10 +1776,12 @@ val open_url : string -> unit
 (** [open_url url] Open URL with default system browser (if available)*)
 
 val trace_log : int -> string -> unit
-(** [trace_log log_level text args] Show trace log messages (LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR...)*)
+(** [trace_log log_level text args] Show trace log messages (LOG_DEBUG,
+    LOG_INFO, LOG_WARNING, LOG_ERROR...)*)
 
 val set_trace_log_level : TraceLogLevel.t -> unit
-(** [set_trace_log_level log_level] Set the current threshold (minimum) log level*)
+(** [set_trace_log_level log_level] Set the current threshold (minimum) log
+    level*)
 
 val mem_alloc : int -> unit ptr
 (** [mem_alloc size] Internal memory allocator*)
@@ -1760,19 +1799,23 @@ val unload_file_data : string -> unit
 (** [unload_file_data data] Unload file data allocated by LoadFileData()*)
 
 val save_file_data : string -> 'a CArray.t -> bool
-(** [save_file_data file_name data data_size] Save data to file from byte array (write), returns true on success*)
+(** [save_file_data file_name data data_size] Save data to file from byte array
+    (write), returns true on success*)
 
 val export_data_as_code : string -> string -> bool
-(** [export_data_as_code data filename] Export data to code (.h), returns true on success*)
+(** [export_data_as_code data filename] Export data to code (.h), returns true
+    on success*)
 
 val load_file_text : string -> string
-(** [load_file_text file_name] Load text data from file (read), returns a '\0' terminated string*)
+(** [load_file_text file_name] Load text data from file (read), returns a '\0'
+    terminated string*)
 
 val unload_file_text : string -> unit
 (** [unload_file_text text] Unload file text data allocated by LoadFileText()*)
 
 val save_file_text : string -> string -> bool
-(** [save_file_text file_name text] Save text data to file (write), string must be ' 0' terminated, returns true on success*)
+(** [save_file_text file_name text] Save text data to file (write), string must
+    be ' 0' terminated, returns true on success*)
 
 val file_exists : string -> bool
 (** [file_exists file_name] Check if file exists*)
@@ -1781,34 +1824,43 @@ val directory_exists : string -> bool
 (** [directory_exists dir_path] Check if a directory path exists*)
 
 val is_file_extension : string -> string -> bool
-(** [is_file_extension file_name ext] Check file extension (including point: .png, .wav)*)
+(** [is_file_extension file_name ext] Check file extension (including point:
+    .png, .wav)*)
 
 val get_file_length : string -> int
-(** [get_file_length file_name] Get file length in bytes (NOTE: GetFileSize() conflicts with windows.h)*)
+(** [get_file_length file_name] Get file length in bytes (NOTE: GetFileSize()
+    conflicts with windows.h)*)
 
 val get_file_extension : string -> string
-(** [get_file_extension file_name] Get pointer to extension for a filename string (includes dot: '.png')*)
+(** [get_file_extension file_name] Get pointer to extension for a filename
+    string (includes dot: '.png')*)
 
 val get_file_name : string -> string
 (** [get_file_name file_path] Get pointer to filename for a path string*)
 
 val get_file_name_without_ext : string -> string
-(** [get_file_name_without_ext file_path] Get filename string without extension (uses static string)*)
+(** [get_file_name_without_ext file_path] Get filename string without extension
+    (uses static string)*)
 
 val get_directory_path : string -> string
-(** [get_directory_path file_path] Get full path for a given fileName with path (uses static string)*)
+(** [get_directory_path file_path] Get full path for a given fileName with path
+    (uses static string)*)
 
 val get_prev_directory_path : string -> string
-(** [get_prev_directory_path dir_path] Get previous directory path for a given path (uses static string)*)
+(** [get_prev_directory_path dir_path] Get previous directory path for a given
+    path (uses static string)*)
 
 val get_working_directory : unit -> string
-(** [get_working_directory ()] Get current working directory (uses static string)*)
+(** [get_working_directory ()] Get current working directory (uses static
+    string)*)
 
 val get_application_directory : unit -> string
-(** [get_application_directory ()] Get the directory of the running application (uses static string)*)
+(** [get_application_directory ()] Get the directory of the running application
+    (uses static string)*)
 
 val make_directory : string -> int
-(** [make_directory dir_path] Create directories (including full path requested), returns 0 on success*)
+(** [make_directory dir_path] Create directories (including full path
+    requested), returns 0 on success*)
 
 val change_directory : string -> bool
 (** [change_directory dir] Change working directory, return true on success*)
@@ -1817,13 +1869,16 @@ val is_path_file : string -> bool
 (** [is_path_file path] Check if a given path is a file or a directory*)
 
 val is_file_name_valid : string -> bool
-(** [is_file_name_valid file_name] Check if fileName is valid for the platform/OS*)
+(** [is_file_name_valid file_name] Check if fileName is valid for the
+    platform/OS*)
 
 val load_directory_files : string -> FilePathList.t
 (** [load_directory_files dir_path] Load directory filepaths*)
 
 val load_directory_files_ex : string -> string -> bool -> FilePathList.t
-(** [load_directory_files_ex base_path filter scan_subdirs] Load directory filepaths with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result*)
+(** [load_directory_files_ex base_path filter scan_subdirs] Load directory
+    filepaths with extension filtering and recursive directory scan. Use 'DIR'
+    in the filter string to include directories in the result*)
 
 val unload_directory_files : FilePathList.t -> unit
 (** [unload_directory_files files] Unload filepaths*)
@@ -1841,28 +1896,34 @@ val get_file_mod_time : string -> Signed.Long.t
 (** [get_file_mod_time file_name] Get file modification time (last write time)*)
 
 val compress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
-(** [compress_data data data_length comp_data_length] Compress data (DEFLATE algorithm)*)
+(** [compress_data data data_length comp_data_length] Compress data (DEFLATE
+    algorithm)*)
 
 val decompress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
-(** [decompress_data comp_data comp_data_length data_length] Decompress data (DEFLATE algorithm)*)
+(** [decompress_data comp_data comp_data_length data_length] Decompress data
+    (DEFLATE algorithm)*)
 
 val load_automation_event_list : string -> AutomationEventList.t
-(** [load_automation_event_list file_name] Load automation events list from file, NULL for empty list, capacity = MAX_AUTOMATION_EVENTS*)
+(** [load_automation_event_list file_name] Load automation events list from
+    file, NULL for empty list, capacity = MAX_AUTOMATION_EVENTS*)
 
 val unload_automation_event_list : AutomationEventList.t -> unit
 (** [unload_automation_event_list list] Unload automation events list from file*)
 
 val export_automation_event_list : AutomationEventList.t -> string -> bool
-(** [export_automation_event_list list file_name] Export automation events list as text file*)
+(** [export_automation_event_list list file_name] Export automation events list
+    as text file*)
 
 val set_automation_event_list : AutomationEventList.t ptr -> unit
 (** [set_automation_event_list list] Set automation event list to record to*)
 
 val set_automation_event_base_frame : int -> unit
-(** [set_automation_event_base_frame frame] Set automation event internal base frame to start recording*)
+(** [set_automation_event_base_frame frame] Set automation event internal base
+    frame to start recording*)
 
 val start_automation_event_recording : unit -> unit
-(** [start_automation_event_recording ()] Start recording automation events (AutomationEventList must be set)*)
+(** [start_automation_event_recording ()] Start recording automation events
+    (AutomationEventList must be set)*)
 
 val stop_automation_event_recording : unit -> unit
 (** [stop_automation_event_recording ()] Stop recording automation events*)
@@ -1886,10 +1947,12 @@ val is_key_up : Key.t -> bool
 (** [is_key_up key] Check if a key is NOT being pressed*)
 
 val get_key_pressed : unit -> Key.t
-(** [get_key_pressed ()] Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty*)
+(** [get_key_pressed ()] Get key pressed (keycode), call it multiple times for
+    keys queued, returns 0 when the queue is empty*)
 
 val get_char_pressed : unit -> Uchar.t
-(** [get_char_pressed ()] Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty*)
+(** [get_char_pressed ()] Get char pressed (unicode), call it multiple times for
+    chars queued, returns 0 when the queue is empty*)
 
 val set_exit_key : Key.t -> unit
 (** [set_exit_key key] Set a custom key to exit program (default is ESC)*)
@@ -1901,16 +1964,20 @@ val get_gamepad_name : int -> string
 (** [get_gamepad_name gamepad] Get gamepad internal name id*)
 
 val is_gamepad_button_pressed : int -> GamepadButton.t -> bool
-(** [is_gamepad_button_pressed gamepad button] Check if a gamepad button has been pressed once*)
+(** [is_gamepad_button_pressed gamepad button] Check if a gamepad button has
+    been pressed once*)
 
 val is_gamepad_button_down : int -> GamepadButton.t -> bool
-(** [is_gamepad_button_down gamepad button] Check if a gamepad button is being pressed*)
+(** [is_gamepad_button_down gamepad button] Check if a gamepad button is being
+    pressed*)
 
 val is_gamepad_button_released : int -> GamepadButton.t -> bool
-(** [is_gamepad_button_released gamepad button] Check if a gamepad button has been released once*)
+(** [is_gamepad_button_released gamepad button] Check if a gamepad button has
+    been released once*)
 
 val is_gamepad_button_up : int -> GamepadButton.t -> bool
-(** [is_gamepad_button_up gamepad button] Check if a gamepad button is NOT being pressed*)
+(** [is_gamepad_button_up gamepad button] Check if a gamepad button is NOT being
+    pressed*)
 
 val get_gamepad_button_pressed : unit -> GamepadButton.t
 (** [get_gamepad_button_pressed ()] Get the last gamepad button pressed*)
@@ -1919,22 +1986,27 @@ val get_gamepad_axis_count : int -> int
 (** [get_gamepad_axis_count gamepad] Get gamepad axis count for a gamepad*)
 
 val get_gamepad_axis_movement : int -> GamepadAxis.t -> float
-(** [get_gamepad_axis_movement gamepad axis] Get axis movement value for a gamepad axis*)
+(** [get_gamepad_axis_movement gamepad axis] Get axis movement value for a
+    gamepad axis*)
 
 val set_gamepad_mappings : string -> int
-(** [set_gamepad_mappings mappings] Set internal gamepad mappings (SDL_GameControllerDB)*)
+(** [set_gamepad_mappings mappings] Set internal gamepad mappings
+    (SDL_GameControllerDB)*)
 
 val set_gamepad_vibration : int -> float -> float -> float -> unit
-(** [set_gamepad_vibration gamepad left_motor right_motor duration] Set gamepad vibration for both motors (duration in seconds)*)
+(** [set_gamepad_vibration gamepad left_motor right_motor duration] Set gamepad
+    vibration for both motors (duration in seconds)*)
 
 val is_mouse_button_pressed : MouseButton.t -> bool
-(** [is_mouse_button_pressed button] Check if a mouse button has been pressed once*)
+(** [is_mouse_button_pressed button] Check if a mouse button has been pressed
+    once*)
 
 val is_mouse_button_down : MouseButton.t -> bool
 (** [is_mouse_button_down button] Check if a mouse button is being pressed*)
 
 val is_mouse_button_released : MouseButton.t -> bool
-(** [is_mouse_button_released button] Check if a mouse button has been released once*)
+(** [is_mouse_button_released button] Check if a mouse button has been released
+    once*)
 
 val is_mouse_button_up : MouseButton.t -> bool
 (** [is_mouse_button_up button] Check if a mouse button is NOT being pressed*)
@@ -1961,7 +2033,8 @@ val set_mouse_scale : float -> float -> unit
 (** [set_mouse_scale scale_x scale_y] Set mouse scaling*)
 
 val get_mouse_wheel_move : unit -> float
-(** [get_mouse_wheel_move ()] Get mouse wheel movement for X or Y, whichever is larger*)
+(** [get_mouse_wheel_move ()] Get mouse wheel movement for X or Y, whichever is
+    larger*)
 
 val get_mouse_wheel_move_v : unit -> Vector2.t
 (** [get_mouse_wheel_move_v ()] Get mouse wheel movement for both X and Y*)
@@ -1970,13 +2043,16 @@ val set_mouse_cursor : MouseCursor.t -> unit
 (** [set_mouse_cursor cursor] Set mouse cursor*)
 
 val get_touch_x : unit -> int
-(** [get_touch_x ()] Get touch position X for touch point 0 (relative to screen size)*)
+(** [get_touch_x ()] Get touch position X for touch point 0 (relative to screen
+    size)*)
 
 val get_touch_y : unit -> int
-(** [get_touch_y ()] Get touch position Y for touch point 0 (relative to screen size)*)
+(** [get_touch_y ()] Get touch position Y for touch point 0 (relative to screen
+    size)*)
 
 val get_touch_position : int -> Vector2.t
-(** [get_touch_position index] Get touch position XY for a touch point index (relative to screen size)*)
+(** [get_touch_position index] Get touch position XY for a touch point index
+    (relative to screen size)*)
 
 val get_touch_point_id : int -> int
 (** [get_touch_point_id index] Get touch point identifier for given index*)
@@ -2013,22 +2089,27 @@ val update_camera : Camera3D.t ptr -> CameraMode.t -> unit
 
 val update_camera_pro :
   Camera3D.t ptr -> Vector3.t -> Vector3.t -> float -> unit
-(** [update_camera_pro camera movement rotation zoom] Update camera movement/rotation*)
+(** [update_camera_pro camera movement rotation zoom] Update camera
+    movement/rotation*)
 
 val set_shapes_texture : Texture.t -> Rectangle.t -> unit
-(** [set_shapes_texture texture source] Set texture and rectangle to be used on shapes drawing*)
+(** [set_shapes_texture texture source] Set texture and rectangle to be used on
+    shapes drawing*)
 
 val get_shapes_texture : unit -> Texture.t
 (** [get_shapes_texture ()] Get texture that is used for shapes drawing*)
 
 val get_shapes_texture_rectangle : unit -> Rectangle.t
-(** [get_shapes_texture_rectangle ()] Get texture source rectangle that is used for shapes drawing*)
+(** [get_shapes_texture_rectangle ()] Get texture source rectangle that is used
+    for shapes drawing*)
 
 val draw_pixel : int -> int -> Color.t -> unit
-(** [draw_pixel pos_x pos_y color] Draw a pixel using geometry [Can be slow, use with care]*)
+(** [draw_pixel pos_x pos_y color] Draw a pixel using geometry
+    [Can be slow, use with care]*)
 
 val draw_pixel_v : Vector2.t -> Color.t -> unit
-(** [draw_pixel_v position color] Draw a pixel using geometry (Vector version) [Can be slow, use with care]*)
+(** [draw_pixel_v position color] Draw a pixel using geometry (Vector version)
+    [Can be slow, use with care]*)
 
 val draw_line : int -> int -> int -> int -> Color.t -> unit
 (** [draw_line start_pos_x start_pos_y end_pos_x end_pos_y color] Draw a line*)
@@ -2037,152 +2118,191 @@ val draw_line_v : Vector2.t -> Vector2.t -> Color.t -> unit
 (** [draw_line_v start_pos end_pos color] Draw a line (using gl lines)*)
 
 val draw_line_ex : Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_line_ex start_pos end_pos thick color] Draw a line (using triangles/quads)*)
+(** [draw_line_ex start_pos end_pos thick color] Draw a line (using
+    triangles/quads)*)
 
 val draw_line_strip : Vector2.t ptr -> int -> Color.t -> unit
-(** [draw_line_strip points point_count color] Draw lines sequence (using gl lines)*)
+(** [draw_line_strip points point_count color] Draw lines sequence (using gl
+    lines)*)
 
 val draw_line_bezier : Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_line_bezier start_pos end_pos thick color] Draw line segment cubic-bezier in-out interpolation*)
+(** [draw_line_bezier start_pos end_pos thick color] Draw line segment
+    cubic-bezier in-out interpolation*)
 
 val draw_circle : int -> int -> float -> Color.t -> unit
 (** [draw_circle center_x center_y radius color] Draw a color-filled circle*)
 
 val draw_circle_sector :
   Vector2.t -> float -> float -> float -> int -> Color.t -> unit
-(** [draw_circle_sector center radius start_angle end_angle segments color] Draw a piece of a circle*)
+(** [draw_circle_sector center radius start_angle end_angle segments color] Draw
+    a piece of a circle*)
 
 val draw_circle_sector_lines :
   Vector2.t -> float -> float -> float -> int -> Color.t -> unit
-(** [draw_circle_sector_lines center radius start_angle end_angle segments color] Draw circle sector outline*)
+(** [draw_circle_sector_lines center radius start_angle end_angle segments
+     color] Draw circle sector outline*)
 
 val draw_circle_gradient : int -> int -> float -> Color.t -> Color.t -> unit
-(** [draw_circle_gradient center_x center_y radius inner outer] Draw a gradient-filled circle*)
+(** [draw_circle_gradient center_x center_y radius inner outer] Draw a
+    gradient-filled circle*)
 
 val draw_circle_v : Vector2.t -> float -> Color.t -> unit
-(** [draw_circle_v center radius color] Draw a color-filled circle (Vector version)*)
+(** [draw_circle_v center radius color] Draw a color-filled circle (Vector
+    version)*)
 
 val draw_circle_lines : int -> int -> float -> Color.t -> unit
 (** [draw_circle_lines center_x center_y radius color] Draw circle outline*)
 
 val draw_circle_lines_v : Vector2.t -> float -> Color.t -> unit
-(** [draw_circle_lines_v center radius color] Draw circle outline (Vector version)*)
+(** [draw_circle_lines_v center radius color] Draw circle outline (Vector
+    version)*)
 
 val draw_ellipse : int -> int -> float -> float -> Color.t -> unit
 (** [draw_ellipse center_x center_y radius_h radius_v color] Draw ellipse*)
 
 val draw_ellipse_lines : int -> int -> float -> float -> Color.t -> unit
-(** [draw_ellipse_lines center_x center_y radius_h radius_v color] Draw ellipse outline*)
+(** [draw_ellipse_lines center_x center_y radius_h radius_v color] Draw ellipse
+    outline*)
 
 val draw_ring :
   Vector2.t -> float -> float -> float -> float -> int -> Color.t -> unit
-(** [draw_ring center inner_radius outer_radius start_angle end_angle segments color] Draw ring*)
+(** [draw_ring center inner_radius outer_radius start_angle end_angle segments
+     color] Draw ring*)
 
 val draw_ring_lines :
   Vector2.t -> float -> float -> float -> float -> int -> Color.t -> unit
-(** [draw_ring_lines center inner_radius outer_radius start_angle end_angle segments color] Draw ring outline*)
+(** [draw_ring_lines center inner_radius outer_radius start_angle end_angle
+     segments color] Draw ring outline*)
 
 val draw_rectangle : int -> int -> int -> int -> Color.t -> unit
-(** [draw_rectangle pos_x pos_y width height color] Draw a color-filled rectangle*)
+(** [draw_rectangle pos_x pos_y width height color] Draw a color-filled
+    rectangle*)
 
 val draw_rectangle_v : Vector2.t -> Vector2.t -> Color.t -> unit
-(** [draw_rectangle_v position size color] Draw a color-filled rectangle (Vector version)*)
+(** [draw_rectangle_v position size color] Draw a color-filled rectangle (Vector
+    version)*)
 
 val draw_rectangle_rec : Rectangle.t -> Color.t -> unit
 (** [draw_rectangle_rec rec color] Draw a color-filled rectangle*)
 
 val draw_rectangle_pro : Rectangle.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_rectangle_pro rec origin rotation color] Draw a color-filled rectangle with pro parameters*)
+(** [draw_rectangle_pro rec origin rotation color] Draw a color-filled rectangle
+    with pro parameters*)
 
 val draw_rectangle_gradient_v :
   int -> int -> int -> int -> Color.t -> Color.t -> unit
-(** [draw_rectangle_gradient_v pos_x pos_y width height top bottom] Draw a vertical-gradient-filled rectangle*)
+(** [draw_rectangle_gradient_v pos_x pos_y width height top bottom] Draw a
+    vertical-gradient-filled rectangle*)
 
 val draw_rectangle_gradient_h :
   int -> int -> int -> int -> Color.t -> Color.t -> unit
-(** [draw_rectangle_gradient_h pos_x pos_y width height left right] Draw a horizontal-gradient-filled rectangle*)
+(** [draw_rectangle_gradient_h pos_x pos_y width height left right] Draw a
+    horizontal-gradient-filled rectangle*)
 
 val draw_rectangle_gradient_ex :
   Rectangle.t -> Color.t -> Color.t -> Color.t -> Color.t -> unit
-(** [draw_rectangle_gradient_ex rec top_left bottom_left top_right bottom_right] Draw a gradient-filled rectangle with custom vertex colors*)
+(** [draw_rectangle_gradient_ex rec top_left bottom_left top_right bottom_right]
+    Draw a gradient-filled rectangle with custom vertex colors*)
 
 val draw_rectangle_lines : int -> int -> int -> int -> Color.t -> unit
 (** [draw_rectangle_lines pos_x pos_y width height color] Draw rectangle outline*)
 
 val draw_rectangle_lines_ex : Rectangle.t -> float -> Color.t -> unit
-(** [draw_rectangle_lines_ex rec line_thick color] Draw rectangle outline with extended parameters*)
+(** [draw_rectangle_lines_ex rec line_thick color] Draw rectangle outline with
+    extended parameters*)
 
 val draw_rectangle_rounded : Rectangle.t -> float -> int -> Color.t -> unit
-(** [draw_rectangle_rounded rec roundness segments color] Draw rectangle with rounded edges*)
+(** [draw_rectangle_rounded rec roundness segments color] Draw rectangle with
+    rounded edges*)
 
 val draw_rectangle_rounded_lines :
   Rectangle.t -> float -> int -> Color.t -> unit
-(** [draw_rectangle_rounded_lines rec roundness segments color] Draw rectangle lines with rounded edges*)
+(** [draw_rectangle_rounded_lines rec roundness segments color] Draw rectangle
+    lines with rounded edges*)
 
 val draw_rectangle_rounded_lines_ex :
   Rectangle.t -> float -> int -> float -> Color.t -> unit
-(** [draw_rectangle_rounded_lines_ex rec roundness segments line_thick color] Draw rectangle with rounded edges outline*)
+(** [draw_rectangle_rounded_lines_ex rec roundness segments line_thick color]
+    Draw rectangle with rounded edges outline*)
 
 val draw_triangle : Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
-(** [draw_triangle v1 v2 v3 color] Draw a color-filled triangle (vertex in counter-clockwise order!)*)
+(** [draw_triangle v1 v2 v3 color] Draw a color-filled triangle (vertex in
+    counter-clockwise order!)*)
 
 val draw_triangle_lines : Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
-(** [draw_triangle_lines v1 v2 v3 color] Draw triangle outline (vertex in counter-clockwise order!)*)
+(** [draw_triangle_lines v1 v2 v3 color] Draw triangle outline (vertex in
+    counter-clockwise order!)*)
 
 val draw_triangle_fan : Vector2.t ptr -> int -> Color.t -> unit
-(** [draw_triangle_fan points point_count color] Draw a triangle fan defined by points (first vertex is the center)*)
+(** [draw_triangle_fan points point_count color] Draw a triangle fan defined by
+    points (first vertex is the center)*)
 
 val draw_triangle_strip : Vector2.t ptr -> int -> Color.t -> unit
-(** [draw_triangle_strip points point_count color] Draw a triangle strip defined by points*)
+(** [draw_triangle_strip points point_count color] Draw a triangle strip defined
+    by points*)
 
 val draw_poly : Vector2.t -> int -> float -> float -> Color.t -> unit
-(** [draw_poly center sides radius rotation color] Draw a regular polygon (Vector version)*)
+(** [draw_poly center sides radius rotation color] Draw a regular polygon
+    (Vector version)*)
 
 val draw_poly_lines : Vector2.t -> int -> float -> float -> Color.t -> unit
-(** [draw_poly_lines center sides radius rotation color] Draw a polygon outline of n sides*)
+(** [draw_poly_lines center sides radius rotation color] Draw a polygon outline
+    of n sides*)
 
 val draw_poly_lines_ex :
   Vector2.t -> int -> float -> float -> float -> Color.t -> unit
-(** [draw_poly_lines_ex center sides radius rotation line_thick color] Draw a polygon outline of n sides with extended parameters*)
+(** [draw_poly_lines_ex center sides radius rotation line_thick color] Draw a
+    polygon outline of n sides with extended parameters*)
 
 val draw_spline_linear : Vector2.t ptr -> int -> float -> Color.t -> unit
-(** [draw_spline_linear points point_count thick color] Draw spline: Linear, minimum 2 points*)
+(** [draw_spline_linear points point_count thick color] Draw spline: Linear,
+    minimum 2 points*)
 
 val draw_spline_basis : Vector2.t ptr -> int -> float -> Color.t -> unit
-(** [draw_spline_basis points point_count thick color] Draw spline: B-Spline, minimum 4 points*)
+(** [draw_spline_basis points point_count thick color] Draw spline: B-Spline,
+    minimum 4 points*)
 
 val draw_spline_catmull_rom : Vector2.t ptr -> int -> float -> Color.t -> unit
-(** [draw_spline_catmull_rom points point_count thick color] Draw spline: Catmull-Rom, minimum 4 points*)
+(** [draw_spline_catmull_rom points point_count thick color] Draw spline:
+    Catmull-Rom, minimum 4 points*)
 
 val draw_spline_bezier_quadratic :
   Vector2.t ptr -> int -> float -> Color.t -> unit
-(** [draw_spline_bezier_quadratic points point_count thick color] Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]*)
+(** [draw_spline_bezier_quadratic points point_count thick color] Draw spline:
+    Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]*)
 
 val draw_spline_bezier_cubic : Vector2.t ptr -> int -> float -> Color.t -> unit
-(** [draw_spline_bezier_cubic points point_count thick color] Draw spline: Cubic Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]*)
+(** [draw_spline_bezier_cubic points point_count thick color] Draw spline: Cubic
+    Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]*)
 
 val draw_spline_segment_linear :
   Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_spline_segment_linear p1 p2 thick color] Draw spline segment: Linear, 2 points*)
+(** [draw_spline_segment_linear p1 p2 thick color] Draw spline segment: Linear,
+    2 points*)
 
 val draw_spline_segment_basis :
   Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_spline_segment_basis p1 p2 p3 p4 thick color] Draw spline segment: B-Spline, 4 points*)
+(** [draw_spline_segment_basis p1 p2 p3 p4 thick color] Draw spline segment:
+    B-Spline, 4 points*)
 
 val draw_spline_segment_catmull_rom :
   Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_spline_segment_catmull_rom p1 p2 p3 p4 thick color] Draw spline segment: Catmull-Rom, 4 points*)
+(** [draw_spline_segment_catmull_rom p1 p2 p3 p4 thick color] Draw spline
+    segment: Catmull-Rom, 4 points*)
 
 val draw_spline_segment_bezier_quadratic :
   Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_spline_segment_bezier_quadratic p1 c2 p3 thick color] Draw spline segment: Quadratic Bezier, 2 points, 1 control point*)
+(** [draw_spline_segment_bezier_quadratic p1 c2 p3 thick color] Draw spline
+    segment: Quadratic Bezier, 2 points, 1 control point*)
 
 val draw_spline_segment_bezier_cubic :
   Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_spline_segment_bezier_cubic p1 c2 c3 p4 thick color] Draw spline segment: Cubic Bezier, 2 points, 2 control points*)
+(** [draw_spline_segment_bezier_cubic p1 c2 c3 p4 thick color] Draw spline
+    segment: Cubic Bezier, 2 points, 2 control points*)
 
 val get_spline_point_linear : Vector2.t -> Vector2.t -> float -> Vector2.t
-(** [get_spline_point_linear start_pos end_pos t] Get (evaluate) spline point: Linear*)
+(** [get_spline_point_linear start_pos end_pos t] Get (evaluate) spline point:
+    Linear*)
 
 val get_spline_point_basis :
   Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Vector2.t
@@ -2190,15 +2310,18 @@ val get_spline_point_basis :
 
 val get_spline_point_catmull_rom :
   Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Vector2.t
-(** [get_spline_point_catmull_rom p1 p2 p3 p4 t] Get (evaluate) spline point: Catmull-Rom*)
+(** [get_spline_point_catmull_rom p1 p2 p3 p4 t] Get (evaluate) spline point:
+    Catmull-Rom*)
 
 val get_spline_point_bezier_quad :
   Vector2.t -> Vector2.t -> Vector2.t -> float -> Vector2.t
-(** [get_spline_point_bezier_quad p1 c2 p3 t] Get (evaluate) spline point: Quadratic Bezier*)
+(** [get_spline_point_bezier_quad p1 c2 p3 t] Get (evaluate) spline point:
+    Quadratic Bezier*)
 
 val get_spline_point_bezier_cubic :
   Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Vector2.t
-(** [get_spline_point_bezier_cubic p1 c2 c3 p4 t] Get (evaluate) spline point: Cubic Bezier*)
+(** [get_spline_point_bezier_cubic p1 c2 c3 p4 t] Get (evaluate) spline point:
+    Cubic Bezier*)
 
 (** {3 Basic shapes collision detection functions} *)
 
@@ -2206,53 +2329,68 @@ val check_collision_recs : Rectangle.t -> Rectangle.t -> bool
 (** [check_collision_recs rec1 rec2] Check collision between two rectangles*)
 
 val check_collision_circles : Vector2.t -> float -> Vector2.t -> float -> bool
-(** [check_collision_circles center1 radius1 center2 radius2] Check collision between two circles*)
+(** [check_collision_circles center1 radius1 center2 radius2] Check collision
+    between two circles*)
 
 val check_collision_circle_rec : Vector2.t -> float -> Rectangle.t -> bool
-(** [check_collision_circle_rec center radius rec] Check collision between circle and rectangle*)
+(** [check_collision_circle_rec center radius rec] Check collision between
+    circle and rectangle*)
 
 val check_collision_circle_line :
   Vector2.t -> float -> Vector2.t -> Vector2.t -> bool
-(** [check_collision_circle_line center radius p1 p2] Check if circle collides with a line created betweeen two points [p1] and [p2]*)
+(** [check_collision_circle_line center radius p1 p2] Check if circle collides
+    with a line created betweeen two points [p1] and [p2]*)
 
 val check_collision_point_rec : Vector2.t -> Rectangle.t -> bool
 (** [check_collision_point_rec point rec] Check if point is inside rectangle*)
 
 val check_collision_point_circle : Vector2.t -> Vector2.t -> float -> bool
-(** [check_collision_point_circle point center radius] Check if point is inside circle*)
+(** [check_collision_point_circle point center radius] Check if point is inside
+    circle*)
 
 val check_collision_point_triangle :
   Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> bool
-(** [check_collision_point_triangle point p1 p2 p3] Check if point is inside a triangle*)
+(** [check_collision_point_triangle point p1 p2 p3] Check if point is inside a
+    triangle*)
 
 val check_collision_point_line :
   Vector2.t -> Vector2.t -> Vector2.t -> int -> bool
-(** [check_collision_point_line point p1 p2 threshold] Check if point belongs to line created between two points [p1] and [p2] with defined margin in pixels [threshold]*)
+(** [check_collision_point_line point p1 p2 threshold] Check if point belongs to
+    line created between two points [p1] and [p2] with defined margin in pixels
+    [threshold]*)
 
 val check_collision_point_poly : Vector2.t -> Vector2.t ptr -> int -> bool
-(** [check_collision_point_poly point points point_count] Check if point is within a polygon described by array of vertices*)
+(** [check_collision_point_poly point points point_count] Check if point is
+    within a polygon described by array of vertices*)
 
 val check_collision_lines :
   Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t ptr -> bool
-(** [check_collision_lines start_pos1 end_pos1 start_pos2 end_pos2 collision_point] Check the collision between two lines defined by two points each, returns collision point by reference*)
+(** [check_collision_lines start_pos1 end_pos1 start_pos2 end_pos2
+     collision_point] Check the collision between two lines defined by two
+    points each, returns collision point by reference*)
 
 val get_collision_rec : Rectangle.t -> Rectangle.t -> Rectangle.t
-(** [get_collision_rec rec1 rec2] Get collision rectangle for two rectangles collision*)
+(** [get_collision_rec rec1 rec2] Get collision rectangle for two rectangles
+    collision*)
 
 val load_image : string -> Image.t
 (** [load_image file_name] Load image from file into CPU memory (RAM)*)
 
 val load_image_raw : string -> int -> int -> PixelFormat.t -> int -> Image.t
-(** [load_image_raw file_name width height format header_size] Load image from RAW file data*)
+(** [load_image_raw file_name width height format header_size] Load image from
+    RAW file data*)
 
 val load_image_anim : string -> int ptr -> Image.t
-(** [load_image_anim file_name frames] Load image sequence from file (frames appended to image.data)*)
+(** [load_image_anim file_name frames] Load image sequence from file (frames
+    appended to image.data)*)
 
 val load_image_anim_from_memory : string -> string -> int -> int ptr -> Image.t
-(** [load_image_anim_from_memory file_type file_data data_size frames] Load image sequence from memory buffer*)
+(** [load_image_anim_from_memory file_type file_data data_size frames] Load
+    image sequence from memory buffer*)
 
 val load_image_from_memory : string -> string -> int -> Image.t
-(** [load_image_from_memory file_type file_data data_size] Load image from memory buffer, fileType refers to extension: i.e. '.png'*)
+(** [load_image_from_memory file_type file_data data_size] Load image from
+    memory buffer, fileType refers to extension: i.e. '.png'*)
 
 val load_image_from_texture : Texture.t -> Image.t
 (** [load_image_from_texture texture] Load image from GPU texture data*)
@@ -2267,44 +2405,54 @@ val unload_image : Image.t -> unit
 (** [unload_image image] Unload image from CPU memory (RAM)*)
 
 val export_image : Image.t -> string -> bool
-(** [export_image image file_name] Export image data to file, returns true on success*)
+(** [export_image image file_name] Export image data to file, returns true on
+    success*)
 
 val export_image_to_memory : Image.t -> string -> int ptr -> string
-(** [export_image_to_memory image file_type file_size] Export image to memory buffer*)
+(** [export_image_to_memory image file_type file_size] Export image to memory
+    buffer*)
 
 val export_image_as_code : Image.t -> string -> bool
-(** [export_image_as_code image file_name] Export image as code file defining an array of bytes, returns true on success*)
+(** [export_image_as_code image file_name] Export image as code file defining an
+    array of bytes, returns true on success*)
 
 val gen_image_color : int -> int -> Color.t -> Image.t
 (** [gen_image_color width height color] Generate image: plain color*)
 
 val gen_image_gradient_linear :
   int -> int -> int -> Color.t -> Color.t -> Image.t
-(** [gen_image_gradient_linear width height direction start end] Generate image: linear gradient, direction in degrees [0..360], 0=Vertical gradient*)
+(** [gen_image_gradient_linear width height direction start end] Generate image:
+    linear gradient, direction in degrees [0..360], 0=Vertical gradient*)
 
 val gen_image_gradient_radial :
   int -> int -> float -> Color.t -> Color.t -> Image.t
-(** [gen_image_gradient_radial width height density inner outer] Generate image: radial gradient*)
+(** [gen_image_gradient_radial width height density inner outer] Generate image:
+    radial gradient*)
 
 val gen_image_gradient_square :
   int -> int -> float -> Color.t -> Color.t -> Image.t
-(** [gen_image_gradient_square width height density inner outer] Generate image: square gradient*)
+(** [gen_image_gradient_square width height density inner outer] Generate image:
+    square gradient*)
 
 val gen_image_checked :
   int -> int -> int -> int -> Color.t -> Color.t -> Image.t
-(** [gen_image_checked width height checks_x checks_y col1 col2] Generate image: checked*)
+(** [gen_image_checked width height checks_x checks_y col1 col2] Generate image:
+    checked*)
 
 val gen_image_white_noise : int -> int -> float -> Image.t
 (** [gen_image_white_noise width height factor] Generate image: white noise*)
 
 val gen_image_perlin_noise : int -> int -> int -> int -> float -> Image.t
-(** [gen_image_perlin_noise width height offset_x offset_y scale] Generate image: perlin noise*)
+(** [gen_image_perlin_noise width height offset_x offset_y scale] Generate
+    image: perlin noise*)
 
 val gen_image_cellular : int -> int -> int -> Image.t
-(** [gen_image_cellular width height tile_size] Generate image: cellular algorithm, bigger tileSize means bigger cells*)
+(** [gen_image_cellular width height tile_size] Generate image: cellular
+    algorithm, bigger tileSize means bigger cells*)
 
 val gen_image_text : int -> int -> string -> Image.t
-(** [gen_image_text width height text] Generate image: grayscale image from text data*)
+(** [gen_image_text width height text] Generate image: grayscale image from text
+    data*)
 
 (** {3 Image manipulation functions} *)
 
@@ -2315,13 +2463,15 @@ val image_from_image : Image.t -> Rectangle.t -> Image.t
 (** [image_from_image image rec] Create an image from another image piece*)
 
 val image_from_channel : Image.t -> int -> Image.t
-(** [image_from_channel image selected_channel] Create an image from a selected channel of another image (GRAYSCALE)*)
+(** [image_from_channel image selected_channel] Create an image from a selected
+    channel of another image (GRAYSCALE)*)
 
 val image_text : string -> int -> Color.t -> Image.t
 (** [image_text text font_size color] Create an image from text (default font)*)
 
 val image_text_ex : Font.t -> string -> float -> float -> Color.t -> Image.t
-(** [image_text_ex font text font_size spacing tint] Create an image from text (custom sprite font)*)
+(** [image_text_ex font text font_size spacing tint] Create an image from text
+    (custom sprite font)*)
 
 val image_format : Image.t ptr -> int -> unit
 (** [image_format image new_format] Convert image data to desired format*)
@@ -2336,7 +2486,8 @@ val image_alpha_crop : Image.t ptr -> float -> unit
 (** [image_alpha_crop image threshold] Crop image depending on alpha value*)
 
 val image_alpha_clear : Image.t ptr -> Color.t -> float -> unit
-(** [image_alpha_clear image color threshold] Clear alpha channel to desired color*)
+(** [image_alpha_clear image color threshold] Clear alpha channel to desired
+    color*)
 
 val image_alpha_mask : Image.t ptr -> Image.t -> unit
 (** [image_alpha_mask image alpha_mask] Apply alpha mask to image*)
@@ -2345,26 +2496,32 @@ val image_alpha_premultiply : Image.t ptr -> unit
 (** [image_alpha_premultiply image] Premultiply alpha channel*)
 
 val image_blur_gaussian : Image.t ptr -> int -> unit
-(** [image_blur_gaussian image blur_size] Apply Gaussian blur using a box blur approximation*)
+(** [image_blur_gaussian image blur_size] Apply Gaussian blur using a box blur
+    approximation*)
 
 val image_kernel_convolution : Image.t ptr -> float ptr -> int -> unit
-(** [image_kernel_convolution image kernel kernel_size] Apply custom square convolution kernel to image*)
+(** [image_kernel_convolution image kernel kernel_size] Apply custom square
+    convolution kernel to image*)
 
 val image_resize : Image.t ptr -> int -> int -> unit
-(** [image_resize image new_width new_height] Resize image (Bicubic scaling algorithm)*)
+(** [image_resize image new_width new_height] Resize image (Bicubic scaling
+    algorithm)*)
 
 val image_resize_nn : Image.t ptr -> int -> int -> unit
-(** [image_resize_nn image new_width new_height] Resize image (Nearest-Neighbor scaling algorithm)*)
+(** [image_resize_nn image new_width new_height] Resize image (Nearest-Neighbor
+    scaling algorithm)*)
 
 val image_resize_canvas :
   Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
-(** [image_resize_canvas image new_width new_height offset_x offset_y fill] Resize canvas and fill with color*)
+(** [image_resize_canvas image new_width new_height offset_x offset_y fill]
+    Resize canvas and fill with color*)
 
 val image_mipmaps : Image.t ptr -> unit
 (** [image_mipmaps image] Compute all mipmap levels for a provided image*)
 
 val image_dither : Image.t ptr -> int -> int -> int -> int -> unit
-(** [image_dither image r_bpp g_bpp b_bpp a_bpp] Dither image data to 16bpp or lower (Floyd-Steinberg dithering)*)
+(** [image_dither image r_bpp g_bpp b_bpp a_bpp] Dither image data to 16bpp or
+    lower (Floyd-Steinberg dithering)*)
 
 val image_flip_vertical : Image.t ptr -> unit
 (** [image_flip_vertical image] Flip image vertically*)
@@ -2373,7 +2530,8 @@ val image_flip_horizontal : Image.t ptr -> unit
 (** [image_flip_horizontal image] Flip image horizontally*)
 
 val image_rotate : Image.t ptr -> int -> unit
-(** [image_rotate image degrees] Rotate image by input angle in degrees (-359 to 359)*)
+(** [image_rotate image degrees] Rotate image by input angle in degrees (-359 to
+    359)*)
 
 val image_rotate_cw : Image.t ptr -> unit
 (** [image_rotate_cw image] Rotate image clockwise 90deg*)
@@ -2391,25 +2549,30 @@ val image_color_grayscale : Image.t ptr -> unit
 (** [image_color_grayscale image] Modify image color: grayscale*)
 
 val image_color_contrast : Image.t ptr -> float -> unit
-(** [image_color_contrast image contrast] Modify image color: contrast (-100 to 100)*)
+(** [image_color_contrast image contrast] Modify image color: contrast (-100 to
+    100)*)
 
 val image_color_brightness : Image.t ptr -> int -> unit
-(** [image_color_brightness image brightness] Modify image color: brightness (-255 to 255)*)
+(** [image_color_brightness image brightness] Modify image color: brightness
+    (-255 to 255)*)
 
 val image_color_replace : Image.t ptr -> Color.t -> Color.t -> unit
 (** [image_color_replace image color replace] Modify image color: replace color*)
 
 val load_image_colors : Image.t -> Color.t ptr
-(** [load_image_colors image] Load color data from image as a Color array (RGBA - 32bit)*)
+(** [load_image_colors image] Load color data from image as a Color array (RGBA
+    \- 32bit)*)
 
 val load_image_palette : Image.t -> int -> int ptr -> Color.t ptr
-(** [load_image_palette image max_palette_size color_count] Load colors palette from image as a Color array (RGBA - 32bit)*)
+(** [load_image_palette image max_palette_size color_count] Load colors palette
+    from image as a Color array (RGBA - 32bit)*)
 
 val unload_image_colors : Color.t ptr -> unit
 (** [unload_image_colors colors] Unload color data loaded with LoadImageColors()*)
 
 val unload_image_palette : Color.t ptr -> unit
-(** [unload_image_palette colors] Unload colors palette loaded with LoadImagePalette()*)
+(** [unload_image_palette colors] Unload colors palette loaded with
+    LoadImagePalette()*)
 
 val get_image_alpha_border : Image.t -> float -> Rectangle.t
 (** [get_image_alpha_border image threshold] Get image alpha border rectangle*)
@@ -2424,46 +2587,57 @@ val image_draw_pixel : Image.t ptr -> int -> int -> Color.t -> unit
 (** [image_draw_pixel dst pos_x pos_y color] Draw pixel within an image*)
 
 val image_draw_pixel_v : Image.t ptr -> Vector2.t -> Color.t -> unit
-(** [image_draw_pixel_v dst position color] Draw pixel within an image (Vector version)*)
+(** [image_draw_pixel_v dst position color] Draw pixel within an image (Vector
+    version)*)
 
 val image_draw_line : Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
-(** [image_draw_line dst start_pos_x start_pos_y end_pos_x end_pos_y color] Draw line within an image*)
+(** [image_draw_line dst start_pos_x start_pos_y end_pos_x end_pos_y color] Draw
+    line within an image*)
 
 val image_draw_line_v : Image.t ptr -> Vector2.t -> Vector2.t -> Color.t -> unit
-(** [image_draw_line_v dst start end color] Draw line within an image (Vector version)*)
+(** [image_draw_line_v dst start end color] Draw line within an image (Vector
+    version)*)
 
 val image_draw_line_ex :
   Image.t ptr -> Vector2.t -> Vector2.t -> int -> Color.t -> unit
-(** [image_draw_line_ex dst start end thick color] Draw a line defining thickness within an image*)
+(** [image_draw_line_ex dst start end thick color] Draw a line defining
+    thickness within an image*)
 
 val image_draw_circle : Image.t ptr -> int -> int -> int -> Color.t -> unit
-(** [image_draw_circle dst center_x center_y radius color] Draw a filled circle within an image*)
+(** [image_draw_circle dst center_x center_y radius color] Draw a filled circle
+    within an image*)
 
 val image_draw_circle_v : Image.t ptr -> Vector2.t -> int -> Color.t -> unit
-(** [image_draw_circle_v dst center radius color] Draw a filled circle within an image (Vector version)*)
+(** [image_draw_circle_v dst center radius color] Draw a filled circle within an
+    image (Vector version)*)
 
 val image_draw_circle_lines :
   Image.t ptr -> int -> int -> int -> Color.t -> unit
-(** [image_draw_circle_lines dst center_x center_y radius color] Draw circle outline within an image*)
+(** [image_draw_circle_lines dst center_x center_y radius color] Draw circle
+    outline within an image*)
 
 val image_draw_circle_lines_v :
   Image.t ptr -> Vector2.t -> int -> Color.t -> unit
-(** [image_draw_circle_lines_v dst center radius color] Draw circle outline within an image (Vector version)*)
+(** [image_draw_circle_lines_v dst center radius color] Draw circle outline
+    within an image (Vector version)*)
 
 val image_draw_rectangle :
   Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
-(** [image_draw_rectangle dst pos_x pos_y width height color] Draw rectangle within an image*)
+(** [image_draw_rectangle dst pos_x pos_y width height color] Draw rectangle
+    within an image*)
 
 val image_draw_rectangle_v :
   Image.t ptr -> Vector2.t -> Vector2.t -> Color.t -> unit
-(** [image_draw_rectangle_v dst position size color] Draw rectangle within an image (Vector version)*)
+(** [image_draw_rectangle_v dst position size color] Draw rectangle within an
+    image (Vector version)*)
 
 val image_draw_rectangle_rec : Image.t ptr -> Rectangle.t -> Color.t -> unit
 (** [image_draw_rectangle_rec dst rec color] Draw rectangle within an image*)
 
 val image_draw_rectangle_lines :
   Image.t ptr -> Rectangle.t -> int -> Color.t -> unit
-(** [image_draw_rectangle_lines dst rec thick color] Draw rectangle lines within an image*)
+(** [image_draw_rectangle_lines dst rec thick color] Draw rectangle lines within
+    an image*)
 
 val image_draw_triangle :
   Image.t ptr -> Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
@@ -2478,27 +2652,33 @@ val image_draw_triangle_ex :
   Color.t ->
   Color.t ->
   unit
-(** [image_draw_triangle_ex dst v1 v2 v3 c1 c2 c3] Draw triangle with interpolated colors within an image*)
+(** [image_draw_triangle_ex dst v1 v2 v3 c1 c2 c3] Draw triangle with
+    interpolated colors within an image*)
 
 val image_draw_triangle_lines :
   Image.t ptr -> Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
-(** [image_draw_triangle_lines dst v1 v2 v3 color] Draw triangle outline within an image*)
+(** [image_draw_triangle_lines dst v1 v2 v3 color] Draw triangle outline within
+    an image*)
 
 val image_draw_triangle_fan :
   Image.t ptr -> Vector2.t ptr -> int -> Color.t -> unit
-(** [image_draw_triangle_fan dst points point_count color] Draw a triangle fan defined by points within an image (first vertex is the center)*)
+(** [image_draw_triangle_fan dst points point_count color] Draw a triangle fan
+    defined by points within an image (first vertex is the center)*)
 
 val image_draw_triangle_strip :
   Image.t ptr -> Vector2.t ptr -> int -> Color.t -> unit
-(** [image_draw_triangle_strip dst points point_count color] Draw a triangle strip defined by points within an image*)
+(** [image_draw_triangle_strip dst points point_count color] Draw a triangle
+    strip defined by points within an image*)
 
 val image_draw :
   Image.t ptr -> Image.t -> Rectangle.t -> Rectangle.t -> Color.t -> unit
-(** [image_draw dst src src_rec dst_rec tint] Draw a source image within a destination image (tint applied to source)*)
+(** [image_draw dst src src_rec dst_rec tint] Draw a source image within a
+    destination image (tint applied to source)*)
 
 val image_draw_text :
   Image.t ptr -> string -> int -> int -> int -> Color.t -> unit
-(** [image_draw_text dst text pos_x pos_y font_size color] Draw text (using default font) within an image (destination)*)
+(** [image_draw_text dst text pos_x pos_y font_size color] Draw text (using
+    default font) within an image (destination)*)
 
 val image_draw_text_ex :
   Image.t ptr ->
@@ -2509,7 +2689,8 @@ val image_draw_text_ex :
   float ->
   Color.t ->
   unit
-(** [image_draw_text_ex dst font text position font_size spacing tint] Draw text (custom sprite font) within an image (destination)*)
+(** [image_draw_text_ex dst font text position font_size spacing tint] Draw text
+    (custom sprite font) within an image (destination)*)
 
 (** {3 Texture loading functions} *)
 
@@ -2520,7 +2701,8 @@ val load_texture_from_image : Image.t -> Texture.t
 (** [load_texture_from_image image] Load texture from image data*)
 
 val load_texture_cubemap : Image.t -> int -> Texture.t
-(** [load_texture_cubemap image layout] Load cubemap from image, multiple image cubemap layouts supported*)
+(** [load_texture_cubemap image layout] Load cubemap from image, multiple image
+    cubemap layouts supported*)
 
 val load_render_texture : int -> int -> RenderTexture.t
 (** [load_render_texture width height] Load texture for rendering (framebuffer)*)
@@ -2532,7 +2714,8 @@ val unload_texture : Texture.t -> unit
 (** [unload_texture texture] Unload texture from GPU memory (VRAM)*)
 
 val is_render_texture_valid : RenderTexture.t -> bool
-(** [is_render_texture_valid target] Check if a render texture is valid (loaded in GPU)*)
+(** [is_render_texture_valid target] Check if a render texture is valid (loaded
+    in GPU)*)
 
 val unload_render_texture : RenderTexture.t -> unit
 (** [unload_render_texture target] Unload render texture from GPU memory (VRAM)*)
@@ -2541,7 +2724,8 @@ val update_texture : Texture.t -> unit ptr -> unit
 (** [update_texture texture pixels] Update GPU texture with new data*)
 
 val update_texture_rec : Texture.t -> Rectangle.t -> unit ptr -> unit
-(** [update_texture_rec texture rec pixels] Update GPU texture rectangle with new data*)
+(** [update_texture_rec texture rec pixels] Update GPU texture rectangle with
+    new data*)
 
 val gen_texture_mipmaps : Texture.t ptr -> unit
 (** [gen_texture_mipmaps texture] Generate GPU mipmaps for a texture*)
@@ -2556,14 +2740,17 @@ val draw_texture : Texture.t -> int -> int -> Color.t -> unit
 (** [draw_texture texture pos_x pos_y tint] Draw a Texture2D*)
 
 val draw_texture_v : Texture.t -> Vector2.t -> Color.t -> unit
-(** [draw_texture_v texture position tint] Draw a Texture2D with position defined as Vector2*)
+(** [draw_texture_v texture position tint] Draw a Texture2D with position
+    defined as Vector2*)
 
 val draw_texture_ex :
   Texture.t -> Vector2.t -> float -> float -> Color.t -> unit
-(** [draw_texture_ex texture position rotation scale tint] Draw a Texture2D with extended parameters*)
+(** [draw_texture_ex texture position rotation scale tint] Draw a Texture2D with
+    extended parameters*)
 
 val draw_texture_rec : Texture.t -> Rectangle.t -> Vector2.t -> Color.t -> unit
-(** [draw_texture_rec texture source position tint] Draw a part of a texture defined by a rectangle*)
+(** [draw_texture_rec texture source position tint] Draw a part of a texture
+    defined by a rectangle*)
 
 val draw_texture_pro :
   Texture.t ->
@@ -2573,7 +2760,8 @@ val draw_texture_pro :
   float ->
   Color.t ->
   unit
-(** [draw_texture_pro texture source dest origin rotation tint] Draw a part of a texture defined by a rectangle with 'pro' parameters*)
+(** [draw_texture_pro texture source dest origin rotation tint] Draw a part of a
+    texture defined by a rectangle with 'pro' parameters*)
 
 val draw_texture_npatch :
   Texture.t ->
@@ -2583,13 +2771,15 @@ val draw_texture_npatch :
   float ->
   Color.t ->
   unit
-(** [draw_texture_npatch texture n_patch_info dest origin rotation tint] Draws a texture (or part of it) that stretches or shrinks nicely*)
+(** [draw_texture_npatch texture n_patch_info dest origin rotation tint] Draws a
+    texture (or part of it) that stretches or shrinks nicely*)
 
 val color_is_equal : Color.t -> Color.t -> bool
 (** [color_is_equal col1 col2] Check if two colors are equal*)
 
 val fade : Color.t -> float -> Color.t
-(** [fade color alpha] Get color with alpha applied, alpha goes from 0.0f to 1.0f*)
+(** [fade color alpha] Get color with alpha applied, alpha goes from 0.0f to
+    1.0f*)
 
 val color_to_int : Color.t -> int
 (** [color_to_int color] Get hexadecimal value for a Color (0xRRGGBBAA)*)
@@ -2601,40 +2791,50 @@ val color_from_normalized : Vector4.t -> Color.t
 (** [color_from_normalized normalized] Get Color from normalized values [0..1]*)
 
 val color_to_hsv : Color.t -> Vector3.t
-(** [color_to_hsv color] Get HSV values for a Color, hue [0..360], saturation/value [0..1]*)
+(** [color_to_hsv color] Get HSV values for a Color, hue [0..360],
+    saturation/value [0..1]*)
 
 val color_from_hsv : float -> float -> float -> Color.t
-(** [color_from_hsv hue saturation value] Get a Color from HSV values, hue [0..360], saturation/value [0..1]*)
+(** [color_from_hsv hue saturation value] Get a Color from HSV values, hue
+    [0..360], saturation/value [0..1]*)
 
 val color_tint : Color.t -> Color.t -> Color.t
 (** [color_tint color tint] Get color multiplied with another color*)
 
 val color_brightness : Color.t -> float -> Color.t
-(** [color_brightness color factor] Get color with brightness correction, brightness factor goes from -1.0f to 1.0f*)
+(** [color_brightness color factor] Get color with brightness correction,
+    brightness factor goes from -1.0f to 1.0f*)
 
 val color_contrast : Color.t -> float -> Color.t
-(** [color_contrast color contrast] Get color with contrast correction, contrast values between -1.0f and 1.0f*)
+(** [color_contrast color contrast] Get color with contrast correction, contrast
+    values between -1.0f and 1.0f*)
 
 val color_alpha : Color.t -> float -> Color.t
-(** [color_alpha color alpha] Get color with alpha applied, alpha goes from 0.0f to 1.0f*)
+(** [color_alpha color alpha] Get color with alpha applied, alpha goes from 0.0f
+    to 1.0f*)
 
 val color_alpha_blend : Color.t -> Color.t -> Color.t -> Color.t
-(** [color_alpha_blend dst src tint] Get src alpha-blended into dst color with tint*)
+(** [color_alpha_blend dst src tint] Get src alpha-blended into dst color with
+    tint*)
 
 val color_lerp : Color.t -> Color.t -> float -> Color.t
-(** [color_lerp color1 color2 factor] Get color lerp interpolation between two colors, factor [0.0f..1.0f]*)
+(** [color_lerp color1 color2 factor] Get color lerp interpolation between two
+    colors, factor [0.0f..1.0f]*)
 
 val get_color : int -> Color.t
 (** [get_color hex_value] Get Color structure from hexadecimal value*)
 
 val get_pixel_color : unit ptr -> PixelFormat.t -> Color.t
-(** [get_pixel_color src_ptr format] Get Color from a source pixel pointer of certain format*)
+(** [get_pixel_color src_ptr format] Get Color from a source pixel pointer of
+    certain format*)
 
 val set_pixel_color : unit ptr -> Color.t -> PixelFormat.t -> unit
-(** [set_pixel_color dst_ptr color format] Set color formatted into destination pixel pointer*)
+(** [set_pixel_color dst_ptr color format] Set color formatted into destination
+    pixel pointer*)
 
 val get_pixel_data_size : int -> int -> PixelFormat.t -> int
-(** [get_pixel_data_size width height format] Get pixel data size in bytes for certain format*)
+(** [get_pixel_data_size width height format] Get pixel data size in bytes for
+    certain format*)
 
 (** {2 Font Loading and Text Drawing Functions (Module: text)} *)
 
@@ -2647,25 +2847,32 @@ val load_font : string -> Font.t
 (** [load_font file_name] Load font from file into GPU memory (VRAM)*)
 
 val load_font_ex : string -> int -> int CArray.t option -> Font.t
-(** [load_font_ex file_name font_size codepoints codepoint_count] Load font from file with extended parameters, use NULL for codepoints and 0 for codepointCount to load the default character setFont*)
+(** [load_font_ex file_name font_size codepoints codepoint_count] Load font from
+    file with extended parameters, use NULL for codepoints and 0 for
+    codepointCount to load the default character setFont*)
 
 val load_font_from_image : Image.t -> Color.t -> int -> Font.t
 (** [load_font_from_image image key first_char] Load font from Image (XNA style)*)
 
 val load_font_from_memory :
   string -> string -> int -> int -> int ptr -> int -> Font.t
-(** [load_font_from_memory file_type file_data data_size font_size codepoints codepoint_count] Load font from memory buffer, fileType refers to extension: i.e. '.ttf'*)
+(** [load_font_from_memory file_type file_data data_size font_size codepoints
+     codepoint_count] Load font from memory buffer, fileType refers to
+    extension: i.e. '.ttf'*)
 
 val is_font_valid : Font.t -> bool
-(** [is_font_valid font] Check if a font is valid (font data loaded, WARNING: GPU texture not checked)*)
+(** [is_font_valid font] Check if a font is valid (font data loaded, WARNING:
+    GPU texture not checked)*)
 
 val load_font_data :
   string -> int -> int -> int ptr -> int -> int -> GlyphInfo.t ptr
-(** [load_font_data file_data data_size font_size codepoints codepoint_count type] Load font data for further use*)
+(** [load_font_data file_data data_size font_size codepoints codepoint_count
+     type] Load font data for further use*)
 
 val gen_image_font_atlas :
   GlyphInfo.t ptr -> Rectangle.t ptr ptr -> int -> int -> int -> int -> Image.t
-(** [gen_image_font_atlas glyphs glyph_recs glyph_count font_size padding pack_method] Generate image font atlas using chars info*)
+(** [gen_image_font_atlas glyphs glyph_recs glyph_count font_size padding
+     pack_method] Generate image font atlas using chars info*)
 
 val unload_font_data : GlyphInfo.t ptr -> int -> unit
 (** [unload_font_data glyphs glyph_count] Unload font chars info data (RAM)*)
@@ -2674,7 +2881,8 @@ val unload_font : Font.t -> unit
 (** [unload_font font] Unload font from GPU memory (VRAM)*)
 
 val export_font_as_code : Font.t -> string -> bool
-(** [export_font_as_code font file_name] Export font as code file, returns true on success*)
+(** [export_font_as_code font file_name] Export font as code file, returns true
+    on success*)
 
 val draw_fps : int -> int -> unit
 (** [draw_fps pos_x pos_y] Draw current FPS*)
@@ -2684,7 +2892,8 @@ val draw_text : string -> int -> int -> int -> Color.t -> unit
 
 val draw_text_ex :
   Font.t -> string -> Vector2.t -> float -> float -> Color.t -> unit
-(** [draw_text_ex font text position font_size spacing tint] Draw text using font and additional parameters*)
+(** [draw_text_ex font text position font_size spacing tint] Draw text using
+    font and additional parameters*)
 
 val draw_text_pro :
   Font.t ->
@@ -2696,17 +2905,21 @@ val draw_text_pro :
   float ->
   Color.t ->
   unit
-(** [draw_text_pro font text position origin rotation font_size spacing tint] Draw text using Font and pro parameters (rotation)*)
+(** [draw_text_pro font text position origin rotation font_size spacing tint]
+    Draw text using Font and pro parameters (rotation)*)
 
 val draw_text_codepoint : Font.t -> int -> Vector2.t -> float -> Color.t -> unit
-(** [draw_text_codepoint font codepoint position font_size tint] Draw one character (codepoint)*)
+(** [draw_text_codepoint font codepoint position font_size tint] Draw one
+    character (codepoint)*)
 
 val draw_text_codepoints :
   Font.t -> int CArray.t -> Vector2.t -> float -> float -> Color.t -> unit
-(** [draw_text_codepoints font codepoints codepoint_count position font_size spacing tint] Draw multiple character (codepoint)*)
+(** [draw_text_codepoints font codepoints codepoint_count position font_size
+     spacing tint] Draw multiple character (codepoint)*)
 
 val set_text_line_spacing : int -> unit
-(** [set_text_line_spacing spacing] Set vertical line spacing when drawing with line-breaks*)
+(** [set_text_line_spacing spacing] Set vertical line spacing when drawing with
+    line-breaks*)
 
 (** {3 Text misc. functions} *)
 
@@ -2717,13 +2930,16 @@ val measure_text_ex : Font.t -> string -> float -> float -> Vector2.t
 (** [measure_text_ex font text font_size spacing] Measure string size for Font*)
 
 val get_glyph_index : Font.t -> int -> int
-(** [get_glyph_index font codepoint] Get glyph index position in font for a codepoint (unicode character), fallback to '?' if not found*)
+(** [get_glyph_index font codepoint] Get glyph index position in font for a
+    codepoint (unicode character), fallback to '?' if not found*)
 
 val get_glyph_info : Font.t -> int -> GlyphInfo.t
-(** [get_glyph_info font codepoint] Get glyph font info data for a codepoint (unicode character), fallback to '?' if not found*)
+(** [get_glyph_info font codepoint] Get glyph font info data for a codepoint
+    (unicode character), fallback to '?' if not found*)
 
 val get_glyph_atlas_rec : Font.t -> int -> Rectangle.t
-(** [get_glyph_atlas_rec font codepoint] Get glyph rectangle in font atlas for a codepoint (unicode character), fallback to '?' if not found*)
+(** [get_glyph_atlas_rec font codepoint] Get glyph rectangle in font atlas for a
+    codepoint (unicode character), fallback to '?' if not found*)
 
 val load_utf8 : int ptr -> int -> char ptr
 (** [load_utf8 codepoints length] Load UTF-8 text encoded from codepoints array*)
@@ -2732,25 +2948,31 @@ val unload_utf8 : char ptr -> unit
 (** [unload_utf8 text] Unload UTF-8 text encoded from codepoints array*)
 
 val load_codepoints : string -> int ptr -> int ptr
-(** [load_codepoints text count] Load all codepoints from a UTF-8 text string, codepoints count returned by parameter*)
+(** [load_codepoints text count] Load all codepoints from a UTF-8 text string,
+    codepoints count returned by parameter*)
 
 val unload_codepoints : int ptr -> unit
 (** [unload_codepoints codepoints] Unload codepoints data from memory*)
 
 val get_codepoint_count : string -> int
-(** [get_codepoint_count text] Get total number of codepoints in a UTF-8 encoded string*)
+(** [get_codepoint_count text] Get total number of codepoints in a UTF-8 encoded
+    string*)
 
 val get_codepoint : string -> int ptr -> int
-(** [get_codepoint text codepoint_size] Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure*)
+(** [get_codepoint text codepoint_size] Get next codepoint in a UTF-8 encoded
+    string, 0x3f('?') is returned on failure*)
 
 val get_codepoint_next : string -> int ptr -> int
-(** [get_codepoint_next text codepoint_size] Get next codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure*)
+(** [get_codepoint_next text codepoint_size] Get next codepoint in a UTF-8
+    encoded string, 0x3f('?') is returned on failure*)
 
 val get_codepoint_previous : string -> int ptr -> int
-(** [get_codepoint_previous text codepoint_size] Get previous codepoint in a UTF-8 encoded string, 0x3f('?') is returned on failure*)
+(** [get_codepoint_previous text codepoint_size] Get previous codepoint in a
+    UTF-8 encoded string, 0x3f('?') is returned on failure*)
 
 val codepoint_to_utf8 : int -> int ptr -> string
-(** [codepoint_to_utf8 codepoint utf8_size] Encode one codepoint into UTF-8 byte array (array length returned as parameter)*)
+(** [codepoint_to_utf8 codepoint utf8_size] Encode one codepoint into UTF-8 byte
+    array (array length returned as parameter)*)
 
 val text_copy : string -> string -> int
 (** [text_copy dst src] Copy one string to another, returns bytes copied*)
@@ -2765,13 +2987,16 @@ val text_subtext : string -> int -> int -> string
 (** [text_subtext text position length] Get a piece of a text string*)
 
 val text_replace : string -> string -> string -> string
-(** [text_replace text replace by] Replace text string (WARNING: memory must be freed!)*)
+(** [text_replace text replace by] Replace text string (WARNING: memory must be
+    freed!)*)
 
 val text_insert : string -> string -> int -> string
-(** [text_insert text insert position] Insert text in a position (WARNING: memory must be freed!)*)
+(** [text_insert text insert position] Insert text in a position (WARNING:
+    memory must be freed!)*)
 
 val text_append : string -> string -> int ptr -> unit
-(** [text_append text append position] Append text at specific position and move cursor!*)
+(** [text_append text append position] Append text at specific position and move
+    cursor!*)
 
 val text_find_index : string -> string -> int
 (** [text_find_index text find] Find first text occurrence within a string*)
@@ -2792,10 +3017,12 @@ val text_to_camel : string -> string
 (** [text_to_camel text] Get Camel case notation version of provided string*)
 
 val text_to_integer : string -> int
-(** [text_to_integer text] Get integer value from text (negative values not supported)*)
+(** [text_to_integer text] Get integer value from text (negative values not
+    supported)*)
 
 val text_to_float : string -> float
-(** [text_to_float text] Get float value from text (negative values not supported)*)
+(** [text_to_float text] Get float value from text (negative values not
+    supported)*)
 
 (** {2 Basic 3d Shapes Drawing Functions (Module: models)} *)
 
@@ -2805,16 +3032,20 @@ val draw_line_3d : Vector3.t -> Vector3.t -> Color.t -> unit
 (** [draw_line_3d start_pos end_pos color] Draw a line in 3D world space*)
 
 val draw_point_3d : Vector3.t -> Color.t -> unit
-(** [draw_point_3d position color] Draw a point in 3D space, actually a small line*)
+(** [draw_point_3d position color] Draw a point in 3D space, actually a small
+    line*)
 
 val draw_circle_3d : Vector3.t -> float -> Vector3.t -> float -> Color.t -> unit
-(** [draw_circle_3d center radius rotation_axis rotation_angle color] Draw a circle in 3D world space*)
+(** [draw_circle_3d center radius rotation_axis rotation_angle color] Draw a
+    circle in 3D world space*)
 
 val draw_triangle_3d : Vector3.t -> Vector3.t -> Vector3.t -> Color.t -> unit
-(** [draw_triangle_3d v1 v2 v3 color] Draw a color-filled triangle (vertex in counter-clockwise order!)*)
+(** [draw_triangle_3d v1 v2 v3 color] Draw a color-filled triangle (vertex in
+    counter-clockwise order!)*)
 
 val draw_triangle_strip_3d : Vector3.t ptr -> int -> Color.t -> unit
-(** [draw_triangle_strip_3d points point_count color] Draw a triangle strip defined by points*)
+(** [draw_triangle_strip_3d points point_count color] Draw a triangle strip
+    defined by points*)
 
 val draw_cube : Vector3.t -> float -> float -> float -> Color.t -> unit
 (** [draw_cube position width height length color] Draw cube*)
@@ -2832,34 +3063,41 @@ val draw_sphere : Vector3.t -> float -> Color.t -> unit
 (** [draw_sphere center_pos radius color] Draw sphere*)
 
 val draw_sphere_ex : Vector3.t -> float -> int -> int -> Color.t -> unit
-(** [draw_sphere_ex center_pos radius rings slices color] Draw sphere with extended parameters*)
+(** [draw_sphere_ex center_pos radius rings slices color] Draw sphere with
+    extended parameters*)
 
 val draw_sphere_wires : Vector3.t -> float -> int -> int -> Color.t -> unit
 (** [draw_sphere_wires center_pos radius rings slices color] Draw sphere wires*)
 
 val draw_cylinder :
   Vector3.t -> float -> float -> float -> int -> Color.t -> unit
-(** [draw_cylinder position radius_top radius_bottom height slices color] Draw a cylinder/cone*)
+(** [draw_cylinder position radius_top radius_bottom height slices color] Draw a
+    cylinder/cone*)
 
 val draw_cylinder_ex :
   Vector3.t -> Vector3.t -> float -> float -> int -> Color.t -> unit
-(** [draw_cylinder_ex start_pos end_pos start_radius end_radius sides color] Draw a cylinder with base at startPos and top at endPos*)
+(** [draw_cylinder_ex start_pos end_pos start_radius end_radius sides color]
+    Draw a cylinder with base at startPos and top at endPos*)
 
 val draw_cylinder_wires :
   Vector3.t -> float -> float -> float -> int -> Color.t -> unit
-(** [draw_cylinder_wires position radius_top radius_bottom height slices color] Draw a cylinder/cone wires*)
+(** [draw_cylinder_wires position radius_top radius_bottom height slices color]
+    Draw a cylinder/cone wires*)
 
 val draw_cylinder_wires_ex :
   Vector3.t -> Vector3.t -> float -> float -> int -> Color.t -> unit
-(** [draw_cylinder_wires_ex start_pos end_pos start_radius end_radius sides color] Draw a cylinder wires with base at startPos and top at endPos*)
+(** [draw_cylinder_wires_ex start_pos end_pos start_radius end_radius sides
+     color] Draw a cylinder wires with base at startPos and top at endPos*)
 
 val draw_capsule :
   Vector3.t -> Vector3.t -> float -> int -> int -> Color.t -> unit
-(** [draw_capsule start_pos end_pos radius slices rings color] Draw a capsule with the center of its sphere caps at startPos and endPos*)
+(** [draw_capsule start_pos end_pos radius slices rings color] Draw a capsule
+    with the center of its sphere caps at startPos and endPos*)
 
 val draw_capsule_wires :
   Vector3.t -> Vector3.t -> float -> int -> int -> Color.t -> unit
-(** [draw_capsule_wires start_pos end_pos radius slices rings color] Draw capsule wireframe with the center of its sphere caps at startPos and endPos*)
+(** [draw_capsule_wires start_pos end_pos radius slices rings color] Draw
+    capsule wireframe with the center of its sphere caps at startPos and endPos*)
 
 val draw_plane : Vector3.t -> Vector2.t -> Color.t -> unit
 (** [draw_plane center_pos size color] Draw a plane XZ*)
@@ -2876,37 +3114,44 @@ val load_model : string -> Model.t
 (** [load_model file_name] Load model from files (meshes and materials)*)
 
 val load_model_from_mesh : Mesh.t -> Model.t
-(** [load_model_from_mesh mesh] Load model from generated mesh (default material)*)
+(** [load_model_from_mesh mesh] Load model from generated mesh (default
+    material)*)
 
 val is_model_valid : Model.t -> bool
 (** [is_model_valid model] Check if a model is valid (loaded in GPU, VAO/VBOs)*)
 
 val unload_model : Model.t -> unit
-(** [unload_model model] Unload model (including meshes) from memory (RAM and/or VRAM)*)
+(** [unload_model model] Unload model (including meshes) from memory (RAM and/or
+    VRAM)*)
 
 val get_model_bounding_box : Model.t -> BoundingBox.t
-(** [get_model_bounding_box model] Compute model bounding box limits (considers all meshes)*)
+(** [get_model_bounding_box model] Compute model bounding box limits (considers
+    all meshes)*)
 
 val draw_model : Model.t -> Vector3.t -> float -> Color.t -> unit
 (** [draw_model model position scale tint] Draw a model (with texture if set)*)
 
 val draw_model_ex :
   Model.t -> Vector3.t -> Vector3.t -> float -> Vector3.t -> Color.t -> unit
-(** [draw_model_ex model position rotation_axis rotation_angle scale tint] Draw a model with extended parameters*)
+(** [draw_model_ex model position rotation_axis rotation_angle scale tint] Draw
+    a model with extended parameters*)
 
 val draw_model_wires : Model.t -> Vector3.t -> float -> Color.t -> unit
-(** [draw_model_wires model position scale tint] Draw a model wires (with texture if set)*)
+(** [draw_model_wires model position scale tint] Draw a model wires (with
+    texture if set)*)
 
 val draw_model_wires_ex :
   Model.t -> Vector3.t -> Vector3.t -> float -> Vector3.t -> Color.t -> unit
-(** [draw_model_wires_ex model position rotation_axis rotation_angle scale tint] Draw a model wires (with texture if set) with extended parameters*)
+(** [draw_model_wires_ex model position rotation_axis rotation_angle scale tint]
+    Draw a model wires (with texture if set) with extended parameters*)
 
 val draw_model_points : Model.t -> Vector3.t -> float -> Color.t -> unit
 (** [draw_model_points model position scale tint] Draw a model as points*)
 
 val draw_model_points_ex :
   Model.t -> Vector3.t -> Vector3.t -> float -> Vector3.t -> Color.t -> unit
-(** [draw_model_points_ex model position rotation_axis rotation_angle scale tint] Draw a model as points with extended parameters*)
+(** [draw_model_points_ex model position rotation_axis rotation_angle scale
+     tint] Draw a model as points with extended parameters*)
 
 val draw_bounding_box : BoundingBox.t -> Color.t -> unit
 (** [draw_bounding_box box color] Draw bounding box (wires)*)
@@ -2923,7 +3168,8 @@ val draw_billboard_rec :
   Vector2.t ->
   Color.t ->
   unit
-(** [draw_billboard_rec camera texture source position size tint] Draw a billboard texture defined by source*)
+(** [draw_billboard_rec camera texture source position size tint] Draw a
+    billboard texture defined by source*)
 
 val draw_billboard_pro :
   Camera3D.t ->
@@ -2936,22 +3182,27 @@ val draw_billboard_pro :
   float ->
   Color.t ->
   unit
-(** [draw_billboard_pro camera texture source position up size origin rotation tint] Draw a billboard texture defined by source and rotation*)
+(** [draw_billboard_pro camera texture source position up size origin rotation
+     tint] Draw a billboard texture defined by source and rotation*)
 
 val upload_mesh : Mesh.t ptr -> bool -> unit
-(** [upload_mesh mesh dynamic] Upload mesh vertex data in GPU and provide VAO/VBO ids*)
+(** [upload_mesh mesh dynamic] Upload mesh vertex data in GPU and provide
+    VAO/VBO ids*)
 
 val update_mesh_buffer : Mesh.t -> int -> unit ptr -> int -> int -> unit
-(** [update_mesh_buffer mesh index data data_size offset] Update mesh vertex data in GPU for a specific buffer index*)
+(** [update_mesh_buffer mesh index data data_size offset] Update mesh vertex
+    data in GPU for a specific buffer index*)
 
 val unload_mesh : Mesh.t -> unit
 (** [unload_mesh mesh] Unload mesh data from CPU and GPU*)
 
 val draw_mesh : Mesh.t -> Material.t -> Matrix.t -> unit
-(** [draw_mesh mesh material transform] Draw a 3d mesh with material and transform*)
+(** [draw_mesh mesh material transform] Draw a 3d mesh with material and
+    transform*)
 
 val draw_mesh_instanced : Mesh.t -> Material.t -> Matrix.t ptr -> int -> unit
-(** [draw_mesh_instanced mesh material transforms instances] Draw multiple mesh instances with material and different transforms*)
+(** [draw_mesh_instanced mesh material transforms instances] Draw multiple mesh
+    instances with material and different transforms*)
 
 val get_mesh_bounding_box : Mesh.t -> BoundingBox.t
 (** [get_mesh_bounding_box mesh] Compute mesh bounding box limits*)
@@ -2962,16 +3213,19 @@ val gen_mesh_tangents : Mesh.t ptr -> unit
 (** [gen_mesh_tangents mesh] Compute mesh tangents*)
 
 val export_mesh : Mesh.t -> string -> bool
-(** [export_mesh mesh file_name] Export mesh data to file, returns true on success*)
+(** [export_mesh mesh file_name] Export mesh data to file, returns true on
+    success*)
 
 val export_mesh_as_code : Mesh.t -> string -> bool
-(** [export_mesh_as_code mesh file_name] Export mesh as code file (.h) defining multiple arrays of vertex attributes*)
+(** [export_mesh_as_code mesh file_name] Export mesh as code file (.h) defining
+    multiple arrays of vertex attributes*)
 
 val gen_mesh_poly : int -> float -> Mesh.t
 (** [gen_mesh_poly sides radius] Generate polygonal mesh*)
 
 val gen_mesh_plane : float -> float -> int -> int -> Mesh.t
-(** [gen_mesh_plane width length res_x res_z] Generate plane mesh (with subdivisions)*)
+(** [gen_mesh_plane width length res_x res_z] Generate plane mesh (with
+    subdivisions)*)
 
 val gen_mesh_cube : float -> float -> float -> Mesh.t
 (** [gen_mesh_cube width height length] Generate cuboid mesh*)
@@ -2980,7 +3234,8 @@ val gen_mesh_sphere : float -> int -> int -> Mesh.t
 (** [gen_mesh_sphere radius rings slices] Generate sphere mesh (standard sphere)*)
 
 val gen_mesh_hemi_sphere : float -> int -> int -> Mesh.t
-(** [gen_mesh_hemi_sphere radius rings slices] Generate half-sphere mesh (no bottom cap)*)
+(** [gen_mesh_hemi_sphere radius rings slices] Generate half-sphere mesh (no
+    bottom cap)*)
 
 val gen_mesh_cylinder : float -> float -> int -> Mesh.t
 (** [gen_mesh_cylinder radius height slices] Generate cylinder mesh*)
@@ -2998,23 +3253,27 @@ val gen_mesh_heightmap : Image.t -> Vector3.t -> Mesh.t
 (** [gen_mesh_heightmap heightmap size] Generate heightmap mesh from image data*)
 
 val gen_mesh_cubicmap : Image.t -> Vector3.t -> Mesh.t
-(** [gen_mesh_cubicmap cubicmap cube_size] Generate cubes-based map mesh from image data*)
+(** [gen_mesh_cubicmap cubicmap cube_size] Generate cubes-based map mesh from
+    image data*)
 
 val load_materials : string -> int ptr -> Material.t ptr
 (** [load_materials file_name material_count] Load materials from model file*)
 
 val load_material_default : unit -> Material.t
-(** [load_material_default ()] Load default material (Supports: DIFFUSE, SPECULAR, NORMAL maps)*)
+(** [load_material_default ()] Load default material (Supports: DIFFUSE,
+    SPECULAR, NORMAL maps)*)
 
 val is_material_valid : Material.t -> bool
-(** [is_material_valid material] Check if a material is valid (shader assigned, map textures loaded in GPU)*)
+(** [is_material_valid material] Check if a material is valid (shader assigned,
+    map textures loaded in GPU)*)
 
 val unload_material : Material.t -> unit
 (** [unload_material material] Unload material from GPU memory (VRAM)*)
 
 val set_material_texture :
   Material.t ptr -> MaterialMapIndex.t -> Texture.t -> unit
-(** [set_material_texture material map_type texture] Set texture for a material map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...)*)
+(** [set_material_texture material map_type texture] Set texture for a material
+    map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...)*)
 
 val set_model_mesh_material : Model.t ptr -> int -> int -> unit
 (** [set_model_mesh_material model mesh_id material_id] Set material for a mesh*)
@@ -3026,7 +3285,8 @@ val update_model_animation : Model.t -> ModelAnimation.t -> int -> unit
 (** [update_model_animation model anim frame] Update model animation pose (CPU)*)
 
 val update_model_animation_bones : Model.t -> ModelAnimation.t -> int -> unit
-(** [update_model_animation_bones model anim frame] Update model animation mesh bone matrices (GPU skinning)*)
+(** [update_model_animation_bones model anim frame] Update model animation mesh
+    bone matrices (GPU skinning)*)
 
 val unload_model_animation : ModelAnimation.t -> unit
 (** [unload_model_animation anim] Unload animation data*)
@@ -3040,30 +3300,36 @@ val is_model_animation_valid : Model.t -> ModelAnimation.t -> bool
 (** {3 Collision detection functions} *)
 
 val check_collision_spheres : Vector3.t -> float -> Vector3.t -> float -> bool
-(** [check_collision_spheres center1 radius1 center2 radius2] Check collision between two spheres*)
+(** [check_collision_spheres center1 radius1 center2 radius2] Check collision
+    between two spheres*)
 
 val check_collision_boxes : BoundingBox.t -> BoundingBox.t -> bool
 (** [check_collision_boxes box1 box2] Check collision between two bounding boxes*)
 
 val check_collision_box_sphere : BoundingBox.t -> Vector3.t -> float -> bool
-(** [check_collision_box_sphere box center radius] Check collision between box and sphere*)
+(** [check_collision_box_sphere box center radius] Check collision between box
+    and sphere*)
 
 val get_ray_collision_sphere : Ray.t -> Vector3.t -> float -> RayCollision.t
-(** [get_ray_collision_sphere ray center radius] Get collision info between ray and sphere*)
+(** [get_ray_collision_sphere ray center radius] Get collision info between ray
+    and sphere*)
 
 val get_ray_collision_box : Ray.t -> BoundingBox.t -> RayCollision.t
 (** [get_ray_collision_box ray box] Get collision info between ray and box*)
 
 val get_ray_collision_mesh : Ray.t -> Mesh.t -> Matrix.t -> RayCollision.t
-(** [get_ray_collision_mesh ray mesh transform] Get collision info between ray and mesh*)
+(** [get_ray_collision_mesh ray mesh transform] Get collision info between ray
+    and mesh*)
 
 val get_ray_collision_triangle :
   Ray.t -> Vector3.t -> Vector3.t -> Vector3.t -> RayCollision.t
-(** [get_ray_collision_triangle ray p1 p2 p3] Get collision info between ray and triangle*)
+(** [get_ray_collision_triangle ray p1 p2 p3] Get collision info between ray and
+    triangle*)
 
 val get_ray_collision_quad :
   Ray.t -> Vector3.t -> Vector3.t -> Vector3.t -> Vector3.t -> RayCollision.t
-(** [get_ray_collision_quad ray p1 p2 p3 p4] Get collision info between ray and quad*)
+(** [get_ray_collision_quad ray p1 p2 p3 p4] Get collision info between ray and
+    quad*)
 
 (** {2 Audio Loading and Playing Functions (Module: audio)} *)
 
@@ -3075,7 +3341,8 @@ val close_audio_device : unit -> unit
 (** [close_audio_device ()] Close the audio device and context*)
 
 val is_audio_device_ready : unit -> bool
-(** [is_audio_device_ready ()] Check if audio device has been initialized successfully*)
+(** [is_audio_device_ready ()] Check if audio device has been initialized
+    successfully*)
 
 val set_master_volume : float -> unit
 (** [set_master_volume volume] Set master volume (listener)*)
@@ -3087,10 +3354,12 @@ val load_wave : string -> Wave.t
 (** [load_wave file_name] Load wave data from file*)
 
 val load_wave_from_memory : string -> string -> int -> Wave.t
-(** [load_wave_from_memory file_type file_data data_size] Load wave from memory buffer, fileType refers to extension: i.e. '.wav'*)
+(** [load_wave_from_memory file_type file_data data_size] Load wave from memory
+    buffer, fileType refers to extension: i.e. '.wav'*)
 
 val is_wave_valid : Wave.t -> bool
-(** [is_wave_valid wave] Checks if wave data is valid (data loaded and parameters)*)
+(** [is_wave_valid wave] Checks if wave data is valid (data loaded and
+    parameters)*)
 
 val load_sound : string -> Sound.t
 (** [load_sound file_name] Load sound from file*)
@@ -3099,10 +3368,12 @@ val load_sound_from_wave : Wave.t -> Sound.t
 (** [load_sound_from_wave wave] Load sound from wave data*)
 
 val load_sound_alias : Sound.t -> Sound.t
-(** [load_sound_alias source] Create a new sound that shares the same sample data as the source sound, does not own the sound data*)
+(** [load_sound_alias source] Create a new sound that shares the same sample
+    data as the source sound, does not own the sound data*)
 
 val is_sound_valid : Sound.t -> bool
-(** [is_sound_valid sound] Checks if a sound is valid (data loaded and buffers initialized)*)
+(** [is_sound_valid sound] Checks if a sound is valid (data loaded and buffers
+    initialized)*)
 
 val update_sound : Sound.t -> unit ptr -> int -> unit
 (** [update_sound sound data sample_count] Update sound buffer with new data*)
@@ -3114,13 +3385,16 @@ val unload_sound : Sound.t -> unit
 (** [unload_sound sound] Unload sound*)
 
 val unload_sound_alias : Sound.t -> unit
-(** [unload_sound_alias alias] Unload a sound alias (does not deallocate sample data)*)
+(** [unload_sound_alias alias] Unload a sound alias (does not deallocate sample
+    data)*)
 
 val export_wave : Wave.t -> string -> bool
-(** [export_wave wave file_name] Export wave data to file, returns true on success*)
+(** [export_wave wave file_name] Export wave data to file, returns true on
+    success*)
 
 val export_wave_as_code : Wave.t -> string -> bool
-(** [export_wave_as_code wave file_name] Export wave sample data to code (.h), returns true on success*)
+(** [export_wave_as_code wave file_name] Export wave sample data to code (.h),
+    returns true on success*)
 
 (** {3 Wave/Sound management functions} *)
 
@@ -3155,22 +3429,27 @@ val wave_crop : Wave.t ptr -> int -> int -> unit
 (** [wave_crop wave init_frame final_frame] Crop a wave to defined frames range*)
 
 val wave_format : Wave.t ptr -> int -> int -> int -> unit
-(** [wave_format wave sample_rate sample_size channels] Convert wave data to desired format*)
+(** [wave_format wave sample_rate sample_size channels] Convert wave data to
+    desired format*)
 
 val load_wave_samples : Wave.t -> float ptr
-(** [load_wave_samples wave] Load samples data from wave as a 32bit float data array*)
+(** [load_wave_samples wave] Load samples data from wave as a 32bit float data
+    array*)
 
 val unload_wave_samples : float ptr -> unit
-(** [unload_wave_samples samples] Unload samples data loaded with LoadWaveSamples()*)
+(** [unload_wave_samples samples] Unload samples data loaded with
+    LoadWaveSamples()*)
 
 val load_music_stream : string -> Music.t
 (** [load_music_stream file_name] Load music stream from file*)
 
 val load_music_stream_from_memory : string -> string -> int -> Music.t
-(** [load_music_stream_from_memory file_type data data_size] Load music stream from data*)
+(** [load_music_stream_from_memory file_type data data_size] Load music stream
+    from data*)
 
 val is_music_valid : Music.t -> bool
-(** [is_music_valid music] Checks if a music stream is valid (context and buffers initialized)*)
+(** [is_music_valid music] Checks if a music stream is valid (context and
+    buffers initialized)*)
 
 val unload_music_stream : Music.t -> unit
 (** [unload_music_stream music] Unload music stream*)
@@ -3212,7 +3491,8 @@ val get_music_time_played : Music.t -> float
 (** [get_music_time_played music] Get current music time played (in seconds)*)
 
 val load_audio_stream : int -> int -> int -> AudioStream.t
-(** [load_audio_stream sample_rate sample_size channels] Load audio stream (to stream raw audio pcm data)*)
+(** [load_audio_stream sample_rate sample_size channels] Load audio stream (to
+    stream raw audio pcm data)*)
 
 (** {3 AudioStream management functions} *)
 
@@ -3220,10 +3500,12 @@ val unload_audio_stream : AudioStream.t -> unit
 (** [unload_audio_stream stream] Unload audio stream and free memory*)
 
 val update_audio_stream : AudioStream.t -> unit ptr -> int -> unit
-(** [update_audio_stream stream data frame_count] Update audio stream buffers with data*)
+(** [update_audio_stream stream data frame_count] Update audio stream buffers
+    with data*)
 
 val is_audio_stream_processed : AudioStream.t -> bool
-(** [is_audio_stream_processed stream] Check if any audio stream buffers requires refill*)
+(** [is_audio_stream_processed stream] Check if any audio stream buffers
+    requires refill*)
 
 val play_audio_stream : AudioStream.t -> unit
 (** [play_audio_stream stream] Play audio stream*)
@@ -3241,15 +3523,18 @@ val stop_audio_stream : AudioStream.t -> unit
 (** [stop_audio_stream stream] Stop audio stream*)
 
 val set_audio_stream_volume : AudioStream.t -> float -> unit
-(** [set_audio_stream_volume stream volume] Set volume for audio stream (1.0 is max level)*)
+(** [set_audio_stream_volume stream volume] Set volume for audio stream (1.0 is
+    max level)*)
 
 val set_audio_stream_pitch : AudioStream.t -> float -> unit
-(** [set_audio_stream_pitch stream pitch] Set pitch for audio stream (1.0 is base level)*)
+(** [set_audio_stream_pitch stream pitch] Set pitch for audio stream (1.0 is
+    base level)*)
 
 val set_audio_stream_pan : AudioStream.t -> float -> unit
 (** [set_audio_stream_pan stream pan] Set pan for audio stream (0.5 is centered)*)
 
 val set_audio_stream_buffer_size_default : int -> unit
-(** [set_audio_stream_buffer_size_default size] Default size for new audio streams*)
+(** [set_audio_stream_buffer_size_default size] Default size for new audio
+    streams*)
 
 module Rlgl = Rlgl

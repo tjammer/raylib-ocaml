@@ -114,7 +114,7 @@ module Control : sig
     | StatusBar of prop
 end
 
-(** {1 State modification functions } *)
+(** {1 State modification functions} *)
 
 val enable : unit -> unit
 (** [enable ()] Enable gui controls (global state) *)
@@ -129,7 +129,8 @@ val unlock : unit -> unit
 (** [unlock ()] Unlock gui controls (global state) *)
 
 val fade : float -> unit
-(** [fade alpha] Set gui controls alpha (global state), alpha goes from 0.0f to 1.0f *)
+(** [fade alpha] Set gui controls alpha (global state), alpha goes from 0.0f to
+    1.0f *)
 
 val set_state : ControlState.t -> unit
 (** [set_state state] Set gui state (global state) *)
@@ -137,7 +138,7 @@ val set_state : ControlState.t -> unit
 val get_state : unit -> ControlState.t
 (** [get_state ()] Get gui state (global state) *)
 
-(** {1 Font set/get functions } *)
+(** {1 Font set/get functions} *)
 
 val set_font : Raylib.Font.t -> unit
 (** [set_font font] Set gui custom font (global state) *)
@@ -145,7 +146,7 @@ val set_font : Raylib.Font.t -> unit
 val get_font : unit -> Raylib.Font.t
 (** [get_font ()] Get gui custom font (global state) *)
 
-(** {1 Style set/get functions } *)
+(** {1 Style set/get functions} *)
 
 val set_style : Control.t -> int -> unit
 (** [set_style control value] Set one style property *)
@@ -153,10 +154,11 @@ val set_style : Control.t -> int -> unit
 val get_style : Control.t -> int
 (** [get_style control] Get one style property *)
 
-(** {1 Container/separator controls, useful for controls organization } *)
+(** {1 Container/separator controls, useful for controls organization} *)
 
 val window_box : Raylib.Rectangle.t -> string -> bool
-(** [window_box bounds title] Window Box control, shows a window that can be closed *)
+(** [window_box bounds title] Window Box control, shows a window that can be
+    closed *)
 
 val group_box : Raylib.Rectangle.t -> string -> unit
 (** [group_box bounds text] Group Box control with text name *)
@@ -174,7 +176,7 @@ val scroll_panel :
   Raylib.Rectangle.t
 (** [scroll_panel bounds content scroll] Scroll Panel control *)
 
-(** {1 Basic controls set } *)
+(** {1 Basic controls set} *)
 
 val label : Raylib.Rectangle.t -> string -> unit
 (** [label bounds text] Label control, shows text *)
@@ -186,19 +188,24 @@ val label_button : Raylib.Rectangle.t -> string -> bool
 (** [label_button bounds text] Label button control, show true when clicked *)
 
 val toggle : Raylib.Rectangle.t -> string -> bool -> bool
-(** [toggle bounds text active] Toggle Button control, returns true when active *)
+(** [toggle bounds text active] Toggle Button control, returns true when active
+*)
 
 val toggle_group : Raylib.Rectangle.t -> string -> int -> int
-(** [toggle_group bounds text active] Toggle Group control, returns active toggle index *)
+(** [toggle_group bounds text active] Toggle Group control, returns active
+    toggle index *)
 
 val check_box : Raylib.Rectangle.t -> string -> bool -> bool
-(** [check_box bounds text checked] Check Box control, returns true when active *)
+(** [check_box bounds text checked] Check Box control, returns true when active
+*)
 
 val combo_box : Raylib.Rectangle.t -> string -> int -> int
-(** [combo_box bounds text active] Combo Box control, returns selected item index *)
+(** [combo_box bounds text active] Combo Box control, returns selected item
+    index *)
 
 val dropdown_box : Raylib.Rectangle.t -> string -> int -> bool -> int * bool
-(** [dropdown_box bounds text active] Dropdown Box control, returns selected item, active *)
+(** [dropdown_box bounds text active] Dropdown Box control, returns selected
+    item, active *)
 
 val spinner :
   Raylib.Rectangle.t ->
@@ -208,7 +215,8 @@ val spinner :
   max:int ->
   bool ->
   int * bool
-(** [spinner bounds text valute ~min ~max edit_mode] Spinner control, returns selected value, edit_mode *)
+(** [spinner bounds text valute ~min ~max edit_mode] Spinner control, returns
+    selected value, edit_mode *)
 
 val value_box :
   Raylib.Rectangle.t ->
@@ -218,13 +226,16 @@ val value_box :
   max:int ->
   bool ->
   int * bool
-(** [value_box bounds text value ~min ~max edit_mode] Value Box control, updates input text with numbers, returns value, edit_mode *)
+(** [value_box bounds text value ~min ~max edit_mode] Value Box control, updates
+    input text with numbers, returns value, edit_mode *)
 
 val text_box : Raylib.Rectangle.t -> string -> bool -> string * bool
-(** [text_box bounds text edit_mode] Text Box control, returns text, edit_mode *)
+(** [text_box bounds text edit_mode] Text Box control, returns text, edit_mode
+*)
 
 val text_box_multi : Raylib.Rectangle.t -> string -> bool -> string * bool
-(** [text_box_multi bounds text edit_mode] Text Box control with multiple lines,returns text, edit_mode *)
+(** [text_box_multi bounds text edit_mode] Text Box control with multiple
+    lines,returns text, edit_mode *)
 
 val slider :
   Raylib.Rectangle.t ->
@@ -234,7 +245,8 @@ val slider :
   min:float ->
   max:float ->
   float
-(** [slider bounds text_left text_right value ~min ~max] Slider control, returns selected value *)
+(** [slider bounds text_left text_right value ~min ~max] Slider control, returns
+    selected value *)
 
 val slider_bar :
   Raylib.Rectangle.t ->
@@ -244,7 +256,8 @@ val slider_bar :
   min:float ->
   max:float ->
   float
-(** [slider_bar bounds text_left text_right value ~min ~max] Slider Bar control, returns selected value *)
+(** [slider_bar bounds text_left text_right value ~min ~max] Slider Bar control,
+    returns selected value *)
 
 val progress_bar :
   Raylib.Rectangle.t ->
@@ -254,7 +267,8 @@ val progress_bar :
   min:float ->
   max:float ->
   float
-(** [progress_bar bounds text_left text_right value ~min ~max] Progress Bar control, shows current progress value *)
+(** [progress_bar bounds text_left text_right value ~min ~max] Progress Bar
+    control, shows current progress value *)
 
 val status_bar : Raylib.Rectangle.t -> string -> unit
 (** [status_bar bounds text] Status Bar control, shows info text *)
@@ -268,7 +282,7 @@ val scroll_bar : Raylib.Rectangle.t -> int -> min:int -> max:int -> int
 val grid : Raylib.Rectangle.t -> float -> int -> Raylib.Vector2.t
 (** [grid bounds spacing subdivs] Grid control *)
 
-(** {1 Advance controls set } *)
+(** {1 Advance controls set} *)
 
 val list_view : Raylib.Rectangle.t -> string -> int -> int -> int * int
 (** [list_view bounds text scroll_index active] List View control, returns
@@ -277,17 +291,21 @@ val list_view : Raylib.Rectangle.t -> string -> int -> int -> int * int
 val list_view_ex :
   Raylib.Rectangle.t -> string list -> int -> int -> int -> int * int * int
 (** [list_view_ex bounds text_list focus scroll_index active] List View with
-    extended parameters, returns selected list item index, focus, scroll index *)
+    extended parameters, returns selected list item index, focus, scroll index
+*)
 
 val message_box : Raylib.Rectangle.t -> string -> string -> string -> int
-(** [message_box bounds title message buttons] Message Box control, displays a message *)
+(** [message_box bounds title message buttons] Message Box control, displays a
+    message *)
 
 val text_input_box :
   Raylib.Rectangle.t -> string -> string -> string -> string -> string * int
-(** [text_input_box bounds title message buttons text] Text Input Box control, returns text, state *)
+(** [text_input_box bounds title message buttons text] Text Input Box control,
+    returns text, state *)
 
 val color_picker : Raylib.Rectangle.t -> Raylib.Color.t -> Raylib.Color.t
-(** [color_picker bounds color] Color Picker control (multiple color controls) *)
+(** [color_picker bounds color] Color Picker control (multiple color controls)
+*)
 
 val color_panel : Raylib.Rectangle.t -> Raylib.Color.t -> Raylib.Color.t
 (** [color_panel bounds color] Color Panel control *)
