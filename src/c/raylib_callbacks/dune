@@ -20,6 +20,4 @@
   (generated_types Raylib_callbacks_types_generated)
   (generated_entry_point Raylib_callbacks_generated)
   (deps
-   (source_tree ../vendor/raylib)))
- (library_flags
-  (:include ../library_flags.sexp)))
+   (source_tree ../vendor/raylib))))
