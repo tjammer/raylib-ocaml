@@ -22,3 +22,15 @@ diff --git a/vendor/raylib/src/config.h b/vendor/raylib/src/config.h
  #define SUPPORT_FILEFORMAT_XM           1
  #define SUPPORT_FILEFORMAT_MOD          1
  
+diff --git a/vendor/raylib/src/raudio.c b/vendor/raylib/src/raudio.c
+--- a/vendor/raylib/src/raudio.c
++++ b/vendor/raylib/src/raudio.c
+@@ -1757,7 +1757,7 @@
+         else if (music.ctxType == MUSIC_AUDIO_QOA) qoaplay_close((qoaplay_desc *)music.ctxData);
+ #endif
+ #if defined(SUPPORT_FILEFORMAT_FLAC)
+-        else if (music.ctxType == MUSIC_AUDIO_FLAC) drflac_free((drflac *)music.ctxData, NULL);
++        else if (music.ctxType == MUSIC_AUDIO_FLAC) { drflac_close((drflac *)music.ctxData); drflac_free((drflac *)music.ctxData, NULL); }  // Raylib fix #5133
+ #endif
+ #if defined(SUPPORT_FILEFORMAT_XM)
+         else if (music.ctxType == MUSIC_MODULE_XM) jar_xm_free_context((jar_xm_context_t *)music.ctxData);
