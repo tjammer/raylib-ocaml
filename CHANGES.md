@@ -1,3 +1,11 @@
+1.6.0 (2025-11-30)
+------------------
+
+* Expose `name` field of ModelAnimation.t (thanks @thethrung)
+* Add new raylib-callbacks package to expose raylib callback APIs. It brings a
+  new dependency (ctype-foreign), hence the new package
+* Temporarily fix raylib FLAC bug (thanks @rossberg)
+
 1.5.1 (2025-10-14)
 ------------------
 
