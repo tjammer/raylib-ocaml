@@ -4,4 +4,5 @@ _build
 _opam
 .envrc
 shell.nix
+manifest.scm
 *~

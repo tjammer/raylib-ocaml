@@ -51,7 +51,12 @@
   (conf-libxrandr
    (or
     (= :os linux)
-    (= :os-family bsd)))))
+    (= :os-family bsd)))
+  (ocaml-lsp-server :with-dev-setup)
+  (ocamlformat
+   (and
+    (= 0.28.1)
+    :with-dev-setup))))
 
 (package
  (name raygui)

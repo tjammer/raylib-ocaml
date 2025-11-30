@@ -20,6 +20,8 @@ depends: [
   "conf-libxi" {os = "linux" | os-family = "bsd"}
   "conf-libxinerama" {os = "linux" | os-family = "bsd"}
   "conf-libxrandr" {os = "linux" | os-family = "bsd"}
+  "ocaml-lsp-server" {with-dev-setup}
+  "ocamlformat" {= "0.28.1" & with-dev-setup}
   "odoc" {with-doc}
 ]
 build: [
