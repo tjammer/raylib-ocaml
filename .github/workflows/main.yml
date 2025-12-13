@@ -73,4 +73,5 @@ jobs:
           opam exec -- ocaml -version
           opam var
 
+      - run: opam install -vv . -y --deps-only
       - run: opam install -vv . -y
