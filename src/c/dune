@@ -67,7 +67,7 @@
  (targets libraylib.a dllraylib.dll)
  (enabled_if
   (and
-   (= %{system} mingw64)
+   (= %{os} win32)
    (<> %{os_distribution} msys2)))
  (deps
   (source_tree vendor/raylib)
@@ -93,7 +93,7 @@
  (targets libraylib.a dllraylib.dll)
  (enabled_if
   (and
-   (= %{system} mingw64)
+   (= %{os} win32)
    (= %{os_distribution} msys2)))
  (deps
   (source_tree vendor/raylib)
