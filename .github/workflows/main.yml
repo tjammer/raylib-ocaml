@@ -74,4 +74,5 @@ jobs:
           opam var
 
       - run: opam install -vv . -y --deps-only
+      - run: opam reinstall conf-libffi -y
       - run: opam install -vv . -y
