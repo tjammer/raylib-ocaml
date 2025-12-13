@@ -74,5 +74,4 @@ jobs:
           opam var
 
       - run: opam install -vv . -y --deps-only
-      - run: D:\opamroot\.cygwin\setup-x86_64.exe "--root" "D:\\opamroot\\.cygwin\\root" "--quiet-mode" "noinput" "--no-shortcuts" "--no-startmenu" "--no-desktop" "--no-admin" "--no-version-check" "--no-write-registry" "--packages" "mingw64-x86_64-libffi" "--symlink-type" "native" "--upgrade-also" "--only-site" "--site" "https://cygwin.mirror.constant.com/" "--local-package-dir" "D:\\opamroot\\.cygwin\\cache"
       - run: opam install -vv . -y
