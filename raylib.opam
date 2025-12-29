@@ -24,6 +24,7 @@ depends: [
   "ocamlformat" {= "0.28.1" & with-dev-setup}
   "odoc" {with-doc}
 ]
+conflicts: ["ocaml-option-bytecode-only"]
 build: [
   ["dune" "subst"] {dev}
   [

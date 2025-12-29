@@ -56,7 +56,8 @@
   (ocamlformat
    (and
     (= 0.28.1)
-    :with-dev-setup))))
+    :with-dev-setup)))
+ (conflicts ocaml-option-bytecode-only))
 
 (package
  (name raygui)
