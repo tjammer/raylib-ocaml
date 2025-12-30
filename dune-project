@@ -23,8 +23,6 @@
  (depends
   (ocaml
    (>= 4.08.0))
-  (dune
-   (>= 3.20))
   dune-configurator
   (ctypes
    (>= 0.23.0))
