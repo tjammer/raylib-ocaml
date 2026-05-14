@@ -553,7 +553,6 @@ let () =
     ^ (enums |> List.map Enum.stubs |> String.concat "")
     ^ (types |> List.map Type.stub |> String.concat "")
     ^ "end\n"
-    ^ "let max_material_maps = [%c constant \"MAX_MATERIAL_MAPS\" camlint]\n\n"
     ^ "let max_shader_locations = [%c constant \"MAX_SHADER_LOCATIONS\" \
        camlint]"
   in
@@ -565,7 +564,7 @@ let () =
   let itf =
     "(** {1 Constants} *)\n\n"
     ^ (enums |> List.map Enum.itf |> String.concat "")
-    ^ "val max_material_maps : int\n\n" ^ "val max_shader_locations : int\n\n"
+    ^ "val max_shader_locations : int\n\n"
   in
   (* print_string itf; *)
   ignore itf;

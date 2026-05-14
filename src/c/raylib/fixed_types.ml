@@ -190,6 +190,7 @@ module MaterialMap = MaterialMap
 module Material = Material
 module Transform = Transform
 module BoneInfo = BoneInfo
+module ModelSkeleton = ModelSkeleton
 module Model = Model
 module ModelAnimation = ModelAnimation
 module Ray = Ray
@@ -205,5 +206,4 @@ module FilePathList = FilePathList
 module AutomationEvent = AutomationEvent
 module AutomationEventList = AutomationEventList
 
-let max_material_maps = max_material_maps
 let max_shader_locations = max_shader_locations
