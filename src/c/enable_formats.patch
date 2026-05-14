@@ -1,36 +1,21 @@
 diff --git a/vendor/raylib/src/config.h b/vendor/raylib/src/config.h
 --- a/vendor/raylib/src/config.h
 +++ b/vendor/raylib/src/config.h
-@@ -165,9 +165,9 @@
- //------------------------------------------------------------------------------------
- // Selecte desired fileformats to be supported for image data loading
- #define SUPPORT_FILEFORMAT_PNG      1
--//#define SUPPORT_FILEFORMAT_BMP      1
-+#define SUPPORT_FILEFORMAT_BMP      1
- //#define SUPPORT_FILEFORMAT_TGA      1
--//#define SUPPORT_FILEFORMAT_JPG      1
-+#define SUPPORT_FILEFORMAT_JPG      1
- #define SUPPORT_FILEFORMAT_GIF      1
- #define SUPPORT_FILEFORMAT_QOI      1
- //#define SUPPORT_FILEFORMAT_PSD      1
-@@ -247,7 +247,7 @@
- #define SUPPORT_FILEFORMAT_OGG          1
- #define SUPPORT_FILEFORMAT_MP3          1
- #define SUPPORT_FILEFORMAT_QOA          1
--//#define SUPPORT_FILEFORMAT_FLAC         1
-+#define SUPPORT_FILEFORMAT_FLAC         1
- #define SUPPORT_FILEFORMAT_XM           1
- #define SUPPORT_FILEFORMAT_MOD          1
- 
-diff --git a/vendor/raylib/src/raudio.c b/vendor/raylib/src/raudio.c
---- a/vendor/raylib/src/raudio.c
-+++ b/vendor/raylib/src/raudio.c
-@@ -1757,7 +1757,7 @@
-         else if (music.ctxType == MUSIC_AUDIO_QOA) qoaplay_close((qoaplay_desc *)music.ctxData);
+@@ -232,7 +232,7 @@
+     #define SUPPORT_FILEFORMAT_TGA      0       // Disabled by default
  #endif
- #if defined(SUPPORT_FILEFORMAT_FLAC)
--        else if (music.ctxType == MUSIC_AUDIO_FLAC) drflac_free((drflac *)music.ctxData, NULL);
-+        else if (music.ctxType == MUSIC_AUDIO_FLAC) { drflac_close((drflac *)music.ctxData); drflac_free((drflac *)music.ctxData, NULL); }  // Raylib fix #5133
+ #ifndef SUPPORT_FILEFORMAT_JPG
+-    #define SUPPORT_FILEFORMAT_JPG      0       // Disabled by default
++    #define SUPPORT_FILEFORMAT_JPG      0       // Disabled by default
  #endif
- #if defined(SUPPORT_FILEFORMAT_XM)
-         else if (music.ctxType == MUSIC_MODULE_XM) jar_xm_free_context((jar_xm_context_t *)music.ctxData);
+ #ifndef SUPPORT_FILEFORMAT_GIF
+     #define SUPPORT_FILEFORMAT_GIF      1
+@@ -342,7 +342,7 @@
+     #define SUPPORT_FILEFORMAT_QOA      1
+ #endif
+ #ifndef SUPPORT_FILEFORMAT_FLAC
+-    #define SUPPORT_FILEFORMAT_FLAC     0       // Disabled by default
++    #define SUPPORT_FILEFORMAT_FLAC     0       // Disabled by default
+ #endif
+ #ifndef SUPPORT_FILEFORMAT_XM
+     #define SUPPORT_FILEFORMAT_XM       1

@@ -129,9 +129,10 @@ val framebuffer_attach :
 
 val framebuffer_complete : Unsigned.uint -> bool
 val unload_framebuffer : Unsigned.uint -> unit
-val load_shader_code : string -> string -> Unsigned.uint
-val compile_shader : string -> int -> Unsigned.uint
-val load_shader_program : Unsigned.uint -> Unsigned.uint -> Unsigned.uint
+val load_shader_program : string -> string -> Unsigned.uint
+val load_shader : string -> int -> Unsigned.uint
+val load_shader_program_ex : Unsigned.uint -> Unsigned.uint -> Unsigned.uint
+val unload_shader : Unsigned.uint -> unit
 val unload_shader_program : Unsigned.uint -> unit
 val get_location_uniform : Unsigned.uint -> string -> int
 val get_location_attrib : Unsigned.uint -> string -> int

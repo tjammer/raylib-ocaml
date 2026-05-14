@@ -230,10 +230,14 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "SetConfigFlags" (ConfigFlags.t_bitmask @-> returning void)
 
   let open_url = foreign "OpenURL" (string @-> returning void)
-  let trace_log = foreign "TraceLog" (int @-> string @-> returning void)
 
   let set_trace_log_level =
     foreign "SetTraceLogLevel" (TraceLogLevel.t @-> returning void)
+
+  let trace_log = foreign "TraceLog" (int @-> string @-> returning void)
+
+  (* let set_trace_log_callback = *)
+  (*   foreign "SetTraceLogCallback" (trace_log_callback @-> returning void) *)
 
   let mem_alloc = foreign "MemAlloc" (int @-> returning (ptr void))
 
@@ -241,9 +245,6 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "MemRealloc" (ptr void @-> int @-> returning (ptr void))
 
   let mem_free = foreign "MemFree" (ptr void @-> returning void)
-
-  (* let set_trace_log_callback = *)
-  (*   foreign "SetTraceLogCallback" (trace_log_callback @-> returning void) *)
 
   let _load_file_data =
     foreign "LoadFileData" (string @-> ptr uint @-> returning (ptr uchar))
@@ -262,6 +263,17 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let save_file_text =
     foreign "SaveFileText" (string @-> string @-> returning bool)
 
+  let file_rename = foreign "FileRename" (string @-> string @-> returning int)
+  let file_remove = foreign "FileRemove" (string @-> returning int)
+  let file_copy = foreign "FileCopy" (string @-> string @-> returning int)
+  let file_move = foreign "FileMove" (string @-> string @-> returning int)
+
+  let file_text_replace =
+    foreign "FileTextReplace" (string @-> string @-> string @-> returning int)
+
+  let file_text_find_index =
+    foreign "FileTextFindIndex" (string @-> string @-> returning int)
+
   let file_exists = foreign "FileExists" (string @-> returning bool)
   let directory_exists = foreign "DirectoryExists" (string @-> returning bool)
 
@@ -269,6 +281,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "IsFileExtension" (string @-> string @-> returning bool)
 
   let get_file_length = foreign "GetFileLength" (string @-> returning int)
+
+  let get_file_mod_time = foreign "GetFileModTime" (string @-> returning long)
 
   let get_file_extension =
     foreign "GetFileExtension" (string @-> returning string)
@@ -313,7 +327,12 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let unload_dropped_files =
     foreign "UnloadDroppedFiles" (FilePathList.t @-> returning void)
 
-  let get_file_mod_time = foreign "GetFileModTime" (string @-> returning long)
+  let get_directory_file_count =
+    foreign "GetDirectoryFileCount" (string @-> returning uint)
+
+  let get_directory_file_count_ex =
+    foreign "GetDirectoryFileCountEx"
+      (string @-> string @-> bool @-> returning uint)
 
   let _compress_data =
     foreign "CompressData"
@@ -338,6 +357,9 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   (* let compute_sha1 = *)
   (*   foreign "ComputeSHA1" (ptr uchar @-> int @-> returning (ptr uint)) *)
+
+  (* let compute_sha256 = *)
+  (*   foreign "ComputeSHA256" (ptr uchar @-> int @-> returning (ptr uint)) *)
 
   let load_automation_event_list =
     foreign "LoadAutomationEventList"
@@ -377,6 +399,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let is_key_up = foreign "IsKeyUp" (Key.t @-> returning bool)
   let get_key_pressed = foreign "GetKeyPressed" (void @-> returning Key.t)
   let _get_char_pressed = foreign "GetCharPressed" (void @-> returning int)
+  let get_key_name = foreign "GetKeyName" (Key.t @-> returning string)
   let set_exit_key = foreign "SetExitKey" (Key.t @-> returning void)
 
   let is_gamepad_available =
@@ -527,8 +550,19 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "DrawLineBezier"
       (Vector2.t @-> Vector2.t @-> float @-> Color.t @-> returning void)
 
+  let draw_line_dashed =
+    foreign "DrawLineDashed"
+      (Vector2.t @-> Vector2.t @-> int @-> int @-> Color.t @-> returning void)
+
   let draw_circle =
     foreign "DrawCircle" (int @-> int @-> float @-> Color.t @-> returning void)
+
+  let draw_circle_v =
+    foreign "DrawCircleV" (Vector2.t @-> float @-> Color.t @-> returning void)
+
+  let draw_circle_gradient =
+    foreign "DrawCircleGradient"
+      (Vector2.t @-> float @-> Color.t @-> Color.t @-> returning void)
 
   let draw_circle_sector =
     foreign "DrawCircleSector"
@@ -539,13 +573,6 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "DrawCircleSectorLines"
       (Vector2.t @-> float @-> float @-> float @-> int @-> Color.t
      @-> returning void)
-
-  let draw_circle_gradient =
-    foreign "DrawCircleGradient"
-      (int @-> int @-> float @-> Color.t @-> Color.t @-> returning void)
-
-  let draw_circle_v =
-    foreign "DrawCircleV" (Vector2.t @-> float @-> Color.t @-> returning void)
 
   let draw_circle_lines =
     foreign "DrawCircleLines"
@@ -559,9 +586,17 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "DrawEllipse"
       (int @-> int @-> float @-> float @-> Color.t @-> returning void)
 
+  let draw_ellipse_v =
+    foreign "DrawEllipseV"
+      (Vector2.t @-> float @-> float @-> Color.t @-> returning void)
+
   let draw_ellipse_lines =
     foreign "DrawEllipseLines"
       (int @-> int @-> float @-> float @-> Color.t @-> returning void)
+
+  let draw_ellipse_lines_v =
+    foreign "DrawEllipseLinesV"
+      (Vector2.t @-> float @-> float @-> Color.t @-> returning void)
 
   let draw_ring =
     foreign "DrawRing"
@@ -1167,9 +1202,9 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   let is_font_valid = foreign "IsFontValid" (Font.t @-> returning bool)
 
-  let load_font_data =
+  let _load_font_data =
     foreign "LoadFontData"
-      (string @-> int @-> int @-> ptr int @-> int @-> int
+      (string @-> int @-> int @-> ptr int @-> int @-> int @-> ptr int
       @-> returning (ptr GlyphInfo.t))
 
   let gen_image_font_atlas =
@@ -1220,6 +1255,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "MeasureTextEx"
       (Font.t @-> string @-> float @-> float @-> returning Vector2.t)
 
+  let _measure_text_codepoints =
+    foreign "MeasureTextCodepoints"
+      (Font.t @-> ptr int @-> int @-> float @-> float @-> returning Vector2.t)
+
   let get_glyph_index =
     foreign "GetGlyphIndex" (Font.t @-> int @-> returning int)
 
@@ -1252,6 +1291,12 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let codepoint_to_utf8 =
     foreign "CodepointToUTF8" (int @-> ptr int @-> returning string)
 
+  (* let load_text_lines = *)
+  (*   foreign "LoadTextLines" (string @-> ptr int @-> returning (ptr (ptr char))) *)
+
+  (* let unload_text_lines = *)
+  (*   foreign "UnloadTextLines" (ptr (ptr char) @-> int @-> returning void) *)
+
   let text_copy = foreign "TextCopy" (string @-> string @-> returning int)
 
   let text_is_equal =
@@ -1265,14 +1310,35 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let text_subtext =
     foreign "TextSubtext" (string @-> int @-> int @-> returning string)
 
+  let text_remove_spaces =
+    foreign "TextRemoveSpaces" (string @-> returning string)
+
+  let get_text_between =
+    foreign "GetTextBetween" (string @-> string @-> string @-> returning string)
+
   let text_replace =
     foreign "TextReplace" (string @-> string @-> string @-> returning string)
+
+  let text_replace_alloc =
+    foreign "TextReplaceAlloc"
+      (string @-> string @-> string @-> returning string)
+
+  let text_replace_between =
+    foreign "TextReplaceBetween"
+      (string @-> string @-> string @-> string @-> returning string)
+
+  let text_replace_between_alloc =
+    foreign "TextReplaceBetweenAlloc"
+      (string @-> string @-> string @-> string @-> returning string)
 
   let text_insert =
     foreign "TextInsert" (string @-> string @-> int @-> returning string)
 
+  let text_insert_alloc =
+    foreign "TextInsertAlloc" (string @-> string @-> int @-> returning string)
+
   (* let text_join = *)
-  (*   foreign "TextJoin" (string) @-> int @-> string @-> returning string) *)
+  (*   foreign "TextJoin" (string @-> int @-> string @-> returning string) *)
 
   (* let text_split = *)
   (*   foreign "TextSplit" (string @-> char @-> (ptr int) @-> returning string)) *)
@@ -1400,15 +1466,6 @@ module Functions (F : Ctypes.FOREIGN) = struct
       (Model.t @-> Vector3.t @-> Vector3.t @-> float @-> Vector3.t @-> Color.t
      @-> returning void)
 
-  let draw_model_points =
-    foreign "DrawModelPoints"
-      (Model.t @-> Vector3.t @-> float @-> Color.t @-> returning void)
-
-  let draw_model_points_ex =
-    foreign "DrawModelPointsEx"
-      (Model.t @-> Vector3.t @-> Vector3.t @-> float @-> Vector3.t @-> Color.t
-     @-> returning void)
-
   let draw_bounding_box =
     foreign "DrawBoundingBox" (BoundingBox.t @-> Color.t @-> returning void)
 
@@ -1512,12 +1569,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "UpdateModelAnimation"
       (Model.t @-> ModelAnimation.t @-> int @-> returning void)
 
-  let update_model_animation_bones =
-    foreign "UpdateModelAnimationBones"
-      (Model.t @-> ModelAnimation.t @-> int @-> returning void)
-
-  let unload_model_animation =
-    foreign "UnloadModelAnimation" (ModelAnimation.t @-> returning void)
+  let update_model_animation_ex =
+    foreign "UpdateModelAnimationEx"
+      (Model.t @-> ModelAnimation.t @-> float @-> ModelAnimation.t @-> float
+     @-> float @-> returning void)
 
   let _unload_model_animations =
     foreign "UnloadModelAnimations"

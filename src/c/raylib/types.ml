@@ -472,7 +472,8 @@ module Types (F : Ctypes.TYPE) = struct
       | Map_brdf
       | Vertex_boneids
       | Vertex_boneweights
-      | Bone_matrices
+      | Matrix_bonetransforms
+      | Vertex_instancetransform
 
     let vals =
       [
@@ -504,7 +505,8 @@ module Types (F : Ctypes.TYPE) = struct
         (Map_brdf, constant "SHADER_LOC_MAP_BRDF" int64_t);
         (Vertex_boneids, constant "SHADER_LOC_VERTEX_BONEIDS" int64_t);
         (Vertex_boneweights, constant "SHADER_LOC_VERTEX_BONEWEIGHTS" int64_t);
-        (Bone_matrices, constant "SHADER_LOC_BONE_MATRICES" int64_t);
+        (Matrix_bonetransforms, constant "SHADER_LOC_MATRIX_BONETRANSFORMS" int64_t);
+        (Vertex_instancetransform, constant "SHADER_LOC_VERTEX_INSTANCETRANSFORM" int64_t);
       ]
 
     let t = enum "ShaderLocationIndex" ~typedef:true vals
@@ -520,6 +522,10 @@ module Types (F : Ctypes.TYPE) = struct
       | Ivec2
       | Ivec3
       | Ivec4
+      | Uint
+      | Uivec2
+      | Uivec3
+      | Uivec4
       | Sampler2d
 
     let vals =
@@ -532,6 +538,10 @@ module Types (F : Ctypes.TYPE) = struct
         (Ivec2, constant "SHADER_UNIFORM_IVEC2" int64_t);
         (Ivec3, constant "SHADER_UNIFORM_IVEC3" int64_t);
         (Ivec4, constant "SHADER_UNIFORM_IVEC4" int64_t);
+        (Uint, constant "SHADER_UNIFORM_UINT" int64_t);
+        (Uivec2, constant "SHADER_UNIFORM_UIVEC2" int64_t);
+        (Uivec3, constant "SHADER_UNIFORM_UIVEC3" int64_t);
+        (Uivec4, constant "SHADER_UNIFORM_UIVEC4" int64_t);
         (Sampler2d, constant "SHADER_UNIFORM_SAMPLER2D" int64_t);
       ]
 
@@ -979,12 +989,11 @@ module Types (F : Ctypes.TYPE) = struct
     let tangents = field t "tangents" (ptr float)
     let colors = field t "colors" (ptr uchar)
     let indices = field t "indices" (ptr ushort)
+    let bone_count = field t "boneCount" int
+    let bone_indices = field t "boneIndices" (ptr int)
+    let bone_weights = field t "boneWeights" (ptr float)
     let anim_vertices = field t "animVertices" (ptr float)
     let anim_normals = field t "animNormals" (ptr float)
-    let bone_ids = field t "boneIds" (ptr int)
-    let bone_weights = field t "boneWeights" (ptr float)
-    let bone_matrices = field t "boneMatrices" (ptr Matrix.t)
-    let bone_count = field t "boneCount" int
     let vao_id = field t "vaoId" uint
     let vbo_id = field t "vboId" (ptr uint)
     let () = seal t
@@ -1042,6 +1051,16 @@ module Types (F : Ctypes.TYPE) = struct
     let () = seal t
   end
 
+  module ModelSkeleton = struct
+    type t
+
+    let t : t Ctypes.structure typ = structure "ModelSkeleton"
+    let bone_count = field t "boneCount" int
+    let bones = field t "bones" (ptr BoneInfo.t)
+    let bind_pose = field t "bindPose" (ptr Transform.t)
+    let () = seal t
+  end
+
   module Model = struct
     type t
 
@@ -1052,9 +1071,9 @@ module Types (F : Ctypes.TYPE) = struct
     let meshes = field t "meshes" (ptr Mesh.t)
     let materials = field t "materials" (ptr Material.t)
     let mesh_material = field t "meshMaterial" (ptr int)
-    let bone_count = field t "boneCount" int
-    let bones = field t "bones" (ptr BoneInfo.t)
-    let bind_pose = field t "bindPose" (ptr Transform.t)
+    let skeleton = field t "skeleton" ModelSkeleton.t
+    let current_pose = field t "currentPose" (ptr Transform.t)
+    let bone_matrices = field t "boneMatrices" (ptr Matrix.t)
     let () = seal t
   end
 
@@ -1064,11 +1083,10 @@ module Types (F : Ctypes.TYPE) = struct
     type t
 
     let t : t Ctypes.structure typ = structure "ModelAnimation"
-    let bone_count = field t "boneCount" int
-    let frame_count = field t "frameCount" int
-    let bones = field t "bones" (ptr BoneInfo.t)
-    let frame_poses = field t "framePoses" (ptr (ptr Transform.t))
     let name = field t "name" char_array_32
+    let bone_count = field t "boneCount" int
+    let keyframe_count = field t "keyframeCount" int
+    let keyframe_poses = field t "keyframePoses" (ptr (ptr Transform.t))
     let () = seal t
   end
 
@@ -1192,7 +1210,6 @@ module Types (F : Ctypes.TYPE) = struct
     type t
 
     let t : t Ctypes.structure typ = structure "FilePathList"
-    let capacity = field t "capacity" int
     let count = field t "count" int
     let paths = field t "paths" (ptr string)
     let () = seal t
@@ -1220,6 +1237,5 @@ module Types (F : Ctypes.TYPE) = struct
     let () = seal t
   end
 
-  let max_material_maps = constant "MAX_MATERIAL_MAPS" camlint
   let max_shader_locations = constant "RL_MAX_SHADER_LOCATIONS" camlint
 end

@@ -272,7 +272,8 @@ module ShaderLocationIndex : sig
     | Map_brdf
     | Vertex_boneids
     | Vertex_boneweights
-    | Bone_matrices
+    | Matrix_bonetransforms
+    | Vertex_instancetransform
 
   val to_int : t -> int
   val of_int : int -> t
@@ -288,6 +289,10 @@ module ShaderUniformDataType : sig
     | Ivec2
     | Ivec3
     | Ivec4
+    | Uint
+    | Uivec2
+    | Uivec3
+    | Uivec4
     | Sampler2d
 
   val to_int : t -> int
@@ -425,7 +430,6 @@ module NPatchLayout : sig
   val of_int : int -> t
 end
 
-val max_material_maps : int
 val max_shader_locations : int
 
 (** {1 Types} *)
@@ -906,7 +910,7 @@ module Camera3D : sig
 
   val fovy : t -> float
   (** Camera field-of-view aperture in Y (degrees) in perspective, used as near
-      plane width in orthographic *)
+      plane height in world units in orthographic *)
 
   val projection : t -> CameraProjection.t
   (** Camera projection: CAMERA_PERSPECTIVE or CAMERA_ORTHOGRAPHIC *)
@@ -930,16 +934,16 @@ module Camera2D : sig
   (** [create offset target rotation zoom] *)
 
   val offset : t -> Vector2.t
-  (** Camera offset (displacement from target) *)
+  (** Camera offset (screen space offset from window origin) *)
 
   val target : t -> Vector2.t
-  (** Camera target (rotation and zoom origin) *)
+  (** Camera target (world space target point that is mapped to screen space offset) *)
 
   val rotation : t -> float
-  (** Camera rotation in degrees *)
+  (** Camera rotation in degrees (pivots around target) *)
 
   val zoom : t -> float
-  (** Camera zoom (scaling), should be 1.0f by default *)
+  (** Camera zoom (scaling around target), must not be set to 0, set to 1.0f for no scale *)
 
   val set_offset : t -> Vector2.t -> unit
   val set_target : t -> Vector2.t -> unit
@@ -983,17 +987,17 @@ module Mesh : sig
   val indices : t -> Unsigned.ushort Ctypes_static.carray
   (** Vertex indices (in case vertex data comes indexed) *)
 
+  val bone_indices : t -> int Ctypes_static.carray
+  (** Vertex bone indices, up to 4 bones influence by vertex (skinning) (shader-location = 6) *)
+
+  val bone_weights : t -> float Ctypes_static.carray
+  (** Vertex bone weight, up to 4 bones influence by vertex (skinning) (shader-location = 7) *)
+
   val anim_vertices : t -> float Ctypes_static.carray
   (** Animated vertex positions (after bones transformations) *)
 
   val anim_normals : t -> float Ctypes_static.carray
   (** Animated normals (after bones transformations) *)
-
-  val bone_ids : t -> int Ctypes_static.carray
-  (** Vertex bone ids, up to 4 bones influence by vertex (skinning) *)
-
-  val bone_weights : t -> float Ctypes_static.carray
-  (** Vertex bone weight, up to 4 bones influence by vertex (skinning) *)
 
   val set_vertex_count : t -> int -> unit
   val set_triangle_count : t -> int -> unit
@@ -1006,7 +1010,7 @@ module Mesh : sig
   val set_indices : t -> Unsigned.ushort Ctypes_static.carray -> unit
   val set_anim_vertices : t -> float Ctypes_static.carray -> unit
   val set_anim_normals : t -> float Ctypes_static.carray -> unit
-  val set_bone_ids : t -> int Ctypes_static.carray -> unit
+  val set_bone_indices : t -> int Ctypes_static.carray -> unit
   val set_bone_weights : t -> float Ctypes_static.carray -> unit
 end
 
@@ -1104,6 +1108,22 @@ module BoneInfo : sig
   val set_parent : t -> int -> unit
 end
 
+module ModelSkeleton : sig
+  type t'
+  type t = t' ctyp
+
+  val t : t Ctypes.typ
+
+  val bones : t -> BoneInfo.t CArray.t
+  (** Bones information (skeleton) *)
+
+  val bind_pose : t -> Transform.t ptr
+  (** Bones base transformation *)
+
+  val set_bones : t -> BoneInfo.t CArray.t -> unit
+  val set_bind_pose : t -> Transform.t ptr -> unit
+end
+
 module Model : sig
   type t'
   type t = t' ctyp
@@ -1119,17 +1139,20 @@ module Model : sig
   val materials : t -> Material.t CArray.t
   (** Materials array *)
 
-  val bones : t -> BoneInfo.t CArray.t
-  (** Bones information (skeleton) *)
+  val skeleton : t -> ModelSkeleton.t
+  (** Skeleton for animation *)
 
-  val bind_pose : t -> Transform.t ptr
-  (** Bones base transformation (pose) *)
+  val current_pose : t -> Transform.t ptr
+  (** Current animation pose *)
+
+  val bone_matrices : t -> Matrix.t CArray.t
+  (** Bones animated transformation matrices *)
 
   val set_transform : t -> Matrix.t -> unit
   val set_meshes : t -> Mesh.t CArray.t -> unit
   val set_materials : t -> Material.t CArray.t -> unit
-  val set_bones : t -> BoneInfo.t CArray.t -> unit
-  val set_bind_pose : t -> Transform.t ptr -> unit
+  val set_current_pose : t -> Transform.t ptr -> unit
+  val set_bone_matrices : t -> Matrix.t CArray.t -> unit
 end
 
 module ModelAnimation : sig
@@ -1138,16 +1161,17 @@ module ModelAnimation : sig
 
   val t : t Ctypes.typ
 
-  val bones : t -> BoneInfo.t CArray.t
-  (** Bones information (skeleton) *)
-
-  val frame_count : t -> int
   val name : t -> string
+  (** Animation name *)
 
-  val frame_poses_at : t -> int -> Transform.t CArray.t
+  val bone_count : t -> int
+  (** Number of bones (per pose) *)
+
+  val keyframe_count : t -> int
+  (** Number of animation key frames *)
+
+  val keyframe_poses_at : t -> int -> Transform.t CArray.t
   (** Poses array by frame *)
-
-  val set_bones : t -> BoneInfo.t CArray.t -> unit
 end
 
 module Ray : sig
@@ -1775,13 +1799,13 @@ val set_config_flags : ConfigFlags.t list -> unit
 val open_url : string -> unit
 (** [open_url url] Open URL with default system browser (if available)*)
 
-val trace_log : int -> string -> unit
-(** [trace_log log_level text args] Show trace log messages (LOG_DEBUG,
-    LOG_INFO, LOG_WARNING, LOG_ERROR...)*)
-
 val set_trace_log_level : TraceLogLevel.t -> unit
 (** [set_trace_log_level log_level] Set the current threshold (minimum) log
     level*)
+
+val trace_log : int -> string -> unit
+(** [trace_log log_level text args] Show trace log messages (LOG_DEBUG,
+    LOG_INFO, LOG_WARNING, LOG_ERROR...)*)
 
 val mem_alloc : int -> unit ptr
 (** [mem_alloc size] Internal memory allocator*)
@@ -1817,6 +1841,24 @@ val save_file_text : string -> string -> bool
 (** [save_file_text file_name text] Save text data to file (write), string must
     be ' 0' terminated, returns true on success*)
 
+val file_rename : string -> string -> int
+(** [file_rename file_name file_rename] Rename file (if exists) *)
+
+val file_remove : string -> int
+(** [file_remove file_name] Remove file (if exists) *)
+
+val file_copy : string -> string -> int
+(** [file_copy src_path dst_path] Copy file from one path to another, dstPath created if it doesn't exist *)
+
+val file_move : string -> string -> int
+(** [file_move src_path dst_path] Move file from one directory to another, dstPath created if it doesn't exist *)
+
+val file_text_replace : string -> string -> string -> int
+(** [file_text_replace file_name search replacement] Replace text in an existing file *)
+
+val file_text_find_index : string -> string -> int
+(** [file_text_find_index file_name search] Find text in existing file *)
+
 val file_exists : string -> bool
 (** [file_exists file_name] Check if file exists*)
 
@@ -1830,6 +1872,9 @@ val is_file_extension : string -> string -> bool
 val get_file_length : string -> int
 (** [get_file_length file_name] Get file length in bytes (NOTE: GetFileSize()
     conflicts with windows.h)*)
+
+val get_file_mod_time : string -> Signed.long
+(** [get_file_mod_time file_name] Get file modification time (last write time)*)
 
 val get_file_extension : string -> string
 (** [get_file_extension file_name] Get pointer to extension for a filename
@@ -1892,8 +1937,11 @@ val load_dropped_files : unit -> FilePathList.t
 val unload_dropped_files : FilePathList.t -> unit
 (** [unload_dropped_files files] Unload dropped filepaths*)
 
-val get_file_mod_time : string -> Signed.Long.t
-(** [get_file_mod_time file_name] Get file modification time (last write time)*)
+val get_directory_file_count : string -> Unsigned.uint
+(** [get_directory_file_count dir_path] Get the file count in a directory *)
+
+val get_directory_file_count_ex : string -> string -> bool -> Unsigned.uint
+(** [get_directory_file_count_ex base_path filter scan_subdirs] Get the file count in a directory with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result *)
 
 val compress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
 (** [compress_data data data_length comp_data_length] Compress data (DEFLATE
@@ -1953,6 +2001,9 @@ val get_key_pressed : unit -> Key.t
 val get_char_pressed : unit -> Uchar.t
 (** [get_char_pressed ()] Get char pressed (unicode), call it multiple times for
     chars queued, returns 0 when the queue is empty*)
+
+val get_key_name : Key.t -> string
+(** [get_key_name key] Get name of a QWERTY key on the current keyboard layout (eg returns string 'q' for KEY_A on an AZERTY keyboard) *)
 
 val set_exit_key : Key.t -> unit
 (** [set_exit_key key] Set a custom key to exit program (default is ESC)*)
@@ -2129,8 +2180,19 @@ val draw_line_bezier : Vector2.t -> Vector2.t -> float -> Color.t -> unit
 (** [draw_line_bezier start_pos end_pos thick color] Draw line segment
     cubic-bezier in-out interpolation*)
 
+val draw_line_dashed : Vector2.t -> Vector2.t -> int -> int -> Color.t -> unit
+(** [draw_line_dashed start_pos end_pos dash_size space_size color] Draw a dashed line*)
+
 val draw_circle : int -> int -> float -> Color.t -> unit
 (** [draw_circle center_x center_y radius color] Draw a color-filled circle*)
+
+val draw_circle_v : Vector2.t -> float -> Color.t -> unit
+(** [draw_circle_v center radius color] Draw a color-filled circle (Vector
+    version)*)
+
+val draw_circle_gradient : Vector2.t -> float -> Color.t -> Color.t -> unit
+(** [draw_circle_gradient center radius inner outer] Draw a
+    gradient-filled circle*)
 
 val draw_circle_sector :
   Vector2.t -> float -> float -> float -> int -> Color.t -> unit
@@ -2142,14 +2204,6 @@ val draw_circle_sector_lines :
 (** [draw_circle_sector_lines center radius start_angle end_angle segments
      color] Draw circle sector outline*)
 
-val draw_circle_gradient : int -> int -> float -> Color.t -> Color.t -> unit
-(** [draw_circle_gradient center_x center_y radius inner outer] Draw a
-    gradient-filled circle*)
-
-val draw_circle_v : Vector2.t -> float -> Color.t -> unit
-(** [draw_circle_v center radius color] Draw a color-filled circle (Vector
-    version)*)
-
 val draw_circle_lines : int -> int -> float -> Color.t -> unit
 (** [draw_circle_lines center_x center_y radius color] Draw circle outline*)
 
@@ -2160,9 +2214,16 @@ val draw_circle_lines_v : Vector2.t -> float -> Color.t -> unit
 val draw_ellipse : int -> int -> float -> float -> Color.t -> unit
 (** [draw_ellipse center_x center_y radius_h radius_v color] Draw ellipse*)
 
+val draw_ellipse_v : Vector2.t -> float -> float -> Color.t -> unit
+(** [draw_ellipse_v center radius_h radius_v color] Draw ellipse (Vector version)*)
+
 val draw_ellipse_lines : int -> int -> float -> float -> Color.t -> unit
 (** [draw_ellipse_lines center_x center_y radius_h radius_v color] Draw ellipse
     outline*)
+
+val draw_ellipse_lines_v : Vector2.t -> float -> float -> Color.t -> unit
+(** [draw_ellipse_lines_v center radius_h radius_v color] Draw ellipse
+    outline (Vector version)*)
 
 val draw_ring :
   Vector2.t -> float -> float -> float -> float -> int -> Color.t -> unit
@@ -2201,7 +2262,7 @@ val draw_rectangle_gradient_h :
 
 val draw_rectangle_gradient_ex :
   Rectangle.t -> Color.t -> Color.t -> Color.t -> Color.t -> unit
-(** [draw_rectangle_gradient_ex rec top_left bottom_left top_right bottom_right]
+(** [draw_rectangle_gradient_ex rec top_left bottom_left bottom_right top_right]
     Draw a gradient-filled rectangle with custom vertex colors*)
 
 val draw_rectangle_lines : int -> int -> int -> int -> Color.t -> unit
@@ -2864,10 +2925,9 @@ val is_font_valid : Font.t -> bool
 (** [is_font_valid font] Check if a font is valid (font data loaded, WARNING:
     GPU texture not checked)*)
 
-val load_font_data :
-  string -> int -> int -> int ptr -> int -> int -> GlyphInfo.t ptr
-(** [load_font_data file_data data_size font_size codepoints codepoint_count
-     type] Load font data for further use*)
+val load_font_data : string -> int -> int ptr -> int -> int -> GlyphInfo.t CArray.t
+(** [load_font_data file_data font_size codepoints codepoint_count type] Load font
+    data for further use*)
 
 val gen_image_font_atlas :
   GlyphInfo.t ptr -> Rectangle.t ptr ptr -> int -> int -> int -> int -> Image.t
@@ -2929,6 +2989,10 @@ val measure_text : string -> int -> int
 val measure_text_ex : Font.t -> string -> float -> float -> Vector2.t
 (** [measure_text_ex font text font_size spacing] Measure string size for Font*)
 
+val measure_text_codepoints : Font.t -> int CArray.t -> float -> float -> Vector2.t
+(** [measure_text_codepoints font codepoints font_size spacing] Measure string size
+    for an existing array of codepoints for Font*)
+
 val get_glyph_index : Font.t -> int -> int
 (** [get_glyph_index font codepoint] Get glyph index position in font for a
     codepoint (unicode character), fallback to '?' if not found*)
@@ -2986,17 +3050,33 @@ val text_length : string -> int
 val text_subtext : string -> int -> int -> string
 (** [text_subtext text position length] Get a piece of a text string*)
 
+val text_remove_spaces : string -> string
+(** [text_remove_spaces text] Remove text spaces, concat words*)
+
+val get_text_between : string -> string -> string -> string
+(** [get_text_between text begin end] Get text between two strings*)
+
 val text_replace : string -> string -> string -> string
-(** [text_replace text replace by] Replace text string (WARNING: memory must be
-    freed!)*)
+(** [text_replace text search replacement] Replace text string with new string*)
+
+val text_replace_alloc : string -> string -> string -> string
+(** [text_replace_alloc text search replacement] Replace text string with new string, memory must be MemFree()*)
+
+val text_replace_between : string -> string -> string -> string -> string
+(** [text_replace_between text begin end replacement] Replace text between two specific strings*)
+
+val text_replace_between_alloc : string -> string -> string -> string -> string
+(** [text_replace_between_alloc text begin end replacement] Replace text between two specific strings, memory must be MemFree()*)
 
 val text_insert : string -> string -> int -> string
-(** [text_insert text insert position] Insert text in a position (WARNING:
-    memory must be freed!)*)
+(** [text_insert text insert position] Insert text in a defined byte position*)
+
+val text_insert_alloc : string -> string -> int -> string
+(** [text_insert_alloc text insert position] Insert text in a defined byte position, memory must be MemFree()*)
 
 val text_append : string -> string -> int ptr -> unit
 (** [text_append text append position] Append text at specific position and move
-    cursor!*)
+    cursor*)
 
 val text_find_index : string -> string -> int
 (** [text_find_index text find] Find first text occurrence within a string*)
@@ -3145,14 +3225,6 @@ val draw_model_wires_ex :
 (** [draw_model_wires_ex model position rotation_axis rotation_angle scale tint]
     Draw a model wires (with texture if set) with extended parameters*)
 
-val draw_model_points : Model.t -> Vector3.t -> float -> Color.t -> unit
-(** [draw_model_points model position scale tint] Draw a model as points*)
-
-val draw_model_points_ex :
-  Model.t -> Vector3.t -> Vector3.t -> float -> Vector3.t -> Color.t -> unit
-(** [draw_model_points_ex model position rotation_axis rotation_angle scale
-     tint] Draw a model as points with extended parameters*)
-
 val draw_bounding_box : BoundingBox.t -> Color.t -> unit
 (** [draw_bounding_box box color] Draw bounding box (wires)*)
 
@@ -3284,12 +3356,9 @@ val load_model_animations : string -> ModelAnimation.t CArray.t
 val update_model_animation : Model.t -> ModelAnimation.t -> int -> unit
 (** [update_model_animation model anim frame] Update model animation pose (CPU)*)
 
-val update_model_animation_bones : Model.t -> ModelAnimation.t -> int -> unit
-(** [update_model_animation_bones model anim frame] Update model animation mesh
-    bone matrices (GPU skinning)*)
-
-val unload_model_animation : ModelAnimation.t -> unit
-(** [unload_model_animation anim] Unload animation data*)
+val update_model_animation_ex : Model.t -> ModelAnimation.t -> float -> ModelAnimation.t -> float -> float -> unit
+(** [update_model_animation_ex model animA frameA animB frameB blend] Update model
+    animation pose, blending two animations*)
 
 val unload_model_animations : ModelAnimation.t CArray.t -> unit
 (** [unload_model_animations animations anim_count] Unload animation array data*)

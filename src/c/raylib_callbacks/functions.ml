@@ -40,7 +40,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   let save_file_text_callback =
     Foreign.funptr ~thread_registration:true ~runtime_lock:true
-      Ctypes.(string @-> ptr char @-> returning bool)
+      Ctypes.(string @-> ptr (const char) @-> returning bool)
 
   let set_load_file_data_callback =
     foreign "SetLoadFileDataCallback"

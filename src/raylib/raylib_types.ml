@@ -468,6 +468,16 @@ module Mesh = struct
   let indices mesh =
     CArray.from_ptr (getf mesh Mesh.indices) (getf mesh Mesh.vertex_count * 3)
 
+  let bone_indices mesh =
+    CArray.from_ptr
+      (getf mesh Mesh.bone_indices)
+      (getf mesh Mesh.vertex_count * 4)
+
+  let bone_weights mesh =
+    CArray.from_ptr
+      (getf mesh Mesh.bone_weights)
+      (getf mesh Mesh.vertex_count * 4)
+
   let anim_vertices mesh =
     CArray.from_ptr
       (getf mesh Mesh.anim_vertices)
@@ -477,14 +487,6 @@ module Mesh = struct
     CArray.from_ptr
       (getf mesh Mesh.anim_normals)
       (getf mesh Mesh.vertex_count * 3)
-
-  let bone_ids mesh =
-    CArray.from_ptr (getf mesh Mesh.bone_ids) (getf mesh Mesh.vertex_count * 4)
-
-  let bone_weights mesh =
-    CArray.from_ptr
-      (getf mesh Mesh.bone_weights)
-      (getf mesh Mesh.vertex_count * 4)
 
   let set_vertex_count mesh vertex_count =
     setf mesh Mesh.vertex_count vertex_count
@@ -509,17 +511,17 @@ module Mesh = struct
   let set_colors mesh colors = setf mesh Mesh.colors (CArray.start colors)
   let set_indices mesh indices = setf mesh Mesh.indices (CArray.start indices)
 
+  let set_bone_indices mesh bone_indices =
+    setf mesh Mesh.bone_indices (CArray.start bone_indices)
+
+  let set_bone_weights mesh bone_weights =
+    setf mesh Mesh.bone_weights (CArray.start bone_weights)
+
   let set_anim_vertices mesh anim_vertices =
     setf mesh Mesh.anim_vertices (CArray.start anim_vertices)
 
   let set_anim_normals mesh anim_normals =
     setf mesh Mesh.anim_normals (CArray.start anim_normals)
-
-  let set_bone_ids mesh bone_ids =
-    setf mesh Mesh.bone_ids (CArray.start bone_ids)
-
-  let set_bone_weights mesh bone_weights =
-    setf mesh Mesh.bone_weights (CArray.start bone_weights)
 end
 
 module ShaderLoc = struct
@@ -582,6 +584,7 @@ module Material = struct
   let shader material = getf material Material.shader
 
   let maps material =
+    let max_material_maps = 12 in  (* no longer exported in Raylib 6.0! *)
     CArray.from_ptr (getf material Material.maps) max_material_maps
 
   let params material = getf material Material.params
@@ -631,6 +634,28 @@ module BoneInfo = struct
   let set_parent boneinfo parent = setf boneinfo BoneInfo.parent parent
 end
 
+module ModelSkeleton = struct
+  type t' = ModelSkeleton.t
+  type t = t' ctyp
+
+  let t = ModelSkeleton.t
+
+  let bone_count modelskeleton = getf modelskeleton ModelSkeleton.bone_count
+
+  let bones modelskeleton =
+    let count = getf modelskeleton ModelSkeleton.bone_count in
+    CArray.from_ptr (getf modelskeleton ModelSkeleton.bones) count
+
+  let bind_pose modelskeleton = getf modelskeleton ModelSkeleton.bind_pose
+
+  let set_bones modelskeleton bones =
+    setf modelskeleton ModelSkeleton.bones (CArray.start bones);
+    setf modelskeleton ModelSkeleton.bone_count (CArray.length bones)
+
+  let set_bind_pose modelskeleton bind_pose =
+    setf modelskeleton ModelSkeleton.bind_pose bind_pose
+end
+
 module Model = struct
   type t' = Model.t
   type t = t' ctyp
@@ -646,19 +671,29 @@ module Model = struct
     let count = getf model Model.material_count in
     CArray.from_ptr (getf model Model.materials) count
 
-  let bones model =
-    let count = getf model Model.bone_count in
-    CArray.from_ptr (getf model Model.bones) count
+  let skeleton model = getf model Model.skeleton
+  let current_pose model = getf model Model.current_pose
 
-  let bind_pose model = getf model Model.bind_pose
+  let bone_matrices model =
+    let skeleton = getf model Model.skeleton in
+    let count = ModelSkeleton.bone_count skeleton in
+    CArray.from_ptr (getf model Model.bone_matrices) count
+
   let set_transform model transform = setf model Model.transform transform
-  let set_meshes model meshes = setf model Model.meshes (CArray.start meshes)
+
+  let set_meshes model meshes =
+    setf model Model.meshes (CArray.start meshes);
+    setf model Model.mesh_count (CArray.length meshes)
 
   let set_materials model materials =
-    setf model Model.materials (CArray.start materials)
+    setf model Model.materials (CArray.start materials);
+    setf model Model.material_count (CArray.length materials)
 
-  let set_bones model bones = setf model Model.bones (CArray.start bones)
-  let set_bind_pose model bind_pose = setf model Model.bind_pose bind_pose
+  let set_current_pose model current_pose =
+    setf model Model.current_pose current_pose
+
+  let set_bone_matrices model bone_matrices =
+    setf model Model.bone_matrices (CArray.start bone_matrices)
 end
 
 module ModelAnimation = struct
@@ -667,27 +702,22 @@ module ModelAnimation = struct
 
   let t = ModelAnimation.t
 
-  let bones modelanimation =
-    let count = getf modelanimation ModelAnimation.bone_count in
-    CArray.from_ptr (getf modelanimation ModelAnimation.bones) count
-
-  let frame_count modelanimation =
-    getf modelanimation ModelAnimation.frame_count
-
   let name modelanimation =
     let ptr = Ctypes.CArray.start (getf modelanimation ModelAnimation.name) in
     Ctypes.string_from_ptr ptr ~length:32
 
-  let frame_poses_at anim index =
-    let frame_count = getf anim ModelAnimation.frame_count in
+  let bone_count modelanimation = getf modelanimation ModelAnimation.bone_count
+
+  let keyframe_count modelanimation =
+    getf modelanimation ModelAnimation.keyframe_count
+
+  let keyframe_poses_at anim index =
+    let keyframe_count = getf anim ModelAnimation.keyframe_count in
     let poses =
-      CArray.from_ptr (getf anim ModelAnimation.frame_poses) frame_count
+      CArray.from_ptr (getf anim ModelAnimation.keyframe_poses) keyframe_count
     in
     let bone_count = getf anim ModelAnimation.bone_count in
     CArray.from_ptr (CArray.get poses index) bone_count
-
-  let set_bones modelanimation bones =
-    setf modelanimation ModelAnimation.bones (CArray.start bones)
 end
 
 module Ray = struct
@@ -935,7 +965,6 @@ module FilePathList = struct
   type t = t' ctyp
 
   let t = FilePathList.t
-  let capacity filepathlist = getf filepathlist FilePathList.capacity
   let count filepathlist = getf filepathlist FilePathList.count
   let paths filepathlist = getf filepathlist FilePathList.paths
 
@@ -992,5 +1021,4 @@ module AutomationEventList = struct
     setf automationeventlist AutomationEventList.events events
 end
 
-let max_material_maps = max_material_maps
 let max_shader_locations = max_shader_locations

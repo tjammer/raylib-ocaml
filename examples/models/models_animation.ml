@@ -32,7 +32,7 @@ let rec loop camera model anims frame_counter =
   match Raylib.window_should_close () with
   | true ->
       let open Raylib in
-      CArray.iter (fun anim -> unload_model_animation anim) anims;
+      unload_model_animations anims;
       unload_model model;
       close_window ()
   | false ->
@@ -43,7 +43,7 @@ let rec loop camera model anims frame_counter =
         if is_key_down Key.Space then (
           let frame_counter = succ frame_counter in
           update_model_animation model anims0 frame_counter;
-          if frame_counter >= ModelAnimation.frame_count anims0 then 0
+          if frame_counter >= ModelAnimation.keyframe_count anims0 then 0
           else frame_counter)
         else frame_counter
       in
@@ -61,7 +61,7 @@ let rec loop camera model anims frame_counter =
       CArray.iter
         (fun bone ->
           draw_cube (Transform.translation bone) 0.2 0.2 0.2 Color.red)
-        (ModelAnimation.frame_poses_at anims0 frame_counter);
+        (ModelAnimation.keyframe_poses_at anims0 frame_counter);
       draw_grid 10 1.0;
 
       end_mode_3d ();
