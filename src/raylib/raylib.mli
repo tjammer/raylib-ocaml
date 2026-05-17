@@ -1820,11 +1820,8 @@ val mem_realloc : unit ptr -> int -> unit ptr
 val mem_free : unit ptr -> unit
 (** [mem_free ptr] Internal memory free*)
 
-val load_file_data : string -> Unsigned.uchar CArray.t
-(** [load_file_data file_name data_size] Load file data as byte array (read)*)
-
-val unload_file_data : string -> unit
-(** [unload_file_data data] Unload file data allocated by LoadFileData()*)
+val load_file_data : string -> string
+(** [load_file_data file_name] Load file data as byte array (read)*)
 
 val save_file_data : string -> 'a CArray.t -> bool
 (** [save_file_data file_name data data_size] Save data to file from byte array
@@ -1837,9 +1834,6 @@ val export_data_as_code : string -> string -> bool
 val load_file_text : string -> string
 (** [load_file_text file_name] Load text data from file (read), returns a '\0'
     terminated string*)
-
-val unload_file_text : string -> unit
-(** [unload_file_text text] Unload file text data allocated by LoadFileText()*)
 
 val save_file_text : string -> string -> bool
 (** [save_file_text file_name text] Save text data to file (write), string must
@@ -3052,9 +3046,6 @@ val codepoint_to_utf8 : int -> int ptr -> string
 (** [codepoint_to_utf8 codepoint utf8_size] Encode one codepoint into UTF-8 byte
     array (array length returned as parameter)*)
 
-val text_copy : string -> string -> int
-(** [text_copy dst src] Copy one string to another, returns bytes copied*)
-
 val text_is_equal : string -> string -> bool
 (** [text_is_equal text1 text2] Check if two text string are equal*)
 
@@ -3073,28 +3064,12 @@ val get_text_between : string -> string -> string -> string
 val text_replace : string -> string -> string -> string
 (** [text_replace text search replacement] Replace text string with new string*)
 
-val text_replace_alloc : string -> string -> string -> string
-(** [text_replace_alloc text search replacement] Replace text string with new
-    string, memory must be MemFree()*)
-
 val text_replace_between : string -> string -> string -> string -> string
 (** [text_replace_between text begin end replacement] Replace text between two
     specific strings*)
 
-val text_replace_between_alloc : string -> string -> string -> string -> string
-(** [text_replace_between_alloc text begin end replacement] Replace text between
-    two specific strings, memory must be MemFree()*)
-
 val text_insert : string -> string -> int -> string
 (** [text_insert text insert position] Insert text in a defined byte position*)
-
-val text_insert_alloc : string -> string -> int -> string
-(** [text_insert_alloc text insert position] Insert text in a defined byte
-    position, memory must be MemFree()*)
-
-val text_append : string -> string -> int ptr -> unit
-(** [text_append text append position] Append text at specific position and move
-    cursor*)
 
 val text_find_index : string -> string -> int
 (** [text_find_index text find] Find first text occurrence within a string*)
