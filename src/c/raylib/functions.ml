@@ -281,7 +281,6 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "IsFileExtension" (string @-> string @-> returning bool)
 
   let get_file_length = foreign "GetFileLength" (string @-> returning int)
-
   let get_file_mod_time = foreign "GetFileModTime" (string @-> returning long)
 
   let get_file_extension =

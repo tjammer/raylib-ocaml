@@ -584,7 +584,8 @@ module Material = struct
   let shader material = getf material Material.shader
 
   let maps material =
-    let max_material_maps = 12 in  (* no longer exported in Raylib 6.0! *)
+    (* no longer exported in Raylib 6.0! *)
+    let max_material_maps = 12 in
     CArray.from_ptr (getf material Material.maps) max_material_maps
 
   let params material = getf material Material.params
@@ -639,7 +640,6 @@ module ModelSkeleton = struct
   type t = t' ctyp
 
   let t = ModelSkeleton.t
-
   let bone_count modelskeleton = getf modelskeleton ModelSkeleton.bone_count
 
   let bones modelskeleton =

@@ -505,8 +505,10 @@ module Types (F : Ctypes.TYPE) = struct
         (Map_brdf, constant "SHADER_LOC_MAP_BRDF" int64_t);
         (Vertex_boneids, constant "SHADER_LOC_VERTEX_BONEIDS" int64_t);
         (Vertex_boneweights, constant "SHADER_LOC_VERTEX_BONEWEIGHTS" int64_t);
-        (Matrix_bonetransforms, constant "SHADER_LOC_MATRIX_BONETRANSFORMS" int64_t);
-        (Vertex_instancetransform, constant "SHADER_LOC_VERTEX_INSTANCETRANSFORM" int64_t);
+        ( Matrix_bonetransforms,
+          constant "SHADER_LOC_MATRIX_BONETRANSFORMS" int64_t );
+        ( Vertex_instancetransform,
+          constant "SHADER_LOC_VERTEX_INSTANCETRANSFORM" int64_t );
       ]
 
     let t = enum "ShaderLocationIndex" ~typedef:true vals
