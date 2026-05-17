@@ -247,9 +247,9 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let mem_free = foreign "MemFree" (ptr void @-> returning void)
 
   let _load_file_data =
-    foreign "LoadFileData" (string @-> ptr uint @-> returning (ptr uchar))
+    foreign "LoadFileData" (string @-> ptr int @-> returning (ptr char))
 
-  let unload_file_data = foreign "UnloadFileData" (string @-> returning void)
+  let _unload_file_data = foreign "UnloadFileData" (ptr char @-> returning void)
 
   let _save_file_data =
     foreign "SaveFileData" (string @-> ptr void @-> int @-> returning bool)
@@ -257,8 +257,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let _export_data_as_code =
     foreign "ExportDataAsCode" (string @-> int @-> string @-> returning bool)
 
-  let load_file_text = foreign "LoadFileText" (string @-> returning string)
-  let unload_file_text = foreign "UnloadFileText" (string @-> returning void)
+  let _load_file_text = foreign "LoadFileText" (string @-> returning (ptr char))
+  let _unload_file_text = foreign "UnloadFileText" (ptr char @-> returning void)
 
   let save_file_text =
     foreign "SaveFileText" (string @-> string @-> returning bool)
@@ -1296,7 +1296,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (* let unload_text_lines = *)
   (*   foreign "UnloadTextLines" (ptr (ptr char) @-> int @-> returning void) *)
 
-  let text_copy = foreign "TextCopy" (string @-> string @-> returning int)
+  (* let text_copy = foreign "TextCopy" (string @-> string @-> returning int) *)
 
   let text_is_equal =
     foreign "TextIsEqual" (string @-> string @-> returning bool)
@@ -1318,32 +1318,32 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let text_replace =
     foreign "TextReplace" (string @-> string @-> string @-> returning string)
 
-  let text_replace_alloc =
-    foreign "TextReplaceAlloc"
-      (string @-> string @-> string @-> returning string)
+  (* let text_replace_alloc = *)
+  (*   foreign "TextReplaceAlloc" *)
+  (*     (string @-> string @-> string @-> returning string) *)
 
   let text_replace_between =
     foreign "TextReplaceBetween"
       (string @-> string @-> string @-> string @-> returning string)
 
-  let text_replace_between_alloc =
-    foreign "TextReplaceBetweenAlloc"
-      (string @-> string @-> string @-> string @-> returning string)
+  (* let text_replace_between_alloc = *)
+  (*   foreign "TextReplaceBetweenAlloc" *)
+  (*     (string @-> string @-> string @-> string @-> returning string) *)
 
   let text_insert =
     foreign "TextInsert" (string @-> string @-> int @-> returning string)
 
-  let text_insert_alloc =
-    foreign "TextInsertAlloc" (string @-> string @-> int @-> returning string)
+  (* let text_insert_alloc = *)
+  (*   foreign "TextInsertAlloc" (string @-> string @-> int @-> returning string) *)
 
   (* let text_join = *)
   (*   foreign "TextJoin" (string @-> int @-> string @-> returning string) *)
 
   (* let text_split = *)
-  (*   foreign "TextSplit" (string @-> char @-> (ptr int) @-> returning string)) *)
+  (*   foreign "TextSplit" (string @-> char @-> ptr int @-> returning string)) *)
 
-  let text_append =
-    foreign "TextAppend" (string @-> string @-> ptr int @-> returning void)
+  (* let text_append = *)
+  (*   foreign "TextAppend" (string @-> string @-> ptr int @-> returning void) *)
 
   let text_find_index =
     foreign "TextFindIndex" (string @-> string @-> returning int)
