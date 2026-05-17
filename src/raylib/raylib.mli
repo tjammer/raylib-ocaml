@@ -937,13 +937,15 @@ module Camera2D : sig
   (** Camera offset (screen space offset from window origin) *)
 
   val target : t -> Vector2.t
-  (** Camera target (world space target point that is mapped to screen space offset) *)
+  (** Camera target (world space target point that is mapped to screen space
+      offset) *)
 
   val rotation : t -> float
   (** Camera rotation in degrees (pivots around target) *)
 
   val zoom : t -> float
-  (** Camera zoom (scaling around target), must not be set to 0, set to 1.0f for no scale *)
+  (** Camera zoom (scaling around target), must not be set to 0, set to 1.0f for
+      no scale *)
 
   val set_offset : t -> Vector2.t -> unit
   val set_target : t -> Vector2.t -> unit
@@ -988,10 +990,12 @@ module Mesh : sig
   (** Vertex indices (in case vertex data comes indexed) *)
 
   val bone_indices : t -> int Ctypes_static.carray
-  (** Vertex bone indices, up to 4 bones influence by vertex (skinning) (shader-location = 6) *)
+  (** Vertex bone indices, up to 4 bones influence by vertex (skinning)
+      (shader-location = 6) *)
 
   val bone_weights : t -> float Ctypes_static.carray
-  (** Vertex bone weight, up to 4 bones influence by vertex (skinning) (shader-location = 7) *)
+  (** Vertex bone weight, up to 4 bones influence by vertex (skinning)
+      (shader-location = 7) *)
 
   val anim_vertices : t -> float Ctypes_static.carray
   (** Animated vertex positions (after bones transformations) *)
@@ -1848,13 +1852,16 @@ val file_remove : string -> int
 (** [file_remove file_name] Remove file (if exists) *)
 
 val file_copy : string -> string -> int
-(** [file_copy src_path dst_path] Copy file from one path to another, dstPath created if it doesn't exist *)
+(** [file_copy src_path dst_path] Copy file from one path to another, dstPath
+    created if it doesn't exist *)
 
 val file_move : string -> string -> int
-(** [file_move src_path dst_path] Move file from one directory to another, dstPath created if it doesn't exist *)
+(** [file_move src_path dst_path] Move file from one directory to another,
+    dstPath created if it doesn't exist *)
 
 val file_text_replace : string -> string -> string -> int
-(** [file_text_replace file_name search replacement] Replace text in an existing file *)
+(** [file_text_replace file_name search replacement] Replace text in an existing
+    file *)
 
 val file_text_find_index : string -> string -> int
 (** [file_text_find_index file_name search] Find text in existing file *)
@@ -1941,7 +1948,9 @@ val get_directory_file_count : string -> Unsigned.uint
 (** [get_directory_file_count dir_path] Get the file count in a directory *)
 
 val get_directory_file_count_ex : string -> string -> bool -> Unsigned.uint
-(** [get_directory_file_count_ex base_path filter scan_subdirs] Get the file count in a directory with extension filtering and recursive directory scan. Use 'DIR' in the filter string to include directories in the result *)
+(** [get_directory_file_count_ex base_path filter scan_subdirs] Get the file
+    count in a directory with extension filtering and recursive directory scan.
+    Use 'DIR' in the filter string to include directories in the result *)
 
 val compress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
 (** [compress_data data data_length comp_data_length] Compress data (DEFLATE
@@ -2003,7 +2012,8 @@ val get_char_pressed : unit -> Uchar.t
     chars queued, returns 0 when the queue is empty*)
 
 val get_key_name : Key.t -> string
-(** [get_key_name key] Get name of a QWERTY key on the current keyboard layout (eg returns string 'q' for KEY_A on an AZERTY keyboard) *)
+(** [get_key_name key] Get name of a QWERTY key on the current keyboard layout
+    (eg returns string 'q' for KEY_A on an AZERTY keyboard) *)
 
 val set_exit_key : Key.t -> unit
 (** [set_exit_key key] Set a custom key to exit program (default is ESC)*)
@@ -2181,7 +2191,8 @@ val draw_line_bezier : Vector2.t -> Vector2.t -> float -> Color.t -> unit
     cubic-bezier in-out interpolation*)
 
 val draw_line_dashed : Vector2.t -> Vector2.t -> int -> int -> Color.t -> unit
-(** [draw_line_dashed start_pos end_pos dash_size space_size color] Draw a dashed line*)
+(** [draw_line_dashed start_pos end_pos dash_size space_size color] Draw a
+    dashed line*)
 
 val draw_circle : int -> int -> float -> Color.t -> unit
 (** [draw_circle center_x center_y radius color] Draw a color-filled circle*)
@@ -2191,8 +2202,8 @@ val draw_circle_v : Vector2.t -> float -> Color.t -> unit
     version)*)
 
 val draw_circle_gradient : Vector2.t -> float -> Color.t -> Color.t -> unit
-(** [draw_circle_gradient center radius inner outer] Draw a
-    gradient-filled circle*)
+(** [draw_circle_gradient center radius inner outer] Draw a gradient-filled
+    circle*)
 
 val draw_circle_sector :
   Vector2.t -> float -> float -> float -> int -> Color.t -> unit
@@ -2215,15 +2226,16 @@ val draw_ellipse : int -> int -> float -> float -> Color.t -> unit
 (** [draw_ellipse center_x center_y radius_h radius_v color] Draw ellipse*)
 
 val draw_ellipse_v : Vector2.t -> float -> float -> Color.t -> unit
-(** [draw_ellipse_v center radius_h radius_v color] Draw ellipse (Vector version)*)
+(** [draw_ellipse_v center radius_h radius_v color] Draw ellipse (Vector
+    version)*)
 
 val draw_ellipse_lines : int -> int -> float -> float -> Color.t -> unit
 (** [draw_ellipse_lines center_x center_y radius_h radius_v color] Draw ellipse
     outline*)
 
 val draw_ellipse_lines_v : Vector2.t -> float -> float -> Color.t -> unit
-(** [draw_ellipse_lines_v center radius_h radius_v color] Draw ellipse
-    outline (Vector version)*)
+(** [draw_ellipse_lines_v center radius_h radius_v color] Draw ellipse outline
+    (Vector version)*)
 
 val draw_ring :
   Vector2.t -> float -> float -> float -> float -> int -> Color.t -> unit
@@ -2925,9 +2937,10 @@ val is_font_valid : Font.t -> bool
 (** [is_font_valid font] Check if a font is valid (font data loaded, WARNING:
     GPU texture not checked)*)
 
-val load_font_data : string -> int -> int ptr -> int -> int -> GlyphInfo.t CArray.t
-(** [load_font_data file_data font_size codepoints codepoint_count type] Load font
-    data for further use*)
+val load_font_data :
+  string -> int -> int ptr -> int -> int -> GlyphInfo.t CArray.t
+(** [load_font_data file_data font_size codepoints codepoint_count type] Load
+    font data for further use*)
 
 val gen_image_font_atlas :
   GlyphInfo.t ptr -> Rectangle.t ptr ptr -> int -> int -> int -> int -> Image.t
@@ -2989,9 +3002,10 @@ val measure_text : string -> int -> int
 val measure_text_ex : Font.t -> string -> float -> float -> Vector2.t
 (** [measure_text_ex font text font_size spacing] Measure string size for Font*)
 
-val measure_text_codepoints : Font.t -> int CArray.t -> float -> float -> Vector2.t
-(** [measure_text_codepoints font codepoints font_size spacing] Measure string size
-    for an existing array of codepoints for Font*)
+val measure_text_codepoints :
+  Font.t -> int CArray.t -> float -> float -> Vector2.t
+(** [measure_text_codepoints font codepoints font_size spacing] Measure string
+    size for an existing array of codepoints for Font*)
 
 val get_glyph_index : Font.t -> int -> int
 (** [get_glyph_index font codepoint] Get glyph index position in font for a
@@ -3060,19 +3074,23 @@ val text_replace : string -> string -> string -> string
 (** [text_replace text search replacement] Replace text string with new string*)
 
 val text_replace_alloc : string -> string -> string -> string
-(** [text_replace_alloc text search replacement] Replace text string with new string, memory must be MemFree()*)
+(** [text_replace_alloc text search replacement] Replace text string with new
+    string, memory must be MemFree()*)
 
 val text_replace_between : string -> string -> string -> string -> string
-(** [text_replace_between text begin end replacement] Replace text between two specific strings*)
+(** [text_replace_between text begin end replacement] Replace text between two
+    specific strings*)
 
 val text_replace_between_alloc : string -> string -> string -> string -> string
-(** [text_replace_between_alloc text begin end replacement] Replace text between two specific strings, memory must be MemFree()*)
+(** [text_replace_between_alloc text begin end replacement] Replace text between
+    two specific strings, memory must be MemFree()*)
 
 val text_insert : string -> string -> int -> string
 (** [text_insert text insert position] Insert text in a defined byte position*)
 
 val text_insert_alloc : string -> string -> int -> string
-(** [text_insert_alloc text insert position] Insert text in a defined byte position, memory must be MemFree()*)
+(** [text_insert_alloc text insert position] Insert text in a defined byte
+    position, memory must be MemFree()*)
 
 val text_append : string -> string -> int ptr -> unit
 (** [text_append text append position] Append text at specific position and move
@@ -3356,9 +3374,16 @@ val load_model_animations : string -> ModelAnimation.t CArray.t
 val update_model_animation : Model.t -> ModelAnimation.t -> int -> unit
 (** [update_model_animation model anim frame] Update model animation pose (CPU)*)
 
-val update_model_animation_ex : Model.t -> ModelAnimation.t -> float -> ModelAnimation.t -> float -> float -> unit
-(** [update_model_animation_ex model animA frameA animB frameB blend] Update model
-    animation pose, blending two animations*)
+val update_model_animation_ex :
+  Model.t ->
+  ModelAnimation.t ->
+  float ->
+  ModelAnimation.t ->
+  float ->
+  float ->
+  unit
+(** [update_model_animation_ex model animA frameA animB frameB blend] Update
+    model animation pose, blending two animations*)
 
 val unload_model_animations : ModelAnimation.t CArray.t -> unit
 (** [unload_model_animations animations anim_count] Unload animation array data*)
