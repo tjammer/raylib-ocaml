@@ -32,11 +32,19 @@
  (targets raygui_impl.c)
  (deps
   (source_tree ../vendor/raygui)
-  (source_tree ../vendor/raylib))
+  (source_tree ../vendor/raylib)
+  ../compile_raygui.patch
+  ../apply_patch.exe
+  ../chmodx.exe)
  (action
-  (with-stdout-to
-   raygui_impl.c
-   (progn
-    (echo "#define RAYGUI_IMPLEMENTATION\n")
-    (echo "#define RAYGUI_SUPPORT_ICONS\n")
-    (echo "#include \"raygui.h\"\n")))))
+  (progn
+   (run ../chmodx.exe ../vendor/raygui/src/raygui.h)
+   (chdir
+    ..
+    (run ./apply_patch.exe compile_raygui.patch))
+   (with-stdout-to
+    raygui_impl.c
+    (progn
+     (echo "#define RAYGUI_IMPLEMENTATION\n")
+     (echo "#define RAYGUI_SUPPORT_ICONS\n")
+     (echo "#include \"raygui.h\"\n"))))))

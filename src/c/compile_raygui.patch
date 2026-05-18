@@ -1,0 +1,31 @@
+diff --git a/vendor/raygui/src/raygui.h b/vendor/raygui/src/raygui.h
+index da231eb..c79d316 100644
+--- a/vendor/raygui/src/raygui.h
++++ b/vendor/raygui/src/raygui.h
+@@ -1225,7 +1225,7 @@ static int ColorToInt(Color color);                 // Returns hexadecimal value
+ static Color Fade(Color color, float alpha);        // Color fade-in or fade-out, alpha goes from 0.0f to 1.0f
+ static bool CheckCollisionPointRec(Vector2 point, Rectangle rec);   // Check if point is inside rectangle
+ static const char *TextFormat(const char *text, ...);               // Formatting of text with variables to 'embed'
+-static const char **TextSplit(const char *text, char delimiter, int *count);    // Split text into multiple strings
++static char **TextSplit(const char *text, char delimiter, int *count);    // Split text into multiple strings
+ static int TextToInteger(const char *text);         // Get integer value from text
+ static int GetCodepoint(const char *text, int *bytesProcessed);     // Get next codepoint in a UTF-8 encoded text
+ static const char *CodepointToUTF8(int codepoint, int *byteSize);   // Encode codepoint into UTF-8 text (char array size returned as parameter)
+@@ -3332,7 +3332,7 @@ void GuiLoadStyle(const char *fileName)
+                             if (charValues != NULL)
+                             {
+                                 int glyphCount = 0;
+-                                const char **chars = TextSplit(charValues, '\n', &glyphCount);
++                                char **chars = TextSplit(charValues, '\n', &glyphCount);
+ 
+                                 int *values = (int *)RAYGUI_MALLOC(glyphCount*sizeof(int));
+                                 for (int i = 0; i < glyphCount; i++) values[i] = TextToInteger(chars[i]);
+@@ -4135,7 +4135,7 @@ static void DrawRectangleGradientV(int posX, int posY, int width, int height, Co
+ #define TEXTSPLIT_MAX_SUBSTRINGS_COUNT       128        // Size of static pointers array: TextSplit()
+ 
+ // Split string into multiple strings
+-const char **TextSplit(const char *text, char delimiter, int *count)
++char **TextSplit(const char *text, char delimiter, int *count)
+ {
+     // NOTE: Current implementation returns a copy of the provided string with '\0' (string end delimiter)
+     // inserted between strings defined by "delimiter" parameter. No memory is dynamically allocated,
