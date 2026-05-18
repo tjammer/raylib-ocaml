@@ -2,9 +2,6 @@ let width = 800
 let height = 450
 let position = Raylib.Vector3.create 0.0 0.0 0.0
 
-let asset_path (filename : string) =
-  Raylib.get_application_directory () ^ filename
-
 let setup () =
   let open Raylib in
   init_window width height "raylib [models] example - model animation";
@@ -15,14 +12,13 @@ let setup () =
       (Vector3.create 0.0 1.0 0.0)
       45.0 CameraProjection.Perspective
   in
-  let path = asset_path "" in
-  let model = load_model (path ^ "./resources/guy/guy.iqm") in
-  let texture = load_texture (path ^ "./resources/guy/guytex.png") in
+  let model = load_model "./resources/guy/guy.iqm" in
+  let texture = load_texture "./resources/guy/guytex.png" in
   set_material_texture
     (CArray.get (Model.materials model) 0 |> addr)
     MaterialMapIndex.Albedo texture;
 
-  let anims = load_model_animations (path ^ "./resources/guy/guyanim.iqm") in
+  let anims = load_model_animations "./resources/guy/guyanim.iqm" in
 
   disable_cursor ();
   set_target_fps 60;
