@@ -1,7 +1,4 @@
 (executable
  (name raylib_gen)
- (public_name raylib-gen)
- (package raylib-gen)
- (optional)
  (modules Raylib_gen)
  (libraries containers re yojson))

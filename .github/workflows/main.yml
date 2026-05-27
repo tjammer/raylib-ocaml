@@ -39,6 +39,7 @@ jobs:
       - run: opam pin -n .
 
       - run: opam install . --deps-only
+      - run: opam install containers re yojson
 
       - run: opam exec -- dune build
         if: matrix.ocaml-compiler != '4.11.2'

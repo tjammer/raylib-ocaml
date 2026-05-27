@@ -76,15 +76,3 @@
    (>= 0.14))
   (raylib
    (= :version))))
-
-(package
- (name raylib-gen)
- (version 0.1.0)
- (description "Binding generation for raylib")
- (synopsis "Binding generation for raylib")
- (depends
-  (ocaml
-   (>= 4.08.0))
-  yojson
-  re
-  containers))
