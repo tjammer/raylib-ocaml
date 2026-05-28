@@ -1,7 +1,7 @@
 (library
  (name raylib_callbacks_c)
  (package raylib-callbacks)
- (libraries raylib_c ctypes-foreign)
+ (libraries raylib ctypes-foreign)
  (ctypes
   (external_library_name raylib)
   (build_flags_resolver
