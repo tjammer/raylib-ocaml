@@ -6,7 +6,7 @@ let height = 450
 let count = 10000
 
 let main () =
-  set_config_flags [ ConfigFlags.Msaa_4x_hint; ConfigFlags.Window_resizable ];
+  set_config_flags ConfigFlags.(msaa_4x_hint + window_resizable);
   init_window width height "raylib [shaders] example - rlgl mesh instanced";
 
   let position = Vector3.create 125.0 125.0 125.0 in
@@ -58,10 +58,9 @@ let main () =
 
   (* Get the locs array and assign the locations of the variables. This is necessary for the draw_mesh_instanced call.
    * Curiously, draw_mesh works without setting these. *)
-  let locs = Shader.locs shader in
-  CArray.set locs ShaderLocationIndex.(Matrix_mvp |> to_int) mvp;
-  CArray.set locs ShaderLocationIndex.(Vector_view |> to_int) view_pos;
-  CArray.set locs ShaderLocationIndex.(Matrix_model |> to_int) instance;
+  Shader.set_loc shader Matrix_mvp mvp;
+  Shader.set_loc shader Vector_view view_pos;
+  Shader.set_loc shader Matrix_model instance;
 
   let ambient_vec = Vector4.create 0.2 0.2 0.2 1.0 in
   set_shader_value shader ambient

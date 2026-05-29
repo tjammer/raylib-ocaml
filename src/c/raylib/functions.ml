@@ -1,7 +1,7 @@
 module Functions (F : Ctypes.FOREIGN) = struct
   open Ctypes
   open F
-  open Fixed_types
+  open Raylib_types_generated
 
   let init_window =
     foreign "InitWindow" (int @-> int @-> string @-> returning void)
@@ -23,10 +23,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "IsWindowState" (ConfigFlags.t @-> returning bool)
 
   let set_window_state =
-    foreign "SetWindowState" (ConfigFlags.t_bitmask @-> returning void)
+    foreign "SetWindowState" (ConfigFlags.t @-> returning void)
 
   let clear_window_state =
-    foreign "ClearWindowState" (ConfigFlags.t_bitmask @-> returning void)
+    foreign "ClearWindowState" (ConfigFlags.t @-> returning void)
 
   let toggle_fullscreen = foreign "ToggleFullscreen" (void @-> returning void)
 
@@ -227,7 +227,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let take_screenshot = foreign "TakeScreenshot" (string @-> returning void)
 
   let set_config_flags =
-    foreign "SetConfigFlags" (ConfigFlags.t_bitmask @-> returning void)
+    foreign "SetConfigFlags" (ConfigFlags.t @-> returning void)
 
   let open_url = foreign "OpenURL" (string @-> returning void)
 
@@ -485,7 +485,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "GetTouchPointCount" (void @-> returning int)
 
   let set_gestures_enabled =
-    foreign "SetGesturesEnabled" (Gesture.t_bitmask @-> returning void)
+    foreign "SetGesturesEnabled" (Gesture.t @-> returning void)
 
   let is_gesture_detected =
     foreign "IsGestureDetected" (Gesture.t @-> returning bool)
@@ -1784,100 +1784,117 @@ module Functions (F : Ctypes.FOREIGN) = struct
       (* Module Functions Definition - Vector2 math *)
       (*---------------------------------------------------------------------------------- *)
       (* Vector with components value 0.0f *)
-      let zero = foreign "Vector2Zero" (void @-> returning Fixed_types.Vector2.t)
+      let zero =
+        foreign "Vector2Zero"
+          (void @-> returning Raylib_types_generated.Vector2.t)
 
       (* Vector with components value 1.0f *)
-      let one = foreign "Vector2One" (void @-> returning Fixed_types.Vector2.t)
+      let one =
+        foreign "Vector2One"
+          (void @-> returning Raylib_types_generated.Vector2.t)
 
       (* Add two vectors (v1 + v2) *)
       let add =
         foreign "Vector2Add"
-          (Fixed_types.Vector2.t @-> Fixed_types.Vector2.t
-          @-> returning Fixed_types.Vector2.t)
+          (Raylib_types_generated.Vector2.t @-> Raylib_types_generated.Vector2.t
+          @-> returning Raylib_types_generated.Vector2.t)
 
       let add_value =
         foreign "Vector2AddValue"
-          (Fixed_types.Vector2.t @-> float @-> returning Fixed_types.Vector2.t)
+          (Raylib_types_generated.Vector2.t @-> float
+          @-> returning Raylib_types_generated.Vector2.t)
 
       (* Subtract two vectors (v1 - v2) *)
       let subtract =
         foreign "Vector2Subtract"
-          (Fixed_types.Vector2.t @-> Fixed_types.Vector2.t
-          @-> returning Fixed_types.Vector2.t)
+          (Raylib_types_generated.Vector2.t @-> Raylib_types_generated.Vector2.t
+          @-> returning Raylib_types_generated.Vector2.t)
 
       let subtract_value =
         foreign "Vector2SubtractValue"
-          (Fixed_types.Vector2.t @-> float @-> returning Fixed_types.Vector2.t)
+          (Raylib_types_generated.Vector2.t @-> float
+          @-> returning Raylib_types_generated.Vector2.t)
 
       (* Calculate vector length *)
       let length =
-        foreign "Vector2Length" (Fixed_types.Vector2.t @-> returning float)
+        foreign "Vector2Length"
+          (Raylib_types_generated.Vector2.t @-> returning float)
 
       let length_sqr =
-        foreign "Vector2LengthSqr" (Fixed_types.Vector2.t @-> returning float)
+        foreign "Vector2LengthSqr"
+          (Raylib_types_generated.Vector2.t @-> returning float)
 
       (* Calculate two vectors dot product *)
       let dot_product =
         foreign "Vector2DotProduct"
-          (Fixed_types.Vector2.t @-> Fixed_types.Vector2.t @-> returning float)
+          (Raylib_types_generated.Vector2.t @-> Raylib_types_generated.Vector2.t
+         @-> returning float)
 
       (* Calculate distance between two vectors *)
       let distance =
         foreign "Vector2Distance"
-          (Fixed_types.Vector2.t @-> Fixed_types.Vector2.t @-> returning float)
+          (Raylib_types_generated.Vector2.t @-> Raylib_types_generated.Vector2.t
+         @-> returning float)
 
       (* Calculate angle from two vectors in X-axis *)
       let angle =
         foreign "Vector2Angle"
-          (Fixed_types.Vector2.t @-> Fixed_types.Vector2.t @-> returning float)
+          (Raylib_types_generated.Vector2.t @-> Raylib_types_generated.Vector2.t
+         @-> returning float)
 
       (* Scale vector (multiply by value) *)
       let scale =
         foreign "Vector2Scale"
-          (Fixed_types.Vector2.t @-> float @-> returning Fixed_types.Vector2.t)
+          (Raylib_types_generated.Vector2.t @-> float
+          @-> returning Raylib_types_generated.Vector2.t)
 
       (* Multiply vector by vector *)
       let multiply =
         foreign "Vector2Multiply"
-          (Fixed_types.Vector2.t @-> Fixed_types.Vector2.t
-          @-> returning Fixed_types.Vector2.t)
+          (Raylib_types_generated.Vector2.t @-> Raylib_types_generated.Vector2.t
+          @-> returning Raylib_types_generated.Vector2.t)
 
       (* Negate vector *)
       let negate =
         foreign "Vector2Negate"
-          (Fixed_types.Vector2.t @-> returning Fixed_types.Vector2.t)
+          (Raylib_types_generated.Vector2.t
+          @-> returning Raylib_types_generated.Vector2.t)
 
       (* Divide vector by vector *)
       let divide =
         foreign "Vector2Divide"
-          (Fixed_types.Vector2.t @-> Fixed_types.Vector2.t
-          @-> returning Fixed_types.Vector2.t)
+          (Raylib_types_generated.Vector2.t @-> Raylib_types_generated.Vector2.t
+          @-> returning Raylib_types_generated.Vector2.t)
 
       (* Normalize provided vector *)
       let normalize =
         foreign "Vector2Normalize"
-          (Fixed_types.Vector2.t @-> returning Fixed_types.Vector2.t)
+          (Raylib_types_generated.Vector2.t
+          @-> returning Raylib_types_generated.Vector2.t)
 
       (* Calculate linear interpolation between two vectors *)
       let lerp =
         foreign "Vector2Lerp"
-          (Fixed_types.Vector2.t @-> Fixed_types.Vector2.t @-> float
-          @-> returning Fixed_types.Vector2.t)
+          (Raylib_types_generated.Vector2.t @-> Raylib_types_generated.Vector2.t
+         @-> float
+          @-> returning Raylib_types_generated.Vector2.t)
 
       let reflect =
         foreign "Vector2Reflect"
-          (Fixed_types.Vector2.t @-> Fixed_types.Vector2.t
-          @-> returning Fixed_types.Vector2.t)
+          (Raylib_types_generated.Vector2.t @-> Raylib_types_generated.Vector2.t
+          @-> returning Raylib_types_generated.Vector2.t)
 
       (* Rotate Vector by float in Degrees. *)
       let rotate =
         foreign "Vector2Rotate"
-          (Fixed_types.Vector2.t @-> float @-> returning Fixed_types.Vector2.t)
+          (Raylib_types_generated.Vector2.t @-> float
+          @-> returning Raylib_types_generated.Vector2.t)
 
       let move_towards =
         foreign "Vector2MoveTowards"
-          (Fixed_types.Vector2.t @-> Fixed_types.Vector2.t @-> float
-          @-> returning Fixed_types.Vector2.t)
+          (Raylib_types_generated.Vector2.t @-> Raylib_types_generated.Vector2.t
+         @-> float
+          @-> returning Raylib_types_generated.Vector2.t)
     end
 
     module Vector3 = struct
@@ -1885,143 +1902,160 @@ module Functions (F : Ctypes.FOREIGN) = struct
       (* Module Functions Definition - Vector3 math *)
       (*---------------------------------------------------------------------------------- *)
       (* Vector with components value 0.0f *)
-      let zero = foreign "Vector3Zero" (void @-> returning Fixed_types.Vector3.t)
+      let zero =
+        foreign "Vector3Zero"
+          (void @-> returning Raylib_types_generated.Vector3.t)
 
       (* Vector with components value 1.0f *)
-      let one = foreign "Vector3One" (void @-> returning Fixed_types.Vector3.t)
+      let one =
+        foreign "Vector3One"
+          (void @-> returning Raylib_types_generated.Vector3.t)
 
       (* Add two vectors *)
       let add =
         foreign "Vector3Add"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t
-          @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       let add_value =
         foreign "Vector3AddValue"
-          (Fixed_types.Vector3.t @-> float @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> float
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Subtract two vectors *)
       let subtract =
         foreign "Vector3Subtract"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t
-          @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       let subtract_value =
         foreign "Vector3SubtractValue"
-          (Fixed_types.Vector3.t @-> float @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> float
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Multiply vector by scalar *)
       let scale =
         foreign "Vector3Scale"
-          (Fixed_types.Vector3.t @-> float @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> float
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Multiply vector by vector *)
       let multiply =
         foreign "Vector3Multiply"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t
-          @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Calculate two vectors cross product *)
       let cross_product =
         foreign "Vector3CrossProduct"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t
-          @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Calculate one vector perpendicular vector *)
       let perpendicular =
         foreign "Vector3Perpendicular"
-          (Fixed_types.Vector3.t @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Calculate vector length *)
       let length =
-        foreign "Vector3Length" (Fixed_types.Vector3.t @-> returning float)
+        foreign "Vector3Length"
+          (Raylib_types_generated.Vector3.t @-> returning float)
 
       let length_sqr =
-        foreign "Vector3LengthSqr" (Fixed_types.Vector3.t @-> returning float)
+        foreign "Vector3LengthSqr"
+          (Raylib_types_generated.Vector3.t @-> returning float)
 
       (* Calculate two vectors dot product *)
       let dot_product =
         foreign "Vector3DotProduct"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t @-> returning float)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+         @-> returning float)
 
       (* Calculate distance between two vectors *)
       let distance =
         foreign "Vector3Distance"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t @-> returning float)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+         @-> returning float)
 
       (* Negate provided vector (invert direction) *)
       let negate =
         foreign "Vector3Negate"
-          (Fixed_types.Vector3.t @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Divide vector by vector *)
       let divide =
         foreign "Vector3Divide"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t
-          @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Normalize provided vector *)
       let normalize =
         foreign "Vector3Normalize"
-          (Fixed_types.Vector3.t @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Orthonormalize provided vectors *)
       (* Makes vectors normalized and orthogonal to each other *)
       (* Gram-Schmidt function implementation *)
       let ortho_normalize =
         foreign "Vector3OrthoNormalize"
-          (ptr Fixed_types.Vector3.t @-> ptr Fixed_types.Vector3.t
-         @-> returning void)
+          (ptr Raylib_types_generated.Vector3.t
+          @-> ptr Raylib_types_generated.Vector3.t
+          @-> returning void)
 
       (* Transforms a Vector3 by a given Matrix *)
       let transform =
         foreign "Vector3Transform"
-          (Fixed_types.Vector3.t @-> Fixed_types.Matrix.t
-          @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Matrix.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Transform a vector by quaternion rotation *)
       let rotate_by_quaternion =
         foreign "Vector3RotateByQuaternion"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector4.t
-          @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector4.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Calculate linear interpolation between two vectors *)
       let lerp =
         foreign "Vector3Lerp"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t @-> float
-          @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+         @-> float
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Calculate reflected vector to normal *)
       let reflect =
         foreign "Vector3Reflect"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t
-          @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Return min value for each pair of components *)
       let min =
         foreign "Vector3Min"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t
-          @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Return max value for each pair of components *)
       let max =
         foreign "Vector3Max"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t
-          @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c) *)
       (* NOTE: Assumes P is on the plane of the triangle *)
       let barycenter =
         foreign "Vector3Barycenter"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t
-         @-> Fixed_types.Vector3.t @-> Fixed_types.Vector3.t
-          @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+         @-> Raylib_types_generated.Vector3.t
+         @-> Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       let unproject =
         foreign "Vector3Unproject"
-          (Fixed_types.Vector3.t @-> Fixed_types.Matrix.t
-         @-> Fixed_types.Matrix.t
-          @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Matrix.t
+         @-> Raylib_types_generated.Matrix.t
+          @-> returning Raylib_types_generated.Vector3.t)
     end
 
     module Matrix = struct
@@ -2030,110 +2064,123 @@ module Functions (F : Ctypes.FOREIGN) = struct
       (*---------------------------------------------------------------------------------- *)
       (* Compute matrix determinant *)
       let determinant =
-        foreign "MatrixDeterminant" (Fixed_types.Matrix.t @-> returning float)
+        foreign "MatrixDeterminant"
+          (Raylib_types_generated.Matrix.t @-> returning float)
 
       (* Returns the trace of the matrix (sum of the values along the diagonal) *)
       let trace =
-        foreign "MatrixTrace" (Fixed_types.Matrix.t @-> returning float)
+        foreign "MatrixTrace"
+          (Raylib_types_generated.Matrix.t @-> returning float)
 
       (* Transposes provided matrix *)
       let transpose =
         foreign "MatrixTranspose"
-          (Fixed_types.Matrix.t @-> returning Fixed_types.Matrix.t)
+          (Raylib_types_generated.Matrix.t
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Invert provided matrix *)
       let invert =
         foreign "MatrixInvert"
-          (Fixed_types.Matrix.t @-> returning Fixed_types.Matrix.t)
+          (Raylib_types_generated.Matrix.t
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns identity matrix *)
       let identity =
-        foreign "MatrixIdentity" (void @-> returning Fixed_types.Matrix.t)
+        foreign "MatrixIdentity"
+          (void @-> returning Raylib_types_generated.Matrix.t)
 
       (* Add two matrices *)
       let add =
         foreign "MatrixAdd"
-          (Fixed_types.Matrix.t @-> Fixed_types.Matrix.t
-          @-> returning Fixed_types.Matrix.t)
+          (Raylib_types_generated.Matrix.t @-> Raylib_types_generated.Matrix.t
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Subtract two matrices (left - right) *)
       let subtract =
         foreign "MatrixSubtract"
-          (Fixed_types.Matrix.t @-> Fixed_types.Matrix.t
-          @-> returning Fixed_types.Matrix.t)
+          (Raylib_types_generated.Matrix.t @-> Raylib_types_generated.Matrix.t
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns translation matrix *)
       let translate =
         foreign "MatrixTranslate"
-          (float @-> float @-> float @-> returning Fixed_types.Matrix.t)
+          (float @-> float @-> float
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Create rotation matrix from axis and angle *)
       (* NOTE: Angle should be provided in radians *)
       let rotate =
         foreign "MatrixRotate"
-          (Fixed_types.Vector3.t @-> float @-> returning Fixed_types.Matrix.t)
+          (Raylib_types_generated.Vector3.t @-> float
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns xyz-rotation matrix (angles in radians) *)
       let rotate_xyz =
         foreign "MatrixRotateXYZ"
-          (Fixed_types.Vector3.t @-> returning Fixed_types.Matrix.t)
+          (Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Matrix.t)
 
       let rotate_zyx =
         foreign "MatrixRotateZYX"
-          (Fixed_types.Vector3.t @-> returning Fixed_types.Matrix.t)
+          (Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns x-rotation matrix (angle in radians) *)
       let rotate_x =
-        foreign "MatrixRotateX" (float @-> returning Fixed_types.Matrix.t)
+        foreign "MatrixRotateX"
+          (float @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns y-rotation matrix (angle in radians) *)
       let rotate_y =
-        foreign "MatrixRotateY" (float @-> returning Fixed_types.Matrix.t)
+        foreign "MatrixRotateY"
+          (float @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns z-rotation matrix (angle in radians) *)
       let rotate_z =
-        foreign "MatrixRotateZ" (float @-> returning Fixed_types.Matrix.t)
+        foreign "MatrixRotateZ"
+          (float @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns scaling matrix *)
       let scale =
         foreign "MatrixScale"
-          (float @-> float @-> float @-> returning Fixed_types.Matrix.t)
+          (float @-> float @-> float
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns two matrix multiplication *)
       (* NOTE: When multiplying matrices... the order matters! *)
       let multiply =
         foreign "MatrixMultiply"
-          (Fixed_types.Matrix.t @-> Fixed_types.Matrix.t
-          @-> returning Fixed_types.Matrix.t)
+          (Raylib_types_generated.Matrix.t @-> Raylib_types_generated.Matrix.t
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns perspective projection matrix *)
       let frustum =
         foreign "MatrixFrustum"
           (double @-> double @-> double @-> double @-> double @-> double
-          @-> returning Fixed_types.Matrix.t)
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns perspective projection matrix *)
       (* NOTE: Angle should be provided in radians *)
       let perspective =
         foreign "MatrixPerspective"
           (double @-> double @-> double @-> double
-          @-> returning Fixed_types.Matrix.t)
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns orthographic projection matrix *)
       let ortho =
         foreign "MatrixOrtho"
           (double @-> double @-> double @-> double @-> double @-> double
-          @-> returning Fixed_types.Matrix.t)
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns camera look-at matrix (view matrix) *)
       let look_at =
         foreign "MatrixLookAt"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t
-         @-> Fixed_types.Vector3.t
-          @-> returning Fixed_types.Matrix.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+         @-> Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns float array of matrix data *)
-      (* let to_float_v = foreign "MatrixToFloatV" (Fixed_types.Matrix.t @-> returning float16) *)
+      (* let to_float_v = foreign "MatrixToFloatV" (Raylib_types_generated.Matrix.t @-> returning float16) *)
     end
 
     module Vector4 = struct
@@ -2142,117 +2189,133 @@ module Functions (F : Ctypes.FOREIGN) = struct
       (*---------------------------------------------------------------------------------- *)
       (* Returns identity quaternion *)
       let identity =
-        foreign "QuaternionIdentity" (void @-> returning Fixed_types.Vector4.t)
+        foreign "QuaternionIdentity"
+          (void @-> returning Raylib_types_generated.Vector4.t)
 
       let add =
         foreign "QuaternionAdd"
-          (Fixed_types.Vector4.t @-> Fixed_types.Vector4.t
-          @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector4.t @-> Raylib_types_generated.Vector4.t
+          @-> returning Raylib_types_generated.Vector4.t)
 
       let add_value =
         foreign "QuaternionAddValue"
-          (Fixed_types.Vector4.t @-> float @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector4.t @-> float
+          @-> returning Raylib_types_generated.Vector4.t)
 
       let subtract =
         foreign "QuaternionSubtract"
-          (Fixed_types.Vector4.t @-> Fixed_types.Vector4.t
-          @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector4.t @-> Raylib_types_generated.Vector4.t
+          @-> returning Raylib_types_generated.Vector4.t)
 
       let subtract_value =
         foreign "QuaternionSubtractValue"
-          (Fixed_types.Vector4.t @-> float @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector4.t @-> float
+          @-> returning Raylib_types_generated.Vector4.t)
 
       (* Computes the length of a quaternion *)
       let length =
-        foreign "QuaternionLength" (Fixed_types.Vector4.t @-> returning float)
+        foreign "QuaternionLength"
+          (Raylib_types_generated.Vector4.t @-> returning float)
 
       (* Normalize provided quaternion *)
       let normalize =
         foreign "QuaternionNormalize"
-          (Fixed_types.Vector4.t @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector4.t
+          @-> returning Raylib_types_generated.Vector4.t)
 
       (* Invert provided quaternion *)
       let invert =
         foreign "QuaternionInvert"
-          (Fixed_types.Vector4.t @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector4.t
+          @-> returning Raylib_types_generated.Vector4.t)
 
       (* Calculate two quaternion multiplication *)
       let multiply =
         foreign "QuaternionMultiply"
-          (Fixed_types.Vector4.t @-> Fixed_types.Vector4.t
-          @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector4.t @-> Raylib_types_generated.Vector4.t
+          @-> returning Raylib_types_generated.Vector4.t)
 
       let scale =
         foreign "QuaternionScale"
-          (Fixed_types.Vector4.t @-> float @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector4.t @-> float
+          @-> returning Raylib_types_generated.Vector4.t)
 
       let divide =
         foreign "QuaternionDivide"
-          (Fixed_types.Vector4.t @-> Fixed_types.Vector4.t
-          @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector4.t @-> Raylib_types_generated.Vector4.t
+          @-> returning Raylib_types_generated.Vector4.t)
 
       (* Calculate linear interpolation between two quaternions *)
       let lerp =
         foreign "QuaternionLerp"
-          (Fixed_types.Vector4.t @-> Fixed_types.Vector4.t @-> float
-          @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector4.t @-> Raylib_types_generated.Vector4.t
+         @-> float
+          @-> returning Raylib_types_generated.Vector4.t)
 
       (* Calculate slerp-optimized interpolation between two quaternions *)
       let nlerp =
         foreign "QuaternionNlerp"
-          (Fixed_types.Vector4.t @-> Fixed_types.Vector4.t @-> float
-          @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector4.t @-> Raylib_types_generated.Vector4.t
+         @-> float
+          @-> returning Raylib_types_generated.Vector4.t)
 
       (* Calculates spherical linear interpolation between two quaternions *)
       let slerp =
         foreign "QuaternionSlerp"
-          (Fixed_types.Vector4.t @-> Fixed_types.Vector4.t @-> float
-          @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector4.t @-> Raylib_types_generated.Vector4.t
+         @-> float
+          @-> returning Raylib_types_generated.Vector4.t)
 
       (* Calculate quaternion based on the rotation from one vector to another *)
       let from_vector3_to_vector3 =
         foreign "QuaternionFromVector3ToVector3"
-          (Fixed_types.Vector3.t @-> Fixed_types.Vector3.t
-          @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector3.t @-> Raylib_types_generated.Vector3.t
+          @-> returning Raylib_types_generated.Vector4.t)
 
       (* Returns a quaternion for a given rotation matrix *)
       let from_matrix =
         foreign "QuaternionFromMatrix"
-          (Fixed_types.Matrix.t @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Matrix.t
+          @-> returning Raylib_types_generated.Vector4.t)
 
       (* Returns a matrix for a given quaternion *)
       let to_matrix =
         foreign "QuaternionToMatrix"
-          (Fixed_types.Vector4.t @-> returning Fixed_types.Matrix.t)
+          (Raylib_types_generated.Vector4.t
+          @-> returning Raylib_types_generated.Matrix.t)
 
       (* Returns rotation quaternion for an angle and axis *)
       (* NOTE: angle must be provided in radians *)
       let from_axis_angle =
         foreign "QuaternionFromAxisAngle"
-          (Fixed_types.Vector3.t @-> float @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector3.t @-> float
+          @-> returning Raylib_types_generated.Vector4.t)
 
       (* Returns the rotation angle and axis for a given quaternion *)
       let to_axis_angle =
         foreign "QuaternionToAxisAngle"
-          (Fixed_types.Vector4.t @-> ptr Fixed_types.Vector3.t @-> ptr float
-         @-> returning void)
+          (Raylib_types_generated.Vector4.t
+          @-> ptr Raylib_types_generated.Vector3.t
+          @-> ptr float @-> returning void)
 
       (* Returns he quaternion equivalent to Euler angles *)
       let from_euler =
         foreign "QuaternionFromEuler"
-          (float @-> float @-> float @-> returning Fixed_types.Vector4.t)
+          (float @-> float @-> float
+          @-> returning Raylib_types_generated.Vector4.t)
 
       (* Return the Euler angles equivalent to quaternion (roll, pitch, yaw) *)
       (* NOTE: Angles are returned in a Vector3 struct in degrees *)
       let to_euler =
         foreign "QuaternionToEuler"
-          (Fixed_types.Vector4.t @-> returning Fixed_types.Vector3.t)
+          (Raylib_types_generated.Vector4.t
+          @-> returning Raylib_types_generated.Vector3.t)
 
       (* Transform a quaternion given a transformation matrix *)
       let transform =
         foreign "QuaternionTransform"
-          (Fixed_types.Vector4.t @-> Fixed_types.Matrix.t
-          @-> returning Fixed_types.Vector4.t)
+          (Raylib_types_generated.Vector4.t @-> Raylib_types_generated.Matrix.t
+          @-> returning Raylib_types_generated.Vector4.t)
     end
   end
 end

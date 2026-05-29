@@ -8,6 +8,8 @@ open Containers
 
 type name = { name : string; cname : string }
 
+let sprf = Format.sprintf
+
 module Enum = struct
   type t = { name : name; values : name list; bitmask : bool }
 
@@ -55,43 +57,36 @@ module Enum = struct
     match values with [] -> None | _ -> Some { name; values; bitmask }
 
   let stubs enum =
-    let lower =
-      (* "  let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)\n" *)
-      (* ^ "  let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))\n\ *)
-         (*    end\n\n" *)
-      "  end\n\n"
-    in
+    let lower = "  end\n\n" in
 
-    Printf.sprintf "module %s = struct\n" enum.name.name
-    ^ "  type t =\n"
-    ^ (List.map
-         (fun (value : name) -> Printf.sprintf "    | %s\n" value.name)
-         enum.values
-      |> String.concat "")
-    ^ "\n  let vals =\n    [\n"
-    ^ (List.map
-         (fun (value : name) ->
-           Printf.sprintf "      (%s, constant \"%s\" int64_t);\n" value.name
-             value.cname)
-         enum.values
-      |> String.concat "")
-    ^ "    ]\n\n"
-    ^ Printf.sprintf "  let t = enum \"%s\" ~typedef:true vals\n\n"
-        enum.name.cname
-    ^ lower
-
-  let impl enum =
-    let nm = enum.name.name in
-    Printf.sprintf "module %s = struct\n  include %s\n\n" nm nm
+    sprf "module %s = struct\n" enum.name.name
     ^ (if enum.bitmask then
-         Printf.sprintf
-           "  let t_bitmask = build_enum_bitmask \"%s\" Ctypes.int64_t \
-            ~typedef:true vals\n\n"
-           nm
-       else "")
-    ^ "  let to_int x = Unsigned.UInt32.to_int Ctypes.(coerce t uint32_t x)\n"
-    ^ "  let of_int i = Ctypes.(coerce uint32_t t (Unsigned.UInt32.of_int i))\n\
-       end\n\n"
+         "type t = Signed.Int64.t\n" ^ "let t = int64_t\n"
+         ^ (List.map
+              (fun (value : name) ->
+                sprf "let %s = constant \"%s\" int64_t\n"
+                  (String.lowercase_ascii value.name)
+                  value.cname)
+              enum.values
+           |> String.concat "")
+         ^ "\nlet ( + ) = Signed.Int64.logor"
+       else
+         "  type t =\n"
+         ^ (List.map
+              (fun (value : name) -> Printf.sprintf "    | %s\n" value.name)
+              enum.values
+           |> String.concat "")
+         ^ "\n  let vals =\n    [\n"
+         ^ (List.map
+              (fun (value : name) ->
+                Printf.sprintf "      (%s, constant \"%s\" int64_t);\n"
+                  value.name value.cname)
+              enum.values
+           |> String.concat "")
+         ^ "    ]\n\n"
+         ^ Printf.sprintf "  let t = enum \"%s\" ~typedef:true vals\n\n"
+             enum.name.cname)
+    ^ lower
 
   let itf enum =
     let lower =
@@ -556,11 +551,8 @@ let () =
     ^ "let max_shader_locations = [%c constant \"MAX_SHADER_LOCATIONS\" \
        camlint]"
   in
-  (* print_string stubs; *)
+  print_string stubs;
   ignore stubs;
-  let impl = enums |> List.map Enum.impl |> String.concat "" in
-  (* print_string impl; *)
-  ignore impl;
   let itf =
     "(** {1 Constants} *)\n\n"
     ^ (enums |> List.map Enum.itf |> String.concat "")
@@ -583,6 +575,6 @@ let () =
   (* print_string stubs; *)
   ignore stubs;
   let itf = funcs |> List.map Function.itf |> String.concat "\n" in
-  print_string itf;
-  (* ignore itf; *)
+  (* print_string itf; *)
+  ignore itf;
   ()

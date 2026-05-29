@@ -58,7 +58,7 @@ let clamp_zoom z = if z > 3.0 then 3.0 else if z < 0.25 then 0.25 else z
 (* Game functions *)
 let setup () =
   let open Raylib in
-  set_config_flags [ ConfigFlags.Window_resizable ];
+  set_config_flags ConfigFlags.window_resizable;
   init_window width height "raylib [core] example - 2d camera";
   let player = { position = half_screen; speed = 0.0; can_jump = false } in
   let env_items =

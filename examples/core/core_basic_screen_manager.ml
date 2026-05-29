@@ -38,7 +38,7 @@ let rec loop ~frames_counter ~current_screen () =
     let current_screen, frames_counter =
       let next =
         Raylib.is_key_pressed Raylib.Key.Enter
-        || Raylib.is_gesture_detected Raylib.Gesture.Tap
+        || Raylib.is_gesture_detected Raylib.Gesture.tap
       in
       match current_screen with
       | Screen.Logo ->

@@ -441,16 +441,14 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "rlLoadShaderProgram" (string @-> string @-> returning uint)
 
   (* Compile custom shader and return shader id (type: GL_VERTEX_SHADER, GL_FRAGMENT_SHADER)*)
-  let load_shader =
-    foreign "rlLoadShader" (string @-> int @-> returning uint)
+  let load_shader = foreign "rlLoadShader" (string @-> int @-> returning uint)
 
   (* Load custom shader program*)
   let load_shader_program_ex =
     foreign "rlLoadShaderProgramEx" (uint @-> uint @-> returning uint)
 
   (* Unload shader, loaded with rlLoadShader() *)
-  let unload_shader =
-    foreign "rlUnloadShader" (uint @-> returning void)
+  let unload_shader = foreign "rlUnloadShader" (uint @-> returning void)
 
   (* Unload shader program*)
   let unload_shader_program =

@@ -69,7 +69,7 @@ end
 
 let setup () =
   let open Raylib in
-  set_config_flags [ ConfigFlags.Msaa_4x_hint ];
+  set_config_flags ConfigFlags.msaa_4x_hint;
   init_window screen_width screen_height
     "raylib [shapes] example - cubic-bezier lines";
   let line =

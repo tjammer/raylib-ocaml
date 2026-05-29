@@ -10,8 +10,6 @@ module MouseButton = MouseButton
 module MouseCursor = MouseCursor
 module GamepadButton = GamepadButton
 module GamepadAxis = GamepadAxis
-module MaterialMapIndex = MaterialMapIndex
-module ShaderLocationIndex = ShaderLocationIndex
 module ShaderUniformDataType = ShaderUniformDataType
 module ShaderAttributeDataType = ShaderAttributeDataType
 module PixelFormat = PixelFormat
@@ -24,6 +22,21 @@ module Gesture = Gesture
 module CameraMode = CameraMode
 module CameraProjection = CameraProjection
 module NPatchLayout = NPatchLayout
+
+let to_int typ value = Unsigned.UInt32.to_int (coerce typ uint32_t value)
+let of_int typ value = coerce uint32_t typ (Unsigned.UInt32.of_int value)
+
+module MaterialMapIndex = struct
+  include MaterialMapIndex
+
+  let to_int x = to_int MaterialMapIndex.t x
+end
+
+module ShaderLocationIndex = struct
+  include ShaderLocationIndex
+
+  let to_int x = to_int ShaderLocationIndex.t x
+end
 
 (* Structs *)
 module Vector2 = struct
@@ -236,7 +249,7 @@ module Image = struct
   let width image = getf image Image.width
   let height image = getf image Image.height
   let mipmaps image = getf image Image.mipmaps
-  let format image = getf image Image.format |> PixelFormat.of_int
+  let format image = of_int PixelFormat.t (getf image Image.format)
 end
 
 module Texture = struct
@@ -251,14 +264,14 @@ module Texture = struct
     setf texture Texture.width width;
     setf texture Texture.height height;
     setf texture Texture.mipmaps mipmaps;
-    setf texture Texture.format (PixelFormat.to_int format);
+    setf texture Texture.format (to_int PixelFormat.t format);
     texture
 
   let id texture = getf texture Texture.id
   let width texture = getf texture Texture.width
   let height texture = getf texture Texture.height
   let mipmaps texture = getf texture Texture.mipmaps
-  let format texture = getf texture Texture.format |> PixelFormat.of_int
+  let format texture = of_int PixelFormat.t (getf texture Texture.format)
 end
 
 module Texture2D = Texture
@@ -293,7 +306,7 @@ module NPatchInfo = struct
     setf npatchinfo NPatchInfo.top top;
     setf npatchinfo NPatchInfo.right right;
     setf npatchinfo NPatchInfo.bottom bottom;
-    setf npatchinfo NPatchInfo.layout (NPatchLayout.to_int layout);
+    setf npatchinfo NPatchInfo.layout (to_int NPatchLayout.t layout);
     npatchinfo
 
   let source npatchinfo = getf npatchinfo NPatchInfo.source
@@ -303,7 +316,7 @@ module NPatchInfo = struct
   let bottom npatchinfo = getf npatchinfo NPatchInfo.bottom
 
   let layout npatchinfo =
-    getf npatchinfo NPatchInfo.layout |> NPatchLayout.of_int
+    of_int NPatchLayout.t (getf npatchinfo NPatchInfo.layout)
 
   let set_source npatchinfo source = setf npatchinfo NPatchInfo.source source
   let set_left npatchinfo left = setf npatchinfo NPatchInfo.left left
@@ -312,7 +325,7 @@ module NPatchInfo = struct
   let set_bottom npatchinfo bottom = setf npatchinfo NPatchInfo.bottom bottom
 
   let set_layout npatchinfo layout =
-    setf npatchinfo NPatchInfo.layout (NPatchLayout.to_int layout)
+    setf npatchinfo NPatchInfo.layout (to_int NPatchLayout.t layout)
 end
 
 module GlyphInfo = struct
@@ -388,7 +401,7 @@ module Camera3D = struct
     setf camera3d Camera3D.target target;
     setf camera3d Camera3D.up up;
     setf camera3d Camera3D.fovy fovy;
-    setf camera3d Camera3D.projection (CameraProjection.to_int projection);
+    setf camera3d Camera3D.projection (to_int CameraProjection.t projection);
     camera3d
 
   let position camera3d = getf camera3d Camera3D.position
@@ -397,7 +410,7 @@ module Camera3D = struct
   let fovy camera3d = getf camera3d Camera3D.fovy
 
   let projection camera3d =
-    getf camera3d Camera3D.projection |> CameraProjection.of_int
+    of_int CameraProjection.t (getf camera3d Camera3D.projection)
 
   let set_position camera3d position = setf camera3d Camera3D.position position
   let set_target camera3d target = setf camera3d Camera3D.target target
@@ -405,7 +418,7 @@ module Camera3D = struct
   let set_fovy camera3d fovy = setf camera3d Camera3D.fovy fovy
 
   let set_projection camera3d projection =
-    setf camera3d Camera3D.projection (CameraProjection.to_int projection)
+    setf camera3d Camera3D.projection (to_int CameraProjection.t projection)
 end
 
 module Camera = Camera3D
@@ -543,7 +556,8 @@ module Shader = struct
   let id shader = getf shader Shader.id
 
   let locs shader =
-    CArray.from_ptr (getf shader Shader.locs) max_shader_locations
+    CArray.from_ptr (getf shader Shader.locs)
+      Raylib_c.Types.max_shader_locations
 
   let set_loc shader loc_index loc =
     let locs = locs shader in

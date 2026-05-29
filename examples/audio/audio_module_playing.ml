@@ -45,7 +45,7 @@ let random_circle () =
 
 let setup () =
   let open Raylib in
-  set_config_flags [ ConfigFlags.Msaa_4x_hint ];
+  set_config_flags ConfigFlags.msaa_4x_hint;
   init_window width height "raylib [audio] example - module playing (streaming)";
   init_audio_device ();
 

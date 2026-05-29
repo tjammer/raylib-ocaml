@@ -21,33 +21,29 @@ module Raylib_c = Raylib_c
 (** {1 Constants} *)
 
 module ConfigFlags : sig
-  type t =
-    | Vsync_hint
-    | Fullscreen_mode
-    | Window_resizable
-    | Window_undecorated
-    | Window_hidden
-    | Window_minimized
-    | Window_maximized
-    | Window_unfocused
-    | Window_topmost
-    | Window_always_run
-    | Window_transparent
-    | Window_highdpi
-    | Window_mouse_passthrough
-    | Borderless_windowed_mode
-    | Msaa_4x_hint
-    | Interlaced_hint
+  type t
 
-  val to_int : t -> int
-  val of_int : int -> t
+  val vsync_hint : t
+  val fullscreen_mode : t
+  val window_resizable : t
+  val window_undecorated : t
+  val window_hidden : t
+  val window_minimized : t
+  val window_maximized : t
+  val window_unfocused : t
+  val window_topmost : t
+  val window_always_run : t
+  val window_transparent : t
+  val window_highdpi : t
+  val window_mouse_passthrough : t
+  val borderless_windowed_mode : t
+  val msaa_4x_hint : t
+  val interlaced_hint : t
+  val ( + ) : t -> t -> t
 end
 
 module TraceLogLevel : sig
   type t = All | Trace | Debug | Info | Warning | Error | Fatal | None
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module Key : sig
@@ -162,16 +158,10 @@ module Key : sig
     | Menu
     | Volume_up
     | Volume_down
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module MouseButton : sig
   type t = Left | Right | Middle | Side | Extra | Forward | Back
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module MouseCursor : sig
@@ -187,9 +177,6 @@ module MouseCursor : sig
     | Resize_nesw
     | Resize_all
     | Not_allowed
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module GamepadButton : sig
@@ -212,16 +199,10 @@ module GamepadButton : sig
     | Middle_right
     | Left_thumb
     | Right_thumb
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module GamepadAxis : sig
   type t = Left_x | Left_y | Right_x | Right_y | Left_trigger | Right_trigger
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module MaterialMapIndex : sig
@@ -239,7 +220,6 @@ module MaterialMapIndex : sig
     | Brdf
 
   val to_int : t -> int
-  val of_int : int -> t
 end
 
 module ShaderLocationIndex : sig
@@ -276,7 +256,6 @@ module ShaderLocationIndex : sig
     | Vertex_instancetransform
 
   val to_int : t -> int
-  val of_int : int -> t
 end
 
 module ShaderUniformDataType : sig
@@ -294,16 +273,10 @@ module ShaderUniformDataType : sig
     | Uivec3
     | Uivec4
     | Sampler2d
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module ShaderAttributeDataType : sig
   type t = Float | Vec2 | Vec3 | Vec4
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module PixelFormat : sig
@@ -332,9 +305,6 @@ module PixelFormat : sig
     | Compressed_pvrt_rgba
     | Compressed_astc_4x4_rgba
     | Compressed_astc_8x8_rgba
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module TextureFilter : sig
@@ -345,16 +315,10 @@ module TextureFilter : sig
     | Anisotropic_4x
     | Anisotropic_8x
     | Anisotropic_16x
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module TextureWrap : sig
   type t = Repeat | Clamp | Mirror_repeat | Mirror_clamp
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module CubemapLayout : sig
@@ -364,16 +328,10 @@ module CubemapLayout : sig
     | Line_horizontal
     | Cross_three_by_four
     | Cross_four_by_three
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module FontType : sig
   type t = Default | Bitmap | Sdf
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module BlendMode : sig
@@ -386,48 +344,35 @@ module BlendMode : sig
     | Alpha_premultiply
     | Custom
     | Custom_separate
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module Gesture : sig
-  type t =
-    | None
-    | Tap
-    | Doubletap
-    | Hold
-    | Drag
-    | Swipe_right
-    | Swipe_left
-    | Swipe_up
-    | Swipe_down
-    | Pinch_in
-    | Pinch_out
+  type t
 
-  val to_int : t -> int
-  val of_int : int -> t
+  val none : t
+  val tap : t
+  val doubletap : t
+  val hold : t
+  val drag : t
+  val swipe_right : t
+  val swipe_left : t
+  val swipe_up : t
+  val swipe_down : t
+  val pinch_in : t
+  val pinch_out : t
+  val ( + ) : t -> t -> t
 end
 
 module CameraMode : sig
   type t = Custom | Free | Orbital | First_person | Third_person
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module CameraProjection : sig
   type t = Perspective | Orthographic
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 module NPatchLayout : sig
   type t = Nine_patch | Three_patch_vertical | Three_patch_horizontal
-
-  val to_int : t -> int
-  val of_int : int -> t
 end
 
 val max_shader_locations : int
@@ -1481,10 +1426,10 @@ val is_window_resized : unit -> bool
 val is_window_state : ConfigFlags.t -> bool
 (** [is_window_state flag] Check if one specific window flag is enabled*)
 
-val set_window_state : ConfigFlags.t list -> unit
+val set_window_state : ConfigFlags.t -> unit
 (** [set_window_state flags] Set window configuration state using flags*)
 
-val clear_window_state : ConfigFlags.t list -> unit
+val clear_window_state : ConfigFlags.t -> unit
 (** [clear_window_state flags] Clear window configuration state flags*)
 
 val toggle_fullscreen : unit -> unit
@@ -1797,7 +1742,7 @@ val take_screenshot : string -> unit
 (** [take_screenshot file_name] Takes a screenshot of current screen (filename
     extension defines format)*)
 
-val set_config_flags : ConfigFlags.t list -> unit
+val set_config_flags : ConfigFlags.t -> unit
 (** [set_config_flags flags] Setup init configuration flags (view FLAGS)*)
 
 val open_url : string -> unit
@@ -2115,7 +2060,7 @@ val get_touch_point_id : int -> int
 val get_touch_point_count : unit -> int
 (** [get_touch_point_count ()] Get number of touch points*)
 
-val set_gestures_enabled : Gesture.t list -> unit
+val set_gestures_enabled : Gesture.t -> unit
 (** [set_gestures_enabled flags] Enable a set of gestures using flags*)
 
 val is_gesture_detected : Gesture.t -> bool

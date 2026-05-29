@@ -10,7 +10,7 @@ type locations = {
 
 let setup () =
   let open Raylib in
-  set_config_flags [ ConfigFlags.Window_resizable ];
+  set_config_flags ConfigFlags.window_resizable;
   init_window width height "raylib [shaders] example - raymarching shapes";
 
   let position = Vector3.create 2.5 2.5 3.0 in

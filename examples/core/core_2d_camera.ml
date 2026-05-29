@@ -3,7 +3,7 @@ let height = 450
 
 let setup () =
   let open Raylib in
-  set_config_flags [ ConfigFlags.Window_resizable ];
+  set_config_flags ConfigFlags.window_resizable;
   init_window width height "raylib [core] example - 2d camera";
   let player = Rectangle.create 400.0 280.0 40.0 40.0 in
   let spacing = ref 0 in

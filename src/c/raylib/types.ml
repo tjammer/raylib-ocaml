@@ -2,47 +2,31 @@ module Types (F : Ctypes.TYPE) = struct
   open F
 
   module ConfigFlags = struct
-    type t =
-      | Vsync_hint
-      | Fullscreen_mode
-      | Window_resizable
-      | Window_undecorated
-      | Window_hidden
-      | Window_minimized
-      | Window_maximized
-      | Window_unfocused
-      | Window_topmost
-      | Window_always_run
-      | Window_transparent
-      | Window_highdpi
-      | Window_mouse_passthrough
-      | Borderless_windowed_mode
-      | Msaa_4x_hint
-      | Interlaced_hint
+    type t = Signed.Int64.t
 
-    let vals =
-      [
-        (Vsync_hint, constant "FLAG_VSYNC_HINT" int64_t);
-        (Fullscreen_mode, constant "FLAG_FULLSCREEN_MODE" int64_t);
-        (Window_resizable, constant "FLAG_WINDOW_RESIZABLE" int64_t);
-        (Window_undecorated, constant "FLAG_WINDOW_UNDECORATED" int64_t);
-        (Window_hidden, constant "FLAG_WINDOW_HIDDEN" int64_t);
-        (Window_minimized, constant "FLAG_WINDOW_MINIMIZED" int64_t);
-        (Window_maximized, constant "FLAG_WINDOW_MAXIMIZED" int64_t);
-        (Window_unfocused, constant "FLAG_WINDOW_UNFOCUSED" int64_t);
-        (Window_topmost, constant "FLAG_WINDOW_TOPMOST" int64_t);
-        (Window_always_run, constant "FLAG_WINDOW_ALWAYS_RUN" int64_t);
-        (Window_transparent, constant "FLAG_WINDOW_TRANSPARENT" int64_t);
-        (Window_highdpi, constant "FLAG_WINDOW_HIGHDPI" int64_t);
-        ( Window_mouse_passthrough,
-          constant "FLAG_WINDOW_MOUSE_PASSTHROUGH" int64_t );
-        ( Borderless_windowed_mode,
-          constant "FLAG_BORDERLESS_WINDOWED_MODE" int64_t );
-        (Msaa_4x_hint, constant "FLAG_MSAA_4X_HINT" int64_t);
-        (Interlaced_hint, constant "FLAG_INTERLACED_HINT" int64_t);
-      ]
+    let t = int64_t
+    let vsync_hint = constant "FLAG_VSYNC_HINT" int64_t
+    let fullscreen_mode = constant "FLAG_FULLSCREEN_MODE" int64_t
+    let window_resizable = constant "FLAG_WINDOW_RESIZABLE" int64_t
+    let window_undecorated = constant "FLAG_WINDOW_UNDECORATED" int64_t
+    let window_hidden = constant "FLAG_WINDOW_HIDDEN" int64_t
+    let window_minimized = constant "FLAG_WINDOW_MINIMIZED" int64_t
+    let window_maximized = constant "FLAG_WINDOW_MAXIMIZED" int64_t
+    let window_unfocused = constant "FLAG_WINDOW_UNFOCUSED" int64_t
+    let window_topmost = constant "FLAG_WINDOW_TOPMOST" int64_t
+    let window_always_run = constant "FLAG_WINDOW_ALWAYS_RUN" int64_t
+    let window_transparent = constant "FLAG_WINDOW_TRANSPARENT" int64_t
+    let window_highdpi = constant "FLAG_WINDOW_HIGHDPI" int64_t
 
-    let t = enum "ConfigFlags" ~typedef:true vals
+    let window_mouse_passthrough =
+      constant "FLAG_WINDOW_MOUSE_PASSTHROUGH" int64_t
+
+    let borderless_windowed_mode =
+      constant "FLAG_BORDERLESS_WINDOWED_MODE" int64_t
+
+    let msaa_4x_hint = constant "FLAG_MSAA_4X_HINT" int64_t
+    let interlaced_hint = constant "FLAG_INTERLACED_HINT" int64_t
+    let ( + ) = Signed.Int64.logor
   end
 
   module TraceLogLevel = struct
@@ -736,35 +720,21 @@ module Types (F : Ctypes.TYPE) = struct
   end
 
   module Gesture = struct
-    type t =
-      | None
-      | Tap
-      | Doubletap
-      | Hold
-      | Drag
-      | Swipe_right
-      | Swipe_left
-      | Swipe_up
-      | Swipe_down
-      | Pinch_in
-      | Pinch_out
+    type t = Signed.Int64.t
 
-    let vals =
-      [
-        (None, constant "GESTURE_NONE" int64_t);
-        (Tap, constant "GESTURE_TAP" int64_t);
-        (Doubletap, constant "GESTURE_DOUBLETAP" int64_t);
-        (Hold, constant "GESTURE_HOLD" int64_t);
-        (Drag, constant "GESTURE_DRAG" int64_t);
-        (Swipe_right, constant "GESTURE_SWIPE_RIGHT" int64_t);
-        (Swipe_left, constant "GESTURE_SWIPE_LEFT" int64_t);
-        (Swipe_up, constant "GESTURE_SWIPE_UP" int64_t);
-        (Swipe_down, constant "GESTURE_SWIPE_DOWN" int64_t);
-        (Pinch_in, constant "GESTURE_PINCH_IN" int64_t);
-        (Pinch_out, constant "GESTURE_PINCH_OUT" int64_t);
-      ]
-
-    let t = enum "Gesture" ~typedef:true vals
+    let t = int64_t
+    let none = constant "GESTURE_NONE" int64_t
+    let tap = constant "GESTURE_TAP" int64_t
+    let doubletap = constant "GESTURE_DOUBLETAP" int64_t
+    let hold = constant "GESTURE_HOLD" int64_t
+    let drag = constant "GESTURE_DRAG" int64_t
+    let swipe_right = constant "GESTURE_SWIPE_RIGHT" int64_t
+    let swipe_left = constant "GESTURE_SWIPE_LEFT" int64_t
+    let swipe_up = constant "GESTURE_SWIPE_UP" int64_t
+    let swipe_down = constant "GESTURE_SWIPE_DOWN" int64_t
+    let pinch_in = constant "GESTURE_PINCH_IN" int64_t
+    let pinch_out = constant "GESTURE_PINCH_OUT" int64_t
+    let ( + ) = Signed.Int64.logor
   end
 
   module CameraMode = struct
