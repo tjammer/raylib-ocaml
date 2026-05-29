@@ -1,6 +1,228 @@
 module Types (F : Ctypes.TYPE) = struct
   open F
 
+  module RlGlVersion = struct
+    type t = Gl_software | Gl_11 | Gl_21 | Gl_33 | Gl_43 | Gl_es_20 | Gl_es_30
+
+    let vals =
+      [
+        (Gl_software, constant "RL_OPENGL_SOFTWARE" int64_t);
+        (Gl_11, constant "RL_OPENGL_11" int64_t);
+        (Gl_21, constant "RL_OPENGL_21" int64_t);
+        (Gl_33, constant "RL_OPENGL_33" int64_t);
+        (Gl_43, constant "RL_OPENGL_43" int64_t);
+        (Gl_es_20, constant "RL_OPENGL_ES_20" int64_t);
+        (Gl_es_30, constant "RL_OPENGL_ES_30" int64_t);
+      ]
+
+    let t = enum "rlGlVersion" ~typedef:true vals
+  end
+
+  module FramebufferAttachType = struct
+    type t =
+      | Color_channel0
+      | Color_channel1
+      | Color_channel2
+      | Color_channel3
+      | Color_channel4
+      | Color_channel5
+      | Color_channel6
+      | Color_channel7
+      | Depth
+      | Stencil
+
+    let vals =
+      [
+        (Color_channel0, constant "RL_ATTACHMENT_COLOR_CHANNEL0" int64_t);
+        (Color_channel1, constant "RL_ATTACHMENT_COLOR_CHANNEL1" int64_t);
+        (Color_channel2, constant "RL_ATTACHMENT_COLOR_CHANNEL2" int64_t);
+        (Color_channel3, constant "RL_ATTACHMENT_COLOR_CHANNEL3" int64_t);
+        (Color_channel4, constant "RL_ATTACHMENT_COLOR_CHANNEL4" int64_t);
+        (Color_channel5, constant "RL_ATTACHMENT_COLOR_CHANNEL5" int64_t);
+        (Color_channel6, constant "RL_ATTACHMENT_COLOR_CHANNEL6" int64_t);
+        (Color_channel7, constant "RL_ATTACHMENT_COLOR_CHANNEL7" int64_t);
+        (Depth, constant "RL_ATTACHMENT_DEPTH" int64_t);
+        (Stencil, constant "RL_ATTACHMENT_STENCIL" int64_t);
+      ]
+
+    let t = enum "rlFramebufferAttachType" ~typedef:true vals
+  end
+
+  module FramebufferAttachTextureType = struct
+    type t =
+      | Cubemap_positive_x
+      | Cubemap_negative_x
+      | Cubemap_positive_y
+      | Cubemap_negative_y
+      | Cubemap_positive_z
+      | Cubemap_negative_z
+      | Texture2d
+      | Renderbuffer
+
+    let vals =
+      [
+        (Cubemap_positive_x, constant "RL_ATTACHMENT_CUBEMAP_POSITIVE_X" int64_t);
+        (Cubemap_negative_x, constant "RL_ATTACHMENT_CUBEMAP_NEGATIVE_X" int64_t);
+        (Cubemap_positive_y, constant "RL_ATTACHMENT_CUBEMAP_POSITIVE_Y" int64_t);
+        (Cubemap_negative_y, constant "RL_ATTACHMENT_CUBEMAP_NEGATIVE_Y" int64_t);
+        (Cubemap_positive_z, constant "RL_ATTACHMENT_CUBEMAP_POSITIVE_Z" int64_t);
+        (Cubemap_negative_z, constant "RL_ATTACHMENT_CUBEMAP_NEGATIVE_Z" int64_t);
+        (Texture2d, constant "RL_ATTACHMENT_TEXTURE2D" int64_t);
+        (Renderbuffer, constant "RL_ATTACHMENT_RENDERBUFFER" int64_t);
+      ]
+
+    let t = enum "rlFramebufferAttachTextureType" ~typedef:true vals
+  end
+
+  module CullMode = struct
+    type t = Face_front | Face_back
+
+    let t =
+      enum "rlCullMode" ~typedef:true
+        [
+          (Face_front, constant "RL_CULL_FACE_FRONT" int64_t);
+          (Face_back, constant "RL_CULL_FACE_BACK" int64_t);
+        ]
+  end
+
+  module Shader = struct
+    type t = Signed.Int64.t
+
+    let t = int64_t
+    let fragment_shader = constant "RL_FRAGMENT_SHADER" int64_t
+    let vertex_shader = constant "RL_VERTEX_SHADER" int64_t
+    let compute_shader = constant "RL_COMPUTE_SHADER" int64_t
+  end
+
+  module BufferUsage = struct
+    type t = Signed.Int64.t
+
+    let t = int64_t
+    let stream_draw = constant "RL_STREAM_DRAW" int64_t
+    let stream_read = constant "RL_STREAM_READ" int64_t
+    let stream_copy = constant "RL_STREAM_COPY" int64_t
+    let static_draw = constant "RL_STATIC_DRAW" int64_t
+    let static_read = constant "RL_STATIC_READ" int64_t
+    let static_copy = constant "RL_STATIC_COPY" int64_t
+    let dynamic_draw = constant "RL_DYNAMIC_DRAW" int64_t
+    let dynamic_read = constant "RL_DYNAMIC_READ" int64_t
+    let dynamic_copy = constant "RL_DYNAMIC_COPY" int64_t
+  end
+
+  module BlendFactor = struct
+    type t = Signed.Int64.t
+
+    let t = int64_t
+    let zero = constant "RL_ZERO" int64_t
+    let one = constant "RL_ONE" int64_t
+    let src_color = constant "RL_SRC_COLOR" int64_t
+    let one_minus_src_color = constant "RL_ONE_MINUS_SRC_COLOR" int64_t
+    let src_alpha = constant "RL_SRC_ALPHA" int64_t
+    let one_minus_src_alpha = constant "RL_ONE_MINUS_SRC_ALPHA" int64_t
+    let dst_alpha = constant "RL_DST_ALPHA" int64_t
+    let one_minus_dst_alpha = constant "RL_ONE_MINUS_DST_ALPHA" int64_t
+    let dst_color = constant "RL_DST_COLOR" int64_t
+    let one_minus_dst_color = constant "RL_ONE_MINUS_DST_COLOR" int64_t
+    let src_alpha_saturate = constant "RL_SRC_ALPHA_SATURATE" int64_t
+    let constant_color = constant "RL_CONSTANT_COLOR" int64_t
+
+    let one_minus_constant_color =
+      constant "RL_ONE_MINUS_CONSTANT_COLOR" int64_t
+
+    let constant_alpha = constant "RL_CONSTANT_ALPHA" int64_t
+
+    let one_minus_constant_alpha =
+      constant "RL_ONE_MINUS_CONSTANT_ALPHA" int64_t
+  end
+
+  module BlendFunction = struct
+    type t = Signed.Int64.t
+
+    let t = int64_t
+    let func_add = constant "RL_FUNC_ADD" int64_t
+    let min_eq = constant "RL_MIN" int64_t
+    let max_eq = constant "RL_MAX" int64_t
+    let func_subtract = constant "RL_FUNC_SUBTRACT" int64_t
+    let func_reverse_subtract = constant "RL_FUNC_REVERSE_SUBTRACT" int64_t
+    let blend_equation = constant "RL_BLEND_EQUATION" int64_t
+    let blend_equation_rgb = constant "RL_BLEND_EQUATION_RGB" int64_t
+    let blend_equation_alpha = constant "RL_BLEND_EQUATION_ALPHA" int64_t
+    let blend_dst_rgb = constant "RL_BLEND_DST_RGB" int64_t
+    let blend_src_rgb = constant "RL_BLEND_SRC_RGB" int64_t
+    let blend_dst_alpha = constant "RL_BLEND_DST_ALPHA" int64_t
+    let blend_src_alpha = constant "RL_BLEND_SRC_ALPHA" int64_t
+    let blend_color = constant "RL_BLEND_COLOR" int64_t
+  end
+
+  module DrawMode = struct
+    type t = Signed.Int64.t
+
+    let t = int64_t
+    let lines = constant "RL_LINES" int64_t
+    let triangles = constant "RL_TRIANGLES" int64_t
+    let quads = constant "RL_QUADS" int64_t
+  end
+
+  module MatrixMode = struct
+    type t = Signed.Int64.t
+
+    let t = int64_t
+    let modelview = constant "RL_MODELVIEW" int64_t
+    let projection = constant "RL_PROJECTION" int64_t
+    let texture = constant "RL_TEXTURE" int64_t
+  end
+
+  module FramebufferAccess = struct
+    type t = Signed.Int64.t
+
+    let t = int64_t
+    let read_framebuffer = constant "RL_READ_FRAMEBUFFER" int64_t
+    let draw_framebuffer = constant "RL_DRAW_FRAMEBUFFER" int64_t
+  end
+
+  module TexParam = struct
+    type t = Signed.Int64.t
+
+    let t = int64_t
+    let wrap_s = constant "RL_TEXTURE_WRAP_S" int64_t
+    let wrap_t = constant "RL_TEXTURE_WRAP_T" int64_t
+    let mag_filter = constant "RL_TEXTURE_MAG_FILTER" int64_t
+    let min_filter = constant "RL_TEXTURE_MIN_FILTER" int64_t
+    let filter_nearest = constant "RL_TEXTURE_FILTER_NEAREST" int64_t
+    let filter_linear = constant "RL_TEXTURE_FILTER_LINEAR" int64_t
+    let filter_mip_nearest = constant "RL_TEXTURE_FILTER_MIP_NEAREST" int64_t
+
+    let filter_nearest_mip_linear =
+      constant "RL_TEXTURE_FILTER_NEAREST_MIP_LINEAR" int64_t
+
+    let filter_linear_mip_nearest =
+      constant "RL_TEXTURE_FILTER_LINEAR_MIP_NEAREST" int64_t
+
+    let filter_mip_linear = constant "RL_TEXTURE_FILTER_MIP_LINEAR" int64_t
+    let filter_anisotropic = constant "RL_TEXTURE_FILTER_ANISOTROPIC" int64_t
+    let mipmap_bias_ratio = constant "RL_TEXTURE_MIPMAP_BIAS_RATIO" int64_t
+    let wrap_repeat = constant "RL_TEXTURE_WRAP_REPEAT" int64_t
+    let wrap_clamp = constant "RL_TEXTURE_WRAP_CLAMP" int64_t
+    let wrap_mirror_repeat = constant "RL_TEXTURE_WRAP_MIRROR_REPEAT" int64_t
+    let wrap_mirror_clamp = constant "RL_TEXTURE_WRAP_MIRROR_CLAMP" int64_t
+  end
+
+  module GlDataType = struct
+    type t = Signed.Int64.t
+
+    let t = int64_t
+    let unsigned_byte = constant "RL_UNSIGNED_BYTE" int64_t
+    let float_type = constant "RL_FLOAT" int64_t
+  end
+
+  module ShaderLocAlias = struct
+    type t = Signed.Int64.t
+
+    let t = int64_t
+    let map_diffuse = constant "RL_SHADER_LOC_MAP_DIFFUSE" int64_t
+    let map_specular = constant "RL_SHADER_LOC_MAP_SPECULAR" int64_t
+  end
+
   module RlVertexBuffer = struct
     let uint_array_5 = array 5 uint
 
@@ -42,72 +264,4 @@ module Types (F : Ctypes.TYPE) = struct
     let current_depth = field t "currentDepth" float
     let () = seal t
   end
-
-  (* TODO unnecessary
-module RlglData = struct
-  type%c t = {
-    current_batch : RlRenderBatch ptr;
-    default_batch : RlRenderBatch;
-    current_matrix_mode : int;
-    current_matrix : Matrix.t ptr;
-    modelview : Matrix.t;
-    projection : Matrix.t;
-    transform : Matrix.t;
-
-
-  }
-end
-    struct {
-        int currentMatrixMode;              // Current matrix mode
-        Matrix *currentMatrix;            // Current matrix pointer
-        Matrix modelview;                 // Default modelview matrix
-        Matrix projection;                // Default projection matrix
-        Matrix transform;                 // Transform matrix to be used with rlTranslate, rlRotate, rlScale
-        bool transformRequired;             // Require transform matrix application to current draw-call vertex (if required)
-        Matrix stack[RL_MAX_MATRIX_STACK_SIZE];// Matrix stack for push/pop
-        int stackCounter;                   // Matrix stack counter
-
-        unsigned int defaultTextureId;      // Default texture used on shapes/poly drawing (required by shader)
-        unsigned int activeTextureId[RL_DEFAULT_BATCH_MAX_TEXTURE_UNITS];    // Active texture ids to be enabled on batch drawing (0 active by default)
-        unsigned int defaultVShaderId;      // Default vertex shader id (used by default shader program)
-        unsigned int defaultFShaderId;      // Default fragment shader id (used by default shader program)
-        unsigned int defaultShaderId;       // Default shader program id, supports vertex color and diffuse texture
-        int *defaultShaderLocs;             // Default shader locations pointer to be used on rendering
-        unsigned int currentShaderId;       // Current shader id to be used on rendering (by default, defaultShaderId)
-        int *currentShaderLocs;             // Current shader locations pointer to be used on rendering (by default, defaultShaderLocs)
-
-        bool stereoRender;                  // Stereo rendering flag
-        Matrix projectionStereo[2];       // VR stereo rendering eyes projection matrices
-        Matrix viewOffsetStereo[2];       // VR stereo rendering eyes view offset matrices
-
-        int currentBlendMode;               // Blending mode active
-        int glBlendSrcFactor;               // Blending source factor
-        int glBlendDstFactor;               // Blending destination factor
-        int glBlendEquation;                // Blending equation
-
-        int framebufferWidth;               // Default framebuffer width
-        int framebufferHeight;              // Default framebuffer height
-
-    } State;            // Renderer state
-    struct {
-        bool vao;                           // VAO support (OpenGL ES2 could not support VAO extension) (GL_ARB_vertex_array_object)
-        bool instancing;                    // Instancing supported (GL_ANGLE_instanced_arrays, GL_EXT_draw_instanced + GL_EXT_instanced_arrays)
-        bool texNPOT;                       // NPOT textures full support (GL_ARB_texture_non_power_of_two, GL_OES_texture_npot)
-        bool texDepth;                      // Depth textures supported (GL_ARB_depth_texture, GL_WEBGL_depth_texture, GL_OES_depth_texture)
-        bool texFloat32;                    // float textures support (32 bit per channel) (GL_OES_texture_float)
-        bool texCompDXT;                    // DDS texture compression support (GL_EXT_texture_compression_s3tc, GL_WEBGL_compressed_texture_s3tc, GL_WEBKIT_WEBGL_compressed_texture_s3tc)
-        bool texCompETC1;                   // ETC1 texture compression support (GL_OES_compressed_ETC1_RGB8_texture, GL_WEBGL_compressed_texture_etc1)
-        bool texCompETC2;                   // ETC2/EAC texture compression support (GL_ARB_ES3_compatibility)
-        bool texCompPVRT;                   // PVR texture compression support (GL_IMG_texture_compression_pvrtc)
-        bool texCompASTC;                   // ASTC texture compression support (GL_KHR_texture_compression_astc_hdr, GL_KHR_texture_compression_astc_ldr)
-        bool texMirrorClamp;                // Clamp mirror wrap mode supported (GL_EXT_texture_mirror_clamp)
-        bool texAnisoFilter;                // Anisotropic texture filtering support (GL_EXT_texture_filter_anisotropic)
-
-        float maxAnisotropyLevel;           // Maximum anisotropy level supported (minimum is 2.0f)
-        int maxDepthBits;                   // Maximum bits for depth component
-
-    } ExtSupported;     // Extensions supported flags
-} rlglData;
-
-   * *)
 end

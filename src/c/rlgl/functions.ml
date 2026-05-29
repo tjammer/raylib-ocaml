@@ -8,7 +8,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (* Functions Declaration - Matrix operations*)
   (*------------------------------------------------------------------------------------*)
   (* Choose the current matrix to be transformed*)
-  let matrix_mode = foreign "rlMatrixMode" (int @-> returning void)
+  let matrix_mode = foreign "rlMatrixMode" (MatrixMode.t @-> returning void)
 
   (* Push the current matrix to stack*)
   let push_matrix = foreign "rlPushMatrix" (void @-> returning void)
@@ -51,7 +51,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (* Functions Declaration - Vertex level operations*)
   (*------------------------------------------------------------------------------------*)
   (* Initialize drawing mode (how to organize vertex)*)
-  let rl_begin = foreign "rlBegin" (int @-> returning void)
+  let rl_begin = foreign "rlBegin" (DrawMode.t @-> returning void)
 
   (* Finish vertex providing*)
   let rl_end = foreign "rlEnd" (void @-> returning void)
@@ -151,7 +151,12 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   (* Set texture parameters (filter, wrap)*)
   let texture_parameters =
-    foreign "rlTextureParameters" (uint @-> int @-> int @-> returning void)
+    foreign "rlTextureParameters"
+      (uint @-> TexParam.t @-> TexParam.t @-> returning void)
+
+  let cubemap_parameters =
+    foreign "rlCubemapParameters"
+      (uint @-> TexParam.t @-> TexParam.t @-> returning void)
 
   (* Shader state*)
   (* Enable shader program*)
@@ -169,8 +174,27 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let disable_framebuffer =
     foreign "rlDisableFramebuffer" (void @-> returning void)
 
+  let get_active_framebuffer =
+    foreign "rlGetActiveFramebuffer" (void @-> returning uint)
+
+  let active_draw_buffers =
+    foreign "rlActiveDrawBuffers" (int @-> returning void)
+
+  let blit_framebuffer =
+    foreign "rlBlitFramebuffer"
+      (int @-> int @-> int @-> int @-> int @-> int @-> int @-> int @-> int
+     @-> returning void)
+
+  let bind_framebuffer =
+    foreign "rlBindFramebuffer" (FramebufferAccess.t @-> uint @-> returning void)
+
   (* General render state*)
+  let enable_color_blend = foreign "rlEnableColorBlend" (void @-> returning void)
+
+  let disable_color_blend =
+    foreign "rlDisableColorBlend" (void @-> returning void)
   (* Enable depth test*)
+
   let enable_depth_test = foreign "rlEnableDepthTest" (void @-> returning void)
 
   (* Disable depth test*)
@@ -189,6 +213,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (* Disable backface culling*)
   let disable_backface_culling =
     foreign "rlDisableBackfaceCulling" (void @-> returning void)
+
+  let set_cull_face = foreign "rlSetCullFace" (CullMode.t @-> returning void)
 
   (* Enable scissor test*)
   let enable_scissor_test =
@@ -441,11 +467,15 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "rlLoadShaderProgram" (string @-> string @-> returning uint)
 
   (* Compile custom shader and return shader id (type: GL_VERTEX_SHADER, GL_FRAGMENT_SHADER)*)
-  let load_shader = foreign "rlLoadShader" (string @-> int @-> returning uint)
+  let load_shader =
+    foreign "rlLoadShader" (string @-> Shader.t @-> returning uint)
 
   (* Load custom shader program*)
   let load_shader_program_ex =
     foreign "rlLoadShaderProgramEx" (uint @-> uint @-> returning uint)
+
+  let load_shader_program_compute =
+    foreign "rlLoadShaderProgramCompute" (uint @-> returning uint)
 
   (* Unload shader, loaded with rlLoadShader() *)
   let unload_shader = foreign "rlUnloadShader" (uint @-> returning void)
@@ -476,6 +506,46 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   (* Set shader currently active (id and locations)*)
   let set_shader = foreign "rlSetShader" (uint @-> ptr int @-> returning void)
+
+  (* Compute shader management *)
+  let compute_shader_dispatch =
+    foreign "rlComputeShaderDispatch" (uint @-> uint @-> uint @-> returning void)
+
+  (* Shader buffer storage object management (ssbo) *)
+  (* Load shader storage buffer object (SSBO) *)
+  let load_shader_buffer =
+    foreign "rlLoadShaderBuffer" (uint @-> ptr void @-> int @-> returning int)
+
+  (* Unload shader storage buffer object (SSBO) *)
+  let unload_shader_buffer =
+    foreign "rlUnloadShaderBuffer" (uint @-> returning void)
+
+  (* Update SSBO buffer data *)
+  let update_shader_buffer =
+    foreign "rlUpdateShaderBuffer"
+      (uint @-> ptr void @-> uint @-> uint @-> returning void)
+
+  (* Bind SSBO buffer *)
+  let bind_shader_buffer =
+    foreign "rlBindShaderBuffer" (uint @-> uint @-> returning void)
+
+  (* Read SSBO buffer data (GPU->CPU) *)
+  let read_shader_buffer =
+    foreign "rlReadShaderBuffer"
+      (uint @-> ptr void @-> uint @-> uint @-> returning void)
+
+  (* Copy SSBO data between buffers *)
+  let copy_shader_buffer =
+    foreign "rlCopyShaderBuffer"
+      (uint @-> uint @-> uint @-> uint @-> uint @-> returning void)
+
+  (* Get SSBO buffer size *)
+  let get_shader_buffer_size =
+    foreign "rlGetShaderBufferSize" (uint @-> returning int)
+
+  let bind_image_texture =
+    foreign "rlBindImageTexture"
+      (uint @-> uint @-> int @-> bool @-> returning void)
 
   (* Matrix state management*)
   (* Get internal modelview matrix*)
