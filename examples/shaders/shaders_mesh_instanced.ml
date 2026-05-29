@@ -30,7 +30,7 @@ let main () =
       Vector3.create (rand_float 0 360) (rand_float 0 360) (rand_float 0 360)
       |> Vector3.normalize
     in
-    let angle = rand_float 0 50 *. Float.pi /. 180.0 /. 1000.0 in
+    let angle = rand_float 0 50 *. Float.pi /. 180.0 in
     Matrix.rotate axis angle
   in
 
@@ -40,6 +40,7 @@ let main () =
   in
   let rotations_inc = Array.init count matrix_rotation in
   let rotations = CArray.from_ptr (Ctypes.allocate_n Matrix.t ~count) count in
+  let transforms = CArray.from_ptr (Ctypes.allocate_n Matrix.t ~count) count in
   for i = 0 to count - 1 do
     CArray.set translations i (matrix_translation i);
     CArray.set rotations i (matrix_rotation i)
@@ -56,11 +57,12 @@ let main () =
   let instance = get_shader_location_attrib shader "instance" in
   let ambient = get_shader_location shader "ambient" in
 
-  (* Get the locs array and assign the locations of the variables. This is necessary for the draw_mesh_instanced call.
-   * Curiously, draw_mesh works without setting these. *)
+  (* Get the locs array and assign the locations of the variables. This is
+     necessary for the draw_mesh_instanced call. Curiously, draw_mesh works
+     without setting these. *)
   Shader.set_loc shader Matrix_mvp mvp;
   Shader.set_loc shader Vector_view view_pos;
-  Shader.set_loc shader Matrix_model instance;
+  Shader.set_loc shader Vertex_instancetransform instance;
 
   let ambient_vec = Vector4.create 0.2 0.2 0.2 1.0 in
   set_shader_value shader ambient
@@ -88,7 +90,7 @@ let main () =
     for i = 0 to count - 1 do
       CArray.set rotations i
         Matrix.(multiply (CArray.get rotations i) rotations_inc.(i));
-      CArray.set translations i
+      CArray.set transforms i
         Matrix.(multiply (CArray.get rotations i) (CArray.get translations i))
     done;
 
@@ -98,7 +100,7 @@ let main () =
 
     begin_mode_3d camera;
 
-    draw_mesh_instanced cube material (CArray.start translations) count;
+    draw_mesh_instanced cube material (CArray.start transforms) count;
 
     end_mode_3d ();
 

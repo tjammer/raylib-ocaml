@@ -64,8 +64,9 @@ let draw_all camera columns =
 let rec loop (camera, columns) =
   let open Raylib in
   if window_should_close () then close_window ()
-  else update_camera (addr camera) CameraMode.First_person;
-  draw_all camera columns;
-  loop (camera, columns)
+  else (
+    update_camera (addr camera) CameraMode.First_person;
+    draw_all camera columns;
+    loop (camera, columns))
 
 let () = setup () |> loop
