@@ -1,4 +1,4 @@
-module Types = Rlgl_c.Types
+module Types = Rlgl_c.Rlgl_types_generated
 open Raylib_core
 
 module RlVertexBuffer = struct

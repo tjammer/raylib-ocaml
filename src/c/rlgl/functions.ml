@@ -273,7 +273,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let check_errors = foreign "rlCheckErrors" (void @-> returning void)
 
   (* Set blending mode*)
-  let set_blend_mode = foreign "rlSetBlendMode" (int @-> returning void)
+  let set_blend_mode = foreign "rlSetBlendMode" (BlendMode.t @-> returning void)
 
   (* Set blending mode factor and equation (using OpenGL factors)*)
   let set_blend_factors =

@@ -1,0 +1,1 @@
+include Raylib_c_textures.Raylib_textures_generated.Functions

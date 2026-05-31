@@ -208,7 +208,7 @@ val clear_color :
 
 val clear_screen_buffers : unit -> unit
 val check_errors : unit -> unit
-val set_blend_mode : int -> unit
+val set_blend_mode : Raylib_core.BlendMode.t -> unit
 val set_blend_factors : int -> int -> int -> unit
 val rlgl_init : int -> int -> unit
 val rlgl_close : unit -> unit

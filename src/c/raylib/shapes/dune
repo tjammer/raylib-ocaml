@@ -1,0 +1,23 @@
+(library
+ (name raylib_c_shapes)
+ (package raylib)
+ (libraries raylib_core)
+ (ctypes
+  (external_library_name raylib)
+  (build_flags_resolver
+   (vendored
+    (c_flags :standard "-I../../vendor/raylib/src")
+    (c_library_flags :standard)))
+  (headers
+   (include "raylib.h" "rlgl.h" "config.h" "raymath.h"))
+  (type_description
+   (instance Types)
+   (functor Functions))
+  (function_description
+   (concurrency unlocked)
+   (instance Functions)
+   (functor Functions))
+  (generated_types Raylib_shapes_types_generated)
+  (generated_entry_point Raylib_shapes_generated)
+  (deps
+   (source_tree ../../vendor/raylib))))

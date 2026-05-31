@@ -1,4 +1,4 @@
-open Raylib_c.Types
+open Raylib_c.Raylib_generated.Types
 open Ctypes_reexports
 open Ctypes
 
@@ -56,7 +56,7 @@ module Vector2 = struct
   let set_x vector2 x = setf vector2 Vector2.x x
   let set_y vector2 y = setf vector2 Vector2.y y
 
-  include Raylib_c.Functions.Math.Vector2
+  include Raylib_c.Raylib_generated.Functions.Math.Vector2
 end
 
 module Vector3 = struct
@@ -79,7 +79,7 @@ module Vector3 = struct
   let set_y vector3 y = setf vector3 Vector3.y y
   let set_z vector3 z = setf vector3 Vector3.z z
 
-  include Raylib_c.Functions.Math.Vector3
+  include Raylib_c.Raylib_generated.Functions.Math.Vector3
 end
 
 module Vector4 = struct
@@ -105,7 +105,7 @@ module Vector4 = struct
   let set_z vector4 z = setf vector4 Vector4.z z
   let set_w vector4 w = setf vector4 Vector4.w w
 
-  include Raylib_c.Functions.Math.Vector4
+  include Raylib_c.Raylib_generated.Functions.Math.Vector4
 end
 
 module Matrix = struct
@@ -167,7 +167,7 @@ module Matrix = struct
   let set_m14 matrix m14 = setf matrix Matrix.m14 m14
   let set_m15 matrix m15 = setf matrix Matrix.m15 m15
 
-  include Raylib_c.Functions.Math.Matrix
+  include Raylib_c.Raylib_generated.Functions.Math.Matrix
 end
 
 module Color = struct
@@ -557,7 +557,7 @@ module Shader = struct
 
   let locs shader =
     CArray.from_ptr (getf shader Shader.locs)
-      Raylib_c.Types.max_shader_locations
+      Raylib_c.Raylib_generated.Types.max_shader_locations
 
   let set_loc shader loc_index loc =
     let locs = locs shader in

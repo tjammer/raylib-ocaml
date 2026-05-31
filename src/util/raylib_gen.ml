@@ -89,9 +89,7 @@ module Enum = struct
     ^ lower
 
   let itf enum =
-    let lower =
-      "\n  val to_int : t -> int\n\n" ^ "  val of_int : int -> t\n" ^ "end\n\n"
-    in
+    let lower = "\n  val t : t Ctypes.typ\n\n" ^ "end\n\n" in
     Printf.sprintf "module %s : sig\n" enum.name.name
     ^ "  type t =\n"
     ^ (List.map
@@ -551,14 +549,14 @@ let () =
     ^ "let max_shader_locations = [%c constant \"MAX_SHADER_LOCATIONS\" \
        camlint]"
   in
-  print_string stubs;
+  (* print_string stubs; *)
   ignore stubs;
   let itf =
     "(** {1 Constants} *)\n\n"
     ^ (enums |> List.map Enum.itf |> String.concat "")
     ^ "val max_shader_locations : int\n\n"
   in
-  (* print_string itf; *)
+  print_string itf;
   ignore itf;
 
   let itf = types |> List.map Type.itf |> String.concat "" in

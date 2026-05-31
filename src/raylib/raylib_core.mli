@@ -39,10 +39,13 @@ module ConfigFlags : sig
   val msaa_4x_hint : t
   val interlaced_hint : t
   val ( + ) : t -> t -> t
+  val t : t Ctypes.typ
 end
 
 module TraceLogLevel : sig
   type t = All | Trace | Debug | Info | Warning | Error | Fatal | None
+
+  val t : t Ctypes.typ
 end
 
 module Key : sig
@@ -157,10 +160,14 @@ module Key : sig
     | Menu
     | Volume_up
     | Volume_down
+
+  val t : t Ctypes.typ
 end
 
 module MouseButton : sig
   type t = Left | Right | Middle | Side | Extra | Forward | Back
+
+  val t : t Ctypes.typ
 end
 
 module MouseCursor : sig
@@ -176,6 +183,8 @@ module MouseCursor : sig
     | Resize_nesw
     | Resize_all
     | Not_allowed
+
+  val t : t Ctypes.typ
 end
 
 module GamepadButton : sig
@@ -198,10 +207,14 @@ module GamepadButton : sig
     | Middle_right
     | Left_thumb
     | Right_thumb
+
+  val t : t Ctypes.typ
 end
 
 module GamepadAxis : sig
   type t = Left_x | Left_y | Right_x | Right_y | Left_trigger | Right_trigger
+
+  val t : t Ctypes.typ
 end
 
 module MaterialMapIndex : sig
@@ -218,6 +231,7 @@ module MaterialMapIndex : sig
     | Prefilter
     | Brdf
 
+  val t : t Ctypes.typ
   val to_int : t -> int
 end
 
@@ -254,6 +268,7 @@ module ShaderLocationIndex : sig
     | Matrix_bonetransforms
     | Vertex_instancetransform
 
+  val t : t Ctypes.typ
   val to_int : t -> int
 end
 
@@ -272,10 +287,14 @@ module ShaderUniformDataType : sig
     | Uivec3
     | Uivec4
     | Sampler2d
+
+  val t : t Ctypes.typ
 end
 
 module ShaderAttributeDataType : sig
   type t = Float | Vec2 | Vec3 | Vec4
+
+  val t : t Ctypes.typ
 end
 
 module PixelFormat : sig
@@ -304,6 +323,8 @@ module PixelFormat : sig
     | Compressed_pvrt_rgba
     | Compressed_astc_4x4_rgba
     | Compressed_astc_8x8_rgba
+
+  val t : t Ctypes.typ
 end
 
 module TextureFilter : sig
@@ -314,10 +335,14 @@ module TextureFilter : sig
     | Anisotropic_4x
     | Anisotropic_8x
     | Anisotropic_16x
+
+  val t : t Ctypes.typ
 end
 
 module TextureWrap : sig
   type t = Repeat | Clamp | Mirror_repeat | Mirror_clamp
+
+  val t : t Ctypes.typ
 end
 
 module CubemapLayout : sig
@@ -327,10 +352,14 @@ module CubemapLayout : sig
     | Line_horizontal
     | Cross_three_by_four
     | Cross_four_by_three
+
+  val t : t Ctypes.typ
 end
 
 module FontType : sig
   type t = Default | Bitmap | Sdf
+
+  val t : t Ctypes.typ
 end
 
 module BlendMode : sig
@@ -343,6 +372,8 @@ module BlendMode : sig
     | Alpha_premultiply
     | Custom
     | Custom_separate
+
+  val t : t Ctypes.typ
 end
 
 module Gesture : sig
@@ -360,18 +391,25 @@ module Gesture : sig
   val pinch_in : t
   val pinch_out : t
   val ( + ) : t -> t -> t
+  val t : t Ctypes.typ
 end
 
 module CameraMode : sig
   type t = Custom | Free | Orbital | First_person | Third_person
+
+  val t : t Ctypes.typ
 end
 
 module CameraProjection : sig
   type t = Perspective | Orthographic
+
+  val t : t Ctypes.typ
 end
 
 module NPatchLayout : sig
   type t = Nine_patch | Three_patch_vertical | Three_patch_horizontal
+
+  val t : t Ctypes.typ
 end
 
 val max_shader_locations : int
@@ -1391,6 +1429,8 @@ end
 
 (** {1 Functions}*)
 
+(** {2 Window and Graphics Device Functions (Module: core)}*)
+
 val init_window : int -> int -> string -> unit
 (** [init_window width height title] Initialize window and OpenGL context*)
 
@@ -2090,1462 +2130,3 @@ val update_camera_pro :
   Camera3D.t ptr -> Vector3.t -> Vector3.t -> float -> unit
 (** [update_camera_pro camera movement rotation zoom] Update camera
     movement/rotation*)
-
-val set_shapes_texture : Texture.t -> Rectangle.t -> unit
-(** [set_shapes_texture texture source] Set texture and rectangle to be used on
-    shapes drawing*)
-
-val get_shapes_texture : unit -> Texture.t
-(** [get_shapes_texture ()] Get texture that is used for shapes drawing*)
-
-val get_shapes_texture_rectangle : unit -> Rectangle.t
-(** [get_shapes_texture_rectangle ()] Get texture source rectangle that is used
-    for shapes drawing*)
-
-val draw_pixel : int -> int -> Color.t -> unit
-(** [draw_pixel pos_x pos_y color] Draw a pixel using geometry
-    [Can be slow, use with care]*)
-
-val draw_pixel_v : Vector2.t -> Color.t -> unit
-(** [draw_pixel_v position color] Draw a pixel using geometry (Vector version)
-    [Can be slow, use with care]*)
-
-val draw_line : int -> int -> int -> int -> Color.t -> unit
-(** [draw_line start_pos_x start_pos_y end_pos_x end_pos_y color] Draw a line*)
-
-val draw_line_v : Vector2.t -> Vector2.t -> Color.t -> unit
-(** [draw_line_v start_pos end_pos color] Draw a line (using gl lines)*)
-
-val draw_line_ex : Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_line_ex start_pos end_pos thick color] Draw a line (using
-    triangles/quads)*)
-
-val draw_line_strip : Vector2.t ptr -> int -> Color.t -> unit
-(** [draw_line_strip points point_count color] Draw lines sequence (using gl
-    lines)*)
-
-val draw_line_bezier : Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_line_bezier start_pos end_pos thick color] Draw line segment
-    cubic-bezier in-out interpolation*)
-
-val draw_line_dashed : Vector2.t -> Vector2.t -> int -> int -> Color.t -> unit
-(** [draw_line_dashed start_pos end_pos dash_size space_size color] Draw a
-    dashed line*)
-
-val draw_circle : int -> int -> float -> Color.t -> unit
-(** [draw_circle center_x center_y radius color] Draw a color-filled circle*)
-
-val draw_circle_v : Vector2.t -> float -> Color.t -> unit
-(** [draw_circle_v center radius color] Draw a color-filled circle (Vector
-    version)*)
-
-val draw_circle_gradient : Vector2.t -> float -> Color.t -> Color.t -> unit
-(** [draw_circle_gradient center radius inner outer] Draw a gradient-filled
-    circle*)
-
-val draw_circle_sector :
-  Vector2.t -> float -> float -> float -> int -> Color.t -> unit
-(** [draw_circle_sector center radius start_angle end_angle segments color] Draw
-    a piece of a circle*)
-
-val draw_circle_sector_lines :
-  Vector2.t -> float -> float -> float -> int -> Color.t -> unit
-(** [draw_circle_sector_lines center radius start_angle end_angle segments
-     color] Draw circle sector outline*)
-
-val draw_circle_lines : int -> int -> float -> Color.t -> unit
-(** [draw_circle_lines center_x center_y radius color] Draw circle outline*)
-
-val draw_circle_lines_v : Vector2.t -> float -> Color.t -> unit
-(** [draw_circle_lines_v center radius color] Draw circle outline (Vector
-    version)*)
-
-val draw_ellipse : int -> int -> float -> float -> Color.t -> unit
-(** [draw_ellipse center_x center_y radius_h radius_v color] Draw ellipse*)
-
-val draw_ellipse_v : Vector2.t -> float -> float -> Color.t -> unit
-(** [draw_ellipse_v center radius_h radius_v color] Draw ellipse (Vector
-    version)*)
-
-val draw_ellipse_lines : int -> int -> float -> float -> Color.t -> unit
-(** [draw_ellipse_lines center_x center_y radius_h radius_v color] Draw ellipse
-    outline*)
-
-val draw_ellipse_lines_v : Vector2.t -> float -> float -> Color.t -> unit
-(** [draw_ellipse_lines_v center radius_h radius_v color] Draw ellipse outline
-    (Vector version)*)
-
-val draw_ring :
-  Vector2.t -> float -> float -> float -> float -> int -> Color.t -> unit
-(** [draw_ring center inner_radius outer_radius start_angle end_angle segments
-     color] Draw ring*)
-
-val draw_ring_lines :
-  Vector2.t -> float -> float -> float -> float -> int -> Color.t -> unit
-(** [draw_ring_lines center inner_radius outer_radius start_angle end_angle
-     segments color] Draw ring outline*)
-
-val draw_rectangle : int -> int -> int -> int -> Color.t -> unit
-(** [draw_rectangle pos_x pos_y width height color] Draw a color-filled
-    rectangle*)
-
-val draw_rectangle_v : Vector2.t -> Vector2.t -> Color.t -> unit
-(** [draw_rectangle_v position size color] Draw a color-filled rectangle (Vector
-    version)*)
-
-val draw_rectangle_rec : Rectangle.t -> Color.t -> unit
-(** [draw_rectangle_rec rec color] Draw a color-filled rectangle*)
-
-val draw_rectangle_pro : Rectangle.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_rectangle_pro rec origin rotation color] Draw a color-filled rectangle
-    with pro parameters*)
-
-val draw_rectangle_gradient_v :
-  int -> int -> int -> int -> Color.t -> Color.t -> unit
-(** [draw_rectangle_gradient_v pos_x pos_y width height top bottom] Draw a
-    vertical-gradient-filled rectangle*)
-
-val draw_rectangle_gradient_h :
-  int -> int -> int -> int -> Color.t -> Color.t -> unit
-(** [draw_rectangle_gradient_h pos_x pos_y width height left right] Draw a
-    horizontal-gradient-filled rectangle*)
-
-val draw_rectangle_gradient_ex :
-  Rectangle.t -> Color.t -> Color.t -> Color.t -> Color.t -> unit
-(** [draw_rectangle_gradient_ex rec top_left bottom_left bottom_right top_right]
-    Draw a gradient-filled rectangle with custom vertex colors*)
-
-val draw_rectangle_lines : int -> int -> int -> int -> Color.t -> unit
-(** [draw_rectangle_lines pos_x pos_y width height color] Draw rectangle outline*)
-
-val draw_rectangle_lines_ex : Rectangle.t -> float -> Color.t -> unit
-(** [draw_rectangle_lines_ex rec line_thick color] Draw rectangle outline with
-    extended parameters*)
-
-val draw_rectangle_rounded : Rectangle.t -> float -> int -> Color.t -> unit
-(** [draw_rectangle_rounded rec roundness segments color] Draw rectangle with
-    rounded edges*)
-
-val draw_rectangle_rounded_lines :
-  Rectangle.t -> float -> int -> Color.t -> unit
-(** [draw_rectangle_rounded_lines rec roundness segments color] Draw rectangle
-    lines with rounded edges*)
-
-val draw_rectangle_rounded_lines_ex :
-  Rectangle.t -> float -> int -> float -> Color.t -> unit
-(** [draw_rectangle_rounded_lines_ex rec roundness segments line_thick color]
-    Draw rectangle with rounded edges outline*)
-
-val draw_triangle : Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
-(** [draw_triangle v1 v2 v3 color] Draw a color-filled triangle (vertex in
-    counter-clockwise order!)*)
-
-val draw_triangle_lines : Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
-(** [draw_triangle_lines v1 v2 v3 color] Draw triangle outline (vertex in
-    counter-clockwise order!)*)
-
-val draw_triangle_fan : Vector2.t ptr -> int -> Color.t -> unit
-(** [draw_triangle_fan points point_count color] Draw a triangle fan defined by
-    points (first vertex is the center)*)
-
-val draw_triangle_strip : Vector2.t ptr -> int -> Color.t -> unit
-(** [draw_triangle_strip points point_count color] Draw a triangle strip defined
-    by points*)
-
-val draw_poly : Vector2.t -> int -> float -> float -> Color.t -> unit
-(** [draw_poly center sides radius rotation color] Draw a regular polygon
-    (Vector version)*)
-
-val draw_poly_lines : Vector2.t -> int -> float -> float -> Color.t -> unit
-(** [draw_poly_lines center sides radius rotation color] Draw a polygon outline
-    of n sides*)
-
-val draw_poly_lines_ex :
-  Vector2.t -> int -> float -> float -> float -> Color.t -> unit
-(** [draw_poly_lines_ex center sides radius rotation line_thick color] Draw a
-    polygon outline of n sides with extended parameters*)
-
-val draw_spline_linear : Vector2.t ptr -> int -> float -> Color.t -> unit
-(** [draw_spline_linear points point_count thick color] Draw spline: Linear,
-    minimum 2 points*)
-
-val draw_spline_basis : Vector2.t ptr -> int -> float -> Color.t -> unit
-(** [draw_spline_basis points point_count thick color] Draw spline: B-Spline,
-    minimum 4 points*)
-
-val draw_spline_catmull_rom : Vector2.t ptr -> int -> float -> Color.t -> unit
-(** [draw_spline_catmull_rom points point_count thick color] Draw spline:
-    Catmull-Rom, minimum 4 points*)
-
-val draw_spline_bezier_quadratic :
-  Vector2.t ptr -> int -> float -> Color.t -> unit
-(** [draw_spline_bezier_quadratic points point_count thick color] Draw spline:
-    Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]*)
-
-val draw_spline_bezier_cubic : Vector2.t ptr -> int -> float -> Color.t -> unit
-(** [draw_spline_bezier_cubic points point_count thick color] Draw spline: Cubic
-    Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]*)
-
-val draw_spline_segment_linear :
-  Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_spline_segment_linear p1 p2 thick color] Draw spline segment: Linear,
-    2 points*)
-
-val draw_spline_segment_basis :
-  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_spline_segment_basis p1 p2 p3 p4 thick color] Draw spline segment:
-    B-Spline, 4 points*)
-
-val draw_spline_segment_catmull_rom :
-  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_spline_segment_catmull_rom p1 p2 p3 p4 thick color] Draw spline
-    segment: Catmull-Rom, 4 points*)
-
-val draw_spline_segment_bezier_quadratic :
-  Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_spline_segment_bezier_quadratic p1 c2 p3 thick color] Draw spline
-    segment: Quadratic Bezier, 2 points, 1 control point*)
-
-val draw_spline_segment_bezier_cubic :
-  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
-(** [draw_spline_segment_bezier_cubic p1 c2 c3 p4 thick color] Draw spline
-    segment: Cubic Bezier, 2 points, 2 control points*)
-
-val get_spline_point_linear : Vector2.t -> Vector2.t -> float -> Vector2.t
-(** [get_spline_point_linear start_pos end_pos t] Get (evaluate) spline point:
-    Linear*)
-
-val get_spline_point_basis :
-  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Vector2.t
-(** [get_spline_point_basis p1 p2 p3 p4 t] Get (evaluate) spline point: B-Spline*)
-
-val get_spline_point_catmull_rom :
-  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Vector2.t
-(** [get_spline_point_catmull_rom p1 p2 p3 p4 t] Get (evaluate) spline point:
-    Catmull-Rom*)
-
-val get_spline_point_bezier_quad :
-  Vector2.t -> Vector2.t -> Vector2.t -> float -> Vector2.t
-(** [get_spline_point_bezier_quad p1 c2 p3 t] Get (evaluate) spline point:
-    Quadratic Bezier*)
-
-val get_spline_point_bezier_cubic :
-  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> float -> Vector2.t
-(** [get_spline_point_bezier_cubic p1 c2 c3 p4 t] Get (evaluate) spline point:
-    Cubic Bezier*)
-
-(** {3 Basic shapes collision detection functions} *)
-
-val check_collision_recs : Rectangle.t -> Rectangle.t -> bool
-(** [check_collision_recs rec1 rec2] Check collision between two rectangles*)
-
-val check_collision_circles : Vector2.t -> float -> Vector2.t -> float -> bool
-(** [check_collision_circles center1 radius1 center2 radius2] Check collision
-    between two circles*)
-
-val check_collision_circle_rec : Vector2.t -> float -> Rectangle.t -> bool
-(** [check_collision_circle_rec center radius rec] Check collision between
-    circle and rectangle*)
-
-val check_collision_circle_line :
-  Vector2.t -> float -> Vector2.t -> Vector2.t -> bool
-(** [check_collision_circle_line center radius p1 p2] Check if circle collides
-    with a line created betweeen two points [p1] and [p2]*)
-
-val check_collision_point_rec : Vector2.t -> Rectangle.t -> bool
-(** [check_collision_point_rec point rec] Check if point is inside rectangle*)
-
-val check_collision_point_circle : Vector2.t -> Vector2.t -> float -> bool
-(** [check_collision_point_circle point center radius] Check if point is inside
-    circle*)
-
-val check_collision_point_triangle :
-  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> bool
-(** [check_collision_point_triangle point p1 p2 p3] Check if point is inside a
-    triangle*)
-
-val check_collision_point_line :
-  Vector2.t -> Vector2.t -> Vector2.t -> int -> bool
-(** [check_collision_point_line point p1 p2 threshold] Check if point belongs to
-    line created between two points [p1] and [p2] with defined margin in pixels
-    [threshold]*)
-
-val check_collision_point_poly : Vector2.t -> Vector2.t ptr -> int -> bool
-(** [check_collision_point_poly point points point_count] Check if point is
-    within a polygon described by array of vertices*)
-
-val check_collision_lines :
-  Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t -> Vector2.t ptr -> bool
-(** [check_collision_lines start_pos1 end_pos1 start_pos2 end_pos2
-     collision_point] Check the collision between two lines defined by two
-    points each, returns collision point by reference*)
-
-val get_collision_rec : Rectangle.t -> Rectangle.t -> Rectangle.t
-(** [get_collision_rec rec1 rec2] Get collision rectangle for two rectangles
-    collision*)
-
-val load_image : string -> Image.t
-(** [load_image file_name] Load image from file into CPU memory (RAM)*)
-
-val load_image_raw : string -> int -> int -> PixelFormat.t -> int -> Image.t
-(** [load_image_raw file_name width height format header_size] Load image from
-    RAW file data*)
-
-val load_image_anim : string -> int ptr -> Image.t
-(** [load_image_anim file_name frames] Load image sequence from file (frames
-    appended to image.data)*)
-
-val load_image_anim_from_memory : string -> string -> int -> int ptr -> Image.t
-(** [load_image_anim_from_memory file_type file_data data_size frames] Load
-    image sequence from memory buffer*)
-
-val load_image_from_memory : string -> string -> int -> Image.t
-(** [load_image_from_memory file_type file_data data_size] Load image from
-    memory buffer, fileType refers to extension: i.e. '.png'*)
-
-val load_image_from_texture : Texture.t -> Image.t
-(** [load_image_from_texture texture] Load image from GPU texture data*)
-
-val load_image_from_screen : unit -> Image.t
-(** [load_image_from_screen ()] Load image from screen buffer and (screenshot)*)
-
-val is_image_valid : Image.t -> bool
-(** [is_image_valid image] Check if an image is valid (data and parameters)*)
-
-val unload_image : Image.t -> unit
-(** [unload_image image] Unload image from CPU memory (RAM)*)
-
-val export_image : Image.t -> string -> bool
-(** [export_image image file_name] Export image data to file, returns true on
-    success*)
-
-val export_image_to_memory : Image.t -> string -> int ptr -> string
-(** [export_image_to_memory image file_type file_size] Export image to memory
-    buffer*)
-
-val export_image_as_code : Image.t -> string -> bool
-(** [export_image_as_code image file_name] Export image as code file defining an
-    array of bytes, returns true on success*)
-
-val gen_image_color : int -> int -> Color.t -> Image.t
-(** [gen_image_color width height color] Generate image: plain color*)
-
-val gen_image_gradient_linear :
-  int -> int -> int -> Color.t -> Color.t -> Image.t
-(** [gen_image_gradient_linear width height direction start end] Generate image:
-    linear gradient, direction in degrees [0..360], 0=Vertical gradient*)
-
-val gen_image_gradient_radial :
-  int -> int -> float -> Color.t -> Color.t -> Image.t
-(** [gen_image_gradient_radial width height density inner outer] Generate image:
-    radial gradient*)
-
-val gen_image_gradient_square :
-  int -> int -> float -> Color.t -> Color.t -> Image.t
-(** [gen_image_gradient_square width height density inner outer] Generate image:
-    square gradient*)
-
-val gen_image_checked :
-  int -> int -> int -> int -> Color.t -> Color.t -> Image.t
-(** [gen_image_checked width height checks_x checks_y col1 col2] Generate image:
-    checked*)
-
-val gen_image_white_noise : int -> int -> float -> Image.t
-(** [gen_image_white_noise width height factor] Generate image: white noise*)
-
-val gen_image_perlin_noise : int -> int -> int -> int -> float -> Image.t
-(** [gen_image_perlin_noise width height offset_x offset_y scale] Generate
-    image: perlin noise*)
-
-val gen_image_cellular : int -> int -> int -> Image.t
-(** [gen_image_cellular width height tile_size] Generate image: cellular
-    algorithm, bigger tileSize means bigger cells*)
-
-val gen_image_text : int -> int -> string -> Image.t
-(** [gen_image_text width height text] Generate image: grayscale image from text
-    data*)
-
-(** {3 Image manipulation functions} *)
-
-val image_copy : Image.t -> Image.t
-(** [image_copy image] Create an image duplicate (useful for transformations)*)
-
-val image_from_image : Image.t -> Rectangle.t -> Image.t
-(** [image_from_image image rec] Create an image from another image piece*)
-
-val image_from_channel : Image.t -> int -> Image.t
-(** [image_from_channel image selected_channel] Create an image from a selected
-    channel of another image (GRAYSCALE)*)
-
-val image_text : string -> int -> Color.t -> Image.t
-(** [image_text text font_size color] Create an image from text (default font)*)
-
-val image_text_ex : Font.t -> string -> float -> float -> Color.t -> Image.t
-(** [image_text_ex font text font_size spacing tint] Create an image from text
-    (custom sprite font)*)
-
-val image_format : Image.t ptr -> int -> unit
-(** [image_format image new_format] Convert image data to desired format*)
-
-val image_to_pot : Image.t ptr -> Color.t -> unit
-(** [image_to_pot image fill] Convert image to POT (power-of-two)*)
-
-val image_crop : Image.t ptr -> Rectangle.t -> unit
-(** [image_crop image crop] Crop an image to a defined rectangle*)
-
-val image_alpha_crop : Image.t ptr -> float -> unit
-(** [image_alpha_crop image threshold] Crop image depending on alpha value*)
-
-val image_alpha_clear : Image.t ptr -> Color.t -> float -> unit
-(** [image_alpha_clear image color threshold] Clear alpha channel to desired
-    color*)
-
-val image_alpha_mask : Image.t ptr -> Image.t -> unit
-(** [image_alpha_mask image alpha_mask] Apply alpha mask to image*)
-
-val image_alpha_premultiply : Image.t ptr -> unit
-(** [image_alpha_premultiply image] Premultiply alpha channel*)
-
-val image_blur_gaussian : Image.t ptr -> int -> unit
-(** [image_blur_gaussian image blur_size] Apply Gaussian blur using a box blur
-    approximation*)
-
-val image_kernel_convolution : Image.t ptr -> float ptr -> int -> unit
-(** [image_kernel_convolution image kernel kernel_size] Apply custom square
-    convolution kernel to image*)
-
-val image_resize : Image.t ptr -> int -> int -> unit
-(** [image_resize image new_width new_height] Resize image (Bicubic scaling
-    algorithm)*)
-
-val image_resize_nn : Image.t ptr -> int -> int -> unit
-(** [image_resize_nn image new_width new_height] Resize image (Nearest-Neighbor
-    scaling algorithm)*)
-
-val image_resize_canvas :
-  Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
-(** [image_resize_canvas image new_width new_height offset_x offset_y fill]
-    Resize canvas and fill with color*)
-
-val image_mipmaps : Image.t ptr -> unit
-(** [image_mipmaps image] Compute all mipmap levels for a provided image*)
-
-val image_dither : Image.t ptr -> int -> int -> int -> int -> unit
-(** [image_dither image r_bpp g_bpp b_bpp a_bpp] Dither image data to 16bpp or
-    lower (Floyd-Steinberg dithering)*)
-
-val image_flip_vertical : Image.t ptr -> unit
-(** [image_flip_vertical image] Flip image vertically*)
-
-val image_flip_horizontal : Image.t ptr -> unit
-(** [image_flip_horizontal image] Flip image horizontally*)
-
-val image_rotate : Image.t ptr -> int -> unit
-(** [image_rotate image degrees] Rotate image by input angle in degrees (-359 to
-    359)*)
-
-val image_rotate_cw : Image.t ptr -> unit
-(** [image_rotate_cw image] Rotate image clockwise 90deg*)
-
-val image_rotate_ccw : Image.t ptr -> unit
-(** [image_rotate_ccw image] Rotate image counter-clockwise 90deg*)
-
-val image_color_tint : Image.t ptr -> Color.t -> unit
-(** [image_color_tint image color] Modify image color: tint*)
-
-val image_color_invert : Image.t ptr -> unit
-(** [image_color_invert image] Modify image color: invert*)
-
-val image_color_grayscale : Image.t ptr -> unit
-(** [image_color_grayscale image] Modify image color: grayscale*)
-
-val image_color_contrast : Image.t ptr -> float -> unit
-(** [image_color_contrast image contrast] Modify image color: contrast (-100 to
-    100)*)
-
-val image_color_brightness : Image.t ptr -> int -> unit
-(** [image_color_brightness image brightness] Modify image color: brightness
-    (-255 to 255)*)
-
-val image_color_replace : Image.t ptr -> Color.t -> Color.t -> unit
-(** [image_color_replace image color replace] Modify image color: replace color*)
-
-val load_image_colors : Image.t -> Color.t ptr
-(** [load_image_colors image] Load color data from image as a Color array (RGBA
-    \- 32bit)*)
-
-val load_image_palette : Image.t -> int -> int ptr -> Color.t ptr
-(** [load_image_palette image max_palette_size color_count] Load colors palette
-    from image as a Color array (RGBA - 32bit)*)
-
-val unload_image_colors : Color.t ptr -> unit
-(** [unload_image_colors colors] Unload color data loaded with LoadImageColors()*)
-
-val unload_image_palette : Color.t ptr -> unit
-(** [unload_image_palette colors] Unload colors palette loaded with
-    LoadImagePalette()*)
-
-val get_image_alpha_border : Image.t -> float -> Rectangle.t
-(** [get_image_alpha_border image threshold] Get image alpha border rectangle*)
-
-val get_image_color : Image.t -> int -> int -> Color.t
-(** [get_image_color image x y] Get image pixel color at (x, y) position*)
-
-val image_clear_background : Image.t ptr -> Color.t -> unit
-(** [image_clear_background dst color] Clear image background with given color*)
-
-val image_draw_pixel : Image.t ptr -> int -> int -> Color.t -> unit
-(** [image_draw_pixel dst pos_x pos_y color] Draw pixel within an image*)
-
-val image_draw_pixel_v : Image.t ptr -> Vector2.t -> Color.t -> unit
-(** [image_draw_pixel_v dst position color] Draw pixel within an image (Vector
-    version)*)
-
-val image_draw_line : Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
-(** [image_draw_line dst start_pos_x start_pos_y end_pos_x end_pos_y color] Draw
-    line within an image*)
-
-val image_draw_line_v : Image.t ptr -> Vector2.t -> Vector2.t -> Color.t -> unit
-(** [image_draw_line_v dst start end color] Draw line within an image (Vector
-    version)*)
-
-val image_draw_line_ex :
-  Image.t ptr -> Vector2.t -> Vector2.t -> int -> Color.t -> unit
-(** [image_draw_line_ex dst start end thick color] Draw a line defining
-    thickness within an image*)
-
-val image_draw_circle : Image.t ptr -> int -> int -> int -> Color.t -> unit
-(** [image_draw_circle dst center_x center_y radius color] Draw a filled circle
-    within an image*)
-
-val image_draw_circle_v : Image.t ptr -> Vector2.t -> int -> Color.t -> unit
-(** [image_draw_circle_v dst center radius color] Draw a filled circle within an
-    image (Vector version)*)
-
-val image_draw_circle_lines :
-  Image.t ptr -> int -> int -> int -> Color.t -> unit
-(** [image_draw_circle_lines dst center_x center_y radius color] Draw circle
-    outline within an image*)
-
-val image_draw_circle_lines_v :
-  Image.t ptr -> Vector2.t -> int -> Color.t -> unit
-(** [image_draw_circle_lines_v dst center radius color] Draw circle outline
-    within an image (Vector version)*)
-
-val image_draw_rectangle :
-  Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
-(** [image_draw_rectangle dst pos_x pos_y width height color] Draw rectangle
-    within an image*)
-
-val image_draw_rectangle_v :
-  Image.t ptr -> Vector2.t -> Vector2.t -> Color.t -> unit
-(** [image_draw_rectangle_v dst position size color] Draw rectangle within an
-    image (Vector version)*)
-
-val image_draw_rectangle_rec : Image.t ptr -> Rectangle.t -> Color.t -> unit
-(** [image_draw_rectangle_rec dst rec color] Draw rectangle within an image*)
-
-val image_draw_rectangle_lines :
-  Image.t ptr -> Rectangle.t -> int -> Color.t -> unit
-(** [image_draw_rectangle_lines dst rec thick color] Draw rectangle lines within
-    an image*)
-
-val image_draw_triangle :
-  Image.t ptr -> Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
-(** [image_draw_triangle dst v1 v2 v3 color] Draw triangle within an image*)
-
-val image_draw_triangle_ex :
-  Image.t ptr ->
-  Vector2.t ->
-  Vector2.t ->
-  Vector2.t ->
-  Color.t ->
-  Color.t ->
-  Color.t ->
-  unit
-(** [image_draw_triangle_ex dst v1 v2 v3 c1 c2 c3] Draw triangle with
-    interpolated colors within an image*)
-
-val image_draw_triangle_lines :
-  Image.t ptr -> Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
-(** [image_draw_triangle_lines dst v1 v2 v3 color] Draw triangle outline within
-    an image*)
-
-val image_draw_triangle_fan :
-  Image.t ptr -> Vector2.t ptr -> int -> Color.t -> unit
-(** [image_draw_triangle_fan dst points point_count color] Draw a triangle fan
-    defined by points within an image (first vertex is the center)*)
-
-val image_draw_triangle_strip :
-  Image.t ptr -> Vector2.t ptr -> int -> Color.t -> unit
-(** [image_draw_triangle_strip dst points point_count color] Draw a triangle
-    strip defined by points within an image*)
-
-val image_draw :
-  Image.t ptr -> Image.t -> Rectangle.t -> Rectangle.t -> Color.t -> unit
-(** [image_draw dst src src_rec dst_rec tint] Draw a source image within a
-    destination image (tint applied to source)*)
-
-val image_draw_text :
-  Image.t ptr -> string -> int -> int -> int -> Color.t -> unit
-(** [image_draw_text dst text pos_x pos_y font_size color] Draw text (using
-    default font) within an image (destination)*)
-
-val image_draw_text_ex :
-  Image.t ptr ->
-  Font.t ->
-  string ->
-  Vector2.t ->
-  float ->
-  float ->
-  Color.t ->
-  unit
-(** [image_draw_text_ex dst font text position font_size spacing tint] Draw text
-    (custom sprite font) within an image (destination)*)
-
-(** {3 Texture loading functions} *)
-
-val load_texture : string -> Texture.t
-(** [load_texture file_name] Load texture from file into GPU memory (VRAM)*)
-
-val load_texture_from_image : Image.t -> Texture.t
-(** [load_texture_from_image image] Load texture from image data*)
-
-val load_texture_cubemap : Image.t -> int -> Texture.t
-(** [load_texture_cubemap image layout] Load cubemap from image, multiple image
-    cubemap layouts supported*)
-
-val load_render_texture : int -> int -> RenderTexture.t
-(** [load_render_texture width height] Load texture for rendering (framebuffer)*)
-
-val is_texture_valid : Texture.t -> bool
-(** [is_texture_valid texture] Check if a texture is valid (loaded in GPU)*)
-
-val unload_texture : Texture.t -> unit
-(** [unload_texture texture] Unload texture from GPU memory (VRAM)*)
-
-val is_render_texture_valid : RenderTexture.t -> bool
-(** [is_render_texture_valid target] Check if a render texture is valid (loaded
-    in GPU)*)
-
-val unload_render_texture : RenderTexture.t -> unit
-(** [unload_render_texture target] Unload render texture from GPU memory (VRAM)*)
-
-val update_texture : Texture.t -> unit ptr -> unit
-(** [update_texture texture pixels] Update GPU texture with new data*)
-
-val update_texture_rec : Texture.t -> Rectangle.t -> unit ptr -> unit
-(** [update_texture_rec texture rec pixels] Update GPU texture rectangle with
-    new data*)
-
-val gen_texture_mipmaps : Texture.t ptr -> unit
-(** [gen_texture_mipmaps texture] Generate GPU mipmaps for a texture*)
-
-val set_texture_filter : Texture.t -> TextureFilter.t -> unit
-(** [set_texture_filter texture filter] Set texture scaling filter mode*)
-
-val set_texture_wrap : Texture.t -> TextureWrap.t -> unit
-(** [set_texture_wrap texture wrap] Set texture wrapping mode*)
-
-val draw_texture : Texture.t -> int -> int -> Color.t -> unit
-(** [draw_texture texture pos_x pos_y tint] Draw a Texture2D*)
-
-val draw_texture_v : Texture.t -> Vector2.t -> Color.t -> unit
-(** [draw_texture_v texture position tint] Draw a Texture2D with position
-    defined as Vector2*)
-
-val draw_texture_ex :
-  Texture.t -> Vector2.t -> float -> float -> Color.t -> unit
-(** [draw_texture_ex texture position rotation scale tint] Draw a Texture2D with
-    extended parameters*)
-
-val draw_texture_rec : Texture.t -> Rectangle.t -> Vector2.t -> Color.t -> unit
-(** [draw_texture_rec texture source position tint] Draw a part of a texture
-    defined by a rectangle*)
-
-val draw_texture_pro :
-  Texture.t ->
-  Rectangle.t ->
-  Rectangle.t ->
-  Vector2.t ->
-  float ->
-  Color.t ->
-  unit
-(** [draw_texture_pro texture source dest origin rotation tint] Draw a part of a
-    texture defined by a rectangle with 'pro' parameters*)
-
-val draw_texture_npatch :
-  Texture.t ->
-  NPatchInfo.t ->
-  Rectangle.t ->
-  Vector2.t ->
-  float ->
-  Color.t ->
-  unit
-(** [draw_texture_npatch texture n_patch_info dest origin rotation tint] Draws a
-    texture (or part of it) that stretches or shrinks nicely*)
-
-val color_is_equal : Color.t -> Color.t -> bool
-(** [color_is_equal col1 col2] Check if two colors are equal*)
-
-val fade : Color.t -> float -> Color.t
-(** [fade color alpha] Get color with alpha applied, alpha goes from 0.0f to
-    1.0f*)
-
-val color_to_int : Color.t -> int
-(** [color_to_int color] Get hexadecimal value for a Color (0xRRGGBBAA)*)
-
-val color_normalize : Color.t -> Vector4.t
-(** [color_normalize color] Get Color normalized as float [0..1]*)
-
-val color_from_normalized : Vector4.t -> Color.t
-(** [color_from_normalized normalized] Get Color from normalized values [0..1]*)
-
-val color_to_hsv : Color.t -> Vector3.t
-(** [color_to_hsv color] Get HSV values for a Color, hue [0..360],
-    saturation/value [0..1]*)
-
-val color_from_hsv : float -> float -> float -> Color.t
-(** [color_from_hsv hue saturation value] Get a Color from HSV values, hue
-    [0..360], saturation/value [0..1]*)
-
-val color_tint : Color.t -> Color.t -> Color.t
-(** [color_tint color tint] Get color multiplied with another color*)
-
-val color_brightness : Color.t -> float -> Color.t
-(** [color_brightness color factor] Get color with brightness correction,
-    brightness factor goes from -1.0f to 1.0f*)
-
-val color_contrast : Color.t -> float -> Color.t
-(** [color_contrast color contrast] Get color with contrast correction, contrast
-    values between -1.0f and 1.0f*)
-
-val color_alpha : Color.t -> float -> Color.t
-(** [color_alpha color alpha] Get color with alpha applied, alpha goes from 0.0f
-    to 1.0f*)
-
-val color_alpha_blend : Color.t -> Color.t -> Color.t -> Color.t
-(** [color_alpha_blend dst src tint] Get src alpha-blended into dst color with
-    tint*)
-
-val color_lerp : Color.t -> Color.t -> float -> Color.t
-(** [color_lerp color1 color2 factor] Get color lerp interpolation between two
-    colors, factor [0.0f..1.0f]*)
-
-val get_color : int -> Color.t
-(** [get_color hex_value] Get Color structure from hexadecimal value*)
-
-val get_pixel_color : unit ptr -> PixelFormat.t -> Color.t
-(** [get_pixel_color src_ptr format] Get Color from a source pixel pointer of
-    certain format*)
-
-val set_pixel_color : unit ptr -> Color.t -> PixelFormat.t -> unit
-(** [set_pixel_color dst_ptr color format] Set color formatted into destination
-    pixel pointer*)
-
-val get_pixel_data_size : int -> int -> PixelFormat.t -> int
-(** [get_pixel_data_size width height format] Get pixel data size in bytes for
-    certain format*)
-
-(** {2 Font Loading and Text Drawing Functions (Module: text)} *)
-
-(** {3 Font loading/unloading functions} *)
-
-val get_font_default : unit -> Font.t
-(** [get_font_default ()] Get the default Font*)
-
-val load_font : string -> Font.t
-(** [load_font file_name] Load font from file into GPU memory (VRAM)*)
-
-val load_font_ex : string -> int -> int CArray.t option -> Font.t
-(** [load_font_ex file_name font_size codepoints codepoint_count] Load font from
-    file with extended parameters, use NULL for codepoints and 0 for
-    codepointCount to load the default character setFont*)
-
-val load_font_from_image : Image.t -> Color.t -> int -> Font.t
-(** [load_font_from_image image key first_char] Load font from Image (XNA style)*)
-
-val load_font_from_memory :
-  string -> string -> int -> int -> int ptr -> int -> Font.t
-(** [load_font_from_memory file_type file_data data_size font_size codepoints
-     codepoint_count] Load font from memory buffer, fileType refers to
-    extension: i.e. '.ttf'*)
-
-val is_font_valid : Font.t -> bool
-(** [is_font_valid font] Check if a font is valid (font data loaded, WARNING:
-    GPU texture not checked)*)
-
-val load_font_data :
-  string -> int -> int ptr -> int -> int -> GlyphInfo.t CArray.t
-(** [load_font_data file_data font_size codepoints codepoint_count type] Load
-    font data for further use*)
-
-val gen_image_font_atlas :
-  GlyphInfo.t ptr -> Rectangle.t ptr ptr -> int -> int -> int -> int -> Image.t
-(** [gen_image_font_atlas glyphs glyph_recs glyph_count font_size padding
-     pack_method] Generate image font atlas using chars info*)
-
-val unload_font_data : GlyphInfo.t ptr -> int -> unit
-(** [unload_font_data glyphs glyph_count] Unload font chars info data (RAM)*)
-
-val unload_font : Font.t -> unit
-(** [unload_font font] Unload font from GPU memory (VRAM)*)
-
-val export_font_as_code : Font.t -> string -> bool
-(** [export_font_as_code font file_name] Export font as code file, returns true
-    on success*)
-
-val draw_fps : int -> int -> unit
-(** [draw_fps pos_x pos_y] Draw current FPS*)
-
-val draw_text : string -> int -> int -> int -> Color.t -> unit
-(** [draw_text text pos_x pos_y font_size color] Draw text (using default font)*)
-
-val draw_text_ex :
-  Font.t -> string -> Vector2.t -> float -> float -> Color.t -> unit
-(** [draw_text_ex font text position font_size spacing tint] Draw text using
-    font and additional parameters*)
-
-val draw_text_pro :
-  Font.t ->
-  string ->
-  Vector2.t ->
-  Vector2.t ->
-  float ->
-  float ->
-  float ->
-  Color.t ->
-  unit
-(** [draw_text_pro font text position origin rotation font_size spacing tint]
-    Draw text using Font and pro parameters (rotation)*)
-
-val draw_text_codepoint : Font.t -> int -> Vector2.t -> float -> Color.t -> unit
-(** [draw_text_codepoint font codepoint position font_size tint] Draw one
-    character (codepoint)*)
-
-val draw_text_codepoints :
-  Font.t -> int CArray.t -> Vector2.t -> float -> float -> Color.t -> unit
-(** [draw_text_codepoints font codepoints codepoint_count position font_size
-     spacing tint] Draw multiple character (codepoint)*)
-
-val set_text_line_spacing : int -> unit
-(** [set_text_line_spacing spacing] Set vertical line spacing when drawing with
-    line-breaks*)
-
-(** {3 Text misc. functions} *)
-
-val measure_text : string -> int -> int
-(** [measure_text text font_size] Measure string width for default font*)
-
-val measure_text_ex : Font.t -> string -> float -> float -> Vector2.t
-(** [measure_text_ex font text font_size spacing] Measure string size for Font*)
-
-val measure_text_codepoints :
-  Font.t -> int CArray.t -> float -> float -> Vector2.t
-(** [measure_text_codepoints font codepoints font_size spacing] Measure string
-    size for an existing array of codepoints for Font*)
-
-val get_glyph_index : Font.t -> int -> int
-(** [get_glyph_index font codepoint] Get glyph index position in font for a
-    codepoint (unicode character), fallback to '?' if not found*)
-
-val get_glyph_info : Font.t -> int -> GlyphInfo.t
-(** [get_glyph_info font codepoint] Get glyph font info data for a codepoint
-    (unicode character), fallback to '?' if not found*)
-
-val get_glyph_atlas_rec : Font.t -> int -> Rectangle.t
-(** [get_glyph_atlas_rec font codepoint] Get glyph rectangle in font atlas for a
-    codepoint (unicode character), fallback to '?' if not found*)
-
-val load_utf8 : int ptr -> int -> char ptr
-(** [load_utf8 codepoints length] Load UTF-8 text encoded from codepoints array*)
-
-val unload_utf8 : char ptr -> unit
-(** [unload_utf8 text] Unload UTF-8 text encoded from codepoints array*)
-
-val load_codepoints : string -> int ptr -> int ptr
-(** [load_codepoints text count] Load all codepoints from a UTF-8 text string,
-    codepoints count returned by parameter*)
-
-val unload_codepoints : int ptr -> unit
-(** [unload_codepoints codepoints] Unload codepoints data from memory*)
-
-val get_codepoint_count : string -> int
-(** [get_codepoint_count text] Get total number of codepoints in a UTF-8 encoded
-    string*)
-
-val get_codepoint : string -> int ptr -> int
-(** [get_codepoint text codepoint_size] Get next codepoint in a UTF-8 encoded
-    string, 0x3f('?') is returned on failure*)
-
-val get_codepoint_next : string -> int ptr -> int
-(** [get_codepoint_next text codepoint_size] Get next codepoint in a UTF-8
-    encoded string, 0x3f('?') is returned on failure*)
-
-val get_codepoint_previous : string -> int ptr -> int
-(** [get_codepoint_previous text codepoint_size] Get previous codepoint in a
-    UTF-8 encoded string, 0x3f('?') is returned on failure*)
-
-val codepoint_to_utf8 : int -> int ptr -> string
-(** [codepoint_to_utf8 codepoint utf8_size] Encode one codepoint into UTF-8 byte
-    array (array length returned as parameter)*)
-
-val text_is_equal : string -> string -> bool
-(** [text_is_equal text1 text2] Check if two text string are equal*)
-
-val text_length : string -> int
-(** [text_length text] Get text length, checks for '\0' ending*)
-
-val text_subtext : string -> int -> int -> string
-(** [text_subtext text position length] Get a piece of a text string*)
-
-val text_remove_spaces : string -> string
-(** [text_remove_spaces text] Remove text spaces, concat words*)
-
-val get_text_between : string -> string -> string -> string
-(** [get_text_between text begin end] Get text between two strings*)
-
-val text_replace : string -> string -> string -> string
-(** [text_replace text search replacement] Replace text string with new string*)
-
-val text_replace_between : string -> string -> string -> string -> string
-(** [text_replace_between text begin end replacement] Replace text between two
-    specific strings*)
-
-val text_insert : string -> string -> int -> string
-(** [text_insert text insert position] Insert text in a defined byte position*)
-
-val text_find_index : string -> string -> int
-(** [text_find_index text find] Find first text occurrence within a string*)
-
-val text_to_upper : string -> string
-(** [text_to_upper text] Get upper case version of provided string*)
-
-val text_to_lower : string -> string
-(** [text_to_lower text] Get lower case version of provided string*)
-
-val text_to_pascal : string -> string
-(** [text_to_pascal text] Get Pascal case notation version of provided string*)
-
-val text_to_snake : string -> string
-(** [text_to_snake text] Get Snake case notation version of provided string*)
-
-val text_to_camel : string -> string
-(** [text_to_camel text] Get Camel case notation version of provided string*)
-
-val text_to_integer : string -> int
-(** [text_to_integer text] Get integer value from text (negative values not
-    supported)*)
-
-val text_to_float : string -> float
-(** [text_to_float text] Get float value from text (negative values not
-    supported)*)
-
-(** {2 Basic 3d Shapes Drawing Functions (Module: models)} *)
-
-(** {3 Basic geometric 3D shapes drawing functions} *)
-
-val draw_line_3d : Vector3.t -> Vector3.t -> Color.t -> unit
-(** [draw_line_3d start_pos end_pos color] Draw a line in 3D world space*)
-
-val draw_point_3d : Vector3.t -> Color.t -> unit
-(** [draw_point_3d position color] Draw a point in 3D space, actually a small
-    line*)
-
-val draw_circle_3d : Vector3.t -> float -> Vector3.t -> float -> Color.t -> unit
-(** [draw_circle_3d center radius rotation_axis rotation_angle color] Draw a
-    circle in 3D world space*)
-
-val draw_triangle_3d : Vector3.t -> Vector3.t -> Vector3.t -> Color.t -> unit
-(** [draw_triangle_3d v1 v2 v3 color] Draw a color-filled triangle (vertex in
-    counter-clockwise order!)*)
-
-val draw_triangle_strip_3d : Vector3.t ptr -> int -> Color.t -> unit
-(** [draw_triangle_strip_3d points point_count color] Draw a triangle strip
-    defined by points*)
-
-val draw_cube : Vector3.t -> float -> float -> float -> Color.t -> unit
-(** [draw_cube position width height length color] Draw cube*)
-
-val draw_cube_v : Vector3.t -> Vector3.t -> Color.t -> unit
-(** [draw_cube_v position size color] Draw cube (Vector version)*)
-
-val draw_cube_wires : Vector3.t -> float -> float -> float -> Color.t -> unit
-(** [draw_cube_wires position width height length color] Draw cube wires*)
-
-val draw_cube_wires_v : Vector3.t -> Vector3.t -> Color.t -> unit
-(** [draw_cube_wires_v position size color] Draw cube wires (Vector version)*)
-
-val draw_sphere : Vector3.t -> float -> Color.t -> unit
-(** [draw_sphere center_pos radius color] Draw sphere*)
-
-val draw_sphere_ex : Vector3.t -> float -> int -> int -> Color.t -> unit
-(** [draw_sphere_ex center_pos radius rings slices color] Draw sphere with
-    extended parameters*)
-
-val draw_sphere_wires : Vector3.t -> float -> int -> int -> Color.t -> unit
-(** [draw_sphere_wires center_pos radius rings slices color] Draw sphere wires*)
-
-val draw_cylinder :
-  Vector3.t -> float -> float -> float -> int -> Color.t -> unit
-(** [draw_cylinder position radius_top radius_bottom height slices color] Draw a
-    cylinder/cone*)
-
-val draw_cylinder_ex :
-  Vector3.t -> Vector3.t -> float -> float -> int -> Color.t -> unit
-(** [draw_cylinder_ex start_pos end_pos start_radius end_radius sides color]
-    Draw a cylinder with base at startPos and top at endPos*)
-
-val draw_cylinder_wires :
-  Vector3.t -> float -> float -> float -> int -> Color.t -> unit
-(** [draw_cylinder_wires position radius_top radius_bottom height slices color]
-    Draw a cylinder/cone wires*)
-
-val draw_cylinder_wires_ex :
-  Vector3.t -> Vector3.t -> float -> float -> int -> Color.t -> unit
-(** [draw_cylinder_wires_ex start_pos end_pos start_radius end_radius sides
-     color] Draw a cylinder wires with base at startPos and top at endPos*)
-
-val draw_capsule :
-  Vector3.t -> Vector3.t -> float -> int -> int -> Color.t -> unit
-(** [draw_capsule start_pos end_pos radius slices rings color] Draw a capsule
-    with the center of its sphere caps at startPos and endPos*)
-
-val draw_capsule_wires :
-  Vector3.t -> Vector3.t -> float -> int -> int -> Color.t -> unit
-(** [draw_capsule_wires start_pos end_pos radius slices rings color] Draw
-    capsule wireframe with the center of its sphere caps at startPos and endPos*)
-
-val draw_plane : Vector3.t -> Vector2.t -> Color.t -> unit
-(** [draw_plane center_pos size color] Draw a plane XZ*)
-
-val draw_ray : Ray.t -> Color.t -> unit
-(** [draw_ray ray color] Draw a ray line*)
-
-val draw_grid : int -> float -> unit
-(** [draw_grid slices spacing] Draw a grid (centered at (0, 0, 0))*)
-
-(** {3 Model loading/unloading functions} *)
-
-val load_model : string -> Model.t
-(** [load_model file_name] Load model from files (meshes and materials)*)
-
-val load_model_from_mesh : Mesh.t -> Model.t
-(** [load_model_from_mesh mesh] Load model from generated mesh (default
-    material)*)
-
-val is_model_valid : Model.t -> bool
-(** [is_model_valid model] Check if a model is valid (loaded in GPU, VAO/VBOs)*)
-
-val unload_model : Model.t -> unit
-(** [unload_model model] Unload model (including meshes) from memory (RAM and/or
-    VRAM)*)
-
-val get_model_bounding_box : Model.t -> BoundingBox.t
-(** [get_model_bounding_box model] Compute model bounding box limits (considers
-    all meshes)*)
-
-val draw_model : Model.t -> Vector3.t -> float -> Color.t -> unit
-(** [draw_model model position scale tint] Draw a model (with texture if set)*)
-
-val draw_model_ex :
-  Model.t -> Vector3.t -> Vector3.t -> float -> Vector3.t -> Color.t -> unit
-(** [draw_model_ex model position rotation_axis rotation_angle scale tint] Draw
-    a model with extended parameters*)
-
-val draw_model_wires : Model.t -> Vector3.t -> float -> Color.t -> unit
-(** [draw_model_wires model position scale tint] Draw a model wires (with
-    texture if set)*)
-
-val draw_model_wires_ex :
-  Model.t -> Vector3.t -> Vector3.t -> float -> Vector3.t -> Color.t -> unit
-(** [draw_model_wires_ex model position rotation_axis rotation_angle scale tint]
-    Draw a model wires (with texture if set) with extended parameters*)
-
-val draw_bounding_box : BoundingBox.t -> Color.t -> unit
-(** [draw_bounding_box box color] Draw bounding box (wires)*)
-
-val draw_billboard :
-  Camera3D.t -> Texture.t -> Vector3.t -> float -> Color.t -> unit
-(** [draw_billboard camera texture position scale tint] Draw a billboard texture*)
-
-val draw_billboard_rec :
-  Camera3D.t ->
-  Texture.t ->
-  Rectangle.t ->
-  Vector3.t ->
-  Vector2.t ->
-  Color.t ->
-  unit
-(** [draw_billboard_rec camera texture source position size tint] Draw a
-    billboard texture defined by source*)
-
-val draw_billboard_pro :
-  Camera3D.t ->
-  Texture.t ->
-  Rectangle.t ->
-  Vector3.t ->
-  Vector3.t ->
-  Vector2.t ->
-  Vector2.t ->
-  float ->
-  Color.t ->
-  unit
-(** [draw_billboard_pro camera texture source position up size origin rotation
-     tint] Draw a billboard texture defined by source and rotation*)
-
-val upload_mesh : Mesh.t ptr -> bool -> unit
-(** [upload_mesh mesh dynamic] Upload mesh vertex data in GPU and provide
-    VAO/VBO ids*)
-
-val update_mesh_buffer : Mesh.t -> int -> unit ptr -> int -> int -> unit
-(** [update_mesh_buffer mesh index data data_size offset] Update mesh vertex
-    data in GPU for a specific buffer index*)
-
-val unload_mesh : Mesh.t -> unit
-(** [unload_mesh mesh] Unload mesh data from CPU and GPU*)
-
-val draw_mesh : Mesh.t -> Material.t -> Matrix.t -> unit
-(** [draw_mesh mesh material transform] Draw a 3d mesh with material and
-    transform*)
-
-val draw_mesh_instanced : Mesh.t -> Material.t -> Matrix.t ptr -> int -> unit
-(** [draw_mesh_instanced mesh material transforms instances] Draw multiple mesh
-    instances with material and different transforms*)
-
-val get_mesh_bounding_box : Mesh.t -> BoundingBox.t
-(** [get_mesh_bounding_box mesh] Compute mesh bounding box limits*)
-
-(** {3 Mesh generation functions} *)
-
-val gen_mesh_tangents : Mesh.t ptr -> unit
-(** [gen_mesh_tangents mesh] Compute mesh tangents*)
-
-val export_mesh : Mesh.t -> string -> bool
-(** [export_mesh mesh file_name] Export mesh data to file, returns true on
-    success*)
-
-val export_mesh_as_code : Mesh.t -> string -> bool
-(** [export_mesh_as_code mesh file_name] Export mesh as code file (.h) defining
-    multiple arrays of vertex attributes*)
-
-val gen_mesh_poly : int -> float -> Mesh.t
-(** [gen_mesh_poly sides radius] Generate polygonal mesh*)
-
-val gen_mesh_plane : float -> float -> int -> int -> Mesh.t
-(** [gen_mesh_plane width length res_x res_z] Generate plane mesh (with
-    subdivisions)*)
-
-val gen_mesh_cube : float -> float -> float -> Mesh.t
-(** [gen_mesh_cube width height length] Generate cuboid mesh*)
-
-val gen_mesh_sphere : float -> int -> int -> Mesh.t
-(** [gen_mesh_sphere radius rings slices] Generate sphere mesh (standard sphere)*)
-
-val gen_mesh_hemi_sphere : float -> int -> int -> Mesh.t
-(** [gen_mesh_hemi_sphere radius rings slices] Generate half-sphere mesh (no
-    bottom cap)*)
-
-val gen_mesh_cylinder : float -> float -> int -> Mesh.t
-(** [gen_mesh_cylinder radius height slices] Generate cylinder mesh*)
-
-val gen_mesh_cone : float -> float -> int -> Mesh.t
-(** [gen_mesh_cone radius height slices] Generate cone/pyramid mesh*)
-
-val gen_mesh_torus : float -> float -> int -> int -> Mesh.t
-(** [gen_mesh_torus radius size rad_seg sides] Generate torus mesh*)
-
-val gen_mesh_knot : float -> float -> int -> int -> Mesh.t
-(** [gen_mesh_knot radius size rad_seg sides] Generate trefoil knot mesh*)
-
-val gen_mesh_heightmap : Image.t -> Vector3.t -> Mesh.t
-(** [gen_mesh_heightmap heightmap size] Generate heightmap mesh from image data*)
-
-val gen_mesh_cubicmap : Image.t -> Vector3.t -> Mesh.t
-(** [gen_mesh_cubicmap cubicmap cube_size] Generate cubes-based map mesh from
-    image data*)
-
-val load_materials : string -> int ptr -> Material.t ptr
-(** [load_materials file_name material_count] Load materials from model file*)
-
-val load_material_default : unit -> Material.t
-(** [load_material_default ()] Load default material (Supports: DIFFUSE,
-    SPECULAR, NORMAL maps)*)
-
-val is_material_valid : Material.t -> bool
-(** [is_material_valid material] Check if a material is valid (shader assigned,
-    map textures loaded in GPU)*)
-
-val unload_material : Material.t -> unit
-(** [unload_material material] Unload material from GPU memory (VRAM)*)
-
-val set_material_texture :
-  Material.t ptr -> MaterialMapIndex.t -> Texture.t -> unit
-(** [set_material_texture material map_type texture] Set texture for a material
-    map type (MATERIAL_MAP_DIFFUSE, MATERIAL_MAP_SPECULAR...)*)
-
-val set_model_mesh_material : Model.t ptr -> int -> int -> unit
-(** [set_model_mesh_material model mesh_id material_id] Set material for a mesh*)
-
-val load_model_animations : string -> ModelAnimation.t CArray.t
-(** [load_model_animations file_name anim_count] Load model animations from file*)
-
-val update_model_animation : Model.t -> ModelAnimation.t -> int -> unit
-(** [update_model_animation model anim frame] Update model animation pose (CPU)*)
-
-val update_model_animation_ex :
-  Model.t ->
-  ModelAnimation.t ->
-  float ->
-  ModelAnimation.t ->
-  float ->
-  float ->
-  unit
-(** [update_model_animation_ex model animA frameA animB frameB blend] Update
-    model animation pose, blending two animations*)
-
-val unload_model_animations : ModelAnimation.t CArray.t -> unit
-(** [unload_model_animations animations anim_count] Unload animation array data*)
-
-val is_model_animation_valid : Model.t -> ModelAnimation.t -> bool
-(** [is_model_animation_valid model anim] Check model animation skeleton match*)
-
-(** {3 Collision detection functions} *)
-
-val check_collision_spheres : Vector3.t -> float -> Vector3.t -> float -> bool
-(** [check_collision_spheres center1 radius1 center2 radius2] Check collision
-    between two spheres*)
-
-val check_collision_boxes : BoundingBox.t -> BoundingBox.t -> bool
-(** [check_collision_boxes box1 box2] Check collision between two bounding boxes*)
-
-val check_collision_box_sphere : BoundingBox.t -> Vector3.t -> float -> bool
-(** [check_collision_box_sphere box center radius] Check collision between box
-    and sphere*)
-
-val get_ray_collision_sphere : Ray.t -> Vector3.t -> float -> RayCollision.t
-(** [get_ray_collision_sphere ray center radius] Get collision info between ray
-    and sphere*)
-
-val get_ray_collision_box : Ray.t -> BoundingBox.t -> RayCollision.t
-(** [get_ray_collision_box ray box] Get collision info between ray and box*)
-
-val get_ray_collision_mesh : Ray.t -> Mesh.t -> Matrix.t -> RayCollision.t
-(** [get_ray_collision_mesh ray mesh transform] Get collision info between ray
-    and mesh*)
-
-val get_ray_collision_triangle :
-  Ray.t -> Vector3.t -> Vector3.t -> Vector3.t -> RayCollision.t
-(** [get_ray_collision_triangle ray p1 p2 p3] Get collision info between ray and
-    triangle*)
-
-val get_ray_collision_quad :
-  Ray.t -> Vector3.t -> Vector3.t -> Vector3.t -> Vector3.t -> RayCollision.t
-(** [get_ray_collision_quad ray p1 p2 p3 p4] Get collision info between ray and
-    quad*)
-
-(** {2 Audio Loading and Playing Functions (Module: audio)} *)
-
-(** {3 Audio device management functions} *)
-val init_audio_device : unit -> unit
-(** [init_audio_device ()] Initialize audio device and context*)
-
-val close_audio_device : unit -> unit
-(** [close_audio_device ()] Close the audio device and context*)
-
-val is_audio_device_ready : unit -> bool
-(** [is_audio_device_ready ()] Check if audio device has been initialized
-    successfully*)
-
-val set_master_volume : float -> unit
-(** [set_master_volume volume] Set master volume (listener)*)
-
-val get_master_volume : unit -> float
-(** [get_master_volume ()] Get master volume (listener)*)
-
-val load_wave : string -> Wave.t
-(** [load_wave file_name] Load wave data from file*)
-
-val load_wave_from_memory : string -> string -> int -> Wave.t
-(** [load_wave_from_memory file_type file_data data_size] Load wave from memory
-    buffer, fileType refers to extension: i.e. '.wav'*)
-
-val is_wave_valid : Wave.t -> bool
-(** [is_wave_valid wave] Checks if wave data is valid (data loaded and
-    parameters)*)
-
-val load_sound : string -> Sound.t
-(** [load_sound file_name] Load sound from file*)
-
-val load_sound_from_wave : Wave.t -> Sound.t
-(** [load_sound_from_wave wave] Load sound from wave data*)
-
-val load_sound_alias : Sound.t -> Sound.t
-(** [load_sound_alias source] Create a new sound that shares the same sample
-    data as the source sound, does not own the sound data*)
-
-val is_sound_valid : Sound.t -> bool
-(** [is_sound_valid sound] Checks if a sound is valid (data loaded and buffers
-    initialized)*)
-
-val update_sound : Sound.t -> unit ptr -> int -> unit
-(** [update_sound sound data sample_count] Update sound buffer with new data*)
-
-val unload_wave : Wave.t -> unit
-(** [unload_wave wave] Unload wave data*)
-
-val unload_sound : Sound.t -> unit
-(** [unload_sound sound] Unload sound*)
-
-val unload_sound_alias : Sound.t -> unit
-(** [unload_sound_alias alias] Unload a sound alias (does not deallocate sample
-    data)*)
-
-val export_wave : Wave.t -> string -> bool
-(** [export_wave wave file_name] Export wave data to file, returns true on
-    success*)
-
-val export_wave_as_code : Wave.t -> string -> bool
-(** [export_wave_as_code wave file_name] Export wave sample data to code (.h),
-    returns true on success*)
-
-(** {3 Wave/Sound management functions} *)
-
-val play_sound : Sound.t -> unit
-(** [play_sound sound] Play a sound*)
-
-val stop_sound : Sound.t -> unit
-(** [stop_sound sound] Stop playing a sound*)
-
-val pause_sound : Sound.t -> unit
-(** [pause_sound sound] Pause a sound*)
-
-val resume_sound : Sound.t -> unit
-(** [resume_sound sound] Resume a paused sound*)
-
-val is_sound_playing : Sound.t -> bool
-(** [is_sound_playing sound] Check if a sound is currently playing*)
-
-val set_sound_volume : Sound.t -> float -> unit
-(** [set_sound_volume sound volume] Set volume for a sound (1.0 is max level)*)
-
-val set_sound_pitch : Sound.t -> float -> unit
-(** [set_sound_pitch sound pitch] Set pitch for a sound (1.0 is base level)*)
-
-val set_sound_pan : Sound.t -> float -> unit
-(** [set_sound_pan sound pan] Set pan for a sound (0.5 is center)*)
-
-val wave_copy : Wave.t -> Wave.t
-(** [wave_copy wave] Copy a wave to a new wave*)
-
-val wave_crop : Wave.t ptr -> int -> int -> unit
-(** [wave_crop wave init_frame final_frame] Crop a wave to defined frames range*)
-
-val wave_format : Wave.t ptr -> int -> int -> int -> unit
-(** [wave_format wave sample_rate sample_size channels] Convert wave data to
-    desired format*)
-
-val load_wave_samples : Wave.t -> float ptr
-(** [load_wave_samples wave] Load samples data from wave as a 32bit float data
-    array*)
-
-val unload_wave_samples : float ptr -> unit
-(** [unload_wave_samples samples] Unload samples data loaded with
-    LoadWaveSamples()*)
-
-val load_music_stream : string -> Music.t
-(** [load_music_stream file_name] Load music stream from file*)
-
-val load_music_stream_from_memory : string -> string -> int -> Music.t
-(** [load_music_stream_from_memory file_type data data_size] Load music stream
-    from data*)
-
-val is_music_valid : Music.t -> bool
-(** [is_music_valid music] Checks if a music stream is valid (context and
-    buffers initialized)*)
-
-val unload_music_stream : Music.t -> unit
-(** [unload_music_stream music] Unload music stream*)
-
-val play_music_stream : Music.t -> unit
-(** [play_music_stream music] Start music playing*)
-
-val is_music_stream_playing : Music.t -> bool
-(** [is_music_stream_playing music] Check if music is playing*)
-
-val update_music_stream : Music.t -> unit
-(** [update_music_stream music] Updates buffers for music streaming*)
-
-val stop_music_stream : Music.t -> unit
-(** [stop_music_stream music] Stop music playing*)
-
-val pause_music_stream : Music.t -> unit
-(** [pause_music_stream music] Pause music playing*)
-
-val resume_music_stream : Music.t -> unit
-(** [resume_music_stream music] Resume playing paused music*)
-
-val seek_music_stream : Music.t -> float -> unit
-(** [seek_music_stream music position] Seek music to a position (in seconds)*)
-
-val set_music_volume : Music.t -> float -> unit
-(** [set_music_volume music volume] Set volume for music (1.0 is max level)*)
-
-val set_music_pitch : Music.t -> float -> unit
-(** [set_music_pitch music pitch] Set pitch for a music (1.0 is base level)*)
-
-val set_music_pan : Music.t -> float -> unit
-(** [set_music_pan music pan] Set pan for a music (0.5 is center)*)
-
-val get_music_time_length : Music.t -> float
-(** [get_music_time_length music] Get music time length (in seconds)*)
-
-val get_music_time_played : Music.t -> float
-(** [get_music_time_played music] Get current music time played (in seconds)*)
-
-val load_audio_stream : int -> int -> int -> AudioStream.t
-(** [load_audio_stream sample_rate sample_size channels] Load audio stream (to
-    stream raw audio pcm data)*)
-
-(** {3 AudioStream management functions} *)
-
-val unload_audio_stream : AudioStream.t -> unit
-(** [unload_audio_stream stream] Unload audio stream and free memory*)
-
-val update_audio_stream : AudioStream.t -> unit ptr -> int -> unit
-(** [update_audio_stream stream data frame_count] Update audio stream buffers
-    with data*)
-
-val is_audio_stream_processed : AudioStream.t -> bool
-(** [is_audio_stream_processed stream] Check if any audio stream buffers
-    requires refill*)
-
-val play_audio_stream : AudioStream.t -> unit
-(** [play_audio_stream stream] Play audio stream*)
-
-val pause_audio_stream : AudioStream.t -> unit
-(** [pause_audio_stream stream] Pause audio stream*)
-
-val resume_audio_stream : AudioStream.t -> unit
-(** [resume_audio_stream stream] Resume audio stream*)
-
-val is_audio_stream_playing : AudioStream.t -> bool
-(** [is_audio_stream_playing stream] Check if audio stream is playing*)
-
-val stop_audio_stream : AudioStream.t -> unit
-(** [stop_audio_stream stream] Stop audio stream*)
-
-val set_audio_stream_volume : AudioStream.t -> float -> unit
-(** [set_audio_stream_volume stream volume] Set volume for audio stream (1.0 is
-    max level)*)
-
-val set_audio_stream_pitch : AudioStream.t -> float -> unit
-(** [set_audio_stream_pitch stream pitch] Set pitch for audio stream (1.0 is
-    base level)*)
-
-val set_audio_stream_pan : AudioStream.t -> float -> unit
-(** [set_audio_stream_pan stream pan] Set pan for audio stream (0.5 is centered)*)
-
-val set_audio_stream_buffer_size_default : int -> unit
-(** [set_audio_stream_buffer_size_default size] Default size for new audio
-    streams*)

@@ -76,25 +76,26 @@ let rec loop { zoom_mode; camera } =
     Rlgl.push_matrix ();
     Rlgl.translatef 0. (25. *. 50.) 0.;
     Rlgl.rotatef 90. 1. 0. 0.;
-    Raylib.draw_grid 100 50.;
+    Raylib_models.draw_grid 100 50.;
     Rlgl.pop_matrix ();
 
     (* Draw a reference circle *)
-    Raylib.draw_circle
+    Raylib_shapes.draw_circle
       (Raylib.get_screen_width () / 2)
       (Raylib.get_screen_height () / 2)
       50. Raylib.Color.maroon;
 
     Raylib.end_mode_2d ();
 
-    Raylib.draw_text "[1][2] Select mouse zoom mode (Wheel or Move)" 20 20 20
-      Raylib.Color.darkgray;
+    Raylib_text.draw_text "[1][2] Select mouse zoom mode (Wheel or Move)" 20 20
+      20 Raylib.Color.darkgray;
     (match zoom_mode with
     | Zero ->
-        Raylib.draw_text "Mouse right button drag to move, mouse wheel to zoom"
-          20 50 20 Raylib.Color.darkgray
+        Raylib_text.draw_text
+          "Mouse right button drag to move, mouse wheel to zoom" 20 50 20
+          Raylib.Color.darkgray
     | One ->
-        Raylib.draw_text
+        Raylib_text.draw_text
           "Mouse right button drag to move, mouse press and move to zoom" 20 50
           20 Raylib.Color.darkgray);
     Raylib.end_drawing ();

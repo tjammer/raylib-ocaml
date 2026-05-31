@@ -2,13 +2,50 @@
  (name raylib)
  (public_name raylib)
  (modules Raylib)
- (libraries raylib_core raylib_rlgl))
+ (libraries
+  raylib_core
+  raylib_text
+  raylib_shapes
+  raylib_textures
+  raylib_models
+  raylib_audio
+  raylib_rlgl))
 
 (library
  (name raylib_core)
  (public_name raylib.core)
- (modules Raylib_core Ctypes_reexports Raylib_types Functions)
+ (modules Raylib_core Ctypes_reexports Raylib_types)
  (libraries raylib_c))
+
+(library
+ (name raylib_text)
+ (public_name raylib.text)
+ (modules Raylib_text)
+ (libraries raylib_c_text))
+
+(library
+ (name raylib_shapes)
+ (public_name raylib.shapes)
+ (modules Raylib_shapes)
+ (libraries raylib_c_shapes))
+
+(library
+ (name raylib_textures)
+ (public_name raylib.textures)
+ (modules Raylib_textures)
+ (libraries raylib_c_textures))
+
+(library
+ (name raylib_models)
+ (public_name raylib.models)
+ (modules Raylib_models)
+ (libraries raylib_c_models))
+
+(library
+ (name raylib_audio)
+ (public_name raylib.audio)
+ (modules Raylib_audio)
+ (libraries raylib_c_audio))
 
 (library
  (name raylib_rlgl)

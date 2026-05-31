@@ -1,2 +1,2 @@
-include Rlgl_c.Types
-include Rlgl_c.Functions
+include Rlgl_c.Rlgl_types_generated
+include Rlgl_c.Rlgl_generated.Functions

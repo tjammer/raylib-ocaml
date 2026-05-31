@@ -11,7 +11,7 @@
 (executable
  (name core_2d_camera_mouse_zoom_modules)
  (modules Core_2d_camera_mouse_zoom_modules)
- (libraries raylib_core raylib_rlgl))
+ (libraries raylib_core raylib_text raylib_shapes raylib_models raylib_rlgl))
 
 (executable
  (name core_2d_camera_platformer)
@@ -56,7 +56,7 @@
 (executable
  (name core_basic_window_core)
  (modules Core_basic_window_core)
- (libraries raylib_core))
+ (libraries raylib_core raylib_text))
 
 (executable
  (name core_basic_screen_manager)
