@@ -1,5 +1,5 @@
 module Types = Rlgl_c.Types
-open Ctypes_reexports
+open Raylib_core
 
 module RlVertexBuffer = struct
   type t' = Types.RlVertexBuffer.t

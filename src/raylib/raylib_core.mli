@@ -16,7 +16,6 @@ val ptr_of_uint : Unsigned.uint -> Unsigned.uint ptr
 val void_ptr_of_int : int -> unit ptr
 
 module CArray = Ctypes.CArray
-module Raylib_c = Raylib_c
 
 (** {1 Constants} *)
 
@@ -3550,5 +3549,3 @@ val set_audio_stream_pan : AudioStream.t -> float -> unit
 val set_audio_stream_buffer_size_default : int -> unit
 (** [set_audio_stream_buffer_size_default size] Default size for new audio
     streams*)
-
-module Rlgl = Rlgl

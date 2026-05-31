@@ -282,7 +282,7 @@ val unload_shader_program : Unsigned.uint -> unit
 val get_location_uniform : Unsigned.uint -> string -> int
 val get_location_attrib : Unsigned.uint -> string -> int
 val set_uniform : int -> unit Ctypes.ptr -> int -> int -> unit
-val set_uniform_matrix : int -> Raylib_types.Matrix.t -> unit
+val set_uniform_matrix : int -> Raylib_core.Matrix.t -> unit
 val set_uniform_sampler : int -> Unsigned.uint -> unit
 val set_shader : Unsigned.uint -> int Ctypes.ptr -> unit
 
@@ -310,19 +310,19 @@ val copy_shader_buffer :
 
 val get_shader_buffer_size : Unsigned.uint -> int
 val bind_image_texture : Unsigned.uint -> Unsigned.uint -> int -> bool -> unit
-val get_matrix_modelview : unit -> Raylib_types.Matrix.t
-val get_matrix_projection : unit -> Raylib_types.Matrix.t
-val get_matrix_transform : unit -> Raylib_types.Matrix.t
-val get_matrix_projection_stereo : int -> Raylib_types.Matrix.t
-val get_matrix_view_offset_stereo : int -> Raylib_types.Matrix.t
-val set_matrix_projection : Raylib_types.Matrix.t -> unit
-val set_matrix_modelview : Raylib_types.Matrix.t -> unit
+val get_matrix_modelview : unit -> Raylib_core.Matrix.t
+val get_matrix_projection : unit -> Raylib_core.Matrix.t
+val get_matrix_transform : unit -> Raylib_core.Matrix.t
+val get_matrix_projection_stereo : int -> Raylib_core.Matrix.t
+val get_matrix_view_offset_stereo : int -> Raylib_core.Matrix.t
+val set_matrix_projection : Raylib_core.Matrix.t -> unit
+val set_matrix_modelview : Raylib_core.Matrix.t -> unit
 
 val set_matrix_projection_stereo :
-  Raylib_types.Matrix.t -> Raylib_types.Matrix.t -> unit
+  Raylib_core.Matrix.t -> Raylib_core.Matrix.t -> unit
 
 val set_matrix_view_offset_stereo :
-  Raylib_types.Matrix.t -> Raylib_types.Matrix.t -> unit
+  Raylib_core.Matrix.t -> Raylib_core.Matrix.t -> unit
 
 val load_draw_cube : unit -> unit
 val load_draw_quad : unit -> unit

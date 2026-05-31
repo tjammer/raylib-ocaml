@@ -1,7 +1,7 @@
 module Functions (F : Ctypes.FOREIGN) = struct
   open Ctypes
   open F
-  open Raylib_c.Types
+  open Raylib_core
   open Rlgl_types_generated
 
   (*------------------------------------------------------------------------------------*)

@@ -1,4 +1,17 @@
 (library
  (name raylib)
  (public_name raylib)
- (libraries raylib_c rlgl_c))
+ (modules Raylib)
+ (libraries raylib_core raylib_rlgl))
+
+(library
+ (name raylib_core)
+ (public_name raylib.core)
+ (modules Raylib_core Ctypes_reexports Raylib_types Functions)
+ (libraries raylib_c))
+
+(library
+ (name raylib_rlgl)
+ (public_name raylib.rlgl)
+ (modules Raylib_rlgl Rlgl_types)
+ (libraries raylib_core rlgl_c))

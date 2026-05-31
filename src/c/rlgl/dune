@@ -17,4 +17,4 @@
    (functor Functions))
   (generated_types Rlgl_types_generated)
   (generated_entry_point Rlgl_generated))
- (libraries raylib_c))
+ (libraries raylib_core))
