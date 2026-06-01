@@ -223,7 +223,7 @@ module Types (F : Ctypes.TYPE) = struct
     let map_specular = constant "RL_SHADER_LOC_MAP_SPECULAR" int64_t
   end
 
-  module RlVertexBuffer = struct
+  module VertexBuffer = struct
     let uint_array_5 = array 5 uint
 
     type t
@@ -241,7 +241,7 @@ module Types (F : Ctypes.TYPE) = struct
     let () = seal t
   end
 
-  module RlDrawCall = struct
+  module DrawCall = struct
     type t
 
     let t : t Ctypes.structure typ = structure "rlDrawCall"
@@ -252,14 +252,14 @@ module Types (F : Ctypes.TYPE) = struct
     let () = seal t
   end
 
-  module RlRenderBatch = struct
+  module RenderBatch = struct
     type t
 
     let t : t Ctypes.structure typ = structure "rlRenderBatch"
     let buffer_count = field t "bufferCount" int
     let current_buffer = field t "currentBuffer" int
-    let vertex_buffer = field t "vertexBuffer" (ptr RlVertexBuffer.t)
-    let draws = field t "draws" (ptr RlDrawCall.t)
+    let vertex_buffer = field t "vertexBuffer" (ptr VertexBuffer.t)
+    let draws = field t "draws" (ptr DrawCall.t)
     let draw_counter = field t "drawCounter" int
     let current_depth = field t "currentDepth" float
     let () = seal t

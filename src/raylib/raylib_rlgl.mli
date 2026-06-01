@@ -1,3 +1,5 @@
+open Raylib_core
+
 module RlGlVersion : sig
   type t = Gl_software | Gl_11 | Gl_21 | Gl_33 | Gl_43 | Gl_es_20 | Gl_es_30
 end
@@ -132,6 +134,13 @@ module TexParam : sig
   val wrap_mirror_clamp : t
 end
 
+module RenderBatch : sig
+  type t'
+  type t = t' ctyp
+
+  (* TODO add setters and getters *)
+end
+
 val matrix_mode : MatrixMode.t -> unit
 val push_matrix : unit -> unit
 val pop_matrix : unit -> unit
@@ -208,8 +217,20 @@ val clear_color :
 
 val clear_screen_buffers : unit -> unit
 val check_errors : unit -> unit
-val set_blend_mode : Raylib_core.BlendMode.t -> unit
-val set_blend_factors : int -> int -> int -> unit
+val set_blend_mode : BlendMode.t -> unit
+
+val set_blend_factors :
+  BlendFactor.t -> BlendFactor.t -> BlendFunction.t -> unit
+
+val set_blend_factors_separate :
+  BlendFactor.t ->
+  BlendFactor.t ->
+  BlendFactor.t ->
+  BlendFactor.t ->
+  BlendFunction.t ->
+  BlendFunction.t ->
+  unit
+
 val rlgl_init : int -> int -> unit
 val rlgl_close : unit -> unit
 val load_extensions : unit Ctypes.ptr -> unit
@@ -218,10 +239,10 @@ val get_framebuffer_width : unit -> int
 val get_framebuffer_height : unit -> int
 val get_texture_id_default : unit -> Unsigned.uint
 val get_shader_id_default : unit -> Unsigned.uint
-val load_render_batch : int -> int -> Rlgl_types.RlRenderBatch.t
-val unload_render_batch : Rlgl_types.RlRenderBatch.t -> unit
-val draw_render_batch : Rlgl_types.RlRenderBatch.t Ctypes.ptr -> unit
-val set_render_batch_active : Rlgl_types.RlRenderBatch.t Ctypes.ptr -> unit
+val load_render_batch : int -> int -> RenderBatch.t
+val unload_render_batch : RenderBatch.t -> unit
+val draw_render_batch : RenderBatch.t Ctypes.ptr -> unit
+val set_render_batch_active : RenderBatch.t Ctypes.ptr -> unit
 val draw_render_batch_active : unit -> unit
 val check_render_batch_limit : int -> bool
 val set_texture : Unsigned.uint -> unit
@@ -269,7 +290,12 @@ val read_screen_pixels : int -> int -> Unsigned.uchar Ctypes.ptr
 val load_framebuffer : unit -> Unsigned.uint
 
 val framebuffer_attach :
-  Unsigned.uint -> Unsigned.uint -> int -> int -> int -> unit
+  Unsigned.uint ->
+  Unsigned.uint ->
+  FramebufferAttachType.t ->
+  FramebufferAttachTextureType.t ->
+  int ->
+  unit
 
 val framebuffer_complete : Unsigned.uint -> bool
 val unload_framebuffer : Unsigned.uint -> unit
@@ -282,14 +308,16 @@ val unload_shader_program : Unsigned.uint -> unit
 val get_location_uniform : Unsigned.uint -> string -> int
 val get_location_attrib : Unsigned.uint -> string -> int
 val set_uniform : int -> unit Ctypes.ptr -> int -> int -> unit
-val set_uniform_matrix : int -> Raylib_core.Matrix.t -> unit
+val set_uniform_matrix : int -> Matrix.t -> unit
 val set_uniform_sampler : int -> Unsigned.uint -> unit
 val set_shader : Unsigned.uint -> int Ctypes.ptr -> unit
 
 val compute_shader_dispatch :
   Unsigned.uint -> Unsigned.uint -> Unsigned.uint -> unit
 
-val load_shader_buffer : Unsigned.uint -> unit Ctypes.ptr -> int -> int
+val load_shader_buffer :
+  Unsigned.uint -> unit Ctypes.ptr -> BufferUsage.t -> int
+
 val unload_shader_buffer : Unsigned.uint -> unit
 
 val update_shader_buffer :
@@ -310,19 +338,14 @@ val copy_shader_buffer :
 
 val get_shader_buffer_size : Unsigned.uint -> int
 val bind_image_texture : Unsigned.uint -> Unsigned.uint -> int -> bool -> unit
-val get_matrix_modelview : unit -> Raylib_core.Matrix.t
-val get_matrix_projection : unit -> Raylib_core.Matrix.t
-val get_matrix_transform : unit -> Raylib_core.Matrix.t
-val get_matrix_projection_stereo : int -> Raylib_core.Matrix.t
-val get_matrix_view_offset_stereo : int -> Raylib_core.Matrix.t
-val set_matrix_projection : Raylib_core.Matrix.t -> unit
-val set_matrix_modelview : Raylib_core.Matrix.t -> unit
-
-val set_matrix_projection_stereo :
-  Raylib_core.Matrix.t -> Raylib_core.Matrix.t -> unit
-
-val set_matrix_view_offset_stereo :
-  Raylib_core.Matrix.t -> Raylib_core.Matrix.t -> unit
-
+val get_matrix_modelview : unit -> Matrix.t
+val get_matrix_projection : unit -> Matrix.t
+val get_matrix_transform : unit -> Matrix.t
+val get_matrix_projection_stereo : int -> Matrix.t
+val get_matrix_view_offset_stereo : int -> Matrix.t
+val set_matrix_projection : Matrix.t -> unit
+val set_matrix_modelview : Matrix.t -> unit
+val set_matrix_projection_stereo : Matrix.t -> Matrix.t -> unit
+val set_matrix_view_offset_stereo : Matrix.t -> Matrix.t -> unit
 val load_draw_cube : unit -> unit
 val load_draw_quad : unit -> unit

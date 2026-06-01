@@ -277,7 +277,13 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   (* Set blending mode factor and equation (using OpenGL factors)*)
   let set_blend_factors =
-    foreign "rlSetBlendFactors" (int @-> int @-> int @-> returning void)
+    foreign "rlSetBlendFactors"
+      (BlendFactor.t @-> BlendFactor.t @-> BlendFunction.t @-> returning void)
+
+  let set_blend_factors_separate =
+    foreign "rlSetBlendFactorsSeparate"
+      (BlendFactor.t @-> BlendFactor.t @-> BlendFactor.t @-> BlendFactor.t
+     @-> BlendFunction.t @-> BlendFunction.t @-> returning void)
 
   (*------------------------------------------------------------------------------------*)
   (* Functions Declaration - rlgl functionality*)
@@ -320,19 +326,19 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (* but this render batch API is exposed in case of custom batches are required*)
   (* Load a render batch system*)
   let load_render_batch =
-    foreign "rlLoadRenderBatch" (int @-> int @-> returning RlRenderBatch.t)
+    foreign "rlLoadRenderBatch" (int @-> int @-> returning RenderBatch.t)
 
   (* Unload render batch system*)
   let unload_render_batch =
-    foreign "rlUnloadRenderBatch" (RlRenderBatch.t @-> returning void)
+    foreign "rlUnloadRenderBatch" (RenderBatch.t @-> returning void)
 
   (* Draw render batch data (Update->Draw->Reset)*)
   let draw_render_batch =
-    foreign "rlDrawRenderBatch" (ptr RlRenderBatch.t @-> returning void)
+    foreign "rlDrawRenderBatch" (ptr RenderBatch.t @-> returning void)
 
   (* Set the active render batch for rlgl (NULL for default internal)*)
   let set_render_batch_active =
-    foreign "rlSetRenderBatchActive" (ptr RlRenderBatch.t @-> returning void)
+    foreign "rlSetRenderBatchActive" (ptr RenderBatch.t @-> returning void)
 
   (* Update and draw internal render batch*)
   let draw_render_batch_active =
@@ -451,7 +457,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (* Attach texture/renderbuffer to a framebuffer*)
   let framebuffer_attach =
     foreign "rlFramebufferAttach"
-      (uint @-> uint @-> int @-> int @-> int @-> returning void)
+      (uint @-> uint @-> FramebufferAttachType.t
+     @-> FramebufferAttachTextureType.t @-> int @-> returning void)
 
   (* Verify framebuffer is complete*)
   let framebuffer_complete =
@@ -514,7 +521,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (* Shader buffer storage object management (ssbo) *)
   (* Load shader storage buffer object (SSBO) *)
   let load_shader_buffer =
-    foreign "rlLoadShaderBuffer" (uint @-> ptr void @-> int @-> returning int)
+    foreign "rlLoadShaderBuffer"
+      (uint @-> ptr void @-> BufferUsage.t @-> returning int)
 
   (* Unload shader storage buffer object (SSBO) *)
   let unload_shader_buffer =

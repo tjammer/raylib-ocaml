@@ -50,5 +50,5 @@
 (library
  (name raylib_rlgl)
  (public_name raylib.rlgl)
- (modules Raylib_rlgl Rlgl_types)
+ (modules Raylib_rlgl)
  (libraries raylib_core rlgl_c))
