@@ -214,6 +214,9 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let disable_backface_culling =
     foreign "rlDisableBackfaceCulling" (void @-> returning void)
 
+  let color_mask =
+    foreign "rlColorMask" (bool @-> bool @-> bool @-> bool @-> returning void)
+
   let set_cull_face = foreign "rlSetCullFace" (CullMode.t @-> returning void)
 
   (* Enable scissor test*)
@@ -227,6 +230,11 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (* Scissor test*)
   let scissor =
     foreign "rlScissor" (int @-> int @-> int @-> int @-> returning void)
+
+  let enable_point_mode = foreign "rlEnablePointMode" (void @-> returning void)
+  let disable_point_mode = foreign "rlDisablePointMode" (void @-> returning void)
+  let set_point_size = foreign "rlSetPointSize" (float @-> returning void)
+  let get_point_size = foreign "rlGetPointSize" (void @-> returning float)
 
   (* Enable wire mode*)
   let enable_wire_mode = foreign "rlEnableWireMode" (void @-> returning void)
@@ -301,9 +309,15 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (* Get current OpenGL version*)
   let get_version = foreign "rlGetVersion" (void @-> returning int)
 
+  let set_framebuffer_width =
+    foreign "rlSetFramebufferWidth" (int @-> returning void)
+
   (* Get default framebuffer width*)
   let get_framebuffer_width =
     foreign "rlGetFramebufferWidth" (void @-> returning int)
+
+  let set_framebuffer_height =
+    foreign "rlSetFramebufferHeight" (int @-> returning void)
 
   (* Get default framebuffer height*)
   let get_framebuffer_height =
@@ -317,9 +331,9 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let get_shader_id_default =
     foreign "rlGetShaderIdDefault" (void @-> returning uint)
 
-  (* TODO uncommenting this results in a linker error but I cant find the spelling or type error? *)
   (* Get default shader locations*)
-  (* let get_shader_locs_default = foreign "rlGetShaderLocsDefault " (void @-> returning (ptr int)) *)
+  let get_shader_locs_default =
+    foreign "rlGetShaderLocsDefault" (void @-> returning (ptr int))
 
   (* Render batch management*)
   (* NOTE: rlgl provides a default render batch to behave like OpenGL 1.1 immediate mode*)
@@ -369,6 +383,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (* Update GPU buffer with new data*)
   let update_vertex_buffer =
     foreign "rlUpdateVertexBuffer"
+      (int @-> ptr void @-> int @-> int @-> returning void)
+
+  let update_vertex_buffer_elements =
+    foreign "rlUpdateVertexBufferElements"
       (int @-> ptr void @-> int @-> int @-> returning void)
 
   let unload_vertex_array =
@@ -468,6 +486,14 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let unload_framebuffer =
     foreign "rlUnloadFramebuffer" (uint @-> returning void)
 
+  let copy_framebuffer =
+    foreign "rlCopyFramebuffer"
+      (int @-> int @-> int @-> int @-> PixelFormat.t @-> ptr void
+     @-> returning void)
+
+  let resize_framebuffer =
+    foreign "rlResizeFramebuffer" (int @-> int @-> returning void)
+
   (* Shaders management*)
   (* Load shader from code strings*)
   let load_shader_program =
@@ -507,6 +533,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let set_uniform_matrix =
     foreign "rlSetUniformMatrix" (int @-> Matrix.t @-> returning void)
 
+  let set_uniform_matrices =
+    foreign "rlSetUniformMatrices"
+      (int @-> ptr Matrix.t @-> int @-> returning void)
+
   (* Set shader value sampler*)
   let set_uniform_sampler =
     foreign "rlSetUniformSampler" (int @-> uint @-> returning void)
@@ -522,7 +552,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (* Load shader storage buffer object (SSBO) *)
   let load_shader_buffer =
     foreign "rlLoadShaderBuffer"
-      (uint @-> ptr void @-> BufferUsage.t @-> returning int)
+      (uint @-> ptr void @-> BufferUsage.t @-> returning uint)
 
   (* Unload shader storage buffer object (SSBO) *)
   let unload_shader_buffer =
