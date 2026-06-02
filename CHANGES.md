@@ -1,3 +1,18 @@
+2.0.0 (2025-06-02)
+------------------
+
+* Upgrade to raylib 6.0 (thanks @rossberg)
+* Re-work constant binding: Flag-like constants are now values instead of
+  variants, with a `( + )` combinator for or-ing constants together. Instead of
+  a list of constructors for flags, functions now take a single value. The
+  unsafe function `of_int` has been removed from enum constants. `to_int` has
+  been removed from most enum constants, only index-like constants
+  (`MaterialMapIndex`, `ShaderLocationIndex`) keep it.
+* Separate Raylib into libraries for raylib modules, individual raylib modules
+  can now be used separately if linking all of raylib is not desired.
+* Complete rlgl bindings, upgrade to 6.0
+* Use strong types for integer constants in rlgl
+
 1.6.0 (2025-11-30)
 ------------------
 

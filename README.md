@@ -2,7 +2,8 @@
 
 # raylib-ocaml
 
-OCaml bindings for <a href="https://www.raylib.com/" target="_blank">raylib</a> (5.0.0), a simple and easy-to-use library to enjoy videogames programming.
+OCaml bindings for <a href="https://www.raylib.com/" target="_blank">raylib</a>
+(6.0.0), a simple and easy-to-use library to enjoy videogames programming.
 
 The documentation can be viewed [online](https://tjammer.github.io/raylib-ocaml/raylib/Raylib/index.html).
 
@@ -18,16 +19,16 @@ let setup () =
   Raylib.init_window 800 450 "raylib [core] example - basic window";
   Raylib.set_target_fps 60
 
-let rec loop () =
-  if Raylib.window_should_close () then Raylib.close_window ()
-  else
-    let open Raylib in
+let loop () =
+  let open Raylib in
+  while not (window_should_close ()) do
     begin_drawing ();
     clear_background Color.raywhite;
     draw_text "Congrats! You created your first window!" 190 200 20
       Color.lightgray;
-    end_drawing ();
-    loop ()
+    end_drawing ()
+  done;
+  close_window ()
 
 let () = setup () |> loop
 ```
@@ -38,13 +39,7 @@ Although the original raylib is written in C, most functions take their argument
 ## Installation
 
 During the build of raylib-ocaml, the raylib C library is built from source, therefore its dependencies must be installed (<a href="https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux" target="_blank">details here</a>).
-For some distros, depexts exist (feel free to contribute depexts for missing distros) to automatically install these dependencies:
-
-``` sh
-opam depext raylib
-```
-
-raylib-ocaml can be installed via `opam`:
+On most mainstream distros, opam will automatically install these dependencies during the raylib installation:
 
 ``` sh
 opam install raylib
@@ -65,6 +60,16 @@ dune build
 ```
 inside this repo. The binaries can then be found in `_build/default/examples`.
 
+## Module structure
+
+Like raylib, the binding is separated into modules `core`, `text`, `shapes`,
+`textures`, `models`, `audio`, and `rlgl`, which are bundled in the super-module
+`raylib` with the same dune library name. Rlgl lives in a submodule
+`Raylib.Rlgl`.
+
+For marginally smaller binaries, it's possible to use the module
+separately by linking dune libraries `raylib_<module>`, e.g. `raylib_core`.
+
 ## Raygui
 In addition to raylib, there are bindings to <a href="https://github.com/raysan5/raygui" target="_blank">raygui</a>, an immediate mode gui library which complements raylib.
 The documentation of the raygui bindings can be viewed [online](https://tjammer.github.io/raylib-ocaml/raygui/Raygui/index.html) as well.
@@ -73,6 +78,3 @@ An exception to this are the `*_style` functions, which take a polymorphic varia
 An example can be found in `examples/gui`.
 
 ![gui_example](images/raygui.gif)
-
-## TODO
-* Split the library into components (core, sound, 3D, VR etc) for a smaller memory footprint
