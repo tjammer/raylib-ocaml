@@ -7,3 +7,8 @@
  (name shaders_mesh_instanced)
  (modules Shaders_mesh_instanced Rlights)
  (libraries raylib))
+
+(executable
+ (name shaders_rlgl_compute)
+ (modules Shaders_rlgl_compute)
+ (libraries raylib))

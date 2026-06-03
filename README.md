@@ -45,6 +45,19 @@ On most mainstream distros, opam will automatically install these dependencies d
 opam install raylib
 ```
 
+## Configuration
+
+Raylib has many configuration options, defined at compile time in its
+`config.h`. These bindings change the default config slightly to enable support
+.jpg and .flac data formats. Additional configuration can be done by setting
+environment variables at build time which raylib's build will pick up (see their
+Makefile for details).
+
+Notable environment variables are `RAYLIB_CONFIG_FLAGS` to override the values
+in `config.h`, and `GRAPHICS` to pick the opengl version raylib uses. It
+defaults to `GRAPHICS_API_OPENGL_33`, but advanced rlgl features (compute
+shaders) need `GRAPHICS_API_OPENGL_43`.
+
 ## Examples
 To build the examples, make sure the raylib C submodule is available with `git
 submodule update --init --recursive`, and that all needed dependencies are
