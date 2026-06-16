@@ -29,7 +29,7 @@ val is_font_valid : Font.t -> bool
     GPU texture not checked)*)
 
 val load_font_data :
-  string -> int -> int ptr -> int -> int -> GlyphInfo.t CArray.t
+  string -> int -> int ptr -> int -> FontType.t -> GlyphInfo.t CArray.t
 (** [load_font_data file_data font_size codepoints codepoint_count type] Load
     font data for further use*)
 

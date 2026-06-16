@@ -1791,7 +1791,7 @@ val set_trace_log_level : TraceLogLevel.t -> unit
 (** [set_trace_log_level log_level] Set the current threshold (minimum) log
     level*)
 
-val trace_log : int -> string -> unit
+val trace_log : TraceLogLevel.t -> string -> unit
 (** [trace_log log_level text args] Show trace log messages (LOG_DEBUG,
     LOG_INFO, LOG_WARNING, LOG_ERROR...)*)
 

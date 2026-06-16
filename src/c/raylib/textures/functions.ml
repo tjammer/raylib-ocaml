@@ -88,7 +88,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
       (Font.t @-> string @-> float @-> float @-> Color.t @-> returning Image.t)
 
   let image_format =
-    foreign "ImageFormat" (ptr Image.t @-> int @-> returning void)
+    foreign "ImageFormat" (ptr Image.t @-> PixelFormat.t @-> returning void)
 
   let image_to_pot =
     foreign "ImageToPOT" (ptr Image.t @-> Color.t @-> returning void)
@@ -287,7 +287,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "LoadTextureFromImage" (Image.t @-> returning Texture.t)
 
   let load_texture_cubemap =
-    foreign "LoadTextureCubemap" (Image.t @-> int @-> returning Texture.t)
+    foreign "LoadTextureCubemap"
+      (Image.t @-> CubemapLayout.t @-> returning Texture.t)
 
   let load_render_texture =
     foreign "LoadRenderTexture" (int @-> int @-> returning RenderTexture.t)

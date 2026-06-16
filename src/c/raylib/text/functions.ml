@@ -24,7 +24,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   let _load_font_data =
     foreign "LoadFontData"
-      (string @-> int @-> int @-> ptr int @-> int @-> int @-> ptr int
+      (string @-> int @-> int @-> ptr int @-> int @-> FontType.t @-> ptr int
       @-> returning (ptr GlyphInfo.t))
 
   let gen_image_font_atlas =

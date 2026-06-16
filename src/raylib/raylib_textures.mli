@@ -102,7 +102,7 @@ val image_text_ex : Font.t -> string -> float -> float -> Color.t -> Image.t
 (** [image_text_ex font text font_size spacing tint] Create an image from text
     (custom sprite font)*)
 
-val image_format : Image.t ptr -> int -> unit
+val image_format : Image.t ptr -> PixelFormat.t -> unit
 (** [image_format image new_format] Convert image data to desired format*)
 
 val image_to_pot : Image.t ptr -> Color.t -> unit
@@ -329,7 +329,7 @@ val load_texture : string -> Texture.t
 val load_texture_from_image : Image.t -> Texture.t
 (** [load_texture_from_image image] Load texture from image data*)
 
-val load_texture_cubemap : Image.t -> int -> Texture.t
+val load_texture_cubemap : Image.t -> CubemapLayout.t -> Texture.t
 (** [load_texture_cubemap image layout] Load cubemap from image, multiple image
     cubemap layouts supported*)
 

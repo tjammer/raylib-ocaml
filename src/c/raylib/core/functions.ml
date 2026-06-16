@@ -234,7 +234,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let set_trace_log_level =
     foreign "SetTraceLogLevel" (TraceLogLevel.t @-> returning void)
 
-  let trace_log = foreign "TraceLog" (int @-> string @-> returning void)
+  let trace_log =
+    foreign "TraceLog" (TraceLogLevel.t @-> string @-> returning void)
 
   (* let set_trace_log_callback = *)
   (*   foreign "SetTraceLogCallback" (trace_log_callback @-> returning void) *)

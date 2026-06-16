@@ -1,6 +1,6 @@
 open Raylib_core
 
- (** {2 Basic Shapes Drawing Functions (Module: shapes)}*)
+(** {2 Basic Shapes Drawing Functions (Module: shapes)}*)
 
 val set_shapes_texture : Texture.t -> Rectangle.t -> unit
 (** [set_shapes_texture texture source] Set texture and rectangle to be used on
