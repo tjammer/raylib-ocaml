@@ -40,12 +40,16 @@ module ConfigFlags : sig
   val interlaced_hint : t
   val ( + ) : t -> t -> t
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module TraceLogLevel : sig
   type t = All | Trace | Debug | Info | Warning | Error | Fatal | None
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module Key : sig
@@ -162,12 +166,16 @@ module Key : sig
     | Volume_down
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module MouseButton : sig
   type t = Left | Right | Middle | Side | Extra | Forward | Back
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module MouseCursor : sig
@@ -185,6 +193,8 @@ module MouseCursor : sig
     | Not_allowed
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module GamepadButton : sig
@@ -209,12 +219,16 @@ module GamepadButton : sig
     | Right_thumb
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module GamepadAxis : sig
   type t = Left_x | Left_y | Right_x | Right_y | Left_trigger | Right_trigger
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module MaterialMapIndex : sig
@@ -289,12 +303,16 @@ module ShaderUniformDataType : sig
     | Sampler2d
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module ShaderAttributeDataType : sig
   type t = Float | Vec2 | Vec3 | Vec4
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module PixelFormat : sig
@@ -325,6 +343,8 @@ module PixelFormat : sig
     | Compressed_astc_8x8_rgba
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module TextureFilter : sig
@@ -337,12 +357,16 @@ module TextureFilter : sig
     | Anisotropic_16x
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module TextureWrap : sig
   type t = Repeat | Clamp | Mirror_repeat | Mirror_clamp
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module CubemapLayout : sig
@@ -354,12 +378,16 @@ module CubemapLayout : sig
     | Cross_four_by_three
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module FontType : sig
   type t = Default | Bitmap | Sdf
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module BlendMode : sig
@@ -374,6 +402,8 @@ module BlendMode : sig
     | Custom_separate
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module Gesture : sig
@@ -392,24 +422,32 @@ module Gesture : sig
   val pinch_out : t
   val ( + ) : t -> t -> t
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module CameraMode : sig
   type t = Custom | Free | Orbital | First_person | Third_person
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module CameraProjection : sig
   type t = Perspective | Orthographic
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module NPatchLayout : sig
   type t = Nine_patch | Three_patch_vertical | Three_patch_horizontal
 
   val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 val max_shader_locations : int

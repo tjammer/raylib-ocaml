@@ -2,29 +2,142 @@ open Raylib_c.Raylib_generated.Types
 open Ctypes_reexports
 open Ctypes
 
-(* Enums *)
-module ConfigFlags = ConfigFlags
-module TraceLogLevel = TraceLogLevel
-module Key = Key
-module MouseButton = MouseButton
-module MouseCursor = MouseCursor
-module GamepadButton = GamepadButton
-module GamepadAxis = GamepadAxis
-module ShaderUniformDataType = ShaderUniformDataType
-module ShaderAttributeDataType = ShaderAttributeDataType
-module PixelFormat = PixelFormat
-module TextureFilter = TextureFilter
-module TextureWrap = TextureWrap
-module CubemapLayout = CubemapLayout
-module FontType = FontType
-module BlendMode = BlendMode
-module Gesture = Gesture
-module CameraMode = CameraMode
-module CameraProjection = CameraProjection
-module NPatchLayout = NPatchLayout
-
 let to_int typ value = Unsigned.UInt32.to_int (coerce typ uint32_t value)
 let of_int typ value = coerce uint32_t typ (Unsigned.UInt32.of_int value)
+
+(* Enums *)
+module ConfigFlags = struct
+  include ConfigFlags
+
+  let to_int = to_int ConfigFlags.t
+  let of_int = of_int ConfigFlags.t
+end
+
+module TraceLogLevel = struct
+  include TraceLogLevel
+
+  let to_int = to_int TraceLogLevel.t
+  let of_int = of_int TraceLogLevel.t
+end
+
+module Key = struct
+  include Key
+
+  let to_int = to_int Key.t
+  let of_int = of_int Key.t
+end
+
+module MouseButton = struct
+  include MouseButton
+
+  let to_int = to_int MouseButton.t
+  let of_int = of_int MouseButton.t
+end
+
+module MouseCursor = struct
+  include MouseCursor
+
+  let to_int = to_int MouseCursor.t
+  let of_int = of_int MouseCursor.t
+end
+
+module GamepadButton = struct
+  include GamepadButton
+
+  let to_int = to_int GamepadButton.t
+  let of_int = of_int GamepadButton.t
+end
+
+module GamepadAxis = struct
+  include GamepadAxis
+
+  let to_int = to_int GamepadAxis.t
+  let of_int = of_int GamepadAxis.t
+end
+
+module ShaderUniformDataType = struct
+  include ShaderUniformDataType
+
+  let to_int = to_int ShaderUniformDataType.t
+  let of_int = of_int ShaderUniformDataType.t
+end
+
+module ShaderAttributeDataType = struct
+  include ShaderAttributeDataType
+
+  let to_int = to_int ShaderAttributeDataType.t
+  let of_int = of_int ShaderAttributeDataType.t
+end
+
+module PixelFormat = struct
+  include PixelFormat
+
+  let to_int = to_int PixelFormat.t
+  let of_int = of_int PixelFormat.t
+end
+
+module TextureFilter = struct
+  include TextureFilter
+
+  let to_int = to_int TextureFilter.t
+  let of_int = of_int TextureFilter.t
+end
+
+module TextureWrap = struct
+  include TextureWrap
+
+  let to_int = to_int TextureWrap.t
+  let of_int = of_int TextureWrap.t
+end
+
+module CubemapLayout = struct
+  include CubemapLayout
+
+  let to_int = to_int CubemapLayout.t
+  let of_int = of_int CubemapLayout.t
+end
+
+module FontType = struct
+  include FontType
+
+  let to_int = to_int FontType.t
+  let of_int = of_int FontType.t
+end
+
+module BlendMode = struct
+  include BlendMode
+
+  let to_int = to_int BlendMode.t
+  let of_int = of_int BlendMode.t
+end
+
+module Gesture = struct
+  include Gesture
+
+  let to_int = to_int Gesture.t
+  let of_int = of_int Gesture.t
+end
+
+module CameraMode = struct
+  include CameraMode
+
+  let to_int = to_int CameraMode.t
+  let of_int = of_int CameraMode.t
+end
+
+module CameraProjection = struct
+  include CameraProjection
+
+  let to_int = to_int CameraProjection.t
+  let of_int = of_int CameraProjection.t
+end
+
+module NPatchLayout = struct
+  include NPatchLayout
+
+  let to_int = to_int NPatchLayout.t
+  let of_int = of_int NPatchLayout.t
+end
 
 module MaterialMapIndex = struct
   include MaterialMapIndex
