@@ -34,6 +34,13 @@ module CullMode : sig
   type t = Face_front | Face_back
 end
 
+module GlDataType : sig
+  type t
+
+  val unsigned_byte : t
+  val float : t
+end
+
 module Shader : sig
   type t
 
@@ -138,6 +145,38 @@ module TexParam : sig
   val wrap_mirror_clamp : t
 end
 
+module VaoId : sig
+  type t
+
+  val t : t Ctypes.typ
+  val of_uint : Unsigned.uint -> t
+  val to_uint : t -> Unsigned.uint
+end
+
+module VboId : sig
+  type t
+
+  val t : t Ctypes.typ
+  val of_uint : Unsigned.uint -> t
+  val to_uint : t -> Unsigned.uint
+end
+
+module ShaderId : sig
+  type t
+
+  val t : t Ctypes.typ
+  val of_uint : Unsigned.uint -> t
+  val to_uint : t -> Unsigned.uint
+end
+
+module SsboId : sig
+  type t
+
+  val t : t Ctypes.typ
+  val of_uint : Unsigned.uint -> t
+  val to_uint : t -> Unsigned.uint
+end
+
 module VertexBuffer : sig
   type t'
   type t = t' ctyp
@@ -150,7 +189,7 @@ module VertexBuffer : sig
 
   (* TODO assume opengl 11, for es2 this would be indices : short ptr *)
   val indices : t -> Unsigned.UInt.t Ctypes.ptr
-  val vao_id : t -> Unsigned.UInt.t
+  val vao_id : t -> VaoId.t
 end
 
 module DrawCall : sig
@@ -158,10 +197,10 @@ module DrawCall : sig
   type t = t' ctyp
 
   val t : t Ctypes.typ
-  val mode : t -> int
+  val mode : t -> DrawMode.t
   val vertex_count : t -> int
   val vertex_alignment : t -> int
-  val texture_id : t -> Unsigned.UInt.t
+  val texture_id : t -> TextureId.t
 end
 
 module RenderBatch : sig
@@ -243,19 +282,19 @@ val color3f : float -> float -> float -> unit
 val color4f : float -> float -> float -> float -> unit
 (** [color4f x y z w] Define one vertex (color) - 4 float*)
 
-val enable_vertex_array : Unsigned.uint -> bool
+val enable_vertex_array : VaoId.t -> bool
 (** [enable_vertex_array vao_id] Enable vertex array (VAO, if supported)*)
 
 val disable_vertex_array : unit -> unit
 (** [disable_vertex_array ()] Disable vertex array (VAO, if supported)*)
 
-val enable_vertex_buffer : Unsigned.uint -> unit
+val enable_vertex_buffer : VboId.t -> unit
 (** [enable_vertex_buffer id] Enable vertex buffer (VBO)*)
 
 val disable_vertex_buffer : unit -> unit
 (** [disable_vertex_buffer ()] Disable vertex buffer (VBO)*)
 
-val enable_vertex_buffer_element : Unsigned.uint -> unit
+val enable_vertex_buffer_element : VboId.t -> unit
 (** [enable_vertex_buffer_element id] Enable vertex buffer element (VBO element)*)
 
 val disable_vertex_buffer_element : unit -> unit
@@ -277,38 +316,38 @@ val disable_vertex_attribute : Unsigned.uint -> unit
 val active_texture_slot : int -> unit
 (** [active_texture_slot slot] Select and active a texture slot*)
 
-val enable_texture : Unsigned.uint -> unit
+val enable_texture : TextureId.t -> unit
 (** [enable_texture id] Enable texture*)
 
 val disable_texture : unit -> unit
 (** [disable_texture ()] Disable texture*)
 
-val enable_texture_cubemap : Unsigned.uint -> unit
+val enable_texture_cubemap : TextureId.t -> unit
 (** [enable_texture_cubemap id] Enable texture cubemap*)
 
 val disable_texture_cubemap : unit -> unit
 (** [disable_texture_cubemap ()] Disable texture cubemap*)
 
-val texture_parameters : Unsigned.uint -> TexParam.t -> TexParam.t -> unit
+val texture_parameters : TextureId.t -> TexParam.t -> TexParam.t -> unit
 (** [texture_parameters id param value] Set texture parameters (filter, wrap)*)
 
-val cubemap_parameters : Unsigned.uint -> TexParam.t -> TexParam.t -> unit
+val cubemap_parameters : TextureId.t -> TexParam.t -> TexParam.t -> unit
 (** [cubemap_parameters id param value] Set cubemap parameters (filter, wrap)*)
 
-val enable_shader : Unsigned.uint -> unit
+val enable_shader : ShaderProgramId.t -> unit
 (** [enable_shader id] Enable shader program*)
 
 val disable_shader : unit -> unit
 (** [disable_shader ()] Disable shader program*)
 
-val enable_framebuffer : Unsigned.uint -> unit
+val enable_framebuffer : FramebufferId.t -> unit
 (** [enable_framebuffer id] Enable render texture (fbo)*)
 
 val disable_framebuffer : unit -> unit
 (** [disable_framebuffer ()] Disable render texture (fbo), return to default
     framebuffer*)
 
-val get_active_framebuffer : unit -> Unsigned.uint
+val get_active_framebuffer : unit -> FramebufferId.t
 (** [get_active_framebuffer ()] Get the currently active render texture (fbo), 0
     for default framebuffer*)
 
@@ -320,7 +359,7 @@ val blit_framebuffer :
 (** [blit_framebuffer src_x src_y src_width src_height dst_x dst_y dst_width
      dst_height buffer_mask] Blit active framebuffer to main framebuffer*)
 
-val bind_framebuffer : FramebufferAccess.t -> Unsigned.uint -> unit
+val bind_framebuffer : FramebufferAccess.t -> FramebufferId.t -> unit
 (** [bind_framebuffer target framebuffer] Bind framebuffer (FBO)*)
 
 val enable_color_blend : unit -> unit
@@ -441,7 +480,7 @@ val rlgl_close : unit -> unit
 val load_extensions : unit Ctypes.ptr -> unit
 (** [load_extensions loader] Load OpenGL extensions (loader function required)*)
 
-val get_version : unit -> int
+val get_version : unit -> RlGlVersion.t
 (** [get_version ()] Get current OpenGL version*)
 
 val set_framebuffer_width : int -> unit
@@ -456,13 +495,13 @@ val set_framebuffer_height : int -> unit
 val get_framebuffer_height : unit -> int
 (** [get_framebuffer_height ()] Get default framebuffer height*)
 
-val get_texture_id_default : unit -> Unsigned.uint
+val get_texture_id_default : unit -> TextureId.t
 (** [get_texture_id_default ()] Get default texture id*)
 
-val get_shader_id_default : unit -> Unsigned.uint
+val get_shader_id_default : unit -> ShaderProgramId.t
 (** [get_shader_id_default ()] Get default shader id*)
 
-val get_shader_locs_default : unit -> int Ctypes.ptr
+val get_shader_locs_default : unit -> ShaderLoc.t Ctypes.ptr
 (** [get_shader_locs_default ()] Get default shader locations*)
 
 val load_render_batch : int -> int -> RenderBatch.t
@@ -485,36 +524,37 @@ val check_render_batch_limit : int -> bool
 (** [check_render_batch_limit v_count] Check internal buffer overflow for a
     given number of vertex*)
 
-val set_texture : Unsigned.uint -> unit
+val set_texture : TextureId.t -> unit
 (** [set_texture id] Set current texture for render batch and check buffers
     limits*)
 
-val load_vertex_array : unit -> Unsigned.uint
+val load_vertex_array : unit -> VaoId.t
 (** [load_vertex_array ()] Load vertex array (VAO, if supported)*)
 
-val load_vertex_buffer : unit Ctypes.ptr -> int -> bool -> Unsigned.uint
+val load_vertex_buffer : unit Ctypes.ptr -> int -> bool -> VboId.t
 (** [load_vertex_buffer buffer size dynamic] Load a vertex buffer object*)
 
-val load_vertex_buffer_element : unit Ctypes.ptr -> int -> bool -> Unsigned.uint
+val load_vertex_buffer_element : unit Ctypes.ptr -> int -> bool -> VboId.t
 (** [load_vertex_buffer_element buffer size dynamic] Load vertex buffer elements
     object*)
 
-val update_vertex_buffer : int -> unit Ctypes.ptr -> int -> int -> unit
+val update_vertex_buffer : VboId.t -> unit Ctypes.ptr -> int -> int -> unit
 (** [update_vertex_buffer buffer_id data data_size offset] Update vertex buffer
     object data on GPU buffer*)
 
-val update_vertex_buffer_elements : int -> unit Ctypes.ptr -> int -> int -> unit
+val update_vertex_buffer_elements :
+  VboId.t -> unit Ctypes.ptr -> int -> int -> unit
 (** [update_vertex_buffer_elements id data data_size offset] Update vertex
     buffer elements data on GPU buffer*)
 
-val unload_vertex_array : Unsigned.uint -> unit
+val unload_vertex_array : VaoId.t -> unit
 (** [unload_vertex_array vao_id] Unload vertex array (VAO)*)
 
-val unload_vertex_buffer : Unsigned.uint -> unit
+val unload_vertex_buffer : VboId.t -> unit
 (** [unload_vertex_buffer vbo_id] Unload vertex buffer object*)
 
 val set_vertex_attribute :
-  Unsigned.uint -> int -> int -> bool -> int -> int -> unit
+  Unsigned.uint -> int -> GlDataType.t -> bool -> int -> int -> unit
 (** [set_vertex_attribute index comp_size type normalized stride offset] Set
     vertex attribute data configuration*)
 
@@ -522,7 +562,8 @@ val set_vertex_attribute_divisor : Unsigned.uint -> int -> unit
 (** [set_vertex_attribute_divisor index divisor] Set vertex attribute data
     divisor*)
 
-val set_vertex_attribute_default : int -> unit Ctypes.ptr -> int -> int -> unit
+val set_vertex_attribute_default :
+  int -> unit Ctypes.ptr -> ShaderAttributeDataType.t -> int -> unit
 (** [set_vertex_attribute_default loc_index value attrib_type count] Set vertex
     attribute default value*)
 
@@ -541,24 +582,33 @@ val draw_vertex_array_elements_instanced :
 (** [draw_vertex_array_elements_instanced offset count buffer instances] Draw
     vertex array elements with instancing*)
 
-val load_texture : unit Ctypes.ptr -> int -> int -> int -> int -> Unsigned.uint
+val load_texture :
+  unit Ctypes.ptr -> int -> int -> PixelFormat.t -> int -> TextureId.t
 (** [load_texture data width height format mipmap_count] Load texture data*)
 
-val load_texture_depth : int -> int -> bool -> Unsigned.uint
+val load_texture_depth : int -> int -> bool -> TextureId.t
 (** [load_texture_depth width height use_render_buffer] Load depth
     texture/renderbuffer*)
 
-val load_texture_cubemap : unit Ctypes.ptr -> int -> int -> int -> Unsigned.uint
+val load_texture_cubemap :
+  unit Ctypes.ptr -> int -> PixelFormat.t -> int -> TextureId.t
 (** [load_texture_cubemap data size format mipmap_count] Load texture cubemap
     data*)
 
 val update_texture :
-  Unsigned.uint -> int -> int -> int -> int -> int -> unit Ctypes.ptr -> unit
+  TextureId.t ->
+  int ->
+  int ->
+  int ->
+  int ->
+  PixelFormat.t ->
+  unit Ctypes.ptr ->
+  unit
 (** [update_texture id offset_x offset_y width height format data] Update
     texture with new data on GPU*)
 
 val get_gl_texture_formats :
-  int ->
+  PixelFormat.t ->
   Unsigned.uint Ctypes.ptr ->
   Unsigned.uint Ctypes.ptr ->
   Unsigned.uint Ctypes.ptr ->
@@ -566,29 +616,30 @@ val get_gl_texture_formats :
 (** [get_gl_texture_formats format gl_internal_format gl_format gl_type] Get
     OpenGL internal formats*)
 
-val get_pixel_format_name : Unsigned.uint -> string
+val get_pixel_format_name : PixelFormat.t -> string
 (** [get_pixel_format_name format] Get name string for pixel format*)
 
-val unload_texture : Unsigned.uint -> unit
+val unload_texture : TextureId.t -> unit
 (** [unload_texture id] Unload texture from GPU memory*)
 
 val gen_texture_mipmaps :
-  Unsigned.uint -> int -> int -> int -> int Ctypes.ptr -> unit
+  TextureId.t -> int -> int -> PixelFormat.t -> int Ctypes.ptr -> unit
 (** [gen_texture_mipmaps id width height format mipmaps] Generate mipmap data
     for selected texture*)
 
-val read_texture_pixels : Unsigned.uint -> int -> int -> int -> unit Ctypes.ptr
+val read_texture_pixels :
+  TextureId.t -> int -> int -> PixelFormat.t -> unit Ctypes.ptr
 (** [read_texture_pixels id width height format] Read texture pixel data*)
 
 val read_screen_pixels : int -> int -> Unsigned.uchar Ctypes.ptr
 (** [read_screen_pixels width height] Read screen pixel data (color buffer)*)
 
-val load_framebuffer : unit -> Unsigned.uint
+val load_framebuffer : unit -> FramebufferId.t
 (** [load_framebuffer ()] Load an empty framebuffer*)
 
 val framebuffer_attach :
-  Unsigned.uint ->
-  Unsigned.uint ->
+  FramebufferId.t ->
+  TextureId.t ->
   FramebufferAttachType.t ->
   FramebufferAttachTextureType.t ->
   int ->
@@ -596,10 +647,10 @@ val framebuffer_attach :
 (** [framebuffer_attach id tex_id attach_type tex_type mip_level] Attach
     texture/renderbuffer to a framebuffer*)
 
-val framebuffer_complete : Unsigned.uint -> bool
+val framebuffer_complete : FramebufferId.t -> bool
 (** [framebuffer_complete id] Verify framebuffer is complete*)
 
-val unload_framebuffer : Unsigned.uint -> unit
+val unload_framebuffer : FramebufferId.t -> unit
 (** [unload_framebuffer id] Delete framebuffer from GPU*)
 
 val copy_framebuffer :
@@ -610,44 +661,45 @@ val copy_framebuffer :
 val resize_framebuffer : int -> int -> unit
 (** [resize_framebuffer width height] Resize internal framebuffer*)
 
-val load_shader_program : string -> string -> Unsigned.uint
+val load_shader_program : string -> string -> ShaderProgramId.t
 (** [load_shader_program vs_code fs_code] Load shader from code strings*)
 
-val load_shader : string -> Shader.t -> Unsigned.uint
+val load_shader : string -> Shader.t -> ShaderId.t
 (** [load_shader code type] Load (compile) shader*)
 
-val load_shader_program_ex : Unsigned.uint -> Unsigned.uint -> Unsigned.uint
+val load_shader_program_ex : ShaderId.t -> ShaderId.t -> ShaderProgramId.t
 (** [load_shader_program_ex vs_id fs_id] Load shader program, using already
     loaded shader ids*)
 
-val load_shader_program_compute : Unsigned.uint -> Unsigned.uint
+val load_shader_program_compute : ShaderId.t -> ShaderProgramId.t
 (** [load_shader_program_compute cs_id] Load compute shader program*)
 
-val unload_shader : Unsigned.uint -> unit
+val unload_shader : ShaderId.t -> unit
 (** [unload_shader id] Unload shader*)
 
-val unload_shader_program : Unsigned.uint -> unit
+val unload_shader_program : ShaderProgramId.t -> unit
 (** [unload_shader_program id] Unload shader program*)
 
-val get_location_uniform : Unsigned.uint -> string -> int
+val get_location_uniform : ShaderProgramId.t -> string -> ShaderLoc.t
 (** [get_location_uniform id uniform_name] Get shader location uniform*)
 
-val get_location_attrib : Unsigned.uint -> string -> int
+val get_location_attrib : ShaderProgramId.t -> string -> ShaderLoc.t
 (** [get_location_attrib id attrib_name] Get shader location attribute*)
 
-val set_uniform : int -> unit Ctypes.ptr -> int -> int -> unit
+val set_uniform :
+  ShaderLoc.t -> unit Ctypes.ptr -> ShaderUniformDataType.t -> int -> unit
 (** [set_uniform loc_index value uniform_type count] Set shader value uniform*)
 
-val set_uniform_matrix : int -> Matrix.t -> unit
+val set_uniform_matrix : ShaderLoc.t -> Matrix.t -> unit
 (** [set_uniform_matrix loc_index mat] Set shader value matrix*)
 
-val set_uniform_matrices : int -> Matrix.t Ctypes.ptr -> int -> unit
+val set_uniform_matrices : ShaderLoc.t -> Matrix.t Ctypes.ptr -> int -> unit
 (** [set_uniform_matrices loc_index mat count] Set shader value matrices*)
 
-val set_uniform_sampler : int -> Unsigned.uint -> unit
+val set_uniform_sampler : ShaderLoc.t -> TextureId.t -> unit
 (** [set_uniform_sampler loc_index texture_id] Set shader value sampler*)
 
-val set_shader : Unsigned.uint -> int Ctypes.ptr -> unit
+val set_shader : ShaderProgramId.t -> ShaderLoc.t Ctypes.ptr -> unit
 (** [set_shader id locs] Set shader currently active*)
 
 val compute_shader_dispatch :
@@ -655,27 +707,27 @@ val compute_shader_dispatch :
 (** [compute_shader_dispatch group_x group_y group_z] Dispatch compute shader*)
 
 val load_shader_buffer :
-  Unsigned.uint -> unit Ctypes.ptr -> BufferUsage.t -> Unsigned.uint
+  Unsigned.uint -> unit Ctypes.ptr -> BufferUsage.t -> SsboId.t
 (** [load_shader_buffer size data usage_hint] Load shader storage buffer object
     (SSBO)*)
 
-val unload_shader_buffer : Unsigned.uint -> unit
+val unload_shader_buffer : SsboId.t -> unit
 (** [unload_shader_buffer ssbo_id] Unload shader storage buffer object (SSBO)*)
 
 val update_shader_buffer :
-  Unsigned.uint -> unit Ctypes.ptr -> Unsigned.uint -> Unsigned.uint -> unit
+  SsboId.t -> unit Ctypes.ptr -> Unsigned.uint -> Unsigned.uint -> unit
 (** [update_shader_buffer id data data_size offset] Update SSBO buffer data*)
 
-val bind_shader_buffer : Unsigned.uint -> Unsigned.uint -> unit
+val bind_shader_buffer : SsboId.t -> Unsigned.uint -> unit
 (** [bind_shader_buffer id index] Bind SSBO buffer*)
 
 val read_shader_buffer :
-  Unsigned.uint -> unit Ctypes.ptr -> Unsigned.uint -> Unsigned.uint -> unit
+  SsboId.t -> unit Ctypes.ptr -> Unsigned.uint -> Unsigned.uint -> unit
 (** [read_shader_buffer id dest count offset] Read SSBO buffer data*)
 
 val copy_shader_buffer :
-  Unsigned.uint ->
-  Unsigned.uint ->
+  SsboId.t ->
+  SsboId.t ->
   Unsigned.uint ->
   Unsigned.uint ->
   Unsigned.uint ->
@@ -683,10 +735,11 @@ val copy_shader_buffer :
 (** [copy_shader_buffer dest_id src_id dest_offset src_offset count] Copy SSBO
     data between buffers*)
 
-val get_shader_buffer_size : Unsigned.uint -> int
+val get_shader_buffer_size : SsboId.t -> int
 (** [get_shader_buffer_size id] Get SSBO buffer size*)
 
-val bind_image_texture : Unsigned.uint -> Unsigned.uint -> int -> bool -> unit
+val bind_image_texture :
+  TextureId.t -> Unsigned.uint -> PixelFormat.t -> bool -> unit
 (** [bind_image_texture id index format readonly] Bind image texture*)
 
 val get_matrix_modelview : unit -> Matrix.t

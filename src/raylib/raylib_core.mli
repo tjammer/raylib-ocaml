@@ -247,6 +247,7 @@ module MaterialMapIndex : sig
 
   val t : t Ctypes.typ
   val to_int : t -> int
+  val of_int : int -> t
 end
 
 module ShaderLocationIndex : sig
@@ -284,6 +285,7 @@ module ShaderLocationIndex : sig
 
   val t : t Ctypes.typ
   val to_int : t -> int
+  val of_int : int -> t
 end
 
 module ShaderUniformDataType : sig
@@ -448,6 +450,31 @@ module NPatchLayout : sig
   val t : t Ctypes.typ
   val to_int : t -> int
   val of_int : int -> t
+end
+
+module TextureId : sig
+  type t
+
+  val t : t Ctypes.typ
+  val of_uint : Unsigned.uint -> t
+  val to_uint : t -> Unsigned.uint
+end
+
+module ShaderProgramId : sig
+  type t
+
+  val t : t Ctypes.typ
+  val is_valid : t -> bool
+  val of_uint : Unsigned.uint -> t
+  val to_uint : t -> Unsigned.uint
+end
+
+module FramebufferId : sig
+  type t
+
+  val t : t Ctypes.typ
+  val of_uint : Unsigned.uint -> t
+  val to_uint : t -> Unsigned.uint
 end
 
 val max_shader_locations : int
@@ -775,10 +802,10 @@ module Texture : sig
 
   val t : t Ctypes.typ
 
-  val create : Unsigned.uint -> int -> int -> int -> PixelFormat.t -> t
+  val create : TextureId.t -> int -> int -> int -> PixelFormat.t -> t
   (** [create id width height mipmaps format] *)
 
-  val id : t -> Unsigned.uint
+  val id : t -> TextureId.t
   (** OpenGL texture id *)
 
   val width : t -> int
@@ -802,7 +829,7 @@ module RenderTexture : sig
 
   val t : t Ctypes.typ
 
-  val id : t -> Unsigned.uint
+  val id : t -> FramebufferId.t
   (** OpenGL framebuffer object id *)
 
   val texture : t -> Texture.t
@@ -1039,7 +1066,11 @@ module Mesh : sig
 end
 
 module ShaderLoc : sig
-  type t = int
+  type t
+
+  val t : t Ctypes.typ
+  val to_int : t -> int
+  val of_int : int -> t
 end
 
 module Shader : sig
@@ -1047,8 +1078,8 @@ module Shader : sig
   type t = t' ctyp
 
   val t : t Ctypes.typ
-  val shader : Unsigned.UInt.t -> ShaderLoc.t CArray.t -> t
-  val id : t -> Unsigned.UInt.t
+  val shader : ShaderProgramId.t -> ShaderLoc.t CArray.t -> t
+  val id : t -> ShaderProgramId.t
   val locs : t -> ShaderLoc.t CArray.t
   val set_loc : t -> ShaderLocationIndex.t -> ShaderLoc.t -> unit
   val set_locs : t -> ShaderLoc.t CArray.t -> unit

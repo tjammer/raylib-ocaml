@@ -49,7 +49,7 @@ let main () =
   let shader =
     load_shader "resources/base_lighting_instanced.vs" "resources/lighting.fs"
   in
-  if Shader.id shader = Unsigned.UInt.zero then
+  if not (ShaderProgramId.is_valid (Shader.id shader)) then
     failwith "Shader failed to compile";
 
   let mvp = get_shader_location shader "mvp" in

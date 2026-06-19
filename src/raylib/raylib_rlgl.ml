@@ -13,7 +13,7 @@ module VertexBuffer = struct
   let texcoords vb = getf vb VertexBuffer.texcoords
   let colors vb = getf vb VertexBuffer.colors
   let indices vb = getf vb VertexBuffer.indices
-  let vao_id vb = getf vb VertexBuffer.vao_id
+  let vao_id vb = VaoId.of_uint (getf vb VertexBuffer.vao_id)
 end
 
 module DrawCall = struct
@@ -21,10 +21,10 @@ module DrawCall = struct
   type t = t' ctyp
 
   let t = DrawCall.t
-  let mode dc = getf dc DrawCall.mode
+  let mode dc = Int64.of_int (getf dc DrawCall.mode)
   let vertex_count dc = getf dc DrawCall.vertex_count
   let vertex_alignment dc = getf dc DrawCall.vertex_alignment
-  let texture_id dc = getf dc DrawCall.texture_id
+  let texture_id dc = TextureId.of_uint (getf dc DrawCall.texture_id)
 end
 
 module RenderBatch = struct

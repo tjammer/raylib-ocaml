@@ -212,7 +212,7 @@ module Types (F : Ctypes.TYPE) = struct
 
     let t = int64_t
     let unsigned_byte = constant "RL_UNSIGNED_BYTE" int64_t
-    let float_type = constant "RL_FLOAT" int64_t
+    let float = constant "RL_FLOAT" int64_t
   end
 
   module ShaderLocAlias = struct
@@ -221,6 +221,38 @@ module Types (F : Ctypes.TYPE) = struct
     let t = int64_t
     let map_diffuse = constant "RL_SHADER_LOC_MAP_DIFFUSE" int64_t
     let map_specular = constant "RL_SHADER_LOC_MAP_SPECULAR" int64_t
+  end
+
+  module VaoId = struct
+    type t = Unsigned.uint
+
+    let t = uint
+    let of_uint x = x
+    let to_uint x = x
+  end
+
+  module VboId = struct
+    type t = Unsigned.uint
+
+    let t = uint
+    let of_uint x = x
+    let to_uint x = x
+  end
+
+  module ShaderId = struct
+    type t = Unsigned.uint
+
+    let t = uint
+    let of_uint x = x
+    let to_uint x = x
+  end
+
+  module SsboId = struct
+    type t = Unsigned.uint
+
+    let t = uint
+    let of_uint x = x
+    let to_uint x = x
   end
 
   module VertexBuffer = struct

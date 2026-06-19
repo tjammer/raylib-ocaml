@@ -143,12 +143,40 @@ module MaterialMapIndex = struct
   include MaterialMapIndex
 
   let to_int x = to_int MaterialMapIndex.t x
+  let of_int x = of_int MaterialMapIndex.t x
 end
 
 module ShaderLocationIndex = struct
   include ShaderLocationIndex
 
   let to_int x = to_int ShaderLocationIndex.t x
+  let of_int x = of_int ShaderLocationIndex.t x
+end
+
+(* Abstract handle types for GPU resources *)
+module TextureId = struct
+  type t = Unsigned.uint
+
+  let t = uint
+  let of_uint x = x
+  let to_uint x = x
+end
+
+module ShaderProgramId = struct
+  type t = Unsigned.uint
+
+  let t = uint
+  let is_valid id = Unsigned.UInt.(id != zero)
+  let of_uint x = x
+  let to_uint x = x
+end
+
+module FramebufferId = struct
+  type t = Unsigned.uint
+
+  let t = uint
+  let of_uint x = x
+  let to_uint x = x
 end
 
 (* Structs *)
@@ -373,14 +401,14 @@ module Texture = struct
 
   let create id width height mipmaps format =
     let texture = make t in
-    setf texture Texture.id id;
+    setf texture Texture.id (TextureId.to_uint id);
     setf texture Texture.width width;
     setf texture Texture.height height;
     setf texture Texture.mipmaps mipmaps;
     setf texture Texture.format (to_int PixelFormat.t format);
     texture
 
-  let id texture = getf texture Texture.id
+  let id texture = TextureId.of_uint (getf texture Texture.id)
   let width texture = getf texture Texture.width
   let height texture = getf texture Texture.height
   let mipmaps texture = getf texture Texture.mipmaps
@@ -394,10 +422,15 @@ module RenderTexture = struct
   type t = t' ctyp
 
   let t = RenderTexture.t
-  let id rendertexture = getf rendertexture RenderTexture.id
+
+  let id rendertexture =
+    FramebufferId.of_uint (getf rendertexture RenderTexture.id)
+
   let texture rendertexture = getf rendertexture RenderTexture.texture
   let depth rendertexture = getf rendertexture RenderTexture.depth
-  let set_id rendertexture id = setf rendertexture RenderTexture.id id
+
+  let set_id rendertexture id =
+    setf rendertexture RenderTexture.id (FramebufferId.to_uint id)
 
   let set_texture rendertexture texture =
     setf rendertexture RenderTexture.texture texture
@@ -652,6 +685,10 @@ end
 
 module ShaderLoc = struct
   type t = int
+
+  let t = Ctypes.int
+  let to_int x = x
+  let of_int x = x
 end
 
 module Shader = struct
@@ -662,11 +699,11 @@ module Shader = struct
 
   let shader id locs =
     let shader = Ctypes.make Shader.t in
-    Ctypes.setf shader Shader.id id;
+    Ctypes.setf shader Shader.id (ShaderProgramId.to_uint id);
     Ctypes.setf shader Shader.locs (Ctypes.CArray.start locs);
     shader
 
-  let id shader = getf shader Shader.id
+  let id shader = ShaderProgramId.of_uint (getf shader Shader.id)
 
   let locs shader =
     CArray.from_ptr (getf shader Shader.locs)

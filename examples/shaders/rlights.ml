@@ -13,11 +13,11 @@ type light = {
   target : Vector3.t;
   color : Color.t;
   enabled : bool;
-  loc_enabled : int;
-  loc_typ : int;
-  loc_pos : int;
-  loc_target : int;
-  loc_color : int;
+  loc_enabled : ShaderLoc.t;
+  loc_typ : ShaderLoc.t;
+  loc_pos : ShaderLoc.t;
+  loc_target : ShaderLoc.t;
+  loc_color : ShaderLoc.t;
 }
 
 let update_light_values shader light =
