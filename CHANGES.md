@@ -1,4 +1,10 @@
-2.0.0 (2025-06-02)
+2.1.0 (2026-06-20)
+------------------
+
+* Use enum types for all raylib and rlgl functions
+* Re-add integer conversions for enums
+
+2.0.0 (2026-06-02)
 ------------------
 
 * Upgrade to raylib 6.0 (thanks @rossberg)
