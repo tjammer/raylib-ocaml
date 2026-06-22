@@ -15,7 +15,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "LoadFontFromImage"
       (Image.t @-> Color.t @-> int @-> returning Font.t)
 
-  let load_font_from_memory =
+  let _load_font_from_memory =
     foreign "LoadFontFromMemory"
       (string @-> string @-> int @-> int @-> ptr int @-> int
      @-> returning Font.t)
@@ -27,13 +27,13 @@ module Functions (F : Ctypes.FOREIGN) = struct
       (string @-> int @-> int @-> ptr int @-> int @-> FontType.t @-> ptr int
       @-> returning (ptr GlyphInfo.t))
 
-  let gen_image_font_atlas =
+  let _gen_image_font_atlas =
     foreign "GenImageFontAtlas"
       (ptr GlyphInfo.t
       @-> ptr (ptr Rectangle.t)
       @-> int @-> int @-> int @-> int @-> returning Image.t)
 
-  let unload_font_data =
+  let _unload_font_data =
     foreign "UnloadFontData" (ptr GlyphInfo.t @-> int @-> returning void)
 
   let unload_font = foreign "UnloadFont" (Font.t @-> returning void)
