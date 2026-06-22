@@ -11,35 +11,33 @@ val load_font : string -> Font.t
 (** [load_font file_name] Load font from file into GPU memory (VRAM)*)
 
 val load_font_ex : string -> int -> int CArray.t option -> Font.t
-(** [load_font_ex file_name font_size codepoints codepoint_count] Load font from
-    file with extended parameters, use NULL for codepoints and 0 for
-    codepointCount to load the default character setFont*)
+(** [load_font_ex file_name font_size codepoints] Load font from
+    file with extended parameters, use None for codepoints to load the default
+    character set*)
 
 val load_font_from_image : Image.t -> Color.t -> int -> Font.t
 (** [load_font_from_image image key first_char] Load font from Image (XNA style)*)
 
-val load_font_from_memory :
-  string -> string -> int -> int -> int ptr -> int -> Font.t
-(** [load_font_from_memory file_type file_data data_size font_size codepoints
-     codepoint_count] Load font from memory buffer, fileType refers to
-    extension: i.e. '.ttf'*)
+val load_font_from_memory : string -> string -> int -> int CArray.t -> Font.t
+(** [load_font_from_memory file_type file_data font_size codepoints] Load font
+    from memory buffer, fileType refers to extension: i.e. '.ttf'*)
 
 val is_font_valid : Font.t -> bool
 (** [is_font_valid font] Check if a font is valid (font data loaded, WARNING:
     GPU texture not checked)*)
 
 val load_font_data :
-  string -> int -> int ptr -> int -> FontType.t -> GlyphInfo.t CArray.t
-(** [load_font_data file_data font_size codepoints codepoint_count type] Load
-    font data for further use*)
+  string -> int -> int CArray.t -> FontType.t -> GlyphInfo.t CArray.t
+(** [load_font_data file_data font_size codepoints type] Load font data for
+    further use*)
 
 val gen_image_font_atlas :
-  GlyphInfo.t ptr -> Rectangle.t ptr ptr -> int -> int -> int -> int -> Image.t
-(** [gen_image_font_atlas glyphs glyph_recs glyph_count font_size padding
-     pack_method] Generate image font atlas using chars info*)
+  GlyphInfo.t CArray.t -> int -> int -> int -> Image.t * Rectangle.t CArray.t
+(** [gen_image_font_atlas glyphs font_size padding pack_method] Generate image
+    font atlas using chars info*)
 
-val unload_font_data : GlyphInfo.t ptr -> int -> unit
-(** [unload_font_data glyphs glyph_count] Unload font chars info data (RAM)*)
+val unload_font_data : GlyphInfo.t CArray.t -> unit
+(** [unload_font_data glyphs] Unload font chars info data (RAM)*)
 
 val unload_font : Font.t -> unit
 (** [unload_font font] Unload font from GPU memory (VRAM)*)
