@@ -43,7 +43,9 @@
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/raylib/src/libraylib.so.6.0.0 dllraylib.so)))))
+    (copy vendor/raylib/src/libraylib.so.6.0.0 dllraylib.so)
+    (run ./apply_patch.exe enable_formats.patch -r)
+    (run ./apply_patch.exe hotfixes.patch -r)))))
 
 (rule
  (alias build-raylib)
@@ -68,7 +70,9 @@
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/raylib/src/libraylib.6.0.0.dylib dllraylib.so)))))
+    (copy vendor/raylib/src/libraylib.6.0.0.dylib dllraylib.so)
+    (run ./apply_patch.exe enable_formats.patch -r)
+    (run ./apply_patch.exe hotfixes.patch -r)))))
 
 (rule
  (alias build-raylib)
@@ -98,7 +102,10 @@
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/raylib/src/raylib.dll dllraylib.dll)))))
+    (copy vendor/raylib/src/raylib.dll dllraylib.dll)
+    (run ./apply_patch.exe enable_formats.patch -r)
+    (run ./apply_patch.exe hotfixes.patch -r)
+    (run ./apply_patch.exe mingw64.patch -r)))))
 
 (rule
  (alias build-raylib)
@@ -128,7 +135,10 @@
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/raylib/src/raylib.dll dllraylib.dll)))))
+    (copy vendor/raylib/src/raylib.dll dllraylib.dll)
+    (run ./apply_patch.exe qenable_formats.patch -r)
+    (run ./apply_patch.exe hotfixes.patch -r)
+    (run ./apply_patch.exe msys2.patch -r)))))
 
 (rule
  (alias build-raylib)
@@ -161,4 +171,7 @@
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run gmake -C vendor/raylib/src clean)
     (run gmake -C vendor/raylib/src RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/raylib/src/libraylib.6.0.0.so dllraylib.so)))))
+    (copy vendor/raylib/src/libraylib.6.0.0.so dllraylib.so)
+    (run ./apply_patch.exe enable_formats.patch -r)
+    (run ./apply_patch.exe hotfixes.patch -r)
+    (run ./apply_patch.exe freebsd.patch -r)))))
