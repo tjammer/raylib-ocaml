@@ -1,0 +1,25 @@
+diff --git a/vendor/raylib/src/platforms/rcore_desktop_glfw.c b/vendor/raylib/src/platforms/rcore_desktop_glfw.c
+index 55b92ac7..b45cd1cb 100644
+--- a/vendor/raylib/src/platforms/rcore_desktop_glfw.c
++++ b/vendor/raylib/src/platforms/rcore_desktop_glfw.c
+@@ -2015,6 +2015,7 @@ static void WindowMaximizeCallback(GLFWwindow *window, int maximized)
+ {
+     if (maximized) FLAG_SET(CORE.Window.flags, FLAG_WINDOW_MAXIMIZED);  // The window was maximized
+     else FLAG_CLEAR(CORE.Window.flags, FLAG_WINDOW_MAXIMIZED);          // The window was restored
++    glfwGetWindowPos(window, &CORE.Window.position.x, &CORE.Window.position.y);
+ }
+ 
+ // GLFW3: Window focus callback, runs when window get/lose focus
+diff --git a/vendor/raylib/src/raudio.c b/vendor/raylib/src/raudio.c
+index 55b92ac7..b45cd1cb 100644
+--- a/vendor/raylib/src/raudio.c
++++ b/vendor/raylib/src/raudio.c
+@@ -1782,7 +1782,7 @@ void UnloadMusicStream(Music music)
+         else if (music.ctxType == MUSIC_AUDIO_QOA) qoaplay_close((qoaplay_desc *)music.ctxData);
+ #endif
+ #if SUPPORT_FILEFORMAT_FLAC
+-        else if (music.ctxType == MUSIC_AUDIO_FLAC) { drflac_close((drflac *)music.ctxData); drflac_free((drflac *)music.ctxData, NULL); }
++        else if (music.ctxType == MUSIC_AUDIO_FLAC) drflac_close((drflac *)music.ctxData);
+ #endif
+ #if SUPPORT_FILEFORMAT_XM
+         else if (music.ctxType == MUSIC_MODULE_XM) jar_xm_free_context((jar_xm_context_t *)music.ctxData);
