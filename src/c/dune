@@ -28,6 +28,7 @@
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
+  hotfixes.patch
   apply_patch.exe
   chmodx.exe)
  (action
@@ -35,6 +36,9 @@
    (progn
     (run ./chmodx.exe vendor/raylib/src/config.h)
     (run ./apply_patch.exe enable_formats.patch)
+    (run ./chmodx.exe vendor/raylib/src/platforms/rcore_desktop_glfw.c)
+    (run ./chmodx.exe vendor/raylib/src/raudio.c)
+    (run ./apply_patch.exe hotfixes.patch)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
@@ -49,6 +53,7 @@
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
+  hotfixes.patch
   apply_patch.exe
   chmodx.exe)
  (action
@@ -56,6 +61,9 @@
    (progn
     (run ./chmodx.exe vendor/raylib/src/config.h)
     (run ./apply_patch.exe enable_formats.patch)
+    (run ./chmodx.exe vendor/raylib/src/platforms/rcore_desktop_glfw.c)
+    (run ./chmodx.exe vendor/raylib/src/raudio.c)
+    (run ./apply_patch.exe hotfixes.patch)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
     (copy vendor/raylib/src/libraylib.a libraylib.a)
     (run make -C vendor/raylib/src clean)
@@ -72,6 +80,7 @@
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
+  hotfixes.patch
   mingw64.patch
   apply_patch.exe
   chmodx.exe)
@@ -80,6 +89,9 @@
    (progn
     (run ./chmodx.exe vendor/raylib/src/config.h)
     (run ./apply_patch.exe enable_formats.patch)
+    (run ./chmodx.exe vendor/raylib/src/platforms/rcore_desktop_glfw.c)
+    (run ./chmodx.exe vendor/raylib/src/raudio.c)
+    (run ./apply_patch.exe hotfixes.patch)
     (run ./chmodx.exe vendor/raylib/src/Makefile)
     (run ./apply_patch.exe mingw64.patch)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
@@ -98,6 +110,7 @@
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
+  hotfixes.patch
   msys2.patch
   apply_patch.exe
   chmodx.exe)
@@ -106,6 +119,9 @@
    (progn
     (run ./chmodx.exe vendor/raylib/src/config.h)
     (run ./apply_patch.exe enable_formats.patch)
+    (run ./chmodx.exe vendor/raylib/src/platforms/rcore_desktop_glfw.c)
+    (run ./chmodx.exe vendor/raylib/src/raudio.c)
+    (run ./apply_patch.exe hotfixes.patch)
     (run ./chmodx.exe vendor/raylib/src/Makefile)
     (run ./apply_patch.exe msys2.patch)
     (run make -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
@@ -127,6 +143,7 @@
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
+  hotfixes.patch
   freebsd.patch
   apply_patch.exe
   chmodx.exe)
@@ -135,6 +152,9 @@
    (progn
     (run ./chmodx.exe vendor/raylib/src/config.h)
     (run ./apply_patch.exe enable_formats.patch)
+    (run ./chmodx.exe vendor/raylib/src/platforms/rcore_desktop_glfw.c)
+    (run ./chmodx.exe vendor/raylib/src/raudio.c)
+    (run ./apply_patch.exe hotfixes.patch)
     (run ./chmodx.exe vendor/raylib/src/Makefile)
     (run ./apply_patch.exe freebsd.patch)
     (run gmake -C vendor/raylib/src RAYLIB_LIBTYPE=STATIC -j 8)
