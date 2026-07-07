@@ -1,3 +1,10 @@
+2.2.0 (2026-07-07)
+------------------
+
+* Integrate upstream patches for GetWindowPosition and UnloadMusicStream (thanks @rossberg)
+* Repair integer conversions for flag-like constants
+* More arrayification of font functions (thanks @rossberg)
+
 2.1.0 (2026-06-20)
 ------------------
 
