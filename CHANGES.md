@@ -1,3 +1,8 @@
+2.2.1 (2026-07-12)
+------------------
+
+* Use all hunks for patches (instead of one). Correctly enables FLAC support (thanks @rossberg)
+
 2.2.0 (2026-07-07)
 ------------------
 
