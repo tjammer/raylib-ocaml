@@ -138,6 +138,7 @@
    (= %{system} netbsd)
    (= %{system} freebsd)
    (= %{system} openbsd)
+   (= %{system} dragonfly)
    (= %{system} bsd)
    (= %{system} bsd_elf)))
  (deps

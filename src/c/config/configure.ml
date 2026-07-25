@@ -14,7 +14,7 @@ let () =
             link ~flag:"-framework"
               [ "OpenGL"; "Cocoa"; "IOKit"; "CoreAudio"; "CoreVideo" ]
         | Some "mingw64" -> link [ "opengl32"; "gdi32"; "winmm"; "pthread" ]
-        | Some ("netbsd" | "freebsd" | "openbsd" | "bsd" | "bsd_elf") ->
+        | Some ("netbsd" | "freebsd" | "openbsd" | "dragonfly" | "bsd" | "bsd_elf") ->
             "-cclib" :: "-L /usr/local/lib"
             :: link
                  [

@@ -1,11 +1,39 @@
 diff -u a/vendor/raylib/src/Makefile b/vendor/raylib/src/Makefile
 --- a/vendor/raylib/src/Makefile
 +++ b/vendor/raylib/src/Makefile
-@@ -402,6 +402,7 @@ ifeq ($(RAYLIB_BUILD_MODE),RELEASE)
+@@ -310,9 +310,12 @@ ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_GLFW)
+         GLFW_OSX = -x objective-c
      endif
-     ifeq ($(PLATFORM),PLATFORM_DESKTOP)
+     ifeq ($(PLATFORM_OS),BSD)
+-        # FreeBSD, OpenBSD, NetBSD, DragonFly default compiler
++        # FreeBSD, OpenBSD, NetBSD default compiler
+         CC = clang
+     endif
++    ifeq ($(shell uname),DragonFly)
++        CC = gcc
++    endif
+ endif
+ ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_RGFW)
+     ifeq ($(PLATFORM_OS),OSX)
+@@ -321,9 +324,12 @@ ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_RGFW)
+         GLFW_OSX = -x objective-c
+     endif
+     ifeq ($(PLATFORM_OS),BSD)
+-        # FreeBSD, OpenBSD, NetBSD, DragonFly default compiler
++        # FreeBSD, OpenBSD, NetBSD default compiler
+         CC = clang
+     endif
++    ifeq ($(shell uname),DragonFly)
++        CC = gcc
++    endif
+ endif
+ ifeq ($(TARGET_PLATFORM),PLATFORM_DRM)
+     ifeq ($(USE_RPI_CROSSCOMPILER),TRUE)
+@@ -402,6 +408,7 @@ endif
+ ifeq ($(RAYLIB_BUILD_MODE),RELEASE)
+     ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_GLFW)
          CFLAGS += -O1
 +        CFLAGS += -fPIC
      endif
-     ifeq ($(PLATFORM),PLATFORM_ANDROID)
-         CFLAGS += -O2
+     ifeq ($(TARGET_PLATFORM),PLATFORM_WEB)
+         CFLAGS += -Os
