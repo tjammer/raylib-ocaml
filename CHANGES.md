@@ -1,3 +1,8 @@
+2.2.2 (2026-07-29)
+------------------
+
+* Re-package correctly for macos (without hardlinks to self)
+
 2.2.1 (2026-07-12)
 ------------------
 
