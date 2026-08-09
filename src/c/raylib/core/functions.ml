@@ -399,7 +399,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let is_key_up = foreign "IsKeyUp" (Key.t @-> returning bool)
   let get_key_pressed = foreign "GetKeyPressed" (void @-> returning Key.t)
   let _get_char_pressed = foreign "GetCharPressed" (void @-> returning int)
-  let get_key_name = foreign "GetKeyName" (Key.t @-> returning string)
+  let get_key_name = foreign "GetKeyName" (Key.t @-> returning string_opt)
   let set_exit_key = foreign "SetExitKey" (Key.t @-> returning void)
 
   let is_gamepad_available =

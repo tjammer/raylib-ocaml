@@ -2058,7 +2058,7 @@ val get_char_pressed : unit -> Uchar.t
 (** [get_char_pressed ()] Get char pressed (unicode), call it multiple times for
     chars queued, returns 0 when the queue is empty*)
 
-val get_key_name : Key.t -> string
+val get_key_name : Key.t -> string option
 (** [get_key_name key] Get name of a QWERTY key on the current keyboard layout
     (eg returns string 'q' for KEY_A on an AZERTY keyboard) *)
 
