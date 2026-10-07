@@ -5,6 +5,35 @@ on:
   - pull_request
 
 jobs:
+  build-sdl:
+    name: build (SDL2)
+    runs-on: ubuntu-latest
+    env:
+      PLATFORM: PLATFORM_DESKTOP_SDL
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Install SDL2
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsdl2-dev
+
+      - name: Use OCaml 5.4.1
+        uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: 5.4.1
+
+      - run: opam pin -n .
+      - run: opam install . --deps-only
+      - run: opam install containers re yojson
+      - run: opam exec -- dune build
+      - name: Verify SDL2 backend
+        run: ldd _build/default/src/c/dllraylib.so | grep -q libSDL2
+
   build-and-test:
     name: build
 
