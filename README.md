@@ -58,6 +58,16 @@ in `config.h`, and `GRAPHICS` to pick the opengl version raylib uses. It
 defaults to `GRAPHICS_API_OPENGL_33`, but advanced rlgl features (compute
 shaders) need `GRAPHICS_API_OPENGL_43`.
 
+The SDL2 backend can be selected instead of the default GLFW one by installing
+the `raylib-options-sdl2` option package alongside `raylib`:
+
+``` sh
+opam install raylib raylib-options-sdl2
+```
+
+For source builds, set `PLATFORM=PLATFORM_DESKTOP_SDL`. SDL2 must be installed
+and discoverable through `pkg-config`.
+
 ## Examples
 To build the examples, make sure the raylib C submodule is available with `git
 submodule update --init --recursive`, and that all needed dependencies are
