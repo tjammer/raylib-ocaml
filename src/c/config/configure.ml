@@ -8,13 +8,14 @@ let rec cclib = function
   | [] -> []
   | flag :: flags -> "-cclib" :: flag :: cclib flags
 
+let platform () =
+  match Sys.getenv_opt "PLATFORM" with
+  | Some platform -> platform
+  | None -> "PLATFORM_DESKTOP"
+
 let () =
   C.main ~name:"raylib" (fun c ->
-      let platform =
-        match Sys.getenv_opt "PLATFORM" with
-        | Some platform -> platform
-        | None -> "PLATFORM_DESKTOP"
-      in
+      let platform = platform () in
       let system_library_flags =
         match C.ocaml_config_var c "system" with
         | Some ("linux" | "linux_elf" | "elf") ->
@@ -23,7 +24,9 @@ let () =
             link ~flag:"-framework"
               [ "OpenGL"; "Cocoa"; "IOKit"; "CoreAudio"; "CoreVideo" ]
         | Some "mingw64" -> link [ "opengl32"; "gdi32"; "winmm"; "pthread" ]
-        | Some ("netbsd" | "freebsd" | "openbsd" | "dragonfly" | "bsd" | "bsd_elf") ->
+        | Some
+            ("netbsd" | "freebsd" | "openbsd" | "dragonfly" | "bsd" | "bsd_elf")
+          ->
             "-cclib" :: "-L /usr/local/lib"
             :: link
                  [
@@ -49,8 +52,8 @@ let () =
                 match C.Pkg_config.query pkg_config ~package:"sdl2" with
                 | None ->
                     C.die
-                      "PLATFORM_DESKTOP_SDL was requested, but pkg-config could \
-                       not find sdl2"
+                      "PLATFORM_DESKTOP_SDL was requested, but pkg-config \
+                       could not find sdl2"
                 | Some { libs; cflags } ->
                     ( cclib libs,
                       [
@@ -61,4 +64,5 @@ let () =
       in
       C.Flags.write_sexp "library_flags.sexp"
         (system_library_flags @ backend_library_flags);
-      C.Flags.write_lines "raylib_flags" raylib_flags)
+      C.Flags.write_lines "raylib_flags"
+        (("PLATFORM=" ^ platform) :: raylib_flags))

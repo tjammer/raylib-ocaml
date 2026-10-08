@@ -24,10 +24,15 @@ depends: [
   "ocamlformat" {= "0.29.0" & with-dev-setup}
   "odoc" {with-doc}
 ]
+depopts: ["raylib-options-sdl2"]
 conflicts: ["ocaml-option-bytecode-only"]
+dev-repo: "git+https://github.com/tjammer/raylib-ocaml.git"
+x-maintenance-intent: ["(latest)"]
 build: [
   ["dune" "subst"] {dev}
-  [
+  [ "env"
+    "PLATFORM=PLATFORM_DESKTOP_SDL"
+    {raylib-options-sdl2:installed}
     "dune"
     "build"
     "-p"
@@ -39,8 +44,6 @@ build: [
     "@doc" {with-doc}
   ]
 ]
-dev-repo: "git+https://github.com/tjammer/raylib-ocaml.git"
-x-maintenance-intent: ["(latest)"]
 available: [arch != "arm32" & arch != "ppc64"]
 x-ci-accept-failures: [
   "centos-7" # C compiler is too old

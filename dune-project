@@ -55,7 +55,16 @@
    (and
     (= 0.29.0)
     :with-dev-setup)))
+ (depopts raylib-options-sdl2)
  (conflicts ocaml-option-bytecode-only))
+
+(package
+ (name raylib-options-sdl2)
+ (version 2.2.2)
+ (description "Build raylib-ocaml with the SDL2 backend")
+ (synopsis "SDL2 backend option for raylib-ocaml")
+ (depends conf-sdl2)
+ (allow_empty))
 
 (package
  (name raygui)

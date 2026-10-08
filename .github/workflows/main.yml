@@ -8,8 +8,6 @@ jobs:
   build-sdl:
     name: build (SDL2)
     runs-on: ubuntu-latest
-    env:
-      PLATFORM: PLATFORM_DESKTOP_SDL
 
     steps:
       - name: Checkout code
@@ -27,12 +25,10 @@ jobs:
         with:
           ocaml-compiler: 5.4.1
 
-      - run: opam pin -n .
-      - run: opam install . --deps-only
-      - run: opam install containers re yojson
-      - run: opam exec -- dune build
+      - run: opam pin -n -k path .
+      - run: opam install -y raylib-options-sdl2 raylib
       - name: Verify SDL2 backend
-        run: ldd _build/default/src/c/dllraylib.so | grep -q libSDL2
+        run: ldd _opam/lib/stublibs/dllraylib.so | grep -q libSDL2
 
   build-and-test:
     name: build
