@@ -1,0 +1,29 @@
+name: FreeBSD
+
+on:
+  - push
+  - pull_request
+
+permissions: {}
+
+jobs:
+  build:
+    name: AMD64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Build on FreeBSD
+        uses: vmactions/freebsd-vm@v1
+        with:
+          usesh: true
+          prepare: |
+            pkg install -y git ocaml ocaml-opam
+          run: |
+            git config --global --add safe.directory "$(pwd)"
+            opam init --disable-sandboxing -y
+            opam switch create . ocaml-system -y
+            opam install . --deps-only -y
+            opam exec -- dune build @install @runtest
