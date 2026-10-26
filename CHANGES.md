@@ -1,3 +1,13 @@
+2.3.0 (2026-10-26)
+------------------
+
+* Change `get_key_name` return type to `string option` from just
+  `string`. The returned string can be NULL.
+* Support DragonFly BSD
+* Support SDL2 build of raylib by using `PLATFORM=PLATFORM_DESKTOP_SDL`
+  environment variable. Introduce new `raylib-options-sdl2` package which
+  sets this variable automatically in the build context.
+
 2.2.2 (2026-07-29)
 ------------------
 
