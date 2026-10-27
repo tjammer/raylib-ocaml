@@ -69,5 +69,7 @@ jobs:
       - run: opam exec -- dune build
         if: matrix.ocaml-compiler != '4.11.2'
 
-      - run: opam install .
+      - run: opam install raylib-options-sdl2
         if: matrix.os != 'windows-latest'
+
+      - run: opam install raylib raygui raylib-callbacks
