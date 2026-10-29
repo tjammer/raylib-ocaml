@@ -9,11 +9,12 @@
  (libraries unix))
 
 (rule
- (targets library_flags.sexp raylib_flags)
- (deps
-  (:discover config/configure.exe))
+ (targets library_flags.sexp raylib_flags raylib_target)
  (action
-  (run %{discover})))
+  (progn
+   (copy config/library_flags.sexp library_flags.sexp)
+   (copy config/raylib_flags raylib_flags)
+   (copy config/raylib_target raylib_target))))
 
 (data_only_dirs vendor)
 
@@ -21,145 +22,247 @@
  (alias build-raylib)
  (targets libraylib.a dllraylib.so)
  (enabled_if
-  (or
-   (= %{system} linux)
-   (= %{system} linux_elf)
-   (= %{system} elf)))
+  (= %{read-lines:config/raylib_target} linux))
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
   hotfixes.patch
-  apply_patch.exe
-  chmodx.exe)
+  (env_var GRAPHICS)
+  (env_var RAYLIB_CONFIG_FLAGS))
  (action
-  (no-infer
-   (progn
-    (run ./chmodx.exe vendor/raylib/src/config.h)
-    (run ./apply_patch.exe enable_formats.patch)
-    (run ./chmodx.exe vendor/raylib/src/platforms/rcore_desktop_glfw.c)
-    (run ./chmodx.exe vendor/raylib/src/raudio.c)
-    (run ./apply_patch.exe hotfixes.patch)
-    (run make -C vendor/raylib/src %{read-lines:raylib_flags} RAYLIB_LIBTYPE=STATIC -j 8)
-    (copy vendor/raylib/src/libraylib.a libraylib.a)
-    (run make -C vendor/raylib/src clean)
-    (run make -C vendor/raylib/src %{read-lines:raylib_flags} RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/raylib/src/libraylib.so.6.0.0 dllraylib.so)))))
+  (progn
+   (run %{exe:chmodx.exe} vendor/raylib/src/config.h)
+   (run %{exe:apply_patch.exe} enable_formats.patch)
+   (run %{exe:chmodx.exe} vendor/raylib/src/platforms/rcore_desktop_glfw.c)
+   (run %{exe:chmodx.exe} vendor/raylib/src/raudio.c)
+   (run %{exe:apply_patch.exe} hotfixes.patch)
+   (no-infer
+    (progn
+     (run make -C vendor/raylib/src %{read-lines:raylib_flags} clean)
+     (run
+      make
+      -C
+      vendor/raylib/src
+      %{read-lines:raylib_flags}
+      RAYLIB_LIBTYPE=STATIC
+      -j
+      8)
+     (copy vendor/raylib/src/libraylib.a libraylib.a)
+     (run make -C vendor/raylib/src %{read-lines:raylib_flags} clean)
+     (run
+      make
+      -C
+      vendor/raylib/src
+      %{read-lines:raylib_flags}
+      RAYLIB_LIBTYPE=SHARED
+      -j
+      8)
+     (copy vendor/raylib/src/libraylib.so dllraylib.so))))))
 
 (rule
  (alias build-raylib)
  (targets libraylib.a dllraylib.so)
  (enabled_if
-  (= %{system} macosx))
+  (= %{read-lines:config/raylib_target} macos))
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
   hotfixes.patch
-  apply_patch.exe
-  chmodx.exe)
+  (env_var GRAPHICS)
+  (env_var RAYLIB_CONFIG_FLAGS))
  (action
-  (no-infer
-   (progn
-    (run ./chmodx.exe vendor/raylib/src/config.h)
-    (run ./apply_patch.exe enable_formats.patch)
-    (run ./chmodx.exe vendor/raylib/src/platforms/rcore_desktop_glfw.c)
-    (run ./chmodx.exe vendor/raylib/src/raudio.c)
-    (run ./apply_patch.exe hotfixes.patch)
-    (run make -C vendor/raylib/src %{read-lines:raylib_flags} RAYLIB_LIBTYPE=STATIC -j 8)
-    (copy vendor/raylib/src/libraylib.a libraylib.a)
-    (run make -C vendor/raylib/src clean)
-    (run make -C vendor/raylib/src %{read-lines:raylib_flags} RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/raylib/src/libraylib.6.0.0.dylib dllraylib.so)))))
+  (progn
+   (run %{exe:chmodx.exe} vendor/raylib/src/config.h)
+   (run %{exe:apply_patch.exe} enable_formats.patch)
+   (run %{exe:chmodx.exe} vendor/raylib/src/platforms/rcore_desktop_glfw.c)
+   (run %{exe:chmodx.exe} vendor/raylib/src/raudio.c)
+   (run %{exe:apply_patch.exe} hotfixes.patch)
+   (no-infer
+    (progn
+     (run make -C vendor/raylib/src %{read-lines:raylib_flags} clean)
+     (run
+      make
+      -C
+      vendor/raylib/src
+      %{read-lines:raylib_flags}
+      RAYLIB_LIBTYPE=STATIC
+      -j
+      8)
+     (copy vendor/raylib/src/libraylib.a libraylib.a)
+     (run make -C vendor/raylib/src %{read-lines:raylib_flags} clean)
+     (run
+      make
+      -C
+      vendor/raylib/src
+      %{read-lines:raylib_flags}
+      RAYLIB_LIBTYPE=SHARED
+      -j
+      8)
+     (copy vendor/raylib/src/libraylib.dylib dllraylib.so))))))
 
 (rule
  (alias build-raylib)
  (targets libraylib.a dllraylib.dll)
  (enabled_if
-  (and
-   (= %{system} mingw64)
-   (<> %{os_distribution} msys2)))
+  (= %{read-lines:config/raylib_target} mingw64))
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
   hotfixes.patch
   mingw64.patch
-  apply_patch.exe
-  chmodx.exe)
+  (env_var GRAPHICS)
+  (env_var RAYLIB_CONFIG_FLAGS))
  (action
-  (no-infer
-   (progn
-    (run ./chmodx.exe vendor/raylib/src/config.h)
-    (run ./apply_patch.exe enable_formats.patch)
-    (run ./chmodx.exe vendor/raylib/src/platforms/rcore_desktop_glfw.c)
-    (run ./chmodx.exe vendor/raylib/src/raudio.c)
-    (run ./apply_patch.exe hotfixes.patch)
-    (run ./chmodx.exe vendor/raylib/src/Makefile)
-    (run ./apply_patch.exe mingw64.patch)
-    (run make -C vendor/raylib/src %{read-lines:raylib_flags} RAYLIB_LIBTYPE=STATIC -j 8)
-    (copy vendor/raylib/src/libraylib.a libraylib.a)
-    (run make -C vendor/raylib/src clean)
-    (run make -C vendor/raylib/src %{read-lines:raylib_flags} RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/raylib/src/raylib.dll dllraylib.dll)))))
+  (progn
+   (run %{exe:chmodx.exe} vendor/raylib/src/config.h)
+   (run %{exe:apply_patch.exe} enable_formats.patch)
+   (run %{exe:chmodx.exe} vendor/raylib/src/platforms/rcore_desktop_glfw.c)
+   (run %{exe:chmodx.exe} vendor/raylib/src/raudio.c)
+   (run %{exe:apply_patch.exe} hotfixes.patch)
+   (run %{exe:chmodx.exe} vendor/raylib/src/Makefile)
+   (run %{exe:apply_patch.exe} mingw64.patch)
+   (no-infer
+    (progn
+     (run make -C vendor/raylib/src %{read-lines:raylib_flags} clean)
+     (run
+      make
+      -C
+      vendor/raylib/src
+      %{read-lines:raylib_flags}
+      RAYLIB_LIBTYPE=STATIC
+      -j
+      8)
+     (copy vendor/raylib/src/libraylib.a libraylib.a)
+     (run make -C vendor/raylib/src %{read-lines:raylib_flags} clean)
+     (run
+      make
+      -C
+      vendor/raylib/src
+      %{read-lines:raylib_flags}
+      RAYLIB_LIBTYPE=SHARED
+      -j
+      8)
+     (copy vendor/raylib/src/raylib.dll dllraylib.dll))))))
 
 (rule
  (alias build-raylib)
  (targets libraylib.a dllraylib.dll)
  (enabled_if
-  (and
-   (= %{system} mingw64)
-   (= %{os_distribution} msys2)))
+  (= %{read-lines:config/raylib_target} msys2))
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
   hotfixes.patch
   msys2.patch
-  apply_patch.exe
-  chmodx.exe)
+  (env_var GRAPHICS)
+  (env_var RAYLIB_CONFIG_FLAGS))
  (action
-  (no-infer
-   (progn
-    (run ./chmodx.exe vendor/raylib/src/config.h)
-    (run ./apply_patch.exe enable_formats.patch)
-    (run ./chmodx.exe vendor/raylib/src/platforms/rcore_desktop_glfw.c)
-    (run ./chmodx.exe vendor/raylib/src/raudio.c)
-    (run ./apply_patch.exe hotfixes.patch)
-    (run ./chmodx.exe vendor/raylib/src/Makefile)
-    (run ./apply_patch.exe msys2.patch)
-    (run make -C vendor/raylib/src %{read-lines:raylib_flags} RAYLIB_LIBTYPE=STATIC -j 8)
-    (copy vendor/raylib/src/libraylib.a libraylib.a)
-    (run make -C vendor/raylib/src clean)
-    (run make -C vendor/raylib/src %{read-lines:raylib_flags} RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/raylib/src/raylib.dll dllraylib.dll)))))
+  (progn
+   (run %{exe:chmodx.exe} vendor/raylib/src/config.h)
+   (run %{exe:apply_patch.exe} enable_formats.patch)
+   (run %{exe:chmodx.exe} vendor/raylib/src/platforms/rcore_desktop_glfw.c)
+   (run %{exe:chmodx.exe} vendor/raylib/src/raudio.c)
+   (run %{exe:apply_patch.exe} hotfixes.patch)
+   (run %{exe:chmodx.exe} vendor/raylib/src/Makefile)
+   (run %{exe:apply_patch.exe} msys2.patch)
+   (no-infer
+    (progn
+     (run make -C vendor/raylib/src %{read-lines:raylib_flags} clean)
+     (run
+      make
+      -C
+      vendor/raylib/src
+      %{read-lines:raylib_flags}
+      RAYLIB_LIBTYPE=STATIC
+      -j
+      8)
+     (copy vendor/raylib/src/libraylib.a libraylib.a)
+     (run make -C vendor/raylib/src %{read-lines:raylib_flags} clean)
+     (run
+      make
+      -C
+      vendor/raylib/src
+      %{read-lines:raylib_flags}
+      RAYLIB_LIBTYPE=SHARED
+      -j
+      8)
+     (copy vendor/raylib/src/raylib.dll dllraylib.dll))))))
 
 (rule
  (alias build-raylib)
  (targets libraylib.a dllraylib.so)
  (enabled_if
-  (or
-   (= %{system} netbsd)
-   (= %{system} freebsd)
-   (= %{system} openbsd)
-   (= %{system} dragonfly)
-   (= %{system} bsd)
-   (= %{system} bsd_elf)))
+  (= %{read-lines:config/raylib_target} bsd))
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
   hotfixes.patch
   freebsd.patch
-  apply_patch.exe
-  chmodx.exe)
+  (env_var GRAPHICS)
+  (env_var RAYLIB_CONFIG_FLAGS))
  (action
-  (no-infer
-   (progn
-    (run ./chmodx.exe vendor/raylib/src/config.h)
-    (run ./apply_patch.exe enable_formats.patch)
-    (run ./chmodx.exe vendor/raylib/src/platforms/rcore_desktop_glfw.c)
-    (run ./chmodx.exe vendor/raylib/src/raudio.c)
-    (run ./apply_patch.exe hotfixes.patch)
-    (run ./chmodx.exe vendor/raylib/src/Makefile)
-    (run ./apply_patch.exe freebsd.patch)
-    (run gmake -C vendor/raylib/src %{read-lines:raylib_flags} RAYLIB_LIBTYPE=STATIC -j 8)
-    (copy vendor/raylib/src/libraylib.a libraylib.a)
-    (run gmake -C vendor/raylib/src clean)
-    (run gmake -C vendor/raylib/src %{read-lines:raylib_flags} RAYLIB_LIBTYPE=SHARED -j 8)
-    (copy vendor/raylib/src/libraylib.6.0.0.so dllraylib.so)))))
+  (progn
+   (run %{exe:chmodx.exe} vendor/raylib/src/config.h)
+   (run %{exe:apply_patch.exe} enable_formats.patch)
+   (run %{exe:chmodx.exe} vendor/raylib/src/platforms/rcore_desktop_glfw.c)
+   (run %{exe:chmodx.exe} vendor/raylib/src/raudio.c)
+   (run %{exe:apply_patch.exe} hotfixes.patch)
+   (run %{exe:chmodx.exe} vendor/raylib/src/Makefile)
+   (run %{exe:apply_patch.exe} freebsd.patch)
+   (no-infer
+    (progn
+     (run gmake -C vendor/raylib/src %{read-lines:raylib_flags} clean)
+     (run
+      gmake
+      -C
+      vendor/raylib/src
+      %{read-lines:raylib_flags}
+      RAYLIB_LIBTYPE=STATIC
+      -j
+      8)
+     (copy vendor/raylib/src/libraylib.a libraylib.a)
+     (run gmake -C vendor/raylib/src %{read-lines:raylib_flags} clean)
+     (run
+      gmake
+      -C
+      vendor/raylib/src
+      %{read-lines:raylib_flags}
+      RAYLIB_LIBTYPE=SHARED
+      -j
+      8)
+     (copy vendor/raylib/src/libraylib.so dllraylib.so))))))
+
+(rule
+ (alias build-raylib)
+ (targets libraylib.a dllraylib.so)
+ (enabled_if
+  (= %{read-lines:config/raylib_target} web))
+ (deps
+  (source_tree vendor/raylib)
+  enable_formats.patch
+  hotfixes.patch
+  (env_var GRAPHICS)
+  (env_var RAYLIB_CONFIG_FLAGS))
+ (action
+  (progn
+   (run %{exe:chmodx.exe} vendor/raylib/src/config.h)
+   (run %{exe:apply_patch.exe} enable_formats.patch)
+   (run %{exe:chmodx.exe} vendor/raylib/src/platforms/rcore_desktop_glfw.c)
+   (run %{exe:chmodx.exe} vendor/raylib/src/raudio.c)
+   (run %{exe:apply_patch.exe} hotfixes.patch)
+   (no-infer
+    (progn
+     (run make -C vendor/raylib/src %{read-lines:raylib_flags} clean)
+     (run
+      make
+      -C
+      vendor/raylib/src
+      %{read-lines:raylib_flags}
+      RAYLIB_LIBTYPE=STATIC
+      -j
+      8)
+     (copy vendor/raylib/src/libraylib.web.a libraylib.a)
+     ; Dune's bytecode link checks expect a host DLL for foreign_archives.
+     ; The wasm program links the static lib, the shared one just needs
+     ; to exist.
+     (system "%{env:HOST_CC=cc} -shared -x c %{null} -o dllraylib.so"))))))

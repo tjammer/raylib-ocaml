@@ -1,3 +1,11 @@
 (executable
  (name configure)
- (libraries dune.configurator))
+ (libraries dune.configurator str))
+
+(rule
+ (targets library_flags.sexp raylib_flags raylib_target)
+ (deps
+  (env_var PLATFORM)
+  (env_var CC))
+ (action
+  (run %{exe:configure.exe} -os-distribution %{os_distribution})))

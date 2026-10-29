@@ -11,9 +11,9 @@ val load_font : string -> Font.t
 (** [load_font file_name] Load font from file into GPU memory (VRAM)*)
 
 val load_font_ex : string -> int -> int CArray.t option -> Font.t
-(** [load_font_ex file_name font_size codepoints] Load font from
-    file with extended parameters, use None for codepoints to load the default
-    character set*)
+(** [load_font_ex file_name font_size codepoints] Load font from file with
+    extended parameters, use None for codepoints to load the default character
+    set*)
 
 val load_font_from_image : Image.t -> Color.t -> int -> Font.t
 (** [load_font_from_image image key first_char] Load font from Image (XNA style)*)
