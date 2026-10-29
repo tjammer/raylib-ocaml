@@ -2,7 +2,7 @@ open Ctypes
 
 module Functions (F : Ctypes.FOREIGN) = struct
   open F
-  open Raylib
+  open Raylib_types
 
   let audio_callback =
     Foreign.funptr ~thread_registration:true ~runtime_lock:true

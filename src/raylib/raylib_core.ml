@@ -1,8 +1,27 @@
-include Ctypes_reexports
 include Raylib_types
-open Ctypes_reexports
+open Raylib_types
 open Ctypes
 include Raylib_c.Raylib_generated.Functions
+
+module Vector2 = struct
+  include Raylib_types.Vector2
+  include Math.Vector2
+end
+
+module Vector3 = struct
+  include Raylib_types.Vector3
+  include Math.Vector3
+end
+
+module Vector4 = struct
+  include Raylib_types.Vector4
+  include Math.Vector4
+end
+
+module Matrix = struct
+  include Raylib_types.Matrix
+  include Math.Matrix
+end
 
 (* CArray or string wrapped functions *)
 let load_file_data path =

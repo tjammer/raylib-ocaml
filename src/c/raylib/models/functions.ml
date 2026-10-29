@@ -2,7 +2,7 @@ open Ctypes
 
 module Functions (F : Ctypes.FOREIGN) = struct
   open F
-  open Raylib_core
+  open Raylib_types
 
   let draw_line_3d =
     foreign "DrawLine3D" (Vector3.t @-> Vector3.t @-> Color.t @-> returning void)

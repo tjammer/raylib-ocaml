@@ -1,0 +1,21 @@
+; Shared C layouts and constants only: host binding generators must not load
+; the runtime function primitives (or link against raylib).
+
+(library
+ (name raylib_c_types)
+ (package raylib)
+ (ctypes
+  (external_library_name raylib)
+  (build_flags_resolver
+   (vendored
+    (c_flags :standard "-I../../vendor/raylib/src")
+    (c_library_flags :standard)))
+  (headers
+   (include "raylib.h" "rlgl.h" "config.h" "raymath.h"))
+  (type_description
+   (instance Types)
+   (functor Types))
+  (generated_types Raylib_types_generated)
+  (generated_entry_point Raylib_types_generated_entry)
+  (deps
+   (source_tree ../../vendor/raylib))))

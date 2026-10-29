@@ -22,7 +22,7 @@
   (language c)
   (names raygui_impl)
   (include_dirs ../vendor/raygui/src ../vendor/raylib/src))
- (libraries raylib))
+ (libraries raylib_types))
 
 ;; dune's ctypes stanza cannot deal with header only libraries which pull in the
 ;; implementation by a define, once. We solve it by creating a c-file with the

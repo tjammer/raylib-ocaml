@@ -2,7 +2,7 @@ open Ctypes
 
 module Functions (F : Ctypes.FOREIGN) = struct
   open F
-  open Raylib_core
+  open Raylib_types
 
   let load_image = foreign "LoadImage" (string @-> returning Image.t)
 

@@ -1,3 +1,6 @@
+module Raylib_types_generated = Raylib_types
+module Types (F : Ctypes.TYPE) = struct end
+
 module Functions (F : Ctypes.FOREIGN) = struct
   open Ctypes
   open F
@@ -155,28 +158,29 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let is_shader_valid = foreign "IsShaderValid" (Shader.t @-> returning bool)
 
   let get_shader_location =
-    foreign "GetShaderLocation" (Shader.t @-> string @-> returning int)
+    foreign "GetShaderLocation" (Shader.t @-> string @-> returning ShaderLoc.t)
 
   let get_shader_location_attrib =
-    foreign "GetShaderLocationAttrib" (Shader.t @-> string @-> returning int)
+    foreign "GetShaderLocationAttrib"
+      (Shader.t @-> string @-> returning ShaderLoc.t)
 
   let set_shader_value =
     foreign "SetShaderValue"
-      (Shader.t @-> int @-> ptr void @-> ShaderUniformDataType.t
+      (Shader.t @-> ShaderLoc.t @-> ptr void @-> ShaderUniformDataType.t
      @-> returning void)
 
   let set_shader_value_v =
     foreign "SetShaderValueV"
-      (Shader.t @-> int @-> ptr void @-> ShaderUniformDataType.t @-> int
+      (Shader.t @-> ShaderLoc.t @-> ptr void @-> ShaderUniformDataType.t @-> int
      @-> returning void)
 
   let set_shader_value_matrix =
     foreign "SetShaderValueMatrix"
-      (Shader.t @-> int @-> Matrix.t @-> returning void)
+      (Shader.t @-> ShaderLoc.t @-> Matrix.t @-> returning void)
 
   let set_shader_value_texture =
     foreign "SetShaderValueTexture"
-      (Shader.t @-> int @-> Texture.t @-> returning void)
+      (Shader.t @-> ShaderLoc.t @-> Texture.t @-> returning void)
 
   let unload_shader = foreign "UnloadShader" (Shader.t @-> returning void)
 

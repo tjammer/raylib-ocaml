@@ -2,7 +2,7 @@ open Ctypes
 
 module Functions (F : Ctypes.FOREIGN) = struct
   open F
-  open Raylib_core
+  open Raylib_types
 
   let get_font_default = foreign "GetFontDefault" (void @-> returning Font.t)
   let load_font = foreign "LoadFont" (string @-> returning Font.t)

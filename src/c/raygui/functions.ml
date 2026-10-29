@@ -1,3 +1,5 @@
+module Raylib = Raylib_types
+
 module Functions (F : Ctypes.FOREIGN) = struct
   open Ctypes
   open F

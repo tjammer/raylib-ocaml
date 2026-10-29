@@ -2,7 +2,7 @@ open Ctypes
 
 module Functions (F : Ctypes.FOREIGN) = struct
   open F
-  open Raylib_core
+  open Raylib_types
 
   let init_audio_device = foreign "InitAudioDevice" (void @-> returning void)
   let close_audio_device = foreign "CloseAudioDevice" (void @-> returning void)

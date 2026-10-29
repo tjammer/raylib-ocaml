@@ -1,7 +1,7 @@
 (library
  (name raylib_c_shapes)
  (package raylib)
- (libraries raylib_core)
+ (libraries raylib_types)
  (ctypes
   (external_library_name raylib)
   (build_flags_resolver
