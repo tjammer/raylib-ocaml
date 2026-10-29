@@ -20,6 +20,7 @@
 
 (rule
  (alias build-raylib)
+ (package raylib)
  (targets libraylib.a dllraylib.so)
  (enabled_if
   (= %{read-lines:config/raylib_target} linux))
@@ -61,6 +62,7 @@
 
 (rule
  (alias build-raylib)
+ (package raylib)
  (targets libraylib.a dllraylib.so)
  (enabled_if
   (= %{read-lines:config/raylib_target} macos))
@@ -102,6 +104,7 @@
 
 (rule
  (alias build-raylib)
+ (package raylib)
  (targets libraylib.a dllraylib.dll)
  (enabled_if
   (= %{read-lines:config/raylib_target} mingw64))
@@ -146,6 +149,7 @@
 
 (rule
  (alias build-raylib)
+ (package raylib)
  (targets libraylib.a dllraylib.dll)
  (enabled_if
   (= %{read-lines:config/raylib_target} msys2))
@@ -190,6 +194,7 @@
 
 (rule
  (alias build-raylib)
+ (package raylib)
  (targets libraylib.a dllraylib.so)
  (enabled_if
   (= %{read-lines:config/raylib_target} bsd))
@@ -234,6 +239,7 @@
 
 (rule
  (alias build-raylib)
+ (package raylib)
  (targets libraylib.a dllraylib.so)
  (enabled_if
   (= %{read-lines:config/raylib_target} web))
