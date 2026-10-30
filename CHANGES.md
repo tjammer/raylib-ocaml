@@ -1,3 +1,10 @@
+2.4.0 (2026-11-30)
+------------------
+
+* Upgrade raylib to 6.2
+* Support cross-compiling raylib to wasm using raylib's WEB platform,
+  by inspecting the target triple.
+
 2.3.0 (2026-10-26)
 ------------------
 
