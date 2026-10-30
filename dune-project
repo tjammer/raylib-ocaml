@@ -17,7 +17,7 @@
 
 (package
  (name raylib)
- (version 2.3.0)
+ (version 2.4.0)
  (description "OCaml bindings for raylib")
  (synopsis "OCaml bindings for raylib")
  (depends
@@ -60,7 +60,7 @@
 
 (package
  (name raylib-options-sdl2)
- (version 2.3.0)
+ (version 2.4.0)
  (description "Build raylib-ocaml with the SDL2 backend")
  (synopsis "SDL2 backend option for raylib-ocaml")
  (depends conf-sdl2)
@@ -68,7 +68,7 @@
 
 (package
  (name raygui)
- (version 2.3.0)
+ (version 2.4.0)
  (description "OCaml bindings for raygui")
  (synopsis "OCaml bindings for raygui")
  (depends
@@ -77,7 +77,7 @@
 
 (package
  (name raylib-callbacks)
- (version 2.3.0)
+ (version 2.4.0)
  (description "OCaml bindings for callbacks of raylib")
  (synopsis "OCaml bindings for callbacks of raylib")
  (depends
