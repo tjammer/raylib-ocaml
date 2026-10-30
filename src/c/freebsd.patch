@@ -1,7 +1,7 @@
 diff -u a/vendor/raylib/src/Makefile b/vendor/raylib/src/Makefile
 --- a/vendor/raylib/src/Makefile
 +++ b/vendor/raylib/src/Makefile
-@@ -310,9 +310,12 @@ ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_GLFW)
+@@ -305,9 +305,12 @@ ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_GLFW)
          GLFW_OSX = -x objective-c
      endif
      ifeq ($(PLATFORM_OS),BSD)
@@ -15,7 +15,7 @@ diff -u a/vendor/raylib/src/Makefile b/vendor/raylib/src/Makefile
  endif
  ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_RGFW)
      ifeq ($(PLATFORM_OS),OSX)
-@@ -321,9 +324,12 @@ ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_RGFW)
+@@ -316,9 +319,12 @@ ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_RGFW)
          GLFW_OSX = -x objective-c
      endif
      ifeq ($(PLATFORM_OS),BSD)
@@ -29,7 +29,7 @@ diff -u a/vendor/raylib/src/Makefile b/vendor/raylib/src/Makefile
  endif
  ifeq ($(TARGET_PLATFORM),PLATFORM_DRM)
      ifeq ($(USE_RPI_CROSSCOMPILER),TRUE)
-@@ -402,6 +408,7 @@ endif
+@@ -407,6 +413,7 @@ endif
  ifeq ($(RAYLIB_BUILD_MODE),RELEASE)
      ifeq ($(TARGET_PLATFORM),PLATFORM_DESKTOP_GLFW)
          CFLAGS += -O1

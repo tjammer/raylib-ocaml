@@ -157,7 +157,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "ImageColorGrayscale" (ptr Image.t @-> returning void)
 
   let image_color_contrast =
-    foreign "ImageColorContrast" (ptr Image.t @-> float @-> returning void)
+    foreign "ImageColorContrast" (ptr Image.t @-> int @-> returning void)
 
   let image_color_brightness =
     foreign "ImageColorBrightness" (ptr Image.t @-> int @-> returning void)
@@ -210,6 +210,17 @@ module Functions (F : Ctypes.FOREIGN) = struct
       (ptr Image.t @-> Vector2.t @-> Vector2.t @-> int @-> Color.t
      @-> returning void)
 
+  let image_draw_line_strip =
+    foreign "ImageDrawLineStrip"
+      (ptr Image.t
+      @-> ptr (const Vector2.t)
+      @-> int @-> Color.t @-> returning void)
+
+  let image_draw_circle_gradient =
+    foreign "ImageDrawCircleGradient"
+      (ptr Image.t @-> Vector2.t @-> float @-> Color.t @-> Color.t
+     @-> returning void)
+
   let image_draw_circle =
     foreign "ImageDrawCircle"
       (ptr Image.t @-> int @-> int @-> int @-> Color.t @-> returning void)
@@ -239,17 +250,32 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "ImageDrawRectangleRec"
       (ptr Image.t @-> Rectangle.t @-> Color.t @-> returning void)
 
+  let image_draw_rectangle_pro =
+    foreign "ImageDrawRectanglePro"
+      (ptr Image.t @-> Rectangle.t @-> Vector2.t @-> float @-> Color.t
+     @-> returning void)
+
   let image_draw_rectangle_lines =
     foreign "ImageDrawRectangleLines"
+      (ptr Image.t @-> int @-> int @-> int @-> int @-> Color.t
+     @-> returning void)
+
+  let image_draw_rectangle_lines_ex =
+    foreign "ImageDrawRectangleLinesEx"
       (ptr Image.t @-> Rectangle.t @-> int @-> Color.t @-> returning void)
+
+  let image_draw_rectangle_gradient_ex =
+    foreign "ImageDrawRectangleGradientEx"
+      (ptr Image.t @-> Rectangle.t @-> Color.t @-> Color.t @-> Color.t
+     @-> Color.t @-> returning void)
 
   let image_draw_triangle =
     foreign "ImageDrawTriangle"
       (ptr Image.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> Color.t
      @-> returning void)
 
-  let image_draw_triangle_ex =
-    foreign "ImageDrawTriangleEx"
+  let image_draw_triangle_gradient =
+    foreign "ImageDrawTriangleGradient"
       (ptr Image.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> Color.t
      @-> Color.t @-> Color.t @-> returning void)
 
@@ -266,10 +292,24 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "ImageDrawTriangleStrip"
       (ptr Image.t @-> ptr Vector2.t @-> int @-> Color.t @-> returning void)
 
-  let image_draw =
-    foreign "ImageDraw"
-      (ptr Image.t @-> Image.t @-> Rectangle.t @-> Rectangle.t @-> Color.t
+  let image_draw_image =
+    foreign "ImageDrawImage"
+      (ptr Image.t @-> Image.t @-> int @-> int @-> Color.t @-> returning void)
+
+  let image_draw_image_ex =
+    foreign "ImageDrawImageEx"
+      (ptr Image.t @-> Image.t @-> Vector2.t @-> float @-> float @-> Color.t
      @-> returning void)
+
+  let image_draw_image_rec =
+    foreign "ImageDrawImageRec"
+      (ptr Image.t @-> Image.t @-> Rectangle.t @-> Vector2.t @-> Color.t
+     @-> returning void)
+
+  let image_draw_image_pro =
+    foreign "ImageDrawImagePro"
+      (ptr Image.t @-> Image.t @-> Rectangle.t @-> Rectangle.t @-> Vector2.t
+     @-> float @-> Color.t @-> returning void)
 
   let image_draw_text =
     foreign "ImageDrawText"
@@ -280,6 +320,11 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "ImageDrawTextEx"
       (ptr Image.t @-> Font.t @-> string @-> Vector2.t @-> float @-> float
      @-> Color.t @-> returning void)
+
+  let image_draw_text_pro =
+    foreign "ImageDrawTextPro"
+      (ptr Image.t @-> Font.t @-> string @-> Vector2.t @-> Vector2.t @-> float
+     @-> float @-> float @-> Color.t @-> returning void)
 
   let load_texture = foreign "LoadTexture" (string @-> returning Texture.t)
 
@@ -292,6 +337,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
 
   let load_render_texture =
     foreign "LoadRenderTexture" (int @-> int @-> returning RenderTexture.t)
+
+  let load_render_texture_ex =
+    foreign "LoadRenderTextureEx"
+      (int @-> int @-> PixelFormat.t @-> returning RenderTexture.t)
 
   let is_texture_valid = foreign "IsTextureValid" (Texture.t @-> returning bool)
   let unload_texture = foreign "UnloadTexture" (Texture.t @-> returning void)
@@ -384,7 +433,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let get_color = foreign "GetColor" (int @-> returning Color.t)
 
   let get_pixel_color =
-    foreign "GetPixelColor" (ptr void @-> PixelFormat.t @-> returning Color.t)
+    foreign "GetPixelColor"
+      (ptr (const void) @-> PixelFormat.t @-> returning Color.t)
 
   let set_pixel_color =
     foreign "SetPixelColor"

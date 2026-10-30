@@ -62,6 +62,15 @@ module Functions (F : Ctypes.FOREIGN) = struct
       (Vector2.t @-> float @-> float @-> float @-> int @-> Color.t
      @-> returning void)
 
+  let draw_circle_sector_lines_ex =
+    foreign "DrawCircleSectorLinesEx"
+      (Vector2.t @-> float @-> float @-> float @-> int @-> float @-> Color.t
+     @-> returning void)
+
+  let draw_circle_lines_ex =
+    foreign "DrawCircleLinesEx"
+      (Vector2.t @-> float @-> float @-> Color.t @-> returning void)
+
   let draw_circle_lines =
     foreign "DrawCircleLines"
       (int @-> int @-> float @-> Color.t @-> returning void)
@@ -86,6 +95,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "DrawEllipseLinesV"
       (Vector2.t @-> float @-> float @-> Color.t @-> returning void)
 
+  let draw_ellipse_lines_ex =
+    foreign "DrawEllipseLinesEx"
+      (Vector2.t @-> float @-> float @-> float @-> Color.t @-> returning void)
+
   let draw_ring =
     foreign "DrawRing"
       (Vector2.t @-> float @-> float @-> float @-> float @-> int @-> Color.t
@@ -95,6 +108,11 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "DrawRingLines"
       (Vector2.t @-> float @-> float @-> float @-> float @-> int @-> Color.t
      @-> returning void)
+
+  let draw_ring_lines_ex =
+    foreign "DrawRingLinesEx"
+      (Vector2.t @-> float @-> float @-> float @-> float @-> int @-> float
+     @-> Color.t @-> returning void)
 
   let draw_rectangle =
     foreign "DrawRectangle"
@@ -147,6 +165,16 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let draw_triangle =
     foreign "DrawTriangle"
       (Vector2.t @-> Vector2.t @-> Vector2.t @-> Color.t @-> returning void)
+
+  let draw_triangle_gradient =
+    foreign "DrawTriangleGradient"
+      (Vector2.t @-> Vector2.t @-> Vector2.t @-> Color.t @-> Color.t @-> Color.t
+     @-> returning void)
+
+  let draw_triangle_lines_ex =
+    foreign "DrawTriangleLinesEx"
+      (Vector2.t @-> Vector2.t @-> Vector2.t @-> float @-> Color.t
+     @-> returning void)
 
   let draw_triangle_lines =
     foreign "DrawTriangleLines"
@@ -231,8 +259,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
       (Vector2.t @-> Vector2.t @-> Vector2.t @-> Vector2.t @-> float
      @-> returning Vector2.t)
 
-  let get_spline_point_bezier_quad =
-    foreign "GetSplinePointBezierQuad"
+  let get_spline_point_bezier_quadratic =
+    foreign "GetSplinePointBezierQuadratic"
       (Vector2.t @-> Vector2.t @-> Vector2.t @-> float @-> returning Vector2.t)
 
   let get_spline_point_bezier_cubic =

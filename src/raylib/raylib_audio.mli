@@ -45,7 +45,8 @@ val is_sound_valid : Sound.t -> bool
     initialized)*)
 
 val update_sound : Sound.t -> unit ptr -> int -> unit
-(** [update_sound sound data sample_count] Update sound buffer with new data*)
+(** [update_sound sound data frame_count] Update sound buffer with new data
+    (default data format: 32-bit float, stereo)*)
 
 val unload_wave : Wave.t -> unit
 (** [unload_wave wave] Unload wave data*)

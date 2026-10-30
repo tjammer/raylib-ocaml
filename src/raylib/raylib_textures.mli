@@ -177,7 +177,7 @@ val image_color_invert : Image.t ptr -> unit
 val image_color_grayscale : Image.t ptr -> unit
 (** [image_color_grayscale image] Modify image color: grayscale*)
 
-val image_color_contrast : Image.t ptr -> float -> unit
+val image_color_contrast : Image.t ptr -> int -> unit
 (** [image_color_contrast image contrast] Modify image color: contrast (-100 to
     100)*)
 
@@ -232,6 +232,16 @@ val image_draw_line_ex :
 (** [image_draw_line_ex dst start end thick color] Draw a line defining
     thickness within an image*)
 
+val image_draw_line_strip :
+  Image.t ptr -> Vector2.t ptr -> int -> Color.t -> unit
+(** [image_draw_line_strip dst points point_count color] Draw a line sequence
+    within an image. *)
+
+val image_draw_circle_gradient :
+  Image.t ptr -> Vector2.t -> float -> Color.t -> Color.t -> unit
+(** [image_draw_circle_gradient dst center radius inner outer] Draw a
+    gradient-filled circle within an image. *)
+
 val image_draw_circle : Image.t ptr -> int -> int -> int -> Color.t -> unit
 (** [image_draw_circle dst center_x center_y radius color] Draw a filled circle
     within an image*)
@@ -263,16 +273,31 @@ val image_draw_rectangle_v :
 val image_draw_rectangle_rec : Image.t ptr -> Rectangle.t -> Color.t -> unit
 (** [image_draw_rectangle_rec dst rec color] Draw rectangle within an image*)
 
+val image_draw_rectangle_pro :
+  Image.t ptr -> Rectangle.t -> Vector2.t -> float -> Color.t -> unit
+(** [image_draw_rectangle_pro dst rec origin rotation color] Draw a filled
+    rectangle with origin and rotation within an image. *)
+
 val image_draw_rectangle_lines :
+  Image.t ptr -> int -> int -> int -> int -> Color.t -> unit
+(** [image_draw_rectangle_lines dst pos_x pos_y width height color] Draw
+    rectangle outline within an image. *)
+
+val image_draw_rectangle_lines_ex :
   Image.t ptr -> Rectangle.t -> int -> Color.t -> unit
-(** [image_draw_rectangle_lines dst rec thick color] Draw rectangle lines within
-    an image*)
+(** [image_draw_rectangle_lines_ex dst rec thick color] Draw rectangle outline
+    with line thickness within an image. *)
+
+val image_draw_rectangle_gradient_ex :
+  Image.t ptr -> Rectangle.t -> Color.t -> Color.t -> Color.t -> Color.t -> unit
+(** [image_draw_rectangle_gradient_ex dst rec col1 col2 col3 col4] Draw a
+    gradient-filled rectangle, in counter-clockwise color order. *)
 
 val image_draw_triangle :
   Image.t ptr -> Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
 (** [image_draw_triangle dst v1 v2 v3 color] Draw triangle within an image*)
 
-val image_draw_triangle_ex :
+val image_draw_triangle_gradient :
   Image.t ptr ->
   Vector2.t ->
   Vector2.t ->
@@ -281,7 +306,7 @@ val image_draw_triangle_ex :
   Color.t ->
   Color.t ->
   unit
-(** [image_draw_triangle_ex dst v1 v2 v3 c1 c2 c3] Draw triangle with
+(** [image_draw_triangle_gradient dst v1 v2 v3 c1 c2 c3] Draw triangle with
     interpolated colors within an image*)
 
 val image_draw_triangle_lines :
@@ -299,10 +324,31 @@ val image_draw_triangle_strip :
 (** [image_draw_triangle_strip dst points point_count color] Draw a triangle
     strip defined by points within an image*)
 
-val image_draw :
-  Image.t ptr -> Image.t -> Rectangle.t -> Rectangle.t -> Color.t -> unit
-(** [image_draw dst src src_rec dst_rec tint] Draw a source image within a
-    destination image (tint applied to source)*)
+val image_draw_image : Image.t ptr -> Image.t -> int -> int -> Color.t -> unit
+(** [image_draw_image dst src pos_x pos_y tint] Draw an image within an image.
+*)
+
+val image_draw_image_ex :
+  Image.t ptr -> Image.t -> Vector2.t -> float -> float -> Color.t -> unit
+(** [image_draw_image_ex dst src position rotation scale tint] Draw an image
+    with scaling and rotation within an image. *)
+
+val image_draw_image_rec :
+  Image.t ptr -> Image.t -> Rectangle.t -> Vector2.t -> Color.t -> unit
+(** [image_draw_image_rec dst src src_rec position tint] Draw part of an image
+    within an image. *)
+
+val image_draw_image_pro :
+  Image.t ptr ->
+  Image.t ->
+  Rectangle.t ->
+  Rectangle.t ->
+  Vector2.t ->
+  float ->
+  Color.t ->
+  unit
+(** [image_draw_image_pro dst src src_rec dst_rec origin rotation tint] Draw
+    part of an image into a destination rectangle, with scaling and rotation. *)
 
 val image_draw_text :
   Image.t ptr -> string -> int -> int -> int -> Color.t -> unit
@@ -321,6 +367,20 @@ val image_draw_text_ex :
 (** [image_draw_text_ex dst font text position font_size spacing tint] Draw text
     (custom sprite font) within an image (destination)*)
 
+val image_draw_text_pro :
+  Image.t ptr ->
+  Font.t ->
+  string ->
+  Vector2.t ->
+  Vector2.t ->
+  float ->
+  float ->
+  float ->
+  Color.t ->
+  unit
+(** [image_draw_text_pro dst font text position origin rotation font_size
+     spacing tint] Draw text within an image with origin and rotation. *)
+
 (** {3 Texture loading functions} *)
 
 val load_texture : string -> Texture.t
@@ -335,6 +395,10 @@ val load_texture_cubemap : Image.t -> CubemapLayout.t -> Texture.t
 
 val load_render_texture : int -> int -> RenderTexture.t
 (** [load_render_texture width height] Load texture for rendering (framebuffer)*)
+
+val load_render_texture_ex : int -> int -> PixelFormat.t -> RenderTexture.t
+(** [load_render_texture_ex width height format] Load a render texture with a
+    specific pixel format. *)
 
 val is_texture_valid : Texture.t -> bool
 (** [is_texture_valid texture] Check if a texture is valid (loaded in GPU)*)

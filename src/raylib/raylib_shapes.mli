@@ -3,7 +3,7 @@ open Raylib_core
 (** {2 Basic Shapes Drawing Functions (Module: shapes)}*)
 
 val set_shapes_texture : Texture.t -> Rectangle.t -> unit
-(** [set_shapes_texture texture source] Set texture and rectangle to be used on
+(** [set_shapes_texture texture rec] Set texture and rectangle to be used on
     shapes drawing*)
 
 val get_shapes_texture : unit -> Texture.t
@@ -64,6 +64,15 @@ val draw_circle_sector_lines :
 (** [draw_circle_sector_lines center radius start_angle end_angle segments
      color] Draw circle sector outline*)
 
+val draw_circle_sector_lines_ex :
+  Vector2.t -> float -> float -> float -> int -> float -> Color.t -> unit
+(** [draw_circle_sector_lines_ex center radius start_angle end_angle segments
+     thick color] Draw circle sector outline with thickness. *)
+
+val draw_circle_lines_ex : Vector2.t -> float -> float -> Color.t -> unit
+(** [draw_circle_lines_ex center radius thick color] Draw circle outline with
+    line thickness. *)
+
 val draw_circle_lines : int -> int -> float -> Color.t -> unit
 (** [draw_circle_lines center_x center_y radius color] Draw circle outline*)
 
@@ -86,6 +95,11 @@ val draw_ellipse_lines_v : Vector2.t -> float -> float -> Color.t -> unit
 (** [draw_ellipse_lines_v center radius_h radius_v color] Draw ellipse outline
     (Vector version)*)
 
+val draw_ellipse_lines_ex :
+  Vector2.t -> float -> float -> float -> Color.t -> unit
+(** [draw_ellipse_lines_ex center radius_h radius_v thick color] Draw ellipse
+    outline with line thickness. *)
+
 val draw_ring :
   Vector2.t -> float -> float -> float -> float -> int -> Color.t -> unit
 (** [draw_ring center inner_radius outer_radius start_angle end_angle segments
@@ -95,6 +109,19 @@ val draw_ring_lines :
   Vector2.t -> float -> float -> float -> float -> int -> Color.t -> unit
 (** [draw_ring_lines center inner_radius outer_radius start_angle end_angle
      segments color] Draw ring outline*)
+
+val draw_ring_lines_ex :
+  Vector2.t ->
+  float ->
+  float ->
+  float ->
+  float ->
+  int ->
+  float ->
+  Color.t ->
+  unit
+(** [draw_ring_lines_ex center inner_radius outer_radius start_angle end_angle
+     segments thick color] Draw ring outline with line thickness. *)
 
 val draw_rectangle : int -> int -> int -> int -> Color.t -> unit
 (** [draw_rectangle pos_x pos_y width height color] Draw a color-filled
@@ -150,6 +177,16 @@ val draw_rectangle_rounded_lines_ex :
 val draw_triangle : Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
 (** [draw_triangle v1 v2 v3 color] Draw a color-filled triangle (vertex in
     counter-clockwise order!)*)
+
+val draw_triangle_gradient :
+  Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> Color.t -> Color.t -> unit
+(** [draw_triangle_gradient v1 v2 v3 c1 c2 c3] Draw triangle with interpolated
+    colors, in counter-clockwise vertex/color order. *)
+
+val draw_triangle_lines_ex :
+  Vector2.t -> Vector2.t -> Vector2.t -> float -> Color.t -> unit
+(** [draw_triangle_lines_ex v1 v2 v3 thick color] Draw triangle outline with
+    line thickness, in counter-clockwise vertex order. *)
 
 val draw_triangle_lines : Vector2.t -> Vector2.t -> Vector2.t -> Color.t -> unit
 (** [draw_triangle_lines v1 v2 v3 color] Draw triangle outline (vertex in
@@ -235,9 +272,9 @@ val get_spline_point_catmull_rom :
 (** [get_spline_point_catmull_rom p1 p2 p3 p4 t] Get (evaluate) spline point:
     Catmull-Rom*)
 
-val get_spline_point_bezier_quad :
+val get_spline_point_bezier_quadratic :
   Vector2.t -> Vector2.t -> Vector2.t -> float -> Vector2.t
-(** [get_spline_point_bezier_quad p1 c2 p3 t] Get (evaluate) spline point:
+(** [get_spline_point_bezier_quadratic p1 c2 p3 t] Get (evaluate) spline point:
     Quadratic Bezier*)
 
 val get_spline_point_bezier_cubic :

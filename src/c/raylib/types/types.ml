@@ -1022,7 +1022,7 @@ module Types (F : Ctypes.TYPE) = struct
     type t
 
     let t : t Ctypes.structure typ = structure "ModelSkeleton"
-    let bone_count = field t "boneCount" int
+    let bone_count = field t "boneCount" uint
     let bones = field t "bones" (ptr BoneInfo.t)
     let bind_pose = field t "bindPose" (ptr Transform.t)
     let () = seal t
@@ -1051,7 +1051,7 @@ module Types (F : Ctypes.TYPE) = struct
 
     let t : t Ctypes.structure typ = structure "ModelAnimation"
     let name = field t "name" char_array_32
-    let bone_count = field t "boneCount" int
+    let bone_count = field t "boneCount" uint
     let keyframe_count = field t "keyframeCount" int
     let keyframe_poses = field t "keyframePoses" (ptr (ptr Transform.t))
     let () = seal t

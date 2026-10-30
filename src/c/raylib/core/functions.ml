@@ -257,7 +257,8 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let _unload_file_data = foreign "UnloadFileData" (ptr char @-> returning void)
 
   let _save_file_data =
-    foreign "SaveFileData" (string @-> ptr void @-> int @-> returning bool)
+    foreign "SaveFileData"
+      (string @-> ptr (const void) @-> int @-> returning bool)
 
   let _export_data_as_code =
     foreign "ExportDataAsCode" (string @-> int @-> string @-> returning bool)
@@ -285,6 +286,7 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let is_file_extension =
     foreign "IsFileExtension" (string @-> string @-> returning bool)
 
+  let is_file_hidden = foreign "IsFileHidden" (string @-> returning bool)
   let get_file_length = foreign "GetFileLength" (string @-> returning int)
   let get_file_mod_time = foreign "GetFileModTime" (string @-> returning long)
 
@@ -309,8 +311,10 @@ module Functions (F : Ctypes.FOREIGN) = struct
     foreign "GetApplicationDirectory" (void @-> returning string)
 
   let make_directory = foreign "MakeDirectory" (string @-> returning int)
-  let change_directory = foreign "ChangeDirectory" (string @-> returning bool)
+  let change_directory = foreign "ChangeDirectory" (string @-> returning int)
   let is_path_file = foreign "IsPathFile" (string @-> returning bool)
+  let is_path_directory = foreign "IsPathDirectory" (string @-> returning bool)
+  let is_path_absolute = foreign "IsPathAbsolute" (string @-> returning bool)
   let is_file_name_valid = foreign "IsFileNameValid" (string @-> returning bool)
 
   let load_directory_files =
@@ -354,16 +358,16 @@ module Functions (F : Ctypes.FOREIGN) = struct
   (*   foreign "DecodeDataBase64" (string @-> ptr int @-> returning (ptr uchar)) *)
 
   (* let compute_crc32 = *)
-  (*   foreign "ComputeCRC32" (ptr uchar @-> int @-> returning uint) *)
+  (*   foreign "ComputeCRC32" (ptr (const uchar) @-> int @-> returning uint) *)
 
   (* let compute_md5 = *)
-  (*   foreign "ComputeMD5" (ptr uchar @-> int @-> returning (ptr uint)) *)
+  (*   foreign "ComputeMD5" (ptr (const uchar) @-> int @-> returning (ptr uint)) *)
 
   (* let compute_sha1 = *)
-  (*   foreign "ComputeSHA1" (ptr uchar @-> int @-> returning (ptr uint)) *)
+  (*   foreign "ComputeSHA1" (ptr (const uchar) @-> int @-> returning (ptr uint)) *)
 
   (* let compute_sha256 = *)
-  (*   foreign "ComputeSHA256" (ptr uchar @-> int @-> returning (ptr uint)) *)
+  (*   foreign "ComputeSHA256" (ptr (const uchar) @-> int @-> returning (ptr uint)) *)
 
   let load_automation_event_list =
     foreign "LoadAutomationEventList"

@@ -67,12 +67,12 @@ val draw_cylinder_wires_ex :
 
 val draw_capsule :
   Vector3.t -> Vector3.t -> float -> int -> int -> Color.t -> unit
-(** [draw_capsule start_pos end_pos radius slices rings color] Draw a capsule
+(** [draw_capsule start_pos end_pos radius rings slices color] Draw a capsule
     with the center of its sphere caps at startPos and endPos*)
 
 val draw_capsule_wires :
   Vector3.t -> Vector3.t -> float -> int -> int -> Color.t -> unit
-(** [draw_capsule_wires start_pos end_pos radius slices rings color] Draw
+(** [draw_capsule_wires start_pos end_pos radius rings slices color] Draw
     capsule wireframe with the center of its sphere caps at startPos and endPos*)
 
 val draw_plane : Vector3.t -> Vector2.t -> Color.t -> unit

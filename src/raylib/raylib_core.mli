@@ -289,7 +289,7 @@ val get_window_scale_dpi : unit -> Vector2.t
 (** [get_window_scale_dpi ()] Get window scale DPI factor*)
 
 val get_monitor_name : int -> string
-(** [get_monitor_name monitor] Get the human-readable, UTF-8 encoded name of the
+(** [get_monitor_name monitor] Get human-readable, UTF-8 encoded name of the
     specified monitor*)
 
 val set_clipboard_text : string -> unit
@@ -312,49 +312,50 @@ val disable_event_waiting : unit -> unit
 (** {3 Cursor-related functions} *)
 
 val show_cursor : unit -> unit
-(** [show_cursor ()] Shows cursor*)
+(** [show_cursor ()] Show cursor*)
 
 val hide_cursor : unit -> unit
-(** [hide_cursor ()] Hides cursor*)
+(** [hide_cursor ()] Hide cursor*)
 
 val is_cursor_hidden : unit -> bool
 (** [is_cursor_hidden ()] Check if cursor is not visible*)
 
 val enable_cursor : unit -> unit
-(** [enable_cursor ()] Enables cursor (unlock cursor)*)
+(** [enable_cursor ()] Enable cursor (unlock cursor)*)
 
 val disable_cursor : unit -> unit
-(** [disable_cursor ()] Disables cursor (lock cursor)*)
+(** [disable_cursor ()] Disable cursor (lock cursor)*)
 
 val is_cursor_on_screen : unit -> bool
 (** [is_cursor_on_screen ()] Check if cursor is on the screen*)
 
 val clear_background : Color.t -> unit
-(** [clear_background color] Set background color (framebuffer clear color)*)
+(** [clear_background color] Clear background (framebuffer) to color*)
 
 val begin_drawing : unit -> unit
-(** [begin_drawing ()] Setup canvas (framebuffer) to start drawing*)
+(** [begin_drawing ()] Begin canvas (framebuffer) drawing*)
 
 val end_drawing : unit -> unit
-(** [end_drawing ()] End canvas drawing and swap buffers (double buffering)*)
+(** [end_drawing ()] End canvas (framebuffer) drawing and swap buffers (double
+    buffering)*)
 
 val begin_mode_2d : Camera2D.t -> unit
 (** [begin_mode_2d camera] Begin 2D mode with custom camera (2D)*)
 
 val end_mode_2d : unit -> unit
-(** [end_mode_2d ()] Ends 2D mode with custom camera*)
+(** [end_mode_2d ()] End 2D mode with custom camera*)
 
 val begin_mode_3d : Camera3D.t -> unit
 (** [begin_mode_3d camera] Begin 3D mode with custom camera (3D)*)
 
 val end_mode_3d : unit -> unit
-(** [end_mode_3d ()] Ends 3D mode and returns to default 2D orthographic mode*)
+(** [end_mode_3d ()] End 3D mode and returns to default 2D orthographic mode*)
 
 val begin_texture_mode : RenderTexture.t -> unit
 (** [begin_texture_mode target] Begin drawing to render texture*)
 
 val end_texture_mode : unit -> unit
-(** [end_texture_mode ()] Ends drawing to render texture*)
+(** [end_texture_mode ()] End drawing to render texture*)
 
 val begin_shader_mode : Shader.t -> unit
 (** [begin_shader_mode shader] Begin custom shader drawing*)
@@ -398,7 +399,7 @@ val load_shader_from_memory : string -> string -> Shader.t
     bind default locations*)
 
 val is_shader_valid : Shader.t -> bool
-(** [is_shader_valid shader] Check if a shader is valid (loaded on GPU)*)
+(** [is_shader_valid shader] Check if shader is valid (loaded on GPU)*)
 
 val get_shader_location : Shader.t -> string -> ShaderLoc.t
 (** [get_shader_location shader uniform_name] Get shader uniform location*)
@@ -439,7 +440,7 @@ val get_screen_to_world_ray_ex : Vector2.t -> Camera3D.t -> int -> int -> Ray.t
     from screen position (i.e mouse) in a viewport*)
 
 val get_world_to_screen : Vector3.t -> Camera3D.t -> Vector2.t
-(** [get_world_to_screen position camera] Get the screen space position for a 3d
+(** [get_world_to_screen position camera] Get screen space position for a 3d
     world space position*)
 
 val get_world_to_screen_ex : Vector3.t -> Camera3D.t -> int -> int -> Vector2.t
@@ -447,12 +448,12 @@ val get_world_to_screen_ex : Vector3.t -> Camera3D.t -> int -> int -> Vector2.t
     a 3d world space position*)
 
 val get_world_to_screen_2d : Vector2.t -> Camera2D.t -> Vector2.t
-(** [get_world_to_screen_2d position camera] Get the screen space position for a
-    2d camera world space position*)
+(** [get_world_to_screen_2d position camera] Get screen space position for a 2d
+    camera world space position*)
 
 val get_screen_to_world_2d : Vector2.t -> Camera2D.t -> Vector2.t
-(** [get_screen_to_world_2d position camera] Get the world space position for a
-    2d camera screen space position*)
+(** [get_screen_to_world_2d position camera] Get world space position for a 2d
+    camera screen space position*)
 
 val get_camera_matrix : Camera3D.t -> Matrix.t
 (** [get_camera_matrix camera] Get camera transform matrix (view matrix)*)
@@ -500,7 +501,7 @@ val take_screenshot : string -> unit
     extension defines format)*)
 
 val set_config_flags : ConfigFlags.t -> unit
-(** [set_config_flags flags] Setup init configuration flags (view FLAGS)*)
+(** [set_config_flags flags] Set init configuration flags (view FLAGS)*)
 
 val open_url : string -> unit
 (** [open_url url] Open URL with default system browser (if available)*)
@@ -542,35 +543,41 @@ val save_file_text : string -> string -> bool
     be ' 0' terminated, returns true on success*)
 
 val file_rename : string -> string -> int
-(** [file_rename file_name file_rename] Rename file (if exists) *)
+(** [file_rename file_name file_rename] Rename file (if exists), returns 0 on
+    success *)
 
 val file_remove : string -> int
-(** [file_remove file_name] Remove file (if exists) *)
+(** [file_remove file_name] Remove file (if exists), returns 0 on success *)
 
 val file_copy : string -> string -> int
 (** [file_copy src_path dst_path] Copy file from one path to another, dstPath
-    created if it doesn't exist *)
+    created if it doesn't exist, returns 0 on success *)
 
 val file_move : string -> string -> int
 (** [file_move src_path dst_path] Move file from one directory to another,
-    dstPath created if it doesn't exist *)
+    dstPath created if it doesn't exist, returns 0 on success *)
 
 val file_text_replace : string -> string -> string -> int
 (** [file_text_replace file_name search replacement] Replace text in an existing
-    file *)
+    file, returns 0 on success *)
 
 val file_text_find_index : string -> string -> int
-(** [file_text_find_index file_name search] Find text in existing file *)
+(** [file_text_find_index file_name search] Find text in existing file, returns
+    -1 if index not found or index otherwise *)
 
 val file_exists : string -> bool
 (** [file_exists file_name] Check if file exists*)
 
 val directory_exists : string -> bool
-(** [directory_exists dir_path] Check if a directory path exists*)
+(** [directory_exists dir_path] Check if directory path exists*)
 
 val is_file_extension : string -> string -> bool
 (** [is_file_extension file_name ext] Check file extension (including point:
     .png, .wav)*)
+
+val is_file_hidden : string -> bool
+(** [is_file_hidden file_path] Check if file path (file or directory) is hidden
+    by OS *)
 
 val get_file_length : string -> int
 (** [get_file_length file_name] Get file length in bytes (NOTE: GetFileSize()
@@ -591,30 +598,36 @@ val get_file_name_without_ext : string -> string
     (uses static string)*)
 
 val get_directory_path : string -> string
-(** [get_directory_path file_path] Get full path for a given fileName with path
-    (uses static string)*)
+(** [get_directory_path file_path] Get full path for a provided fileName with
+    path (uses static string)*)
 
 val get_prev_directory_path : string -> string
-(** [get_prev_directory_path dir_path] Get previous directory path for a given
-    path (uses static string)*)
+(** [get_prev_directory_path dir_path] Get previous directory path for a
+    provided path (uses static string)*)
 
 val get_working_directory : unit -> string
 (** [get_working_directory ()] Get current working directory (uses static
     string)*)
 
 val get_application_directory : unit -> string
-(** [get_application_directory ()] Get the directory of the running application
+(** [get_application_directory ()] Get directory of the running application
     (uses static string)*)
 
 val make_directory : string -> int
 (** [make_directory dir_path] Create directories (including full path
     requested), returns 0 on success*)
 
-val change_directory : string -> bool
-(** [change_directory dir] Change working directory, return true on success*)
+val change_directory : string -> int
+(** [change_directory dir] Change working directory, returns 0 on success*)
 
 val is_path_file : string -> bool
-(** [is_path_file path] Check if a given path is a file or a directory*)
+(** [is_path_file path] Check if provided path points to a file*)
+
+val is_path_directory : string -> bool
+(** [is_path_directory path] Check if provided path points to a directory *)
+
+val is_path_absolute : string -> bool
+(** [is_path_absolute path] Check if provided path is an absolute path *)
 
 val is_file_name_valid : string -> bool
 (** [is_file_name_valid file_name] Check if fileName is valid for the
@@ -625,14 +638,14 @@ val load_directory_files : string -> FilePathList.t
 
 val load_directory_files_ex : string -> string -> bool -> FilePathList.t
 (** [load_directory_files_ex base_path filter scan_subdirs] Load directory
-    filepaths with extension filtering and recursive directory scan. Use 'DIR'
-    in the filter string to include directories in the result*)
+    filepaths with extension filtering and subdir scan; some filters available:
+    '*.*','FILES*','DIRS*'*)
 
 val unload_directory_files : FilePathList.t -> unit
 (** [unload_directory_files files] Unload filepaths*)
 
 val is_file_dropped : unit -> bool
-(** [is_file_dropped ()] Check if a file has been dropped into window*)
+(** [is_file_dropped ()] Check if file has been dropped into window*)
 
 val load_dropped_files : unit -> FilePathList.t
 (** [load_dropped_files ()] Load dropped filepaths*)
@@ -641,12 +654,12 @@ val unload_dropped_files : FilePathList.t -> unit
 (** [unload_dropped_files files] Unload dropped filepaths*)
 
 val get_directory_file_count : string -> Unsigned.uint
-(** [get_directory_file_count dir_path] Get the file count in a directory *)
+(** [get_directory_file_count dir_path] Get file count in a directory *)
 
 val get_directory_file_count_ex : string -> string -> bool -> Unsigned.uint
-(** [get_directory_file_count_ex base_path filter scan_subdirs] Get the file
-    count in a directory with extension filtering and recursive directory scan.
-    Use 'DIR' in the filter string to include directories in the result *)
+(** [get_directory_file_count_ex base_path filter scan_subdirs] Get file count
+    in a directory with extension filtering and recursive directory scan.
+    Filters include '*.*', 'FILES*' and 'DIRS*' *)
 
 val compress_data : Unsigned.uchar CArray.t -> Unsigned.uchar CArray.t
 (** [compress_data data data_length comp_data_length] Compress data (DEFLATE
@@ -685,19 +698,19 @@ val play_automation_event : AutomationEvent.t -> unit
 (** [play_automation_event event] Play a recorded automation event*)
 
 val is_key_pressed : Key.t -> bool
-(** [is_key_pressed key] Check if a key has been pressed once*)
+(** [is_key_pressed key] Check if key has been pressed once*)
 
 val is_key_pressed_repeat : Key.t -> bool
-(** [is_key_pressed_repeat key] Check if a key has been pressed again*)
+(** [is_key_pressed_repeat key] Check if key has been pressed again*)
 
 val is_key_down : Key.t -> bool
-(** [is_key_down key] Check if a key is being pressed*)
+(** [is_key_down key] Check if key is being pressed*)
 
 val is_key_released : Key.t -> bool
-(** [is_key_released key] Check if a key has been released once*)
+(** [is_key_released key] Check if key has been released once*)
 
 val is_key_up : Key.t -> bool
-(** [is_key_up key] Check if a key is NOT being pressed*)
+(** [is_key_up key] Check if key is NOT being pressed*)
 
 val get_key_pressed : unit -> Key.t
 (** [get_key_pressed ()] Get key pressed (keycode), call it multiple times for
@@ -715,29 +728,29 @@ val set_exit_key : Key.t -> unit
 (** [set_exit_key key] Set a custom key to exit program (default is ESC)*)
 
 val is_gamepad_available : int -> bool
-(** [is_gamepad_available gamepad] Check if a gamepad is available*)
+(** [is_gamepad_available gamepad] Check if gamepad is available*)
 
 val get_gamepad_name : int -> string
 (** [get_gamepad_name gamepad] Get gamepad internal name id*)
 
 val is_gamepad_button_pressed : int -> GamepadButton.t -> bool
-(** [is_gamepad_button_pressed gamepad button] Check if a gamepad button has
-    been pressed once*)
+(** [is_gamepad_button_pressed gamepad button] Check if gamepad button has been
+    pressed once*)
 
 val is_gamepad_button_down : int -> GamepadButton.t -> bool
-(** [is_gamepad_button_down gamepad button] Check if a gamepad button is being
+(** [is_gamepad_button_down gamepad button] Check if gamepad button is being
     pressed*)
 
 val is_gamepad_button_released : int -> GamepadButton.t -> bool
-(** [is_gamepad_button_released gamepad button] Check if a gamepad button has
-    been released once*)
+(** [is_gamepad_button_released gamepad button] Check if gamepad button has been
+    released once*)
 
 val is_gamepad_button_up : int -> GamepadButton.t -> bool
-(** [is_gamepad_button_up gamepad button] Check if a gamepad button is NOT being
+(** [is_gamepad_button_up gamepad button] Check if gamepad button is NOT being
     pressed*)
 
 val get_gamepad_button_pressed : unit -> GamepadButton.t
-(** [get_gamepad_button_pressed ()] Get the last gamepad button pressed*)
+(** [get_gamepad_button_pressed ()] Get last gamepad button pressed*)
 
 val get_gamepad_axis_count : int -> int
 (** [get_gamepad_axis_count gamepad] Get gamepad axis count for a gamepad*)
@@ -755,18 +768,17 @@ val set_gamepad_vibration : int -> float -> float -> float -> unit
     vibration for both motors (duration in seconds)*)
 
 val is_mouse_button_pressed : MouseButton.t -> bool
-(** [is_mouse_button_pressed button] Check if a mouse button has been pressed
-    once*)
+(** [is_mouse_button_pressed button] Check if mouse button has been pressed once*)
 
 val is_mouse_button_down : MouseButton.t -> bool
-(** [is_mouse_button_down button] Check if a mouse button is being pressed*)
+(** [is_mouse_button_down button] Check if mouse button is being pressed*)
 
 val is_mouse_button_released : MouseButton.t -> bool
-(** [is_mouse_button_released button] Check if a mouse button has been released
+(** [is_mouse_button_released button] Check if mouse button has been released
     once*)
 
 val is_mouse_button_up : MouseButton.t -> bool
-(** [is_mouse_button_up button] Check if a mouse button is NOT being pressed*)
+(** [is_mouse_button_up button] Check if mouse button is NOT being pressed*)
 
 val get_mouse_x : unit -> int
 (** [get_mouse_x ()] Get mouse position X*)
@@ -812,7 +824,7 @@ val get_touch_position : int -> Vector2.t
     (relative to screen size)*)
 
 val get_touch_point_id : int -> int
-(** [get_touch_point_id index] Get touch point identifier for given index*)
+(** [get_touch_point_id index] Get touch point identifier for provided index*)
 
 val get_touch_point_count : unit -> int
 (** [get_touch_point_count ()] Get number of touch points*)
@@ -821,7 +833,7 @@ val set_gestures_enabled : Gesture.t -> unit
 (** [set_gestures_enabled flags] Enable a set of gestures using flags*)
 
 val is_gesture_detected : Gesture.t -> bool
-(** [is_gesture_detected gesture] Check if a gesture have been detected*)
+(** [is_gesture_detected gesture] Check if gesture has been detected*)
 
 val get_gesture_detected : unit -> Gesture.t
 (** [get_gesture_detected ()] Get latest detected gesture*)

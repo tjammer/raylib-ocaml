@@ -27,16 +27,12 @@
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
-  hotfixes.patch
   (env_var GRAPHICS)
   (env_var RAYLIB_CONFIG_FLAGS))
  (action
   (progn
    (run %{exe:chmodx.exe} vendor/raylib/src/config.h)
    (run %{exe:apply_patch.exe} enable_formats.patch)
-   (run %{exe:chmodx.exe} vendor/raylib/src/platforms/rcore_desktop_glfw.c)
-   (run %{exe:chmodx.exe} vendor/raylib/src/raudio.c)
-   (run %{exe:apply_patch.exe} hotfixes.patch)
    (no-infer
     (progn
      (run make -C vendor/raylib/src %{read-lines:raylib_flags} clean)
@@ -69,16 +65,12 @@
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
-  hotfixes.patch
   (env_var GRAPHICS)
   (env_var RAYLIB_CONFIG_FLAGS))
  (action
   (progn
    (run %{exe:chmodx.exe} vendor/raylib/src/config.h)
    (run %{exe:apply_patch.exe} enable_formats.patch)
-   (run %{exe:chmodx.exe} vendor/raylib/src/platforms/rcore_desktop_glfw.c)
-   (run %{exe:chmodx.exe} vendor/raylib/src/raudio.c)
-   (run %{exe:apply_patch.exe} hotfixes.patch)
    (no-infer
     (progn
      (run make -C vendor/raylib/src %{read-lines:raylib_flags} clean)
@@ -111,7 +103,6 @@
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
-  hotfixes.patch
   mingw64.patch
   (env_var GRAPHICS)
   (env_var RAYLIB_CONFIG_FLAGS))
@@ -119,9 +110,6 @@
   (progn
    (run %{exe:chmodx.exe} vendor/raylib/src/config.h)
    (run %{exe:apply_patch.exe} enable_formats.patch)
-   (run %{exe:chmodx.exe} vendor/raylib/src/platforms/rcore_desktop_glfw.c)
-   (run %{exe:chmodx.exe} vendor/raylib/src/raudio.c)
-   (run %{exe:apply_patch.exe} hotfixes.patch)
    (run %{exe:chmodx.exe} vendor/raylib/src/Makefile)
    (run %{exe:apply_patch.exe} mingw64.patch)
    (no-infer
@@ -156,7 +144,6 @@
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
-  hotfixes.patch
   msys2.patch
   (env_var GRAPHICS)
   (env_var RAYLIB_CONFIG_FLAGS))
@@ -164,9 +151,6 @@
   (progn
    (run %{exe:chmodx.exe} vendor/raylib/src/config.h)
    (run %{exe:apply_patch.exe} enable_formats.patch)
-   (run %{exe:chmodx.exe} vendor/raylib/src/platforms/rcore_desktop_glfw.c)
-   (run %{exe:chmodx.exe} vendor/raylib/src/raudio.c)
-   (run %{exe:apply_patch.exe} hotfixes.patch)
    (run %{exe:chmodx.exe} vendor/raylib/src/Makefile)
    (run %{exe:apply_patch.exe} msys2.patch)
    (no-infer
@@ -201,7 +185,6 @@
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
-  hotfixes.patch
   freebsd.patch
   (env_var GRAPHICS)
   (env_var RAYLIB_CONFIG_FLAGS))
@@ -209,9 +192,6 @@
   (progn
    (run %{exe:chmodx.exe} vendor/raylib/src/config.h)
    (run %{exe:apply_patch.exe} enable_formats.patch)
-   (run %{exe:chmodx.exe} vendor/raylib/src/platforms/rcore_desktop_glfw.c)
-   (run %{exe:chmodx.exe} vendor/raylib/src/raudio.c)
-   (run %{exe:apply_patch.exe} hotfixes.patch)
    (run %{exe:chmodx.exe} vendor/raylib/src/Makefile)
    (run %{exe:apply_patch.exe} freebsd.patch)
    (no-infer
@@ -246,16 +226,12 @@
  (deps
   (source_tree vendor/raylib)
   enable_formats.patch
-  hotfixes.patch
   (env_var GRAPHICS)
   (env_var RAYLIB_CONFIG_FLAGS))
  (action
   (progn
    (run %{exe:chmodx.exe} vendor/raylib/src/config.h)
    (run %{exe:apply_patch.exe} enable_formats.patch)
-   (run %{exe:chmodx.exe} vendor/raylib/src/platforms/rcore_desktop_glfw.c)
-   (run %{exe:chmodx.exe} vendor/raylib/src/raudio.c)
-   (run %{exe:apply_patch.exe} hotfixes.patch)
    (no-infer
     (progn
      (run make -C vendor/raylib/src %{read-lines:raylib_flags} clean)

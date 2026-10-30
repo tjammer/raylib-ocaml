@@ -1,7 +1,7 @@
 diff --git a/vendor/raylib/src/config.h b/vendor/raylib/src/config.h
 --- a/vendor/raylib/src/config.h
 +++ b/vendor/raylib/src/config.h
-@@ -232,7 +232,7 @@
+@@ -236,7 +236,7 @@
      #define SUPPORT_FILEFORMAT_TGA      0       // Disabled by default
  #endif
  #ifndef SUPPORT_FILEFORMAT_JPG
@@ -10,7 +10,7 @@ diff --git a/vendor/raylib/src/config.h b/vendor/raylib/src/config.h
  #endif
  #ifndef SUPPORT_FILEFORMAT_GIF
      #define SUPPORT_FILEFORMAT_GIF      1
-@@ -342,7 +342,7 @@
+@@ -350,7 +350,7 @@
      #define SUPPORT_FILEFORMAT_QOA      1
  #endif
  #ifndef SUPPORT_FILEFORMAT_FLAC

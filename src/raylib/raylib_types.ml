@@ -797,17 +797,20 @@ module ModelSkeleton = struct
   type t = t' ctyp
 
   let t = ModelSkeleton.t
-  let bone_count modelskeleton = getf modelskeleton ModelSkeleton.bone_count
+
+  let bone_count modelskeleton =
+    Unsigned.UInt.to_int (getf modelskeleton ModelSkeleton.bone_count)
 
   let bones modelskeleton =
-    let count = getf modelskeleton ModelSkeleton.bone_count in
+    let count = bone_count modelskeleton in
     CArray.from_ptr (getf modelskeleton ModelSkeleton.bones) count
 
   let bind_pose modelskeleton = getf modelskeleton ModelSkeleton.bind_pose
 
   let set_bones modelskeleton bones =
     setf modelskeleton ModelSkeleton.bones (CArray.start bones);
-    setf modelskeleton ModelSkeleton.bone_count (CArray.length bones)
+    setf modelskeleton ModelSkeleton.bone_count
+      (Unsigned.UInt.of_int (CArray.length bones))
 
   let set_bind_pose modelskeleton bind_pose =
     setf modelskeleton ModelSkeleton.bind_pose bind_pose
@@ -863,7 +866,8 @@ module ModelAnimation = struct
     let ptr = Ctypes.CArray.start (getf modelanimation ModelAnimation.name) in
     Ctypes.string_from_ptr ptr ~length:32
 
-  let bone_count modelanimation = getf modelanimation ModelAnimation.bone_count
+  let bone_count modelanimation =
+    Unsigned.UInt.to_int (getf modelanimation ModelAnimation.bone_count)
 
   let keyframe_count modelanimation =
     getf modelanimation ModelAnimation.keyframe_count
@@ -873,7 +877,7 @@ module ModelAnimation = struct
     let poses =
       CArray.from_ptr (getf anim ModelAnimation.keyframe_poses) keyframe_count
     in
-    let bone_count = getf anim ModelAnimation.bone_count in
+    let bone_count = bone_count anim in
     CArray.from_ptr (CArray.get poses index) bone_count
 end
 

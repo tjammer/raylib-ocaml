@@ -883,7 +883,8 @@ module Camera2D : sig
   (** [create offset target rotation zoom] *)
 
   val offset : t -> Vector2.t
-  (** Camera offset (screen space offset from window origin) *)
+  (** Camera offset (screen space offset from window origin, unscaled by DPI,
+      real pixel size) *)
 
   val target : t -> Vector2.t
   (** Camera target (world space target point that is mapped to screen space
