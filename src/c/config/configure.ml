@@ -40,7 +40,7 @@ let system_library_flags = function
   | Linux -> link [ "GL"; "m"; "pthread"; "dl"; "rt"; "X11" ]
   | Macos ->
       link ~flag:"-framework"
-        [ "OpenGL"; "Cocoa"; "IOKit"; "CoreAudio"; "CoreVideo" ]
+        [ "OpenGL"; "Cocoa"; "IOKit"; "CoreAudio"; "CoreVideo"; "QuartzCore" ]
   | Mingw64 | Msys2 -> link [ "opengl32"; "gdi32"; "winmm"; "pthread" ]
   | Bsd ->
       "-cclib" :: "-L /usr/local/lib"
