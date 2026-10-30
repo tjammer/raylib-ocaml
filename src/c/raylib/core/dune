@@ -4,6 +4,7 @@
  (libraries raylib_types)
  (ctypes
   (external_library_name raylib)
+  (deps (source_tree ../../vendor/raylib))
   (build_flags_resolver
    (vendored
     (c_flags :standard "-I../../vendor/raylib/src")
