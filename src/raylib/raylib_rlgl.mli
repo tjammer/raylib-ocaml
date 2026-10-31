@@ -251,6 +251,15 @@ val ortho : float -> float -> float -> float -> float -> float -> unit
 val viewport : int -> int -> int -> int -> unit
 (** [viewport x y width height] Set the viewport area*)
 
+val set_clip_planes : float -> float -> unit
+(** [near far] Set the clipping planes*)
+
+val get_cull_distance_near : unit -> float
+(** [get_cull_distance_near ()] Get the near culling distance*)
+
+val get_cull_distance_far : unit -> float
+(** [get_cull_distance_far ()] Get the far culling distance*)
+
 val rl_begin : DrawMode.t -> unit
 (** [rl_begin mode] Initialize drawing mode (how to organize vertex)*)
 
