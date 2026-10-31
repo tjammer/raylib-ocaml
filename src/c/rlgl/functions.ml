@@ -47,6 +47,18 @@ module Functions (F : Ctypes.FOREIGN) = struct
   let viewport =
     foreign "rlViewport" (int @-> int @-> int @-> int @-> returning void)
 
+  (* Set the clipping planes*)
+  let set_clip_planes =
+    foreign "rlSetClipPlanes" (float @-> float @-> returning void)
+
+  (* Get the near clipping plane*)
+  let get_cull_distance_near =
+    foreign "rlGetCullDistanceNear" (void @-> returning float)
+
+  (* Get the far clipping plane*)
+  let get_cull_distance_far =
+    foreign "rlGetCullDistanceFar" (void @-> returning float)
+
   (*------------------------------------------------------------------------------------*)
   (* Functions Declaration - Vertex level operations*)
   (*------------------------------------------------------------------------------------*)
