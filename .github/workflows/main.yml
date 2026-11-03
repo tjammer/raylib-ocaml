@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
         with:
           submodules: true
 
@@ -20,10 +20,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libsdl2-dev
 
-      - name: Use OCaml 5.4.1
+      - name: Use OCaml 5
         uses: ocaml/setup-ocaml@v3
         with:
-          ocaml-compiler: 5.4.1
+          ocaml-compiler: 5
 
       - run: opam pin -n -k path .
       - run: opam install -y raylib-options-sdl2 raylib
@@ -37,18 +37,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { ocaml-compiler: 5.4.1, os: ubuntu-latest }
-          - { ocaml-compiler: 5.4.1, os: macos-latest }
-          - { ocaml-compiler: 4.14.0, os: ubuntu-latest }
-          - { ocaml-compiler: 4.14.0, os: windows-latest }
-          - { ocaml-compiler: 4.14.0, os: macos-latest }
-          - { ocaml-compiler: 4.11.2, os: ubuntu-latest }
+          - { ocaml-compiler: 5, os: ubuntu-latest }
+          - { ocaml-compiler: 5, os: macos-latest }
+          - { ocaml-compiler: 4, os: ubuntu-latest }
+          - { ocaml-compiler: 4, os: windows-latest }
+          - { ocaml-compiler: 4, os: macos-latest }
 
     runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
         with:
           submodules: true
 
@@ -67,9 +66,8 @@ jobs:
       - run: opam install containers re yojson
 
       - run: opam exec -- dune build
-        if: matrix.ocaml-compiler != '4.11.2'
+
+      - run: opam install raylib raygui raylib-callbacks
 
       - run: opam install raylib-options-sdl2
         if: matrix.os != 'windows-latest'
-
-      - run: opam install raylib raygui raylib-callbacks
