@@ -3,6 +3,9 @@
  (package raygui)
  (ctypes
   (external_library_name raylib)
+  (deps
+   (source_tree ../vendor/raygui)
+   (source_tree ../vendor/raylib))
   (build_flags_resolver
    (vendored
     (c_flags :standard "-I../vendor/raygui/src" "-I../vendor/raylib/src")
