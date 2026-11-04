@@ -1,4 +1,10 @@
-2.4.0 (2026-11-30)
+2.4.1 (2026-11-04)
+------------------
+
+* Add bindings for `rlGetCullDistance<Near|Far>` and `rlSetClipPlanes`
+* Declare vendored headers for sandboxed stub generation (dune 3.25)
+
+2.4.0 (2026-10-30)
 ------------------
 
 * Upgrade raylib to 6.2
