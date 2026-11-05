@@ -18,6 +18,13 @@
 
 (data_only_dirs vendor)
 
+(install
+ (package raylib)
+ (section lib)
+ (files
+  (vendor/raylib/src/raylib.h as raylib.h)
+  (vendor/raylib/src/rlgl.h as rlgl.h)))
+
 (rule
  (alias build-raylib)
  (package raylib)
