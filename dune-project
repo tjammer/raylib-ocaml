@@ -50,12 +50,7 @@
   (conf-libxrandr
    (or
     (= :os linux)
-    (= :os-family bsd)))
-  (ocaml-lsp-server :with-dev-setup)
-  (ocamlformat
-   (and
-    (= 0.29.0)
-    :with-dev-setup)))
+    (= :os-family bsd))))
  (depopts raylib-options-sdl2)
  (conflicts ocaml-option-bytecode-only))
 
