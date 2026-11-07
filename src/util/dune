@@ -1,4 +1,0 @@
-(executable
- (name raylib_gen)
- (modules Raylib_gen)
- (libraries containers re yojson))
