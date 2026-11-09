@@ -11,7 +11,7 @@
     (c_flags :standard "-I../../vendor/raylib/src")
     (c_library_flags :standard)))
   (headers
-   (include "raylib.h" "rlgl.h" "config.h" "raymath.h"))
+   (include "raylib.h" "rlgl.h" "raymath.h"))
   (type_description
    (instance Types)
    (functor Types))
