@@ -11,16 +11,16 @@
 
 (license MIT)
 
-(authors "Tobias Mock")
+(authors "Tobias Mock <tobiasjammer@gmail.com>")
 
-(maintainers "tobiasjammer@gmail.com")
+(maintainers "Tobias Mock <tobiasjammer@gmail.com>")
 
 (package
  (name raylib)
- (version 2.4.1)
+ (version 2.4.2)
  (description "OCaml bindings for raylib")
  (synopsis "OCaml bindings for raylib")
- (tags (gamedev))
+ (tags (gamedev graphics))
  (depends
   (ocaml
    (>= 4.08.0))
@@ -56,7 +56,7 @@
 
 (package
  (name raylib-options-sdl2)
- (version 2.4.1)
+ (version 2.4.2)
  (description "Build raylib-ocaml with the SDL2 backend")
  (synopsis "SDL2 backend option for raylib-ocaml")
  (depends conf-sdl2)
@@ -64,7 +64,7 @@
 
 (package
  (name raygui)
- (version 2.4.1)
+ (version 2.4.2)
  (description "OCaml bindings for raygui")
  (synopsis "OCaml bindings for raygui")
  (depends
@@ -73,7 +73,7 @@
 
 (package
  (name raylib-callbacks)
- (version 2.4.1)
+ (version 2.4.2)
  (description "OCaml bindings for callbacks of raylib")
  (synopsis "OCaml bindings for callbacks of raylib")
  (depends
